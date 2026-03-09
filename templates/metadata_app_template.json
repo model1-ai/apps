@@ -1,0 +1,1704 @@
+{
+    "_comment": "=== METADATA APP TEMPLATE ===",
+    "_description": "Template for creating app metadata files. Replace placeholder values with your domain-specific data.",
+    "_usage": "Copy this file to your example directory as 'metadata_app.json' and customize.",
+    "organizations": [
+        {
+            "id": "your-org-id",
+            "label": {
+                "en": "Your Organization Name"
+            },
+            "use_seed": true,
+            "_comment": "Organization is the top-level entity. use_seed=true generates UUID from id string."
+        }
+    ],
+    "tenants": [
+        {
+            "id": "your-tenant-id",
+            "organization_id": "your-org-id",
+            "label": {
+                "en": "Your Tenant Name"
+            },
+            "use_seed": true,
+            "_comment": "Tenant belongs to Organization. References organization_id."
+        }
+    ],
+    "users": [
+        {
+            "_comment": "=== USER ACCOUNT ===",
+            "id": "your-user-id",
+            "tenant_id": "your-tenant-id",
+            "email": "user@example.com",
+            "display_name": "User Name",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppAdmin"
+            ],
+            "use_seed": true,
+            "_notes": [
+                "password: plaintext in metadata files, hashed on load by the broker",
+                "roles: array of role names applied during load. Values: AppAdmin, AppDeveloper, AppUser, TenantAdmin, OrgAdmin",
+                "is_active: set false to disable login for this user",
+                "tenant_id: the user's home tenant"
+            ]
+        },
+        {
+            "_comment": "=== REGULAR APP USER ===",
+            "id": "your-regular-user-id",
+            "tenant_id": "your-tenant-id",
+            "email": "regular@example.com",
+            "display_name": "Regular User",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppUser"
+            ],
+            "use_seed": true
+        }
+    ],
+    "foundation_role_assignments": [
+        {
+            "_comment": "=== APP-SCOPED ROLE ASSIGNMENT ===",
+            "id": "fra-user-app-admin",
+            "user_id": "your-user-id",
+            "role": "AppAdmin",
+            "scope": {
+                "type": "App",
+                "tenant_id": "your-tenant-id",
+                "app_id": "your-app-id"
+            },
+            "assigned_by": "your-user-id",
+            "use_seed": true,
+            "_notes": [
+                "role: single role name (AppAdmin, AppDeveloper, AppUser, TenantAdmin, OrgAdmin)",
+                "scope.type: 'App' (with tenant_id + app_id), 'Tenant' (with tenant_id), 'Organization' (with org_id)",
+                "assigned_by: user_id of who created this assignment",
+                "CRITICAL: scope.org_id for Organization scope, NOT organization_id"
+            ]
+        },
+        {
+            "_comment": "=== TENANT-SCOPED ROLE ASSIGNMENT ===",
+            "id": "fra-user-tenant-admin",
+            "user_id": "your-user-id",
+            "role": "TenantAdmin",
+            "scope": {
+                "type": "Tenant",
+                "tenant_id": "your-tenant-id"
+            },
+            "assigned_by": "your-user-id",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ORGANIZATION-SCOPED ROLE ASSIGNMENT ===",
+            "id": "fra-user-org-admin",
+            "user_id": "your-user-id",
+            "role": "OrgAdmin",
+            "scope": {
+                "type": "Organization",
+                "org_id": "your-org-id"
+            },
+            "assigned_by": "your-user-id",
+            "use_seed": true
+        }
+    ],
+    "apps": [
+        {
+            "id": "your-app-id",
+            "tenant_id": "your-tenant-id",
+            "label": {
+                "en": "Your Application Name"
+            },
+            "description": {
+                "en": "Description of what your application does"
+            },
+            "use_seed": true,
+            "modules": [
+                {
+                    "id": "your-module-id",
+                    "use_seed": true,
+                    "label": {
+                        "en": "Module Name"
+                    },
+                    "description": {
+                        "en": "Description of what this module handles"
+                    },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": []
+                    },
+                    "_comment": "Modules define event contracts (subscribed/publishable events). Optional but recommended for authorization."
+                }
+            ],
+            "_comment": "App belongs to Tenant. All domain entities (universals, computations, etc.) reference app_id."
+        }
+    ],
+    "measurement_frames": [
+        {
+            "id": "custom-measurement-frame",
+            "universal_id": "quantity-universal",
+            "label": {
+                "en": "Custom Frame Name"
+            },
+            "base_unit": "unit_name",
+            "units": {
+                "unit_name": {
+                    "factor": 1.0,
+                    "description": {
+                        "en": "Base unit description"
+                    }
+                },
+                "another_unit": {
+                    "factor": 0.001,
+                    "description": {
+                        "en": "Alternative unit with conversion factor"
+                    }
+                }
+            },
+            "_comment": "Custom measurement frames. Standard frames (std-currency, std-quantity, std-ratio, std-integer) are defined in foundation. universal_id MUST reference a quantity-kind universal from foundation."
+        }
+    ],
+    "universals": [
+        {
+            "_comment": "=== ENTITY UNIVERSAL (Kind) WITH LABEL SCHEMA ===",
+            "id": "entity-universal-id",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Entity Name"
+            },
+            "description": {
+                "en": "Description of what this entity represents"
+            },
+            "generalizes": null,
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true,
+            "_notes": [
+                "temporal_nature: 'Endurant' (persistent) or 'Perdurant' (temporal/event)",
+                "meta_category: 'Kind' (entity type), 'Role', 'Quality', 'Mode', 'Phase', 'Relator', 'Event', 'Process'",
+                "generalizes: optional - ID of parent universal for inheritance hierarchy",
+                "label_schema: defines how instance labels are generated from property values",
+                "  separator: string to join label parts (default: ' - ')",
+                "  max_length: maximum label length before truncation (default: 40)",
+                "  fallback_language: language to use if requested language not found (default: 'en')"
+            ]
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL (for Categorical property references) ===",
+            "id": "enum-universal-id",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Status Type"
+            },
+            "description": {
+                "en": "Enumeration universal for status values - instances define the allowed values"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true,
+            "_notes": [
+                "Enumeration universals define a set of allowed values via instances",
+                "Each instance represents one enum value (e.g., ACTIVE, PENDING, CLOSED)",
+                "Properties can reference this universal via reference_universal_id",
+                "Instance labels come from properties with label_options.participates=true"
+            ]
+        },
+        {
+            "_comment": "=== SPECIALIZED UNIVERSAL (inherits from parent) ===",
+            "id": "specialized-entity-id",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Specialized Entity"
+            },
+            "description": {
+                "en": "A more specific type of the parent entity"
+            },
+            "generalizes": "entity-universal-id",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR UNIVERSAL (relationship type) ===",
+            "id": "entity-relationship-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Entity Relationship"
+            },
+            "description": {
+                "en": "Relationship between two entity types"
+            },
+            "roles": [
+                {
+                    "name": "source_role",
+                    "universal_id": "entity-universal-id",
+                    "_comment": "Role name used in computations and schemas"
+                },
+                {
+                    "name": "target_role",
+                    "universal_id": "another-entity-id"
+                }
+            ],
+            "use_seed": true,
+            "_taxonomy_comment": "Taxonomy classifies this relator as a type of foundational relator. Use generalization-relator as relator_universal_id. target_universal_id is one of: composition-relator, aggregation-relator, association-relator, generalization-relator, participation-relator, causation-relator, dependency-relator, attribution-relator, parthood-relator, role-assignment-relator, derivation-relator, collaboration-relator. See concepts/architecture/explicit_relator_types.html",
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
+            ]
+        }
+    ],
+    "property_definitions": [
+        {
+            "_comment": "=== TEXT/STRING PROPERTY WITH LABEL PARTICIPATION ===",
+            "id": "entity-name-prop",
+            "universal_id": "entity-universal-id",
+            "label": {
+                "en": "Name"
+            },
+            "description": {
+                "en": "The name of the entity"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": null,
+                "suffix": null
+            },
+            "use_seed": true,
+            "_notes": [
+                "predicates: semantic tags for the property",
+                "cardinality.min=1 means required, min=0 means optional",
+                "cardinality.max=1 means single value, max=null means unlimited",
+                "label_options: configures this property's participation in instance labels",
+                "  participates: true to include this property's value in the label",
+                "  sequence: order position in the label (1, 2, 3... - lower numbers first)",
+                "  prefix: optional string prepended to value (e.g., '#' for invoice numbers)",
+                "  suffix: optional string appended to value"
+            ]
+        },
+        {
+            "_comment": "=== ENUMERATION NAME PROPERTY (for enum universals) ===",
+            "id": "enum-name-prop",
+            "universal_id": "enum-universal-id",
+            "label": {
+                "en": "Name"
+            },
+            "description": {
+                "en": "The name/code for this enumeration value"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true,
+            "_notes": [
+                "For enumeration universals, use Categorical type with simple string values",
+                "Instance property values are simple strings: 'ACTIVE', 'PENDING', 'HIGH'",
+                "Do NOT use Textual type for enum names - Textual is for multilingual content",
+                "label_options.participates=true ensures enum instances display their name as label"
+            ]
+        },
+        {
+            "_comment": "=== ENUMERATED/CHOICE PROPERTY ===",
+            "id": "entity-status-prop",
+            "universal_id": "entity-universal-id",
+            "label": {
+                "en": "Status"
+            },
+            "description": {
+                "en": "Current status of the entity"
+            },
+            "property_schema": {
+                "predicates": [
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "allowed_values": [
+                            "active",
+                            "inactive",
+                            "pending",
+                            "archived"
+                        ],
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== MEASUREMENT PROPERTY (numeric with unit) ===",
+            "id": "entity-amount-prop",
+            "universal_id": "entity-universal-id",
+            "label": {
+                "en": "Amount"
+            },
+            "description": {
+                "en": "Monetary amount"
+            },
+            "property_schema": {
+                "predicates": [
+                    "amount",
+                    "total"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "_notes": [
+                "Standard measurement frames: std-currency, std-quantity, std-integer, std-ratio, std-float",
+                "Or reference your custom measurement_frame id"
+            ]
+        },
+        {
+            "_comment": "=== DATE PROPERTY (calendar date) ===",
+            "id": "entity-date-prop",
+            "universal_id": "entity-universal-id",
+            "label": {
+                "en": "Date"
+            },
+            "description": {
+                "en": "Calendar date without time component (ISO 8601, e.g. 2024-03-15)"
+            },
+            "property_schema": {
+                "predicates": [
+                    "date"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Date"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "_notes": [
+                "Date type renders as HTML5 date picker in the App Runtime form",
+                "Values stored as ISO 8601 date strings: '2024-03-15'",
+                "For date+time values, use DateTime type instead"
+            ]
+        },
+        {
+            "_comment": "=== DATETIME PROPERTY (date + time) ===",
+            "id": "entity-timestamp-prop",
+            "universal_id": "entity-universal-id",
+            "label": {
+                "en": "Timestamp"
+            },
+            "description": {
+                "en": "Date and time value in UTC (RFC 3339, e.g. 2024-03-15T10:30:00Z)"
+            },
+            "property_schema": {
+                "predicates": [
+                    "timestamp",
+                    "datetime"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "DateTime"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "_notes": [
+                "DateTime type renders as HTML5 datetime-local picker in the App Runtime form",
+                "Values stored as RFC 3339 UTC strings: '2024-03-15T10:30:00Z'",
+                "Timezone-less values are rejected; all values normalized to UTC",
+                "For date-only values without time, use Date type instead"
+            ]
+        }
+    ],
+    "event_definitions": [
+        {
+            "_comment": "=== BROADCAST EVENT (pub/sub pattern - default) ===",
+            "id": "entity-created-event",
+            "app_id": "your-app-id",
+            "scope": "tenant",
+            "label": {
+                "en": "Entity Created"
+            },
+            "description": {
+                "en": "Event emitted when a new entity is created"
+            },
+            "default_routing_mode": "broadcast",
+            "distribution_scope": "local",
+            "payload_schema": [
+                {
+                    "name": "entity_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "entity_name",
+                    "field_type": "string"
+                },
+                {
+                    "name": "amount",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                },
+                {
+                    "name": "created_at",
+                    "field_type": "string"
+                }
+            ],
+            "use_seed": true,
+            "_notes": [
+                "scope: 'tenant' (within tenant), 'org' (organization-wide), 'explicit' (specified targets)",
+                "distribution_scope: 'local' (in-process), 'cluster' (all nodes), 'hybrid' (local + cross-tenant)",
+                "default_routing_mode: 'broadcast' (all subscribers), 'unicast' (one subscriber), 'balanced' (round-robin)",
+                "default_ttl_ms: optional message expiration time in milliseconds",
+                "default_consumer_group: optional consumer group name for balanced routing",
+                "field_type options: uuid, string, integer, float, number, boolean, timestamp, json, measurement",
+                "measurement_frame required when field_type is 'measurement'"
+            ]
+        },
+        {
+            "_comment": "=== UNICAST EVENT (point-to-point pattern) ===",
+            "id": "task-assigned-event",
+            "app_id": "your-app-id",
+            "scope": "tenant",
+            "label": {
+                "en": "Task Assigned"
+            },
+            "description": {
+                "en": "Command event sent to a specific subscriber"
+            },
+            "default_routing_mode": "unicast",
+            "default_ttl_ms": 30000,
+            "payload_schema": [
+                {
+                    "name": "task_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "assignee_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "instructions",
+                    "field_type": "string"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== BALANCED EVENT (competing consumers pattern) ===",
+            "id": "work-item-queued-event",
+            "app_id": "your-app-id",
+            "scope": "tenant",
+            "label": {
+                "en": "Work Item Queued"
+            },
+            "description": {
+                "en": "Work item distributed round-robin across worker pool"
+            },
+            "default_routing_mode": "balanced",
+            "default_consumer_group": "worker-pool",
+            "default_ttl_ms": 60000,
+            "payload_schema": [
+                {
+                    "name": "work_item_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "priority",
+                    "field_type": "integer"
+                },
+                {
+                    "name": "payload",
+                    "field_type": "json"
+                }
+            ],
+            "use_seed": true
+        }
+    ],
+    "correlation_rules": [
+        {
+            "_comment": "=== MULTI-EVENT CORRELATION RULE ===",
+            "id": "your-correlation-rule-id",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "Workflow Correlation"
+            },
+            "description": {
+                "en": "Correlates submission with approval/rejection events"
+            },
+            "expression": {
+                "type": "All",
+                "expressions": [
+                    {
+                        "type": "Event",
+                        "event_type_id": "entity-created-event",
+                        "alias": "created"
+                    },
+                    {
+                        "type": "Any",
+                        "expressions": [
+                            {
+                                "type": "Event",
+                                "event_type_id": "task-assigned-event",
+                                "alias": "approved"
+                            },
+                            {
+                                "type": "Event",
+                                "event_type_id": "work-item-queued-event",
+                                "alias": "rejected"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "correlation_key_path": "entity_id",
+            "session_instantiation": {
+                "mode": "OnAnyEvent"
+            },
+            "session_reset": {
+                "mode": "Automatic"
+            },
+            "timeout": {
+                "activation": "OnInstantiation",
+                "duration": {
+                    "type": "Duration",
+                    "ms": 86400000
+                },
+                "on_timeout": {
+                    "type": "EmitTimeoutEvent",
+                    "event_type_id": "entity-created-event",
+                    "include_received_events": true,
+                    "include_correlation_key": true
+                },
+                "use_broker_default": false
+            },
+            "on_complete": {
+                "type": "EmitEvent",
+                "event_type_id": "entity-created-event",
+                "payload_strategy": "MergeAll"
+            },
+            "use_seed": true,
+            "_notes": [
+                "expression.type: 'All' (all events required), 'Any' (any one event), 'Event' (leaf node referencing an event type)",
+                "expression.expressions: nested expressions for complex logic (All/Any can contain Event or nested All/Any)",
+                "expression[].alias: name for this event in the correlation session",
+                "correlation_key_path: JSON path in event payload used to group correlated events",
+                "session_instantiation.mode: 'OnAnyEvent' (create session on first matching event)",
+                "session_reset.mode: 'Automatic' (reset after completion)",
+                "timeout.duration.ms: timeout in milliseconds (e.g., 86400000 = 24 hours)",
+                "timeout.on_timeout.type: 'EmitTimeoutEvent' (emit event on timeout)",
+                "on_complete.type: 'EmitEvent' (emit event when all conditions met)",
+                "on_complete.payload_strategy: 'MergeAll' (merge all event payloads into completion event)"
+            ]
+        }
+    ],
+    "timers": [
+        {
+            "_comment": "=== ONE-SHOT TIMER (fires once after delay) ===",
+            "id": "your-timer-id",
+            "name": "Timer Display Name",
+            "tenant_id": "your-tenant-id",
+            "org_id": "your-org-id",
+            "app_id": "your-app-id",
+            "schedule": {
+                "type": "Interval",
+                "amount": 5,
+                "unit": "Seconds",
+                "recurring": false
+            },
+            "enabled": true,
+            "auto_start": true,
+            "use_seed": true,
+            "event_emission": {
+                "event_code": "your-timer-fired-event"
+            },
+            "_notes": [
+                "schedule.type: 'Interval' (fixed delay) or 'Cron' (cron expression)",
+                "schedule.unit: 'Seconds', 'Minutes', 'Hours', 'Days'",
+                "schedule.recurring: false = one-shot, true = repeating",
+                "event_emission.event_code: seed of the EventDefinition to emit when fired",
+                "auto_start: if true, timer starts automatically after metadata load",
+                "Timer publishes to topic 'events.timer.{timer_uuid}' at runtime",
+                "To subscribe a computation, use TopicMessage trigger: 'events.timer.{timer-seed}'"
+            ]
+        }
+    ],
+    "computations": [
+        {
+            "_comment": "=== SIMPLE PROPERTY COMPUTATION ===",
+            "id": "calculated-total-calc",
+            "code": "calculated_total",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "Calculate Total"
+            },
+            "description": {
+                "en": "Computes total = quantity * unit_price"
+            },
+            "inputs": [
+                {
+                    "source": "property",
+                    "variable_name": "quantity",
+                    "property_id": "item-quantity-prop"
+                },
+                {
+                    "source": "property",
+                    "variable_name": "unit_price",
+                    "property_id": "item-price-prop"
+                }
+            ],
+            "formula": "let qty = quantity.value; let price = unit_price.value; qty * price",
+            "output": {
+                "target_property_id": "item-total-prop"
+            },
+            "trigger_conditions": [
+                {
+                    "type": "PropertyChange",
+                    "property_id": "item-quantity-prop"
+                },
+                {
+                    "type": "PropertyChange",
+                    "property_id": "item-price-prop"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true,
+            "_notes": [
+                "formula: Rhai script expression. Access input values via variable_name.value",
+                "trigger_conditions: Multiple triggers use OR semantics (fire when ANY condition is met)",
+                "For AND semantics (wait for multiple events), use Correlation Rules instead",
+                "priority: 'High', 'Normal', 'Low'"
+            ]
+        },
+        {
+            "_comment": "=== AGGREGATE COMPUTATION (sum across related entities) ===",
+            "id": "aggregate-sum-calc",
+            "code": "aggregate_sum",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "Aggregate Sum"
+            },
+            "description": {
+                "en": "Sums property values across related entities"
+            },
+            "inputs": [
+                {
+                    "source": "role_aggregate",
+                    "variable_name": "items_sum",
+                    "role_id": "parent-child-rel",
+                    "role_name": "child",
+                    "property_id": "child-amount-prop",
+                    "function": "Sum"
+                }
+            ],
+            "formula": "items_sum.value",
+            "output": {
+                "target_property_id": "parent-total-prop"
+            },
+            "trigger_conditions": [],
+            "priority": "Normal",
+            "use_seed": true,
+            "_notes": [
+                "role_aggregate source: aggregates values from related entities",
+                "function options: Sum, Count, Avg, Min, Max"
+            ]
+        },
+        {
+            "_comment": "=== ROLE PROPERTY COMPUTATION (single related entity property) ===",
+            "id": "related-lookup-calc",
+            "code": "related_lookup",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "Related Entity Lookup"
+            },
+            "description": {
+                "en": "Reads a property from a related entity via relator"
+            },
+            "inputs": [
+                {
+                    "source": "property",
+                    "variable_name": "local_value",
+                    "property_id": "entity-amount-prop"
+                },
+                {
+                    "source": "role_property",
+                    "variable_name": "related_value",
+                    "relator_id": "entity-relationship-rel",
+                    "target_role": "target_role",
+                    "property_id": "target-amount-prop"
+                }
+            ],
+            "formula": "let local = local_value.value; let related = related_value.value; local + related",
+            "output": {
+                "target_property_id": "entity-combined-prop"
+            },
+            "trigger_conditions": [
+                {
+                    "type": "PropertyChange",
+                    "property_id": "entity-amount-prop"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true,
+            "_notes": [
+                "role_property source: reads a single property from a related entity",
+                "relator_id: the relator universal defining the relationship",
+                "target_role: which role to navigate to (the related entity's role name)",
+                "property_id: the property to read from the related entity"
+            ]
+        },
+        {
+            "_comment": "=== EVENT-TRIGGERED COMPUTATION ===",
+            "id": "event-handler-calc",
+            "code": "event_handler",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "Event Handler"
+            },
+            "description": {
+                "en": "Handles incoming events"
+            },
+            "inputs": [],
+            "formula": "print(`Event received: ${event.entity_id}`); 0.0",
+            "output": {},
+            "trigger_conditions": [
+                {
+                    "type": "TopicMessage",
+                    "topic": "events.entity-created-event"
+                }
+            ],
+            "event_bindings": [
+                {
+                    "event": "events.entity-created-event",
+                    "direction": "subscribe"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== EVENT-EMITTING COMPUTATION ===",
+            "id": "event-emitter-calc",
+            "code": "event_emitter",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "Event Emitter"
+            },
+            "description": {
+                "en": "Emits event when property changes"
+            },
+            "inputs": [
+                {
+                    "source": "property",
+                    "variable_name": "total",
+                    "property_id": "parent-total-prop"
+                }
+            ],
+            "formula": "total.value",
+            "output": {},
+            "trigger_conditions": [
+                {
+                    "type": "PropertyChange",
+                    "property_id": "parent-total-prop"
+                }
+            ],
+            "event_bindings": [
+                {
+                    "event": "events.entity-created-event",
+                    "direction": "publish",
+                    "trigger": "always"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== SCHEMA-BASED COMPUTATION (complex data extraction) ===",
+            "id": "schema-based-calc",
+            "code": "schema_based",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "Schema-Based Validation"
+            },
+            "description": {
+                "en": "Uses data schema for complex data extraction"
+            },
+            "inputs": [
+                {
+                    "source": "SchemaBased",
+                    "variable_name": "entity_data",
+                    "data_schema_id": "entity-detail-schema"
+                }
+            ],
+            "formula": "let data = entity_data; if data.item_count > 0 { 1.0 } else { 0.0 }",
+            "output": {
+                "target_property_id": "entity-is-valid-prop"
+            },
+            "trigger_conditions": [
+                {
+                    "type": "PropertyChange",
+                    "property_id": "parent-total-prop"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT MEASURE CHANGE TRIGGERED ===",
+            "id": "artifact-trigger-calc",
+            "code": "artifact_trigger",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "Artifact Measure Change Handler"
+            },
+            "description": {
+                "en": "Triggered when an artifact measure value changes"
+            },
+            "inputs": [],
+            "formula": "let old_val = old_value.value; let new_val = new_value.value; print(`Changed from ${old_val} to ${new_val}`); 0.0",
+            "output": {},
+            "trigger_conditions": [
+                {
+                    "type": "ArtifactMeasureChanged",
+                    "artifact_definition_id": "your-artifact-id",
+                    "measure_id": "your-measure-id"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== TIMER-TRIGGERED COMPUTATION (with event emission) ===",
+            "id": "timer-handler-calc",
+            "code": "timer_handler",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "Timer Handler"
+            },
+            "description": {
+                "en": "Triggered by timer, emits a report event"
+            },
+            "inputs": [],
+            "formula": "let result = ScriptResult(true); result.log(\"info\", \"Timer fired - processing\"); result.emit(\"report\", #{ status: \"done\" }); result",
+            "output": {
+                "target_property_id": null
+            },
+            "output_event_types": {
+                "report": "your-report-event-id"
+            },
+            "event_bindings": [
+                {
+                    "event": "your-report-event-id",
+                    "direction": "publish",
+                    "trigger": "always",
+                    "scope": "tenant",
+                    "description": {
+                        "en": "Publishes report after timer processing"
+                    }
+                }
+            ],
+            "trigger_conditions": [
+                {
+                    "type": "TopicMessage",
+                    "topic": "events.timer.your-timer-id"
+                }
+            ],
+            "priority": "High",
+            "use_seed": true,
+            "_notes": [
+                "Timer-triggered: use 'events.timer.{timer-seed}' as topic (loader resolves seed to UUID)",
+                "output_event_types: maps formula emit() names to event definition IDs",
+                "event_bindings.scope: 'tenant' limits event scope, optional with description",
+                "formula uses ScriptResult: result.emit('name', payload) to emit events"
+            ]
+        },
+        {
+            "_comment": "=== INSTANCE LIFECYCLE TRIGGER (Created) ===",
+            "id": "instance-created-handler",
+            "code": "instance_created_handler",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "On Entity Created"
+            },
+            "description": {
+                "en": "Triggered when a new instance of the entity type is created"
+            },
+            "formula": "let result = ScriptResult(true); result.log(\"info\", \"Instance created\"); result",
+            "inputs": [],
+            "output": {
+                "target_property_id": null
+            },
+            "trigger_conditions": [
+                {
+                    "type": "InstanceLifecycle",
+                    "universal_id": "entity-universal-id",
+                    "lifecycle": "Created"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true,
+            "_notes": [
+                "InstanceLifecycle trigger: fires on instance lifecycle events for a given universal",
+                "lifecycle: 'Created' (new instance), 'Modified' (property changed), 'Deleted' (instance removed)",
+                "universal_id: the seed of the universal type to monitor"
+            ]
+        },
+        {
+            "_comment": "=== INSTANCE LIFECYCLE TRIGGER (Modified) ===",
+            "id": "instance-modified-handler",
+            "code": "instance_modified_handler",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "On Entity Modified"
+            },
+            "description": {
+                "en": "Triggered when any property of the entity instance changes"
+            },
+            "formula": "let result = ScriptResult(true); result.log(\"info\", \"Instance modified\"); result",
+            "inputs": [],
+            "output": {
+                "target_property_id": null
+            },
+            "trigger_conditions": [
+                {
+                    "type": "InstanceLifecycle",
+                    "universal_id": "entity-universal-id",
+                    "lifecycle": "Modified"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR LIFECYCLE TRIGGER (Created) ===",
+            "id": "relator-created-handler",
+            "code": "relator_created_handler",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "On Relationship Established"
+            },
+            "description": {
+                "en": "Triggered when a new relator instance is established"
+            },
+            "formula": "let result = ScriptResult(true); result.log(\"info\", \"Relator created\"); result",
+            "inputs": [],
+            "output": {
+                "target_property_id": null
+            },
+            "trigger_conditions": [
+                {
+                    "type": "RelatorLifecycle",
+                    "relator_universal_id": "entity-relationship-rel",
+                    "lifecycle": "Created"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true,
+            "_notes": [
+                "RelatorLifecycle trigger: fires on relator instance lifecycle events",
+                "lifecycle: 'Created' (new relator instance), 'Modified' (relator changed), 'Deleted' (relator removed)",
+                "relator_universal_id: the seed of the relator universal type to monitor"
+            ]
+        },
+        {
+            "_comment": "=== RELATOR LIFECYCLE TRIGGER (Modified) ===",
+            "id": "relator-modified-handler",
+            "code": "relator_modified_handler",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "On Relationship Modified"
+            },
+            "description": {
+                "en": "Triggered when a relator instance is modified"
+            },
+            "formula": "let result = ScriptResult(true); result.log(\"info\", \"Relator modified\"); result",
+            "inputs": [],
+            "output": {
+                "target_property_id": null
+            },
+            "trigger_conditions": [
+                {
+                    "type": "RelatorLifecycle",
+                    "relator_universal_id": "entity-relationship-rel",
+                    "lifecycle": "Modified"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== STATE TRANSITION TRIGGER (specific value change) ===",
+            "id": "state-transition-handler",
+            "code": "state_transition_handler",
+            "app_id": "your-app-id",
+            "label": {
+                "en": "On Status Transition"
+            },
+            "description": {
+                "en": "Triggered when a property transitions from one specific value to another"
+            },
+            "formula": "let result = ScriptResult(true); result.log(\"info\", \"State transition detected\"); result",
+            "inputs": [],
+            "output": {
+                "target_property_id": null
+            },
+            "trigger_conditions": [
+                {
+                    "type": "StateTransition",
+                    "property_id": "entity-status-prop",
+                    "from_value": "pending",
+                    "to_value": "active"
+                }
+            ],
+            "priority": "High",
+            "use_seed": true,
+            "_notes": [
+                "StateTransition trigger: fires when a property value changes from one value to another",
+                "property_id: the seed of the property definition to monitor",
+                "from_value: the previous value (optional - omit to match any previous value)",
+                "to_value: the new value (optional - omit to match any new value)",
+                "Values are typically Categorical strings matching allowed_values in the property definition"
+            ]
+        }
+    ],
+    "data_schemas": [
+        {
+            "id": "entity-detail-schema",
+            "tenant_id": "your-tenant-id",
+            "root_universal_id": "entity-universal-id",
+            "label": {
+                "en": "Entity Detail"
+            },
+            "description": {
+                "en": "Complete entity with related data"
+            },
+            "structure": {
+                "type": "Object",
+                "fields": [
+                    {
+                        "name": "entity_id",
+                        "source": {
+                            "type": "Context",
+                            "context_field": "InstanceId"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "source": {
+                            "type": "Property",
+                            "property_id": "entity-name-prop"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "source": {
+                            "type": "Property",
+                            "property_id": "entity-amount-prop"
+                        }
+                    },
+                    {
+                        "_comment": "=== RELATED ENTITY (single) ===",
+                        "name": "related_entity",
+                        "source": {
+                            "type": "Relation",
+                            "relator_id": "entity-relationship-rel",
+                            "role_name": "target_role",
+                            "nested": {
+                                "type": "Object",
+                                "fields": [
+                                    {
+                                        "name": "id",
+                                        "source": {
+                                            "type": "Context",
+                                            "context_field": "InstanceId"
+                                        }
+                                    },
+                                    {
+                                        "name": "name",
+                                        "source": {
+                                            "type": "Property",
+                                            "property_id": "target-name-prop"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "_comment": "=== RELATED ENTITIES (array) ===",
+                        "name": "child_items",
+                        "source": {
+                            "type": "Relation",
+                            "relator_id": "parent-child-rel",
+                            "role_name": "child",
+                            "nested": {
+                                "type": "Object",
+                                "fields": [
+                                    {
+                                        "name": "id",
+                                        "source": {
+                                            "type": "Context",
+                                            "context_field": "InstanceId"
+                                        }
+                                    },
+                                    {
+                                        "name": "amount",
+                                        "source": {
+                                            "type": "Property",
+                                            "property_id": "child-amount-prop"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "_comment": "=== AGGREGATE VALUE ===",
+                        "name": "item_count",
+                        "source": {
+                            "type": "Aggregate",
+                            "relator_id": "parent-child-rel",
+                            "role_name": "child",
+                            "function": "Count"
+                        }
+                    }
+                ]
+            },
+            "use_seed": true,
+            "_notes": [
+                "Data schemas define how to extract structured data from instances",
+                "source.type options: Context, Property, Relation, Aggregate",
+                "context_field options: InstanceId, TenantId, UniversalId"
+            ]
+        }
+    ],
+    "artifact_definitions": [
+        {
+            "id": "summary-by-category",
+            "name": "Summary by Category",
+            "description": {
+                "en": "Aggregated data grouped by category dimension"
+            },
+            "source": {
+                "universal_id": "detail-entity-id"
+            },
+            "artifact_universal_id": "summary-entity-id",
+            "app_id": "your-app-id",
+            "dimensions": [
+                {
+                    "id": "category-dim",
+                    "code": "category",
+                    "source": {
+                        "type": "Property",
+                        "property_id": "detail-category-prop"
+                    },
+                    "artifact_property_id": "summary-category-prop",
+                    "use_seed": true
+                },
+                {
+                    "_comment": "=== DIMENSION VIA RELATOR PATH (navigate relationships) ===",
+                    "id": "parent-dim",
+                    "code": "parent_name",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "parent-child-rel",
+                                "role_name": "parent"
+                            }
+                        ],
+                        "property_id": "parent-name-prop"
+                    },
+                    "artifact_property_id": "summary-parent-prop",
+                    "use_seed": true
+                },
+                {
+                    "_comment": "=== DIMENSION WITH TRANSFORM (lookup/mapping) ===",
+                    "id": "classification-dim",
+                    "code": "classification",
+                    "source": {
+                        "type": "Property",
+                        "property_id": "detail-category-prop"
+                    },
+                    "transform": {
+                        "type": "Lookup",
+                        "mapping": {
+                            "Category A": "Group 1",
+                            "Category B": "Group 1",
+                            "Category C": "Group 2"
+                        },
+                        "default": "Other"
+                    },
+                    "artifact_property_id": "summary-classification-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "total-amount-measure",
+                    "code": "total_amount",
+                    "property_id": "detail-amount-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "summary-total-amount-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "item-count-measure",
+                    "code": "item_count",
+                    "function": "Count",
+                    "artifact_property_id": "summary-count-prop",
+                    "use_seed": true,
+                    "_comment": "Count doesn't need property_id - counts instances"
+                },
+                {
+                    "id": "avg-amount-measure",
+                    "code": "avg_amount",
+                    "property_id": "detail-amount-prop",
+                    "function": "Avg",
+                    "artifact_property_id": "summary-avg-amount-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [
+                {
+                    "id": "high-amount-threshold",
+                    "code": "high_amount",
+                    "measure_id": "total-amount-measure",
+                    "condition": {
+                        "operator": "GreaterThan",
+                        "value": 10000.0
+                    },
+                    "event_type_id": "high-amount-alert-event",
+                    "state_property_id": "summary-threshold-state-prop",
+                    "reset_on": "OnDimensionChange",
+                    "use_seed": true,
+                    "_comment": "operator options: GreaterThan, LessThan, Equals, GreaterThanOrEqual, LessThanOrEqual"
+                }
+            ],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true,
+            "_notes": [
+                "Artifacts are pre-computed aggregations (like materialized views)",
+                "source.universal_id: the entity type being aggregated",
+                "artifact_universal_id: the summary entity type for storing results",
+                "materialization.strategy: 'Eager' (immediate) or 'Lazy' (on-demand)"
+            ]
+        }
+    ],
+    "score_definitions": [
+        {
+            "_comment": "=== PERCENTILE RANK SCORE (compares entity value against artifact population) ===",
+            "id": "your-percentile-score-id",
+            "name": "Value Percentile",
+            "label": {
+                "en": "Value Percentile"
+            },
+            "description": {
+                "en": "Entity value percentile rank compared against the population from an artifact measure"
+            },
+            "source_universal_id": "entity-universal-id",
+            "artifact_binding": {
+                "artifact_definition_id": "summary-by-category",
+                "measure_id": "total-amount-measure",
+                "dimension_bindings": []
+            },
+            "entity_value_binding": {
+                "resolve_from": {
+                    "type": "DirectProperty",
+                    "property_id": "entity-amount-prop"
+                }
+            },
+            "method": {
+                "type": "PercentileRank"
+            },
+            "thresholds": [
+                {
+                    "id": "low-percentile-threshold",
+                    "label": {
+                        "en": "Low Percentile (P25)"
+                    },
+                    "condition": {
+                        "operator": "LessThan",
+                        "value": 25.0
+                    },
+                    "event_type_id": "entity-created-event",
+                    "use_seed": true
+                }
+            ],
+            "app_id": "your-app-id",
+            "use_seed": true,
+            "_notes": [
+                "source_universal_id: the entity type being scored",
+                "artifact_binding: links to an artifact definition and its measure for population data",
+                "entity_value_binding.resolve_from.type: 'DirectProperty' (own property) or 'RelatorPathProperty' (navigate relator chain)",
+                "method.type: 'PercentileRank' (rank against population) or 'Composite' (weighted combination of other scores)",
+                "thresholds[].condition.operator: 'LessThan', 'GreaterThan', 'LessThanOrEqual', 'GreaterThanOrEqual', 'Equals'",
+                "thresholds[].event_type_id: event definition to emit when threshold is crossed"
+            ]
+        },
+        {
+            "_comment": "=== RELATOR PATH SCORE (navigate relationships to find entity value) ===",
+            "id": "your-relator-path-score-id",
+            "name": "Related Value Percentile",
+            "label": {
+                "en": "Related Value Percentile"
+            },
+            "description": {
+                "en": "Score based on a property reached via relator navigation"
+            },
+            "source_universal_id": "entity-universal-id",
+            "artifact_binding": {
+                "artifact_definition_id": "summary-by-category",
+                "measure_id": "avg-amount-measure",
+                "dimension_bindings": []
+            },
+            "entity_value_binding": {
+                "resolve_from": {
+                    "type": "RelatorPathProperty",
+                    "path": [
+                        {
+                            "relator_universal_id": "entity-relationship-rel",
+                            "role_name": "target_role"
+                        }
+                    ],
+                    "property_id": "entity-amount-prop"
+                }
+            },
+            "method": {
+                "type": "PercentileRank"
+            },
+            "thresholds": [],
+            "app_id": "your-app-id",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITE SCORE (weighted combination of other scores) ===",
+            "id": "your-composite-score-id",
+            "name": "Composite Score",
+            "label": {
+                "en": "Composite Score"
+            },
+            "description": {
+                "en": "Weighted combination of multiple base scores"
+            },
+            "source_universal_id": "entity-universal-id",
+            "artifact_binding": {
+                "artifact_definition_id": "00000000-0000-0000-0000-000000000000",
+                "measure_id": "00000000-0000-0000-0000-000000000000",
+                "dimension_bindings": []
+            },
+            "entity_value_binding": {
+                "resolve_from": {
+                    "type": "DirectProperty",
+                    "property_id": "00000000-0000-0000-0000-000000000000"
+                }
+            },
+            "method": {
+                "type": "Composite",
+                "inputs": [
+                    {
+                        "score_definition_id": "your-percentile-score-id",
+                        "variable_name": "value_score",
+                        "weight": 0.6
+                    },
+                    {
+                        "score_definition_id": "your-relator-path-score-id",
+                        "variable_name": "related_score",
+                        "weight": 0.4
+                    }
+                ]
+            },
+            "app_id": "your-app-id",
+            "use_seed": true,
+            "_notes": [
+                "Composite scores combine multiple base scores with weights",
+                "artifact_binding and entity_value_binding use nil UUIDs (not used for composites)",
+                "method.inputs[].score_definition_id: references other score definitions",
+                "method.inputs[].variable_name: name for the score in the composite formula",
+                "method.inputs[].weight: weight factor (all weights should sum to 1.0)"
+            ]
+        }
+    ],
+    "topic_policies": [
+        {
+            "_comment": "=== LOCAL DISTRIBUTION POLICY ===",
+            "id": "local-property-events",
+            "pattern": "property:",
+            "scope": "local",
+            "label": {
+                "en": "Local Property Events"
+            },
+            "description": {
+                "en": "Property change events are processed locally only"
+            },
+            "use_seed": true,
+            "_notes": [
+                "pattern: Topic prefix to match (ending with : or . for prefix match)",
+                "scope: 'local' (in-process only), 'cluster' (distributed to cluster), 'hybrid' (local + cluster)"
+            ]
+        },
+        {
+            "_comment": "=== CLUSTER DISTRIBUTION POLICY ===",
+            "id": "cluster-events",
+            "pattern": "events:",
+            "scope": "cluster",
+            "label": {
+                "en": "Cluster Events"
+            },
+            "description": {
+                "en": "Application events are distributed across the cluster"
+            },
+            "authorization": {
+                "require_app_permission": true,
+                "allowed_actions": [
+                    "Subscribe",
+                    "Publish"
+                ]
+            },
+            "outbound": {
+                "channel_id": "cluster-events-channel"
+            },
+            "use_seed": true,
+            "_notes": [
+                "authorization.require_app_permission: if true, validates app has Subscribe/Publish permission",
+                "authorization.allowed_actions: list of allowed actions (Subscribe, Publish, Read, Write, Compute)",
+                "outbound.channel_id: identifier for the outbound channel (for distributed delivery)"
+            ]
+        },
+        {
+            "_comment": "=== HYBRID DISTRIBUTION POLICY ===",
+            "id": "hybrid-computation",
+            "pattern": "computation:",
+            "scope": "hybrid",
+            "label": {
+                "en": "Hybrid Computation Events"
+            },
+            "description": {
+                "en": "Computation events processed locally first, then distributed"
+            },
+            "authorization": {
+                "require_app_permission": true,
+                "allowed_actions": [
+                    "Compute"
+                ]
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ROLE EVENTS POLICY ===",
+            "id": "local-role-events",
+            "pattern": "role:",
+            "scope": "local",
+            "label": {
+                "en": "Local Role Events"
+            },
+            "description": {
+                "en": "Role change events processed locally for reactive computations"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR EVENTS POLICY ===",
+            "id": "local-relator-events",
+            "pattern": "relator:",
+            "scope": "local",
+            "label": {
+                "en": "Local Relator Events"
+            },
+            "description": {
+                "en": "Relator change events processed locally"
+            },
+            "use_seed": true
+        }
+    ],
+    "_schema_notes": {
+        "id_conventions": [
+            "Use lowercase with hyphens: 'my-entity-id'",
+            "Suffix relators with '-rel': 'parent-child-rel'",
+            "Suffix properties with '-prop': 'entity-name-prop'",
+            "Suffix computations with '-calc': 'total-calc'",
+            "Suffix events with '-event': 'entity-created-event'",
+            "Prefix role assignments with 'fra-': 'fra-user-app-admin'",
+            "Suffix score definitions with '-score': 'salary-percentile-score'"
+        ],
+        "use_seed": "When true, generates deterministic UUID from id string using namespace. Required for cross-file references.",
+        "label_format": "Always use multilingual format: { \"en\": \"English text\", \"es\": \"Spanish text\" }",
+        "standard_measurement_frames": [
+            "std-currency: monetary values",
+            "std-quantity: countable quantities",
+            "std-integer: whole numbers",
+            "std-ratio: percentages, rates",
+            "std-float: decimal numbers"
+        ],
+        "trigger_condition_types": [
+            "PropertyChange: triggered when property value changes { property_id }",
+            "TopicMessage: triggered by broker topic message { topic }",
+            "ArtifactMeasureChanged: triggered when artifact measure value changes { artifact_definition_id, measure_id }",
+            "InstanceLifecycle: triggered on instance lifecycle events { universal_id, lifecycle: Created|Modified|Deleted }",
+            "RelatorLifecycle: triggered on relator lifecycle events { relator_universal_id, lifecycle: Created|Modified|Deleted }",
+            "StateTransition: triggered when property transitions between values { property_id, from_value?, to_value? }"
+        ],
+        "timer_topic_format": [
+            "Timers publish to 'events.timer.{timer_uuid}' at runtime",
+            "In metadata, use 'events.timer.{timer-seed}' - the loader resolves the seed to UUID",
+            "event_emission.event_code references an EventDefinition seed for validation"
+        ],
+        "topic_policy_scopes": [
+            "local: Events processed only within the local broker instance (in-process)",
+            "cluster: Events distributed to all broker nodes in the cluster",
+            "hybrid: Events processed locally first, then distributed to cluster"
+        ],
+        "topic_policy_patterns": [
+            "Pattern must end with ':' or '.' for prefix matching",
+            "Examples: 'property:', 'events:', 'computation:', 'role:', 'relator:'",
+            "More specific patterns take precedence over general patterns"
+        ],
+        "authorization_actions": [
+            "Subscribe: Permission to subscribe to topic events",
+            "Publish: Permission to publish events to topic",
+            "Read: Permission to read data",
+            "Write: Permission to write data",
+            "Compute: Permission to trigger computations"
+        ],
+        "instance_label_framework": {
+            "description": "Instance labels are generated from property values at read-time, not stored",
+            "universal_label_schema": [
+                "separator: string to join label parts (default: ' - ')",
+                "max_length: maximum label length before truncation (default: 40)",
+                "fallback_language: language to use if requested not found (default: 'en')"
+            ],
+            "property_label_options": [
+                "participates: true to include property value in label",
+                "sequence: order position (1, 2, 3... - lower first)",
+                "prefix: optional string prepended to value",
+                "suffix: optional string appended to value"
+            ],
+            "example": "Universal with label_schema + Properties with label_options.participates=true + sequence ordering"
+        },
+        "property_value_types": {
+            "Categorical": "Simple string value: 'ACTIVE', 'INV-001' - for enum codes, identifiers",
+            "Textual": "Multilingual object: { 'en': 'Text' } - for translated content",
+            "Measurement": "Value with unit: { 'value': 100, 'unit': 'usd' } - for numeric values",
+            "Boolean": "True/false value: true or false",
+            "Date": "ISO 8601 date string: '2024-03-15' - for calendar dates without time",
+            "DateTime": "RFC 3339 UTC string: '2024-03-15T10:30:00Z' - for date+time values",
+            "_warning": "Do NOT use Textual format { 'en': 'value' } for Categorical properties - causes loading errors"
+        },
+        "data_file_separation": {
+            "metadata_app.json": "Schema definitions: universals, property_definitions, computations, events, users, role_assignments, etc.",
+            "metadata_app_data.json": "Instance data: instances, relator_instances",
+            "_note": "Never put instances in metadata_app.json - schema and data must be separate"
+        },
+        "user_roles": [
+            "AppAdmin: Full access to application entities and settings",
+            "AppDeveloper: Can define and modify application schema (universals, computations, etc.)",
+            "AppUser: Standard application user with read/write access to instances",
+            "TenantAdmin: Can manage tenant-level settings and users",
+            "OrgAdmin: Can manage organization-level settings and tenants"
+        ],
+        "role_assignment_scopes": [
+            "App: { type: 'App', tenant_id: '...', app_id: '...' } - access to specific app",
+            "Tenant: { type: 'Tenant', tenant_id: '...' } - access to all apps in tenant",
+            "Organization: { type: 'Organization', org_id: '...' } - access to all tenants in org",
+            "CRITICAL: Organization scope uses 'org_id', NOT 'organization_id'"
+        ],
+        "score_definition_methods": [
+            "PercentileRank: ranks entity value against artifact population (0-100 percentile)",
+            "Composite: weighted combination of other score definitions (weights should sum to 1.0)"
+        ],
+        "score_entity_value_binding_types": [
+            "DirectProperty: { type: 'DirectProperty', property_id: '...' } - reads property directly from entity",
+            "RelatorPathProperty: { type: 'RelatorPathProperty', path: [...], property_id: '...' } - navigates relators to reach property"
+        ],
+        "correlation_rule_expression_types": [
+            "All: all sub-expressions must be satisfied (AND logic)",
+            "Any: at least one sub-expression must be satisfied (OR logic)",
+            "Event: leaf node referencing a specific event_type_id with an alias"
+        ],
+        "top_level_key_order": [
+            "organizations, tenants, users, foundation_role_assignments, apps, measurement_frames,",
+            "universals, property_definitions, event_definitions, correlation_rules, timers,",
+            "computations, data_schemas, artifact_definitions, score_definitions, topic_policies"
+        ]
+    }
+}

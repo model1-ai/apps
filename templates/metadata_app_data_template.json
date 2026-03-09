@@ -1,0 +1,154 @@
+{
+  "_comment": "=== METADATA APP DATA TEMPLATE ===",
+  "_description": "Template for creating app instance data files. This file contains instances and relator instances.",
+  "_usage": "Copy this file to your example directory as 'metadata_app_data.json' and customize.",
+  "_separation": "Schema (universals, property_definitions, computations) goes in metadata_app.json. Instance data goes here.",
+
+  "instances": [
+    {
+      "_comment": "=== BASIC ENTITY INSTANCE ===",
+      "id": "entity-instance-1",
+      "universal_id": "entity-universal-id",
+      "tenant_id": "your-tenant-id",
+      "use_seed": true,
+      "properties": {
+        "entity-name-prop": "Sample Entity Name",
+        "entity-status-prop": "active",
+        "entity-amount-prop": { "value": 1500.00, "unit": "usd" },
+        "entity-date-prop": "2024-01-15"
+      },
+      "_notes": [
+        "id: unique seed string, used to generate deterministic UUID",
+        "universal_id: references the universal type this instance belongs to",
+        "tenant_id: the tenant this instance belongs to",
+        "use_seed: true to generate UUID from id string",
+        "properties: map of property_id to value"
+      ]
+    },
+    {
+      "_comment": "=== ENUMERATION INSTANCE (for Categorical reference values) ===",
+      "id": "enum-value-active",
+      "universal_id": "enum-universal-id",
+      "tenant_id": "your-tenant-id",
+      "use_seed": true,
+      "properties": {
+        "enum-name-prop": "ACTIVE"
+      },
+      "_notes": [
+        "Enumeration instances define allowed values for Categorical properties",
+        "The property value is a SIMPLE STRING, not a multilingual object",
+        "CORRECT: 'enum-name-prop': 'ACTIVE'",
+        "WRONG: 'enum-name-prop': { 'en': 'ACTIVE' } -- this causes loading errors"
+      ]
+    },
+    {
+      "id": "enum-value-pending",
+      "universal_id": "enum-universal-id",
+      "tenant_id": "your-tenant-id",
+      "use_seed": true,
+      "properties": {
+        "enum-name-prop": "PENDING"
+      }
+    },
+    {
+      "id": "enum-value-closed",
+      "universal_id": "enum-universal-id",
+      "tenant_id": "your-tenant-id",
+      "use_seed": true,
+      "properties": {
+        "enum-name-prop": "CLOSED"
+      }
+    }
+  ],
+
+  "relator_instances": [
+    {
+      "_comment": "=== RELATOR INSTANCE (relationship between entities) ===",
+      "id": "entity-relationship-instance-1",
+      "relator_id": "entity-relationship-rel",
+      "tenant_id": "your-tenant-id",
+      "use_seed": true,
+      "participants": {
+        "source_role": "entity-instance-1",
+        "target_role": "related-entity-instance-1"
+      },
+      "_notes": [
+        "id: unique seed string for this relationship instance",
+        "relator_id: references the relator universal type",
+        "participants: map of role_name to instance_id",
+        "Role names must match those defined in the relator universal's roles array"
+      ]
+    }
+  ],
+
+  "_property_value_formats": {
+    "_description": "Property value format depends on property_value_type in the property definition",
+    "Categorical": {
+      "description": "Direct string value for text/enum properties",
+      "examples": [
+        "\"entity-name-prop\": \"ACME Corporation\"",
+        "\"entity-status-prop\": \"active\"",
+        "\"enum-code-prop\": \"HIGH\""
+      ],
+      "wrong": "\"prop\": { \"en\": \"value\" }  -- Use Textual type if you need multilingual"
+    },
+    "Textual": {
+      "description": "Multilingual text with language keys",
+      "examples": [
+        "\"description-prop\": { \"en\": \"English text\", \"es\": \"Spanish text\" }",
+        "\"title-prop\": { \"en\": \"Product Title\" }"
+      ],
+      "notes": "Use for user-facing content that needs translation"
+    },
+    "Measurement": {
+      "description": "Numeric value with unit from measurement frame",
+      "examples": [
+        "\"amount-prop\": { \"value\": 1500.00, \"unit\": \"usd\" }",
+        "\"quantity-prop\": { \"value\": 100, \"unit\": \"units\" }",
+        "\"percentage-prop\": { \"value\": 25.5, \"unit\": \"percent\" }"
+      ],
+      "notes": "Unit must be valid for the property's measurement_frame_id"
+    },
+    "Boolean": {
+      "description": "True/false value",
+      "examples": [
+        "\"is-active-prop\": true",
+        "\"has-discount-prop\": false"
+      ]
+    },
+    "InstanceRefs": {
+      "description": "Reference to other instance(s)",
+      "examples": [
+        "\"related-instance-prop\": \"instance-seed-id\"",
+        "\"multiple-refs-prop\": [\"instance-1\", \"instance-2\"]"
+      ]
+    }
+  },
+
+  "_common_mistakes": [
+    {
+      "mistake": "Using multilingual format for Categorical properties",
+      "wrong": "\"status-prop\": { \"en\": \"ACTIVE\" }",
+      "correct": "\"status-prop\": \"ACTIVE\"",
+      "error": "Unsupported scalar value type: Object"
+    },
+    {
+      "mistake": "Missing unit for Measurement properties",
+      "wrong": "\"amount-prop\": 1500.00",
+      "correct": "\"amount-prop\": { \"value\": 1500.00, \"unit\": \"usd\" }",
+      "error": "Invalid measurement value format"
+    },
+    {
+      "mistake": "Using plain text for Textual properties",
+      "wrong": "\"description-prop\": \"Some text\"",
+      "correct": "\"description-prop\": { \"en\": \"Some text\" }",
+      "notes": "Textual properties require language key object"
+    },
+    {
+      "mistake": "Putting instance data in metadata_app.json",
+      "wrong": "Adding 'instances' array to schema file",
+      "correct": "Create separate metadata_app_data.json for instances",
+      "notes": "Schema and data must be in separate files"
+    }
+  ]
+}
