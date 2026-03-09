@@ -1,0 +1,5037 @@
+{
+    "_comment": "=== APP HR INTELLIGENCE REACTIVE EXAMPLE ===",
+    "_description": "Comprehensive HR system demonstrating entity modeling, relators, computations, events, and intelligence artifacts. Tracks 520 employees across 20 departments, 12 international locations, with skills, training, salary, performance, vacation, sentiment, and team data.",
+    "organizations": [
+        {
+            "id": "model1-testing-org",
+            "label": {
+                "en": "Model1 Testing Org"
+            },
+            "use_seed": true
+        }
+    ],
+    "tenants": [
+        {
+            "id": "model1-testing-tenant",
+            "organization_id": "model1-testing-org",
+            "label": {
+                "en": "Model1 Testing Tenant"
+            },
+            "use_seed": true
+        }
+    ],
+    "universals": [
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Employment Status ===",
+            "id": "hr-employment-status",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Employment Status"
+            },
+            "description": {
+                "en": "Employee employment status enumeration"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Contract Type ===",
+            "id": "hr-contract-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Contract Type"
+            },
+            "description": {
+                "en": "Employment contract type enumeration"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Salary Scope ===",
+            "id": "hr-salary-scope",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Salary Scope"
+            },
+            "description": {
+                "en": "Salary payment frequency scope (yearly, monthly)"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Career Event Type ===",
+            "id": "hr-event-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Career Event Type"
+            },
+            "description": {
+                "en": "Career and performance event type enumeration"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Performance Rating ===",
+            "id": "hr-perf-rating",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Performance Rating"
+            },
+            "description": {
+                "en": "Performance review rating enumeration"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Skill Proficiency ===",
+            "id": "hr-skill-proficiency",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Skill Proficiency"
+            },
+            "description": {
+                "en": "Skill proficiency level enumeration"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Training Status ===",
+            "id": "hr-training-status",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Training Status"
+            },
+            "description": {
+                "en": "Training program status enumeration"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Sentiment Rating ===",
+            "id": "hr-sentiment-rating",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Sentiment Rating"
+            },
+            "description": {
+                "en": "Employee sentiment survey rating enumeration"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Employee ===",
+            "id": "hr-employee",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Employee"
+            },
+            "description": {
+                "en": "Core employee record"
+            },
+            "label_schema": {
+                "separator": " ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Department ===",
+            "id": "hr-department",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Department"
+            },
+            "description": {
+                "en": "Organizational unit"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Career Level ===",
+            "id": "hr-level",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Career Level"
+            },
+            "description": {
+                "en": "Career grade or band"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Office Location ===",
+            "id": "hr-location",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Office Location"
+            },
+            "description": {
+                "en": "Office site or location"
+            },
+            "label_schema": {
+                "separator": ", ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Employment Contract ===",
+            "id": "hr-contract",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Employment Contract"
+            },
+            "description": {
+                "en": "Employment contract details"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Skill ===",
+            "id": "hr-skill",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Skill"
+            },
+            "description": {
+                "en": "Skill or competency type"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Training Program ===",
+            "id": "hr-training",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Training Program"
+            },
+            "description": {
+                "en": "Training or certification program"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Salary Record ===",
+            "id": "hr-salary-record",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Salary Record"
+            },
+            "description": {
+                "en": "Salary change history entry"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Performance Event ===",
+            "id": "hr-perf-event",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Performance Event"
+            },
+            "description": {
+                "en": "Career or performance event record"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Vacation Record ===",
+            "id": "hr-vacation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Vacation Record"
+            },
+            "description": {
+                "en": "Annual vacation allocation and usage"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Sentiment Survey ===",
+            "id": "hr-sentiment",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Sentiment Survey"
+            },
+            "description": {
+                "en": "Employee eNPS survey response"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Team ===",
+            "id": "hr-team",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Team"
+            },
+            "description": {
+                "en": "Team grouping within department"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: HR Analytics Summary (artifact target) ===",
+            "id": "hr-analytics-summary",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "HR Analytics Summary"
+            },
+            "description": {
+                "en": "Materialized aggregate for HR analytics artifact definitions"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Employee Department ===",
+            "id": "hr-emp-dept-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Employee Department"
+            },
+            "description": {
+                "en": "Employee belongs to department"
+            },
+            "roles": [
+                {
+                    "name": "employee",
+                    "universal_id": "hr-employee"
+                },
+                {
+                    "name": "department",
+                    "universal_id": "hr-department"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "aggregation-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Employee Level ===",
+            "id": "hr-emp-level-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Employee Level"
+            },
+            "description": {
+                "en": "Employee has career level"
+            },
+            "roles": [
+                {
+                    "name": "employee",
+                    "universal_id": "hr-employee"
+                },
+                {
+                    "name": "level",
+                    "universal_id": "hr-level"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Employee Location ===",
+            "id": "hr-emp-location-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Employee Location"
+            },
+            "description": {
+                "en": "Employee works at location"
+            },
+            "roles": [
+                {
+                    "name": "employee",
+                    "universal_id": "hr-employee"
+                },
+                {
+                    "name": "location",
+                    "universal_id": "hr-location"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Employee Contract ===",
+            "id": "hr-emp-contract-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Employee Contract"
+            },
+            "description": {
+                "en": "Employee has employment contract"
+            },
+            "roles": [
+                {
+                    "name": "employee",
+                    "universal_id": "hr-employee"
+                },
+                {
+                    "name": "contract",
+                    "universal_id": "hr-contract"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Employee Skill ===",
+            "id": "hr-emp-skill-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Employee Skill"
+            },
+            "description": {
+                "en": "Employee possesses skill"
+            },
+            "roles": [
+                {
+                    "name": "employee",
+                    "universal_id": "hr-employee"
+                },
+                {
+                    "name": "skill",
+                    "universal_id": "hr-skill"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Employee Training ===",
+            "id": "hr-emp-training-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Employee Training"
+            },
+            "description": {
+                "en": "Employee enrolled in training program"
+            },
+            "roles": [
+                {
+                    "name": "employee",
+                    "universal_id": "hr-employee"
+                },
+                {
+                    "name": "training",
+                    "universal_id": "hr-training"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "participation-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Training Skill ===",
+            "id": "hr-training-skill-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Training Skill"
+            },
+            "description": {
+                "en": "Training develops target skill (skill-gap affinity)"
+            },
+            "roles": [
+                {
+                    "name": "training",
+                    "universal_id": "hr-training"
+                },
+                {
+                    "name": "skill",
+                    "universal_id": "hr-skill"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Employee Salary ===",
+            "id": "hr-emp-salary-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Employee Salary"
+            },
+            "description": {
+                "en": "Employee salary history entry"
+            },
+            "roles": [
+                {
+                    "name": "employee",
+                    "universal_id": "hr-employee"
+                },
+                {
+                    "name": "salary_record",
+                    "universal_id": "hr-salary-record"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Employee Performance ===",
+            "id": "hr-emp-perf-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Employee Performance"
+            },
+            "description": {
+                "en": "Employee performance event"
+            },
+            "roles": [
+                {
+                    "name": "employee",
+                    "universal_id": "hr-employee"
+                },
+                {
+                    "name": "perf_event",
+                    "universal_id": "hr-perf-event"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Employee Vacation ===",
+            "id": "hr-emp-vacation-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Employee Vacation"
+            },
+            "description": {
+                "en": "Employee vacation record"
+            },
+            "roles": [
+                {
+                    "name": "employee",
+                    "universal_id": "hr-employee"
+                },
+                {
+                    "name": "vacation",
+                    "universal_id": "hr-vacation"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Employee Sentiment ===",
+            "id": "hr-emp-sentiment-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Employee Sentiment"
+            },
+            "description": {
+                "en": "Employee sentiment survey response"
+            },
+            "roles": [
+                {
+                    "name": "employee",
+                    "universal_id": "hr-employee"
+                },
+                {
+                    "name": "sentiment",
+                    "universal_id": "hr-sentiment"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Employee Team ===",
+            "id": "hr-emp-team-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Employee Team"
+            },
+            "description": {
+                "en": "Employee is team member"
+            },
+            "roles": [
+                {
+                    "name": "employee",
+                    "universal_id": "hr-employee"
+                },
+                {
+                    "name": "team",
+                    "universal_id": "hr-team"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "participation-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Team Department ===",
+            "id": "hr-team-dept-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Team Department"
+            },
+            "description": {
+                "en": "Team belongs to department"
+            },
+            "roles": [
+                {
+                    "name": "team",
+                    "universal_id": "hr-team"
+                },
+                {
+                    "name": "department",
+                    "universal_id": "hr-department"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "aggregation-relator"
+                }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Requisition Priority ===",
+            "id": "hr-req-priority-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Requisition Priority"
+            },
+            "description": {
+                "en": "Priority level for hiring requisitions"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Requisition Status ===",
+            "id": "hr-req-status-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Requisition Status"
+            },
+            "description": {
+                "en": "Lifecycle status of a hiring requisition"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Hiring Requisition ===",
+            "id": "hr-requisition",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Hiring Requisition"
+            },
+            "description": {
+                "en": "A request to hire for a position, subject to normative process approval"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 60,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FUNCTIONAL ROLE: Department Manager ===",
+            "id": "hr-role-dept-manager",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": {
+                "en": "Department Manager"
+            },
+            "description": {
+                "en": "Manages a department; can request hiring requisitions and approve budget allocations"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== FUNCTIONAL ROLE: HR Administrator ===",
+            "id": "hr-role-hr-admin",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": {
+                "en": "HR Administrator"
+            },
+            "description": {
+                "en": "Validates hiring requisitions for compliance, headcount, and policy alignment"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== FUNCTIONAL ROLE: Recruiter ===",
+            "id": "hr-role-recruiter",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": {
+                "en": "Recruiter"
+            },
+            "description": {
+                "en": "Executes recruitment process: sources candidates, conducts screening, fills approved positions"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== HIRING REQUISITION APPROVAL PROCESS (specializes base-process) ===",
+            "id": "hr-hiring-requisition-approval",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Hiring Requisition Approval" },
+            "description": { "en": "3-stage hiring requisition approval process: HR Validation (HR Admin), Management Approval (Dept Manager), Recruitment (Recruiter)" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-process" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "hr-validation-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "hr-mgmt-approval-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "hr-recruitment-stage" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "hr-requisition" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== STAGE UNIVERSALS (specialize base-stage) ===",
+            "id": "hr-validation-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "HR Validation" },
+            "description": { "en": "HR Administrator validates requisition for compliance, headcount, and policy alignment" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "hr-validation-obligation" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-mgmt-approval-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Management Approval" },
+            "description": { "en": "Department Manager reviews and approves budget allocation for hiring" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "hr-mgmt-approval-obligation" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-recruitment-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Recruitment" },
+            "description": { "en": "Recruiter sources candidates, conducts screening, and fills approved positions" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "hr-recruitment-obligation" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== OBLIGATION UNIVERSALS (specialize base-obligation) ===",
+            "id": "hr-validation-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "HR Validation Obligation" },
+            "description": { "en": "Obligation for the HR Administrator to validate requisition compliance" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "hr-role-hr-admin" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-mgmt-approval-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Management Approval Obligation" },
+            "description": { "en": "Obligation for the Department Manager to approve budget allocation" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "hr-role-dept-manager" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-recruitment-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Recruitment Obligation" },
+            "description": { "en": "Obligation for the Recruiter to source and fill approved positions" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "hr-role-recruiter" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== COMPOSITION RELATORS (process -> stages) ===",
+            "id": "hr-approval-has-validation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Approval Has HR Validation" },
+            "roles": [
+                { "name": "process", "universal_id": "hr-hiring-requisition-approval" },
+                { "name": "stage", "universal_id": "hr-validation-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-approval-has-mgmt-approval",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Approval Has Management Approval" },
+            "roles": [
+                { "name": "process", "universal_id": "hr-hiring-requisition-approval" },
+                { "name": "stage", "universal_id": "hr-mgmt-approval-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-approval-has-recruitment",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Approval Has Recruitment" },
+            "roles": [
+                { "name": "process", "universal_id": "hr-hiring-requisition-approval" },
+                { "name": "stage", "universal_id": "hr-recruitment-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== COMPOSITION RELATORS (stages -> obligations) ===",
+            "id": "hr-validation-has-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "HR Validation Has Obligation" },
+            "roles": [
+                { "name": "stage", "universal_id": "hr-validation-stage" },
+                { "name": "obligation", "universal_id": "hr-validation-obligation" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-mgmt-approval-has-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Management Approval Has Obligation" },
+            "roles": [
+                { "name": "stage", "universal_id": "hr-mgmt-approval-stage" },
+                { "name": "obligation", "universal_id": "hr-mgmt-approval-obligation" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-recruitment-has-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Recruitment Has Obligation" },
+            "roles": [
+                { "name": "stage", "universal_id": "hr-recruitment-stage" },
+                { "name": "obligation", "universal_id": "hr-recruitment-obligation" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== RELATOR: Requisition Department ===",
+            "id": "hr-req-dept-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Requisition Department"
+            },
+            "description": {
+                "en": "Hiring requisition targets a specific department"
+            },
+            "roles": [
+                {
+                    "name": "requisition",
+                    "universal_id": "hr-requisition"
+                },
+                {
+                    "name": "department",
+                    "universal_id": "hr-department"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Requisition Level ===",
+            "id": "hr-req-level-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Requisition Level"
+            },
+            "description": {
+                "en": "Hiring requisition targets a specific career level"
+            },
+            "roles": [
+                {
+                    "name": "requisition",
+                    "universal_id": "hr-requisition"
+                },
+                {
+                    "name": "level",
+                    "universal_id": "hr-level"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Requisition Location ===",
+            "id": "hr-req-location-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Requisition Location"
+            },
+            "description": {
+                "en": "Hiring requisition targets a specific office location"
+            },
+            "roles": [
+                {
+                    "name": "requisition",
+                    "universal_id": "hr-requisition"
+                },
+                {
+                    "name": "location",
+                    "universal_id": "hr-location"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Requisition Requestor ===",
+            "id": "hr-req-requestor-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Requisition Requestor"
+            },
+            "description": {
+                "en": "Employee who submitted the hiring requisition"
+            },
+            "roles": [
+                {
+                    "name": "requisition",
+                    "universal_id": "hr-requisition"
+                },
+                {
+                    "name": "requestor",
+                    "universal_id": "hr-employee"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "causation-relator"
+                }
+            ],
+            "use_seed": true
+        }
+    ],
+    "property_definitions": [
+        {
+            "id": "hr-employment-status-name-prop",
+            "universal_id": "hr-employment-status",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-contract-type-name-prop",
+            "universal_id": "hr-contract-type",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-salary-scope-name-prop",
+            "universal_id": "hr-salary-scope",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-event-type-name-prop",
+            "universal_id": "hr-event-type",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-perf-rating-name-prop",
+            "universal_id": "hr-perf-rating",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-skill-proficiency-name-prop",
+            "universal_id": "hr-skill-proficiency",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-training-status-name-prop",
+            "universal_id": "hr-training-status",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-sentiment-rating-name-prop",
+            "universal_id": "hr-sentiment-rating",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-emp-employee-id",
+            "universal_id": "hr-employee",
+            "label": {
+                "en": "Employee ID"
+            },
+            "property_schema": {
+                "predicates": [
+                    "identifier",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "#"
+            }
+        },
+        {
+            "id": "hr-emp-first-name",
+            "universal_id": "hr-employee",
+            "label": {
+                "en": "First Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "first"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-emp-last-name",
+            "universal_id": "hr-employee",
+            "label": {
+                "en": "Last Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "last"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            }
+        },
+        {
+            "id": "hr-emp-email",
+            "universal_id": "hr-employee",
+            "label": {
+                "en": "Email"
+            },
+            "property_schema": {
+                "predicates": [
+                    "email",
+                    "contact"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-emp-hire-date",
+            "universal_id": "hr-employee",
+            "label": {
+                "en": "Hire Date"
+            },
+            "property_schema": {
+                "predicates": [
+                    "date",
+                    "hire"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Date"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "description": {
+                "en": "Date of hire (ISO 8601)"
+            }
+        },
+        {
+            "id": "hr-emp-status-prop",
+            "universal_id": "hr-employee",
+            "label": {
+                "en": "Employment Status"
+            },
+            "property_schema": {
+                "predicates": [
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "hr-employment-status",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "description": {
+                "en": "Current employment status"
+            }
+        },
+        {
+            "id": "hr-dept-code",
+            "universal_id": "hr-department",
+            "label": {
+                "en": "Department Code"
+            },
+            "property_schema": {
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-dept-name",
+            "universal_id": "hr-department",
+            "label": {
+                "en": "Department Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            }
+        },
+        {
+            "id": "hr-dept-cost-center",
+            "universal_id": "hr-department",
+            "label": {
+                "en": "Cost Center"
+            },
+            "property_schema": {
+                "predicates": [
+                    "cost_center",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-level-code",
+            "universal_id": "hr-level",
+            "label": {
+                "en": "Level Code"
+            },
+            "property_schema": {
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            }
+        },
+        {
+            "id": "hr-level-name",
+            "universal_id": "hr-level",
+            "label": {
+                "en": "Level Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            }
+        },
+        {
+            "id": "hr-level-rank",
+            "universal_id": "hr-level",
+            "label": {
+                "en": "Rank"
+            },
+            "property_schema": {
+                "predicates": [
+                    "rank",
+                    "order"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "description": {
+                "en": "Numeric rank 1-8 for ordering"
+            }
+        },
+        {
+            "id": "hr-loc-code",
+            "universal_id": "hr-location",
+            "label": {
+                "en": "Location Code"
+            },
+            "property_schema": {
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-loc-name",
+            "universal_id": "hr-location",
+            "label": {
+                "en": "Location Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            }
+        },
+        {
+            "id": "hr-loc-city",
+            "universal_id": "hr-location",
+            "label": {
+                "en": "City"
+            },
+            "property_schema": {
+                "predicates": [
+                    "city",
+                    "address"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-loc-country",
+            "universal_id": "hr-location",
+            "label": {
+                "en": "Country"
+            },
+            "property_schema": {
+                "predicates": [
+                    "country",
+                    "address"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            }
+        },
+        {
+            "id": "hr-loc-region",
+            "universal_id": "hr-location",
+            "label": {
+                "en": "Region"
+            },
+            "property_schema": {
+                "predicates": [
+                    "region",
+                    "area"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-contract-start-date",
+            "universal_id": "hr-contract",
+            "label": {
+                "en": "Start Date"
+            },
+            "property_schema": {
+                "predicates": [
+                    "date",
+                    "start"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Date"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "description": {
+                "en": "Contract start date"
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            }
+        },
+        {
+            "id": "hr-contract-end-date",
+            "universal_id": "hr-contract",
+            "label": {
+                "en": "End Date"
+            },
+            "property_schema": {
+                "predicates": [
+                    "date",
+                    "end"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Date"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "description": {
+                "en": "Contract end date (null for permanent)"
+            }
+        },
+        {
+            "id": "hr-contract-type-prop",
+            "universal_id": "hr-contract",
+            "label": {
+                "en": "Contract Type"
+            },
+            "property_schema": {
+                "predicates": [
+                    "type",
+                    "contract"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "hr-contract-type",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-contract-annual-salary",
+            "universal_id": "hr-contract",
+            "label": {
+                "en": "Annual Salary"
+            },
+            "property_schema": {
+                "predicates": [
+                    "salary",
+                    "annual"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-contract-currency",
+            "universal_id": "hr-contract",
+            "label": {
+                "en": "Currency"
+            },
+            "property_schema": {
+                "predicates": [
+                    "currency"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false,
+                        "allowed_values": [
+                            "USD",
+                            "EUR",
+                            "GBP",
+                            "JPY",
+                            "AUD",
+                            "CAD",
+                            "SGD",
+                            "BRL",
+                            "INR",
+                            "AED"
+                        ]
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-skill-code",
+            "universal_id": "hr-skill",
+            "label": {
+                "en": "Skill Code"
+            },
+            "property_schema": {
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-skill-name",
+            "universal_id": "hr-skill",
+            "label": {
+                "en": "Skill Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            }
+        },
+        {
+            "id": "hr-skill-category",
+            "universal_id": "hr-skill",
+            "label": {
+                "en": "Category"
+            },
+            "property_schema": {
+                "predicates": [
+                    "category",
+                    "group"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            }
+        },
+        {
+            "id": "hr-training-code",
+            "universal_id": "hr-training",
+            "label": {
+                "en": "Training Code"
+            },
+            "property_schema": {
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-training-name",
+            "universal_id": "hr-training",
+            "label": {
+                "en": "Training Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            }
+        },
+        {
+            "id": "hr-training-duration",
+            "universal_id": "hr-training",
+            "label": {
+                "en": "Duration (Days)"
+            },
+            "property_schema": {
+                "predicates": [
+                    "duration",
+                    "days"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-training-cost",
+            "universal_id": "hr-training",
+            "label": {
+                "en": "Cost"
+            },
+            "property_schema": {
+                "predicates": [
+                    "cost",
+                    "price"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-training-status-prop",
+            "universal_id": "hr-training",
+            "label": {
+                "en": "Status"
+            },
+            "property_schema": {
+                "predicates": [
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "hr-training-status",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-salary-effective-date",
+            "universal_id": "hr-salary-record",
+            "label": {
+                "en": "Effective Date"
+            },
+            "property_schema": {
+                "predicates": [
+                    "date",
+                    "effective"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Date"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            }
+        },
+        {
+            "id": "hr-salary-base",
+            "universal_id": "hr-salary-record",
+            "label": {
+                "en": "Base Salary"
+            },
+            "property_schema": {
+                "predicates": [
+                    "salary",
+                    "base"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-salary-bonus",
+            "universal_id": "hr-salary-record",
+            "label": {
+                "en": "Bonus"
+            },
+            "property_schema": {
+                "predicates": [
+                    "bonus",
+                    "incentive"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-salary-currency",
+            "universal_id": "hr-salary-record",
+            "label": {
+                "en": "Currency"
+            },
+            "property_schema": {
+                "predicates": [
+                    "currency"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false,
+                        "allowed_values": [
+                            "USD",
+                            "EUR",
+                            "GBP",
+                            "JPY",
+                            "AUD",
+                            "CAD",
+                            "SGD",
+                            "BRL",
+                            "INR",
+                            "AED"
+                        ]
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-salary-total-comp",
+            "universal_id": "hr-salary-record",
+            "label": {
+                "en": "Total Compensation"
+            },
+            "property_schema": {
+                "predicates": [
+                    "total",
+                    "compensation"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "description": {
+                "en": "Computed: base_salary + bonus"
+            }
+        },
+        {
+            "id": "hr-perf-event-date",
+            "universal_id": "hr-perf-event",
+            "label": {
+                "en": "Event Date"
+            },
+            "property_schema": {
+                "predicates": [
+                    "date",
+                    "event"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Date"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            }
+        },
+        {
+            "id": "hr-perf-event-type-prop",
+            "universal_id": "hr-perf-event",
+            "label": {
+                "en": "Event Type"
+            },
+            "property_schema": {
+                "predicates": [
+                    "type",
+                    "event"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "hr-event-type",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            }
+        },
+        {
+            "id": "hr-perf-rating-prop",
+            "universal_id": "hr-perf-event",
+            "label": {
+                "en": "Rating"
+            },
+            "property_schema": {
+                "predicates": [
+                    "rating",
+                    "performance"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "hr-perf-rating",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-perf-notes",
+            "universal_id": "hr-perf-event",
+            "label": {
+                "en": "Notes"
+            },
+            "property_schema": {
+                "predicates": [
+                    "notes",
+                    "comment"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-vacation-year",
+            "universal_id": "hr-vacation",
+            "label": {
+                "en": "Year"
+            },
+            "property_schema": {
+                "predicates": [
+                    "year"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": true
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            }
+        },
+        {
+            "id": "hr-vacation-days-allocated",
+            "universal_id": "hr-vacation",
+            "label": {
+                "en": "Days Allocated"
+            },
+            "property_schema": {
+                "predicates": [
+                    "days",
+                    "allocated"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-vacation-days-used",
+            "universal_id": "hr-vacation",
+            "label": {
+                "en": "Days Used"
+            },
+            "property_schema": {
+                "predicates": [
+                    "days",
+                    "used"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-vacation-remaining",
+            "universal_id": "hr-vacation",
+            "label": {
+                "en": "Days Remaining"
+            },
+            "property_schema": {
+                "predicates": [
+                    "days",
+                    "remaining"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "description": {
+                "en": "Computed: days_allocated - days_used"
+            }
+        },
+        {
+            "id": "hr-sentiment-survey-date",
+            "universal_id": "hr-sentiment",
+            "label": {
+                "en": "Survey Date"
+            },
+            "property_schema": {
+                "predicates": [
+                    "date",
+                    "survey"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Date"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            }
+        },
+        {
+            "id": "hr-sentiment-score",
+            "universal_id": "hr-sentiment",
+            "label": {
+                "en": "Score"
+            },
+            "property_schema": {
+                "predicates": [
+                    "score",
+                    "rating"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "description": {
+                "en": "eNPS score 0-10"
+            }
+        },
+        {
+            "id": "hr-sentiment-category",
+            "universal_id": "hr-sentiment",
+            "label": {
+                "en": "Category"
+            },
+            "property_schema": {
+                "predicates": [
+                    "category",
+                    "classification"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "description": {
+                "en": "Computed: Promoter (9-10), Passive (7-8), Detractor (0-6)"
+            }
+        },
+        {
+            "id": "hr-team-code",
+            "universal_id": "hr-team",
+            "label": {
+                "en": "Team Code"
+            },
+            "property_schema": {
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-team-name",
+            "universal_id": "hr-team",
+            "label": {
+                "en": "Team Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            }
+        },
+        {
+            "id": "hr-summary-department",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Department"
+            },
+            "property_schema": {
+                "predicates": [
+                    "department",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            }
+        },
+        {
+            "id": "hr-summary-location",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Location"
+            },
+            "property_schema": {
+                "predicates": [
+                    "location",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true,
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            }
+        },
+        {
+            "id": "hr-summary-level",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Level"
+            },
+            "property_schema": {
+                "predicates": [
+                    "level",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-summary-skill",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Skill"
+            },
+            "property_schema": {
+                "predicates": [
+                    "skill",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-summary-headcount",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Headcount"
+            },
+            "property_schema": {
+                "predicates": [
+                    "headcount",
+                    "count",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-summary-total-salary",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Total Salary"
+            },
+            "property_schema": {
+                "predicates": [
+                    "salary",
+                    "total",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-summary-avg-salary",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Average Salary"
+            },
+            "property_schema": {
+                "predicates": [
+                    "salary",
+                    "average",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-summary-count",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Count"
+            },
+            "property_schema": {
+                "predicates": [
+                    "count",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-summary-avg-score",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Average Score"
+            },
+            "property_schema": {
+                "predicates": [
+                    "score",
+                    "average",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-ratio"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-summary-total-allocated",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Total Days Allocated"
+            },
+            "property_schema": {
+                "predicates": [
+                    "days",
+                    "allocated",
+                    "total",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-summary-total-used",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Total Days Used"
+            },
+            "property_schema": {
+                "predicates": [
+                    "days",
+                    "used",
+                    "total",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-summary-termination-count",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Termination Count"
+            },
+            "property_schema": {
+                "predicates": [
+                    "termination",
+                    "count",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-summary-event-count",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Event Count"
+            },
+            "property_schema": {
+                "predicates": [
+                    "event",
+                    "count",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-summary-response-count",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Response Count"
+            },
+            "property_schema": {
+                "predicates": [
+                    "response",
+                    "count",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-summary-skill-count",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Skill Count"
+            },
+            "property_schema": {
+                "predicates": [
+                    "skill",
+                    "count",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-summary-threshold-state",
+            "universal_id": "hr-analytics-summary",
+            "label": {
+                "en": "Threshold State"
+            },
+            "property_schema": {
+                "predicates": [
+                    "threshold",
+                    "state"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false,
+                        "allowed_values": [
+                            "not_crossed",
+                            "crossed"
+                        ]
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Requisition Priority Enum Name ===",
+            "id": "hr-req-priority-name-prop",
+            "universal_id": "hr-req-priority-type",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Requisition Status Enum Name ===",
+            "id": "hr-req-status-name-prop",
+            "universal_id": "hr-req-status-type",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Requisition: Code ===",
+            "id": "hr-req-code",
+            "universal_id": "hr-requisition",
+            "label": {
+                "en": "Requisition Code"
+            },
+            "description": {
+                "en": "Unique requisition identifier"
+            },
+            "property_schema": {
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "REQ-"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Requisition: Job Title ===",
+            "id": "hr-req-title",
+            "universal_id": "hr-requisition",
+            "label": {
+                "en": "Job Title"
+            },
+            "description": {
+                "en": "Title of the position to fill"
+            },
+            "property_schema": {
+                "predicates": [
+                    "title",
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Requisition: Description ===",
+            "id": "hr-req-description",
+            "universal_id": "hr-requisition",
+            "label": {
+                "en": "Job Description"
+            },
+            "description": {
+                "en": "Detailed description of the role and responsibilities"
+            },
+            "property_schema": {
+                "predicates": [
+                    "description"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Requisition: Justification ===",
+            "id": "hr-req-justification",
+            "universal_id": "hr-requisition",
+            "label": {
+                "en": "Business Justification"
+            },
+            "description": {
+                "en": "Business case and rationale for the hire"
+            },
+            "property_schema": {
+                "predicates": [
+                    "justification",
+                    "reason"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Requisition: Number of Positions ===",
+            "id": "hr-req-positions-count",
+            "universal_id": "hr-requisition",
+            "label": {
+                "en": "Positions"
+            },
+            "description": {
+                "en": "Number of positions to fill"
+            },
+            "property_schema": {
+                "predicates": [
+                    "count",
+                    "headcount"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-headcount"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Requisition: Target Salary Min ===",
+            "id": "hr-req-salary-min",
+            "universal_id": "hr-requisition",
+            "label": {
+                "en": "Salary Range Min"
+            },
+            "description": {
+                "en": "Minimum of the target salary range"
+            },
+            "property_schema": {
+                "predicates": [
+                    "salary",
+                    "minimum"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Requisition: Target Salary Max ===",
+            "id": "hr-req-salary-max",
+            "universal_id": "hr-requisition",
+            "label": {
+                "en": "Salary Range Max"
+            },
+            "description": {
+                "en": "Maximum of the target salary range"
+            },
+            "property_schema": {
+                "predicates": [
+                    "salary",
+                    "maximum"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Requisition: Salary Scope ===",
+            "id": "hr-req-salary-scope-prop",
+            "universal_id": "hr-requisition",
+            "label": {
+                "en": "Salary Scope"
+            },
+            "description": {
+                "en": "Payment frequency scope for the salary range (yearly or monthly)"
+            },
+            "property_schema": {
+                "predicates": [
+                    "salary",
+                    "scope"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "hr-salary-scope",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Requisition: Priority ===",
+            "id": "hr-req-priority-prop",
+            "universal_id": "hr-requisition",
+            "label": {
+                "en": "Priority"
+            },
+            "description": {
+                "en": "Hiring urgency level"
+            },
+            "property_schema": {
+                "predicates": [
+                    "priority"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "hr-req-priority-type",
+                        "ordered": true
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Requisition: Target Start Date ===",
+            "id": "hr-req-target-start",
+            "universal_id": "hr-requisition",
+            "label": {
+                "en": "Target Start Date"
+            },
+            "description": {
+                "en": "Desired start date for the new hire"
+            },
+            "property_schema": {
+                "predicates": [
+                    "date",
+                    "start"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Date"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Requisition: Status ===",
+            "id": "hr-req-status-prop",
+            "universal_id": "hr-requisition",
+            "label": {
+                "en": "Status"
+            },
+            "description": {
+                "en": "Current lifecycle status of the requisition"
+            },
+            "property_schema": {
+                "predicates": [
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "hr-req-status-type",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        }
+    ],
+    "event_definitions": [
+        {
+            "id": "hr-employee-hired",
+            "app_id": "hr-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Employee Hired"
+            },
+            "description": {
+                "en": "Event emitted when a new employee is hired"
+            },
+            "payload_schema": [
+                {
+                    "name": "employee_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "employee_name",
+                    "field_type": "string"
+                },
+                {
+                    "name": "department",
+                    "field_type": "string"
+                },
+                {
+                    "name": "location",
+                    "field_type": "string"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-employee-promoted",
+            "app_id": "hr-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Employee Promoted"
+            },
+            "description": {
+                "en": "Event emitted when an employee is promoted"
+            },
+            "payload_schema": [
+                {
+                    "name": "employee_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "employee_name",
+                    "field_type": "string"
+                },
+                {
+                    "name": "new_level",
+                    "field_type": "string"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-employee-terminated",
+            "app_id": "hr-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Employee Terminated"
+            },
+            "description": {
+                "en": "Event emitted when an employee is terminated"
+            },
+            "payload_schema": [
+                {
+                    "name": "employee_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "employee_name",
+                    "field_type": "string"
+                },
+                {
+                    "name": "department",
+                    "field_type": "string"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-high-turnover-threshold-event",
+            "app_id": "hr-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "High Turnover Threshold Crossed"
+            },
+            "description": {
+                "en": "Event emitted when department termination count exceeds threshold"
+            },
+            "payload_schema": [
+                {
+                    "name": "artifact_instance_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "measure_value",
+                    "field_type": "measurement",
+                    "measurement_frame": "Quantity"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-low-enps-threshold-event",
+            "app_id": "hr-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Low eNPS Threshold Crossed"
+            },
+            "description": {
+                "en": "Event emitted when department average eNPS score drops below threshold"
+            },
+            "payload_schema": [
+                {
+                    "name": "artifact_instance_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "measure_value",
+                    "field_type": "measurement",
+                    "measurement_frame": "Ratio"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-requisition-approved",
+            "app_id": "hr-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Requisition Approved"
+            },
+            "description": {
+                "en": "Event emitted when a hiring requisition completes the approval process"
+            },
+            "payload_schema": [
+                {
+                    "name": "requisition_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "process_id",
+                    "field_type": "uuid"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-requisition-rejected",
+            "app_id": "hr-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Requisition Rejected"
+            },
+            "description": {
+                "en": "Event emitted when a hiring requisition is rejected at any approval stage"
+            },
+            "payload_schema": [
+                {
+                    "name": "requisition_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "process_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "rejected_at_stage",
+                    "field_type": "string"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-requisition-filled",
+            "app_id": "hr-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Requisition Filled"
+            },
+            "description": {
+                "en": "Event emitted when a recruiter confirms a position has been filled"
+            },
+            "payload_schema": [
+                {
+                    "name": "requisition_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "process_id",
+                    "field_type": "uuid"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-low-salary-percentile-event",
+            "app_id": "hr-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Low Salary Percentile"
+            },
+            "description": {
+                "en": "Event emitted when an employee's salary percentile score falls below the P25 threshold"
+            },
+            "payload_schema": [
+                {
+                    "name": "entity_instance_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "score_value",
+                    "field_type": "measurement",
+                    "measurement_frame": "Float"
+                },
+                {
+                    "name": "threshold_value",
+                    "field_type": "measurement",
+                    "measurement_frame": "Float"
+                }
+            ],
+            "use_seed": true
+        }
+    ],
+    "computations": [
+        {
+            "_comment": "=== COMPUTATION 1: Total Compensation = base_salary + bonus ===",
+            "id": "hr-total-comp-calc",
+            "code": "hr_total_comp",
+            "app_id": "hr-intelligence-app",
+            "label": {
+                "en": "Total Compensation Calculation"
+            },
+            "description": {
+                "en": "Computes total_compensation = base_salary + bonus on salary records"
+            },
+            "inputs": [
+                {
+                    "source": "property",
+                    "variable_name": "base_salary",
+                    "property_id": "hr-salary-base"
+                },
+                {
+                    "source": "property",
+                    "variable_name": "bonus",
+                    "property_id": "hr-salary-bonus"
+                }
+            ],
+            "formula": "let base = base_salary.value; let b = bonus.value; base + b",
+            "output": {
+                "target_property_id": "hr-salary-total-comp"
+            },
+            "trigger_conditions": [
+                {
+                    "type": "PropertyChange",
+                    "property_id": "hr-salary-base"
+                },
+                {
+                    "type": "PropertyChange",
+                    "property_id": "hr-salary-bonus"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 2: Vacation Remaining = allocated - used ===",
+            "id": "hr-vacation-remaining-calc",
+            "code": "hr_vacation_remaining",
+            "app_id": "hr-intelligence-app",
+            "label": {
+                "en": "Vacation Remaining Calculation"
+            },
+            "description": {
+                "en": "Computes remaining = days_allocated - days_used on vacation records"
+            },
+            "inputs": [
+                {
+                    "source": "property",
+                    "variable_name": "allocated",
+                    "property_id": "hr-vacation-days-allocated"
+                },
+                {
+                    "source": "property",
+                    "variable_name": "used",
+                    "property_id": "hr-vacation-days-used"
+                }
+            ],
+            "formula": "let a = allocated.value; let u = used.value; a - u",
+            "output": {
+                "target_property_id": "hr-vacation-remaining"
+            },
+            "trigger_conditions": [
+                {
+                    "type": "PropertyChange",
+                    "property_id": "hr-vacation-days-allocated"
+                },
+                {
+                    "type": "PropertyChange",
+                    "property_id": "hr-vacation-days-used"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 3: eNPS Category = Promoter/Passive/Detractor ===",
+            "id": "hr-enps-category-calc",
+            "code": "hr_enps_category",
+            "app_id": "hr-intelligence-app",
+            "label": {
+                "en": "eNPS Category Calculation"
+            },
+            "description": {
+                "en": "Classifies sentiment score: 9-10=Promoter, 7-8=Passive, 0-6=Detractor"
+            },
+            "inputs": [
+                {
+                    "source": "property",
+                    "variable_name": "score",
+                    "property_id": "hr-sentiment-score"
+                }
+            ],
+            "formula": "let s = score.value; if s >= 9.0 { 2.0 } else if s >= 7.0 { 1.0 } else { 0.0 }",
+            "output": {},
+            "trigger_conditions": [
+                {
+                    "type": "PropertyChange",
+                    "property_id": "hr-sentiment-score"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 4: Emit Performance Event ===",
+            "id": "hr-emit-perf-event",
+            "code": "hr_emit_perf_event",
+            "app_id": "hr-intelligence-app",
+            "label": {
+                "en": "Emit Performance Event Notification"
+            },
+            "description": {
+                "en": "Publishes notification when performance event type changes"
+            },
+            "inputs": [
+                {
+                    "source": "property",
+                    "variable_name": "event_type",
+                    "property_id": "hr-perf-event-type-prop"
+                }
+            ],
+            "formula": "0.0",
+            "output": {},
+            "trigger_conditions": [
+                {
+                    "type": "PropertyChange",
+                    "property_id": "hr-perf-event-type-prop"
+                }
+            ],
+            "event_bindings": [
+                {
+                    "event": "events.hr-employee-promoted",
+                    "direction": "publish",
+                    "trigger": "always"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        }
+    ],
+    "data_schemas": [],
+    "artifact_definitions": [
+        {
+            "_comment": "=== ARTIFACT 1: Headcount by Department and Location ===",
+            "id": "hr-headcount-by-dept-location",
+            "name": "Headcount by Department and Location",
+            "description": {
+                "en": "Employee headcount aggregated by department and office location"
+            },
+            "source": {
+                "universal_id": "hr-employee"
+            },
+            "artifact_universal_id": "hr-analytics-summary",
+            "app_id": "hr-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "hr-hc-dept-dim",
+                    "code": "department",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "hr-emp-dept-rel",
+                                "role_name": "department"
+                            }
+                        ],
+                        "property_id": "hr-dept-name"
+                    },
+                    "artifact_property_id": "hr-summary-department",
+                    "use_seed": true
+                },
+                {
+                    "id": "hr-hc-loc-dim",
+                    "code": "location",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "hr-emp-location-rel",
+                                "role_name": "location"
+                            }
+                        ],
+                        "property_id": "hr-loc-name"
+                    },
+                    "artifact_property_id": "hr-summary-location",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "hr-hc-headcount",
+                    "code": "headcount",
+                    "function": "Count",
+                    "artifact_property_id": "hr-summary-headcount",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 2: Salary by Department and Level ===",
+            "id": "hr-salary-by-dept-level",
+            "name": "Salary by Department and Level",
+            "description": {
+                "en": "Salary aggregation by department and career level via employee relator paths"
+            },
+            "source": {
+                "universal_id": "hr-salary-record"
+            },
+            "artifact_universal_id": "hr-analytics-summary",
+            "app_id": "hr-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "hr-sal-dept-dim",
+                    "code": "department",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "hr-emp-salary-rel",
+                                "role_name": "employee"
+                            },
+                            {
+                                "relator_universal_id": "hr-emp-dept-rel",
+                                "role_name": "department"
+                            }
+                        ],
+                        "property_id": "hr-dept-name"
+                    },
+                    "artifact_property_id": "hr-summary-department",
+                    "use_seed": true
+                },
+                {
+                    "id": "hr-sal-level-dim",
+                    "code": "level",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "hr-emp-salary-rel",
+                                "role_name": "employee"
+                            },
+                            {
+                                "relator_universal_id": "hr-emp-level-rel",
+                                "role_name": "level"
+                            }
+                        ],
+                        "property_id": "hr-level-name"
+                    },
+                    "artifact_property_id": "hr-summary-level",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "hr-sal-total",
+                    "code": "total_salary",
+                    "property_id": "hr-salary-base",
+                    "function": "Sum",
+                    "artifact_property_id": "hr-summary-total-salary",
+                    "use_seed": true
+                },
+                {
+                    "id": "hr-sal-avg",
+                    "code": "avg_salary",
+                    "property_id": "hr-salary-base",
+                    "function": "Avg",
+                    "artifact_property_id": "hr-summary-avg-salary",
+                    "use_seed": true
+                },
+                {
+                    "id": "hr-sal-count",
+                    "code": "count",
+                    "function": "Count",
+                    "artifact_property_id": "hr-summary-count",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 3: Skills by Department ===",
+            "id": "hr-skills-by-dept",
+            "name": "Skills by Department",
+            "description": {
+                "en": "Skill distribution by department, navigating employee -> department and employee -> skill"
+            },
+            "source": {
+                "universal_id": "hr-employee"
+            },
+            "artifact_universal_id": "hr-analytics-summary",
+            "app_id": "hr-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "hr-sk-dept-dim",
+                    "code": "department",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "hr-emp-dept-rel",
+                                "role_name": "department"
+                            }
+                        ],
+                        "property_id": "hr-dept-name"
+                    },
+                    "artifact_property_id": "hr-summary-department",
+                    "use_seed": true
+                },
+                {
+                    "id": "hr-sk-skill-dim",
+                    "code": "skill",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "hr-emp-skill-rel",
+                                "role_name": "skill"
+                            }
+                        ],
+                        "property_id": "hr-skill-name"
+                    },
+                    "artifact_property_id": "hr-summary-skill",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "hr-sk-count",
+                    "code": "skill_count",
+                    "function": "Count",
+                    "artifact_property_id": "hr-summary-skill-count",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 4: eNPS by Department and Location (with threshold) ===",
+            "id": "hr-enps-by-dept-location",
+            "name": "eNPS by Department and Location",
+            "description": {
+                "en": "Employee net promoter score aggregated by department and location with low-eNPS threshold"
+            },
+            "source": {
+                "universal_id": "hr-sentiment"
+            },
+            "artifact_universal_id": "hr-analytics-summary",
+            "app_id": "hr-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "hr-enps-dept-dim",
+                    "code": "department",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "hr-emp-sentiment-rel",
+                                "role_name": "employee"
+                            },
+                            {
+                                "relator_universal_id": "hr-emp-dept-rel",
+                                "role_name": "department"
+                            }
+                        ],
+                        "property_id": "hr-dept-name"
+                    },
+                    "artifact_property_id": "hr-summary-department",
+                    "use_seed": true
+                },
+                {
+                    "id": "hr-enps-loc-dim",
+                    "code": "location",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "hr-emp-sentiment-rel",
+                                "role_name": "employee"
+                            },
+                            {
+                                "relator_universal_id": "hr-emp-location-rel",
+                                "role_name": "location"
+                            }
+                        ],
+                        "property_id": "hr-loc-name"
+                    },
+                    "artifact_property_id": "hr-summary-location",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "hr-enps-avg",
+                    "code": "avg_score",
+                    "property_id": "hr-sentiment-score",
+                    "function": "Avg",
+                    "artifact_property_id": "hr-summary-avg-score",
+                    "use_seed": true
+                },
+                {
+                    "id": "hr-enps-count",
+                    "code": "response_count",
+                    "function": "Count",
+                    "artifact_property_id": "hr-summary-response-count",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [
+                {
+                    "id": "hr-low-enps-threshold",
+                    "code": "low_enps",
+                    "measure_id": "hr-enps-avg",
+                    "condition": {
+                        "operator": "LessThan",
+                        "value": 5
+                    },
+                    "event_type_id": "hr-low-enps-threshold-event",
+                    "state_property_id": "hr-summary-threshold-state",
+                    "reset_on": "OnDimensionChange",
+                    "use_seed": true
+                }
+            ],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 5: Vacation by Department ===",
+            "id": "hr-vacation-by-dept",
+            "name": "Vacation by Department",
+            "description": {
+                "en": "Vacation allocation and usage aggregated by department"
+            },
+            "source": {
+                "universal_id": "hr-vacation"
+            },
+            "artifact_universal_id": "hr-analytics-summary",
+            "app_id": "hr-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "hr-vac-dept-dim",
+                    "code": "department",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "hr-emp-vacation-rel",
+                                "role_name": "employee"
+                            },
+                            {
+                                "relator_universal_id": "hr-emp-dept-rel",
+                                "role_name": "department"
+                            }
+                        ],
+                        "property_id": "hr-dept-name"
+                    },
+                    "artifact_property_id": "hr-summary-department",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "hr-vac-allocated",
+                    "code": "total_allocated",
+                    "property_id": "hr-vacation-days-allocated",
+                    "function": "Sum",
+                    "artifact_property_id": "hr-summary-total-allocated",
+                    "use_seed": true
+                },
+                {
+                    "id": "hr-vac-used",
+                    "code": "total_used",
+                    "property_id": "hr-vacation-days-used",
+                    "function": "Sum",
+                    "artifact_property_id": "hr-summary-total-used",
+                    "use_seed": true
+                },
+                {
+                    "id": "hr-vac-count",
+                    "code": "count",
+                    "function": "Count",
+                    "artifact_property_id": "hr-summary-count",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 6: Turnover by Department (with threshold) ===",
+            "id": "hr-turnover-by-dept",
+            "name": "Turnover by Department",
+            "description": {
+                "en": "Performance event counts by department with high-turnover threshold on termination count"
+            },
+            "source": {
+                "universal_id": "hr-perf-event"
+            },
+            "artifact_universal_id": "hr-analytics-summary",
+            "app_id": "hr-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "hr-to-dept-dim",
+                    "code": "department",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "hr-emp-perf-rel",
+                                "role_name": "employee"
+                            },
+                            {
+                                "relator_universal_id": "hr-emp-dept-rel",
+                                "role_name": "department"
+                            }
+                        ],
+                        "property_id": "hr-dept-name"
+                    },
+                    "artifact_property_id": "hr-summary-department",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "hr-to-term-count",
+                    "code": "termination_count",
+                    "function": "Count",
+                    "artifact_property_id": "hr-summary-termination-count",
+                    "use_seed": true
+                },
+                {
+                    "id": "hr-to-event-count",
+                    "code": "event_count",
+                    "function": "Count",
+                    "artifact_property_id": "hr-summary-event-count",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [
+                {
+                    "id": "hr-high-turnover-threshold",
+                    "code": "high_turnover",
+                    "measure_id": "hr-to-term-count",
+                    "condition": {
+                        "operator": "GreaterThan",
+                        "value": 10
+                    },
+                    "event_type_id": "hr-high-turnover-threshold-event",
+                    "state_property_id": "hr-summary-threshold-state",
+                    "reset_on": "OnDimensionChange",
+                    "use_seed": true
+                }
+            ],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        }
+    ],
+    "score_definitions": [
+        {
+            "_comment": "=== BASE SCORE 1: Salary Percentile Rank ===",
+            "id": "hr-salary-percentile-score",
+            "name": "Salary Percentile",
+            "label": {
+                "en": "Salary Percentile"
+            },
+            "description": {
+                "en": "Employee salary percentile rank compared against the department/level cohort from the salary artifact"
+            },
+            "source_universal_id": "hr-employee",
+            "artifact_binding": {
+                "artifact_definition_id": "hr-salary-by-dept-level",
+                "measure_id": "hr-sal-avg",
+                "dimension_bindings": []
+            },
+            "entity_value_binding": {
+                "resolve_from": {
+                    "type": "RelatorPathProperty",
+                    "path": [
+                        {
+                            "relator_universal_id": "hr-emp-contract-rel",
+                            "role_name": "contract"
+                        }
+                    ],
+                    "property_id": "hr-contract-annual-salary"
+                }
+            },
+            "method": {
+                "type": "PercentileRank"
+            },
+            "thresholds": [
+                {
+                    "id": "hr-low-salary-percentile-threshold",
+                    "label": {
+                        "en": "Low Salary Percentile (P25)"
+                    },
+                    "condition": {
+                        "operator": "LessThan",
+                        "value": 25.0
+                    },
+                    "event_type_id": "hr-low-salary-percentile-event",
+                    "use_seed": true
+                }
+            ],
+            "app_id": "hr-intelligence-app",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== BASE SCORE 2: Sentiment Percentile Rank ===",
+            "id": "hr-sentiment-percentile-score",
+            "name": "Sentiment Percentile",
+            "label": {
+                "en": "Sentiment Percentile"
+            },
+            "description": {
+                "en": "Employee sentiment percentile rank compared against the department/location cohort from the eNPS artifact"
+            },
+            "source_universal_id": "hr-employee",
+            "artifact_binding": {
+                "artifact_definition_id": "hr-enps-by-dept-location",
+                "measure_id": "hr-enps-avg",
+                "dimension_bindings": []
+            },
+            "entity_value_binding": {
+                "resolve_from": {
+                    "type": "RelatorPathProperty",
+                    "path": [
+                        {
+                            "relator_universal_id": "hr-emp-sentiment-rel",
+                            "role_name": "sentiment"
+                        }
+                    ],
+                    "property_id": "hr-sentiment-score"
+                }
+            },
+            "method": {
+                "type": "PercentileRank"
+            },
+            "thresholds": [],
+            "app_id": "hr-intelligence-app",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITE SCORE 1: Readiness Score (Weighted Average) ===",
+            "id": "hr-readiness-composite-score",
+            "name": "Readiness Score",
+            "label": {
+                "en": "Readiness Score"
+            },
+            "description": {
+                "en": "Composite readiness score combining salary percentile (40%) and sentiment percentile (60%) via weighted average"
+            },
+            "source_universal_id": "hr-employee",
+            "artifact_binding": {
+                "artifact_definition_id": "00000000-0000-0000-0000-000000000000",
+                "measure_id": "00000000-0000-0000-0000-000000000000",
+                "dimension_bindings": []
+            },
+            "entity_value_binding": {
+                "resolve_from": {
+                    "type": "DirectProperty",
+                    "property_id": "00000000-0000-0000-0000-000000000000"
+                }
+            },
+            "method": {
+                "type": "Composite",
+                "inputs": [
+                    {
+                        "score_definition_id": "hr-salary-percentile-score",
+                        "variable_name": "salary",
+                        "weight": 0.4
+                    },
+                    {
+                        "score_definition_id": "hr-sentiment-percentile-score",
+                        "variable_name": "sentiment",
+                        "weight": 0.6
+                    }
+                ],
+                "formula": "weighted_average"
+            },
+            "thresholds": [],
+            "app_id": "hr-intelligence-app",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITE SCORE 2: Risk Score (Min-Of) ===",
+            "id": "hr-risk-composite-score",
+            "name": "Risk Score",
+            "label": {
+                "en": "Risk Score"
+            },
+            "description": {
+                "en": "Composite risk score using the minimum of salary and sentiment percentiles — low in either signals high risk"
+            },
+            "source_universal_id": "hr-employee",
+            "artifact_binding": {
+                "artifact_definition_id": "00000000-0000-0000-0000-000000000000",
+                "measure_id": "00000000-0000-0000-0000-000000000000",
+                "dimension_bindings": []
+            },
+            "entity_value_binding": {
+                "resolve_from": {
+                    "type": "DirectProperty",
+                    "property_id": "00000000-0000-0000-0000-000000000000"
+                }
+            },
+            "method": {
+                "type": "Composite",
+                "inputs": [
+                    {
+                        "score_definition_id": "hr-salary-percentile-score",
+                        "variable_name": "salary",
+                        "weight": 1.0
+                    },
+                    {
+                        "score_definition_id": "hr-sentiment-percentile-score",
+                        "variable_name": "sentiment",
+                        "weight": 1.0
+                    }
+                ],
+                "formula": "min_of"
+            },
+            "thresholds": [],
+            "app_id": "hr-intelligence-app",
+            "use_seed": true
+        }
+    ],
+    "apps": [
+        {
+            "id": "hr-intelligence-app",
+            "tenant_id": "model1-testing-tenant",
+            "label": {
+                "en": "HR Intelligence Application"
+            },
+            "description": {
+                "en": "Comprehensive HR analytics application with employee management, performance tracking, skill-gap analysis, sentiment monitoring, and intelligence artifacts"
+            },
+            "use_seed": true,
+            "modules": [
+                {
+                    "id": "hr-core-module",
+                    "use_seed": true,
+                    "label": {
+                        "en": "HR Core Module"
+                    },
+                    "description": {
+                        "en": "Core HR operations: employees, departments, contracts, salary management"
+                    },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": [
+                            "hr-employee-hired",
+                            "hr-employee-terminated"
+                        ]
+                    }
+                },
+                {
+                    "id": "hr-talent-module",
+                    "use_seed": true,
+                    "label": {
+                        "en": "Talent Management Module"
+                    },
+                    "description": {
+                        "en": "Skills, training, performance reviews, and career development tracking"
+                    },
+                    "context": {
+                        "subscribed_events": [
+                            "hr-employee-hired"
+                        ],
+                        "publishable_events": [
+                            "hr-employee-promoted"
+                        ]
+                    }
+                },
+                {
+                    "id": "hr-analytics-module",
+                    "use_seed": true,
+                    "label": {
+                        "en": "HR Analytics Module"
+                    },
+                    "description": {
+                        "en": "Intelligence artifacts, sentiment analysis, and workforce analytics"
+                    },
+                    "context": {
+                        "subscribed_events": [
+                            "hr-employee-promoted",
+                            "hr-employee-terminated"
+                        ],
+                        "publishable_events": []
+                    }
+                },
+                {
+                    "id": "hr-process-module",
+                    "use_seed": true,
+                    "label": {
+                        "en": "HR Process Module"
+                    },
+                    "description": {
+                        "en": "Normative processes: hiring requisition approval and recruitment workflows"
+                    },
+                    "context": {
+                        "subscribed_events": [
+                            "hr-employee-hired"
+                        ],
+                        "publishable_events": [
+                            "hr-requisition-approved",
+                            "hr-requisition-rejected",
+                            "hr-requisition-filled"
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "users": [
+        {
+            "id": "hr-admin-alice",
+            "tenant_id": "model1-testing-tenant",
+            "email": "hr-admin-alice@test.model1.ai",
+            "display_name": "Alice HR Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppAdmin"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-admin-bob",
+            "tenant_id": "model1-testing-tenant",
+            "email": "hr-admin-bob@test.model1.ai",
+            "display_name": "Bob HR Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppAdmin"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-admin-carol",
+            "tenant_id": "model1-testing-tenant",
+            "email": "hr-admin-carol@test.model1.ai",
+            "display_name": "Carol HR Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppAdmin"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-analyst-dave",
+            "tenant_id": "model1-testing-tenant",
+            "email": "hr-analyst-dave@test.model1.ai",
+            "display_name": "Dave HR Analyst",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppUser"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-analyst-emma",
+            "tenant_id": "model1-testing-tenant",
+            "email": "hr-analyst-emma@test.model1.ai",
+            "display_name": "Emma HR Analyst",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppUser"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-analyst-frank",
+            "tenant_id": "model1-testing-tenant",
+            "email": "hr-analyst-frank@test.model1.ai",
+            "display_name": "Frank HR Analyst",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppUser"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-dev-grace",
+            "tenant_id": "model1-testing-tenant",
+            "email": "hr-dev-grace@test.model1.ai",
+            "display_name": "Grace HR Developer",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppDeveloper"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-dev-henry",
+            "tenant_id": "model1-testing-tenant",
+            "email": "hr-dev-henry@test.model1.ai",
+            "display_name": "Henry HR Developer",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppDeveloper"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "hr-dev-iris",
+            "tenant_id": "model1-testing-tenant",
+            "email": "hr-dev-iris@test.model1.ai",
+            "display_name": "Iris HR Developer",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppDeveloper"
+            ],
+            "use_seed": true
+        }
+    ],
+    "foundation_role_assignments": [
+        {
+            "id": "fra-hr-admin-alice",
+            "user_id": "hr-admin-alice",
+            "role": "AppAdmin",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "hr-intelligence-app"
+            },
+            "assigned_by": "hr-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-hr-admin-bob",
+            "user_id": "hr-admin-bob",
+            "role": "AppAdmin",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "hr-intelligence-app"
+            },
+            "assigned_by": "hr-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-hr-admin-carol",
+            "user_id": "hr-admin-carol",
+            "role": "AppAdmin",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "hr-intelligence-app"
+            },
+            "assigned_by": "hr-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-hr-analyst-dave",
+            "user_id": "hr-analyst-dave",
+            "role": "AppUser",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "hr-intelligence-app"
+            },
+            "assigned_by": "hr-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-hr-analyst-emma",
+            "user_id": "hr-analyst-emma",
+            "role": "AppUser",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "hr-intelligence-app"
+            },
+            "assigned_by": "hr-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-hr-analyst-frank",
+            "user_id": "hr-analyst-frank",
+            "role": "AppUser",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "hr-intelligence-app"
+            },
+            "assigned_by": "hr-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-hr-dev-grace",
+            "user_id": "hr-dev-grace",
+            "role": "AppDeveloper",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "hr-intelligence-app"
+            },
+            "assigned_by": "hr-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-hr-dev-henry",
+            "user_id": "hr-dev-henry",
+            "role": "AppDeveloper",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "hr-intelligence-app"
+            },
+            "assigned_by": "hr-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-hr-dev-iris",
+            "user_id": "hr-dev-iris",
+            "role": "AppDeveloper",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "hr-intelligence-app"
+            },
+            "assigned_by": "hr-admin-alice",
+            "use_seed": true
+        }
+    ]
+}

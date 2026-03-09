@@ -1,0 +1,173 @@
+{
+  "_comment": "Document Sign-Off — Tier 0 process example (no stages, no obligations)",
+  "_description": "Simplest possible process: a document sign-off that tracks status, outcome, and basic audit. Specializes base-process with no composition — demonstrates Tier 0 (Task) capability.",
+
+  "organizations": [
+    {
+      "id": "model1-testing-org",
+      "label": { "en": "Model1 Testing Org" },
+      "use_seed": true
+    }
+  ],
+
+  "tenants": [
+    {
+      "id": "model1-testing-tenant",
+      "organization_id": "model1-testing-org",
+      "label": { "en": "Model1 Testing Tenant" },
+      "use_seed": true
+    }
+  ],
+
+  "users": [
+    {
+      "id": "doc-signoff-admin",
+      "tenant_id": "model1-testing-tenant",
+      "email": "doc-admin@test.model1.ai",
+      "display_name": "Doc Admin",
+      "password_hash": "$argon2id$v=19$m=19456,t=2,p=1$YWJjZGVmZ2hpamtsbW5vcA$+hKV5JBvxTe2796V5bITYWmmCDFjGpOwyVJOGNPnVL4",
+      "use_seed": true,
+      "role_assignments": [
+        {
+          "role": "TenantAdmin",
+          "scope": { "type": "Tenant", "tenant_id": "model1-testing-tenant" }
+        }
+      ]
+    }
+  ],
+
+  "apps": [
+    {
+      "id": "doc-signoff-app",
+      "tenant_id": "model1-testing-tenant",
+      "label": { "en": "Document Sign-Off" },
+      "description": { "en": "Simple document sign-off process — Tier 0 (Task) with no stages or obligations" },
+      "use_seed": true
+    }
+  ],
+
+  "universals": [
+    {
+      "_comment": "=== DOCUMENT TYPE (subject entity) ===",
+      "id": "document",
+      "app_id": "doc-signoff-app",
+      "temporal_nature": "Endurant",
+      "meta_category": "Kind",
+      "label": { "en": "Document" },
+      "description": { "en": "A document that requires sign-off before publication or distribution" },
+      "label_schema": {
+        "separator": " - ",
+        "max_length": 50,
+        "fallback_language": "en"
+      },
+      "use_seed": true
+    },
+    {
+      "_comment": "=== SIGN-OFF PROCESS (specializes base-process) ===",
+      "id": "document-signoff",
+      "app_id": "doc-signoff-app",
+      "temporal_nature": "Perdurant",
+      "meta_category": "Kind",
+      "label": { "en": "Document Sign-Off" },
+      "description": { "en": "A Tier 0 (Task) process for signing off on documents. No stages or obligations — just status tracking, single decision point, and audit trail." },
+      "label_schema": {
+        "separator": " - ",
+        "max_length": 50,
+        "fallback_language": "en"
+      },
+      "taxonomy": [
+        {
+          "relator_universal_id": "generalization-relator",
+          "target_universal_id": "base-process"
+        }
+      ],
+      "use_seed": true
+    }
+  ],
+
+  "property_definitions": [
+    {
+      "_comment": "=== DOCUMENT PROPERTIES ===",
+      "id": "document-title-prop",
+      "universal_id": "document",
+      "label": { "en": "Title" },
+      "property_schema": {
+        "predicates": ["title", "name"],
+        "relator": { "relator_type": "Attribution" },
+        "constraints": {
+          "property_value_type": { "type": "Textual" },
+          "cardinality": { "min": 1, "max": 1 }
+        }
+      },
+      "label_options": {
+        "participates": true,
+        "sequence": 1
+      },
+      "use_seed": true
+    },
+    {
+      "id": "document-version-prop",
+      "universal_id": "document",
+      "label": { "en": "Version" },
+      "property_schema": {
+        "predicates": ["version"],
+        "relator": { "relator_type": "Attribution" },
+        "constraints": {
+          "property_value_type": { "type": "Categorical" },
+          "cardinality": { "min": 0, "max": 1 }
+        }
+      },
+      "label_options": {
+        "participates": true,
+        "sequence": 2
+      },
+      "use_seed": true
+    },
+    {
+      "id": "document-status-prop",
+      "universal_id": "document",
+      "label": { "en": "Status" },
+      "property_schema": {
+        "predicates": ["status"],
+        "relator": { "relator_type": "Attribution" },
+        "constraints": {
+          "property_value_type": { "type": "Categorical" },
+          "cardinality": { "min": 1, "max": 1 }
+        }
+      },
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== SIGN-OFF PROCESS CUSTOM PROPERTIES ===",
+      "id": "signoff-document-ref-prop",
+      "universal_id": "document-signoff",
+      "label": { "en": "Document Reference" },
+      "description": { "en": "Reference to the document being signed off" },
+      "property_schema": {
+        "predicates": ["document", "reference"],
+        "relator": { "relator_type": "Attribution" },
+        "constraints": {
+          "property_value_type": { "type": "InstanceRefs", "min_refs": 0 },
+          "cardinality": { "min": 1, "max": 1 }
+        }
+      },
+      "use_seed": true
+    },
+    {
+      "id": "signoff-reviewer-notes-prop",
+      "universal_id": "document-signoff",
+      "label": { "en": "Reviewer Notes" },
+      "description": { "en": "Free-text notes from the reviewer during sign-off" },
+      "property_schema": {
+        "predicates": ["notes", "review"],
+        "relator": { "relator_type": "Attribution" },
+        "constraints": {
+          "property_value_type": { "type": "Textual" },
+          "cardinality": { "min": 0, "max": 1 }
+        }
+      },
+      "use_seed": true
+    }
+  ]
+}

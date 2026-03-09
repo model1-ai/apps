@@ -1,0 +1,1996 @@
+{
+    "_comment": "Sample data for Accounting Intelligence - invoices, vendors, customers, payments, GL accounts, budgets, departments, and normative process instances for invoice approval",
+    "_version": "1.0.0",
+
+    "instances": [
+        {
+            "_comment": "=== ENUMERATION INSTANCES: Invoice Status ===",
+            "id": "acct-status-draft",
+            "universal_id": "acct-invoice-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-invoice-status-name-prop": "Draft"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-status-submitted",
+            "universal_id": "acct-invoice-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-invoice-status-name-prop": "Submitted"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-status-approved",
+            "universal_id": "acct-invoice-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-invoice-status-name-prop": "Approved"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-status-rejected",
+            "universal_id": "acct-invoice-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-invoice-status-name-prop": "Rejected"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-status-paid",
+            "universal_id": "acct-invoice-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-invoice-status-name-prop": "Paid"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-status-overdue",
+            "universal_id": "acct-invoice-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-invoice-status-name-prop": "Overdue"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-status-cancelled",
+            "universal_id": "acct-invoice-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-invoice-status-name-prop": "Cancelled"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ENUMERATION INSTANCES: Payment Method ===",
+            "id": "acct-method-wire",
+            "universal_id": "acct-payment-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-payment-method-name-prop": "Wire Transfer"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-method-ach",
+            "universal_id": "acct-payment-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-payment-method-name-prop": "ACH"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-method-check",
+            "universal_id": "acct-payment-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-payment-method-name-prop": "Check"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-method-card",
+            "universal_id": "acct-payment-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-payment-method-name-prop": "Credit Card"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ENUMERATION INSTANCES: Tax Category ===",
+            "id": "acct-taxcat-standard",
+            "universal_id": "acct-tax-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-tax-category-name-prop": "Standard"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-taxcat-reduced",
+            "universal_id": "acct-tax-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-tax-category-name-prop": "Reduced"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-taxcat-exempt",
+            "universal_id": "acct-tax-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-tax-category-name-prop": "Exempt"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ENUMERATION INSTANCES: Expense Category ===",
+            "id": "acct-expcat-services",
+            "universal_id": "acct-expense-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-expense-category-name-prop": "Professional Services"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-expcat-supplies",
+            "universal_id": "acct-expense-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-expense-category-name-prop": "Office Supplies"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-expcat-software",
+            "universal_id": "acct-expense-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-expense-category-name-prop": "Software Licenses"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-expcat-equipment",
+            "universal_id": "acct-expense-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-expense-category-name-prop": "Equipment"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-expcat-travel",
+            "universal_id": "acct-expense-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-expense-category-name-prop": "Travel"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-expcat-utilities",
+            "universal_id": "acct-expense-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-expense-category-name-prop": "Utilities"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ENUMERATION INSTANCES: GL Account Type ===",
+            "id": "acct-gltype-expense",
+            "universal_id": "acct-gl-account-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-gl-account-type-name-prop": "Expense"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-gltype-asset",
+            "universal_id": "acct-gl-account-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-gl-account-type-name-prop": "Asset"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-gltype-liability",
+            "universal_id": "acct-gl-account-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-gl-account-type-name-prop": "Liability"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-gltype-revenue",
+            "universal_id": "acct-gl-account-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-gl-account-type-name-prop": "Revenue"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== DEPARTMENTS ===",
+            "id": "acct-dept-engineering",
+            "universal_id": "acct-department",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-dept-code": "ENG",
+                "acct-dept-name": "Engineering",
+                "acct-dept-cost-center": "CC-1000"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-dept-marketing",
+            "universal_id": "acct-department",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-dept-code": "MKT",
+                "acct-dept-name": "Marketing",
+                "acct-dept-cost-center": "CC-2000"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-dept-operations",
+            "universal_id": "acct-department",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-dept-code": "OPS",
+                "acct-dept-name": "Operations",
+                "acct-dept-cost-center": "CC-3000"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-dept-sales",
+            "universal_id": "acct-department",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-dept-code": "SAL",
+                "acct-dept-name": "Sales",
+                "acct-dept-cost-center": "CC-4000"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-dept-finance",
+            "universal_id": "acct-department",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-dept-code": "FIN",
+                "acct-dept-name": "Finance",
+                "acct-dept-cost-center": "CC-5000"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-dept-hr",
+            "universal_id": "acct-department",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-dept-code": "HR",
+                "acct-dept-name": "Human Resources",
+                "acct-dept-cost-center": "CC-6000"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== GL ACCOUNTS ===",
+            "id": "acct-gl-5100",
+            "universal_id": "acct-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-gl-code": "5100",
+                "acct-gl-name": "Professional Services",
+                "acct-gl-type-prop": "acct-gltype-expense"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-gl-5200",
+            "universal_id": "acct-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-gl-code": "5200",
+                "acct-gl-name": "Office Supplies",
+                "acct-gl-type-prop": "acct-gltype-expense"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-gl-5300",
+            "universal_id": "acct-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-gl-code": "5300",
+                "acct-gl-name": "Software & Subscriptions",
+                "acct-gl-type-prop": "acct-gltype-expense"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-gl-5400",
+            "universal_id": "acct-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-gl-code": "5400",
+                "acct-gl-name": "Equipment",
+                "acct-gl-type-prop": "acct-gltype-asset"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-gl-5500",
+            "universal_id": "acct-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-gl-code": "5500",
+                "acct-gl-name": "Travel & Entertainment",
+                "acct-gl-type-prop": "acct-gltype-expense"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-gl-5600",
+            "universal_id": "acct-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-gl-code": "5600",
+                "acct-gl-name": "Utilities",
+                "acct-gl-type-prop": "acct-gltype-expense"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-gl-2100",
+            "universal_id": "acct-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-gl-code": "2100",
+                "acct-gl-name": "Accounts Payable",
+                "acct-gl-type-prop": "acct-gltype-liability"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-gl-4100",
+            "universal_id": "acct-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-gl-code": "4100",
+                "acct-gl-name": "Service Revenue",
+                "acct-gl-type-prop": "acct-gltype-revenue"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== TAX RATES ===",
+            "id": "acct-tax-vat-standard",
+            "universal_id": "acct-tax-rate",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-taxrate-code": "VAT-STD",
+                "acct-taxrate-name": "VAT Standard",
+                "acct-taxrate-percentage": { "value": 21.0, "unit": "percent" },
+                "acct-taxrate-category-prop": "acct-taxcat-standard"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-tax-vat-reduced",
+            "universal_id": "acct-tax-rate",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-taxrate-code": "VAT-RED",
+                "acct-taxrate-name": "VAT Reduced",
+                "acct-taxrate-percentage": { "value": 10.0, "unit": "percent" },
+                "acct-taxrate-category-prop": "acct-taxcat-reduced"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-tax-exempt",
+            "universal_id": "acct-tax-rate",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-taxrate-code": "TAX-EX",
+                "acct-taxrate-name": "Tax Exempt",
+                "acct-taxrate-percentage": { "value": 0.0, "unit": "percent" },
+                "acct-taxrate-category-prop": "acct-taxcat-exempt"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== VENDORS ===",
+            "id": "acct-vendor-acme",
+            "universal_id": "acct-vendor",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-vendor-code": "V-001",
+                "acct-vendor-name": "ACME Consulting",
+                "acct-vendor-tax-id": "TAX-ACME-001",
+                "acct-vendor-payment-terms": "Net 30"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-vendor-techsupply",
+            "universal_id": "acct-vendor",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-vendor-code": "V-002",
+                "acct-vendor-name": "TechSupply Corp",
+                "acct-vendor-tax-id": "TAX-TECH-002",
+                "acct-vendor-payment-terms": "Net 45"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-vendor-cloudsoft",
+            "universal_id": "acct-vendor",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-vendor-code": "V-003",
+                "acct-vendor-name": "CloudSoft Solutions",
+                "acct-vendor-tax-id": "TAX-CLOUD-003",
+                "acct-vendor-payment-terms": "Net 30"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-vendor-officeworld",
+            "universal_id": "acct-vendor",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-vendor-code": "V-004",
+                "acct-vendor-name": "OfficeWorld Inc",
+                "acct-vendor-tax-id": "TAX-OW-004",
+                "acct-vendor-payment-terms": "Net 15"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-vendor-travelmax",
+            "universal_id": "acct-vendor",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-vendor-code": "V-005",
+                "acct-vendor-name": "TravelMax Agency",
+                "acct-vendor-tax-id": "TAX-TM-005",
+                "acct-vendor-payment-terms": "Net 30"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== CUSTOMERS ===",
+            "id": "acct-cust-globex",
+            "universal_id": "acct-customer",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-cust-code": "C-001",
+                "acct-cust-name": "Globex Corporation",
+                "acct-cust-email": "billing@globex.com"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-cust-initech",
+            "universal_id": "acct-customer",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-cust-code": "C-002",
+                "acct-cust-name": "Initech Systems",
+                "acct-cust-email": "accounts@initech.com"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-cust-umbrella",
+            "universal_id": "acct-customer",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-cust-code": "C-003",
+                "acct-cust-name": "Umbrella Corp",
+                "acct-cust-email": "finance@umbrella.com"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== BUDGETS ===",
+            "id": "acct-budget-eng-q1",
+            "universal_id": "acct-budget",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-budget-name": "Engineering Q1 2025",
+                "acct-budget-period": "Q1-2025",
+                "acct-budget-allocated": { "value": 150000.00, "unit": "usd" },
+                "acct-budget-spent": { "value": 87500.00, "unit": "usd" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-budget-mkt-q1",
+            "universal_id": "acct-budget",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-budget-name": "Marketing Q1 2025",
+                "acct-budget-period": "Q1-2025",
+                "acct-budget-allocated": { "value": 80000.00, "unit": "usd" },
+                "acct-budget-spent": { "value": 62000.00, "unit": "usd" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-budget-ops-q1",
+            "universal_id": "acct-budget",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-budget-name": "Operations Q1 2025",
+                "acct-budget-period": "Q1-2025",
+                "acct-budget-allocated": { "value": 120000.00, "unit": "usd" },
+                "acct-budget-spent": { "value": 115000.00, "unit": "usd" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-budget-sales-q1",
+            "universal_id": "acct-budget",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-budget-name": "Sales Q1 2025",
+                "acct-budget-period": "Q1-2025",
+                "acct-budget-allocated": { "value": 60000.00, "unit": "usd" },
+                "acct-budget-spent": { "value": 45000.00, "unit": "usd" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-budget-fin-q1",
+            "universal_id": "acct-budget",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-budget-name": "Finance Q1 2025",
+                "acct-budget-period": "Q1-2025",
+                "acct-budget-allocated": { "value": 40000.00, "unit": "usd" },
+                "acct-budget-spent": { "value": 28000.00, "unit": "usd" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-budget-hr-q1",
+            "universal_id": "acct-budget",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-budget-name": "HR Q1 2025",
+                "acct-budget-period": "Q1-2025",
+                "acct-budget-allocated": { "value": 35000.00, "unit": "usd" },
+                "acct-budget-spent": { "value": 22000.00, "unit": "usd" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== INVOICES ===",
+            "id": "acct-inv-001",
+            "universal_id": "acct-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-inv-number": "INV-2025-001",
+                "acct-inv-date": "2025-01-15",
+                "acct-inv-due-date": "2025-02-14",
+                "acct-inv-status-prop": "acct-status-paid",
+                "acct-inv-total-amount": { "value": 25000.00, "unit": "usd" },
+                "acct-inv-tax-amount": { "value": 5250.00, "unit": "usd" },
+                "acct-inv-description": { "en": "Cloud infrastructure consulting" },
+                "acct-inv-currency": "USD"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-002",
+            "universal_id": "acct-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-inv-number": "INV-2025-002",
+                "acct-inv-date": "2025-01-20",
+                "acct-inv-due-date": "2025-03-06",
+                "acct-inv-status-prop": "acct-status-approved",
+                "acct-inv-total-amount": { "value": 42500.00, "unit": "usd" },
+                "acct-inv-tax-amount": { "value": 8925.00, "unit": "usd" },
+                "acct-inv-description": { "en": "Server hardware procurement" },
+                "acct-inv-currency": "USD"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-003",
+            "universal_id": "acct-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-inv-number": "INV-2025-003",
+                "acct-inv-date": "2025-02-01",
+                "acct-inv-due-date": "2025-03-03",
+                "acct-inv-status-prop": "acct-status-submitted",
+                "acct-inv-total-amount": { "value": 8750.00, "unit": "usd" },
+                "acct-inv-tax-amount": { "value": 875.00, "unit": "usd" },
+                "acct-inv-description": { "en": "Annual SaaS licenses renewal" },
+                "acct-inv-currency": "USD"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-004",
+            "universal_id": "acct-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-inv-number": "INV-2025-004",
+                "acct-inv-date": "2025-02-05",
+                "acct-inv-due-date": "2025-02-20",
+                "acct-inv-status-prop": "acct-status-overdue",
+                "acct-inv-total-amount": { "value": 3200.00, "unit": "usd" },
+                "acct-inv-tax-amount": { "value": 672.00, "unit": "usd" },
+                "acct-inv-description": { "en": "Office supplies bulk order" },
+                "acct-inv-currency": "USD"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-005",
+            "universal_id": "acct-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-inv-number": "INV-2025-005",
+                "acct-inv-date": "2025-02-10",
+                "acct-inv-due-date": "2025-03-12",
+                "acct-inv-status-prop": "acct-status-draft",
+                "acct-inv-total-amount": { "value": 15000.00, "unit": "usd" },
+                "acct-inv-tax-amount": { "value": 3150.00, "unit": "usd" },
+                "acct-inv-description": { "en": "Q1 marketing campaign services" },
+                "acct-inv-currency": "USD"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-006",
+            "universal_id": "acct-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-inv-number": "INV-2025-006",
+                "acct-inv-date": "2025-02-12",
+                "acct-inv-due-date": "2025-03-14",
+                "acct-inv-status-prop": "acct-status-submitted",
+                "acct-inv-total-amount": { "value": 67000.00, "unit": "usd" },
+                "acct-inv-tax-amount": { "value": 14070.00, "unit": "usd" },
+                "acct-inv-description": { "en": "Enterprise security audit" },
+                "acct-inv-currency": "USD"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-007",
+            "universal_id": "acct-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-inv-number": "INV-2025-007",
+                "acct-inv-date": "2025-01-25",
+                "acct-inv-due-date": "2025-02-24",
+                "acct-inv-status-prop": "acct-status-paid",
+                "acct-inv-total-amount": { "value": 4800.00, "unit": "usd" },
+                "acct-inv-tax-amount": { "value": 0.00, "unit": "usd" },
+                "acct-inv-description": { "en": "Team travel expenses - Q4 summit" },
+                "acct-inv-currency": "USD"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-008",
+            "universal_id": "acct-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-inv-number": "INV-2025-008",
+                "acct-inv-date": "2025-02-15",
+                "acct-inv-due-date": "2025-03-17",
+                "acct-inv-status-prop": "acct-status-approved",
+                "acct-inv-total-amount": { "value": 12000.00, "unit": "usd" },
+                "acct-inv-tax-amount": { "value": 2520.00, "unit": "usd" },
+                "acct-inv-description": { "en": "Development tools and CI/CD licenses" },
+                "acct-inv-currency": "USD"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== LINE ITEMS ===",
+            "id": "acct-li-001-1",
+            "universal_id": "acct-line-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-li-description": "Cloud Architecture Review",
+                "acct-li-quantity": { "value": 5.0, "unit": "days" },
+                "acct-li-unit-price": { "value": 3500.00, "unit": "usd" },
+                "acct-li-expense-cat-prop": "acct-expcat-services"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-001-2",
+            "universal_id": "acct-line-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-li-description": "Migration Planning",
+                "acct-li-quantity": { "value": 2.0, "unit": "days" },
+                "acct-li-unit-price": { "value": 3500.00, "unit": "usd" },
+                "acct-li-expense-cat-prop": "acct-expcat-services"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-002-1",
+            "universal_id": "acct-line-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-li-description": "Rack Server Unit",
+                "acct-li-quantity": { "value": 3.0, "unit": "units" },
+                "acct-li-unit-price": { "value": 12000.00, "unit": "usd" },
+                "acct-li-expense-cat-prop": "acct-expcat-equipment"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-002-2",
+            "universal_id": "acct-line-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-li-description": "Installation & Setup",
+                "acct-li-quantity": { "value": 1.0, "unit": "service" },
+                "acct-li-unit-price": { "value": 6500.00, "unit": "usd" },
+                "acct-li-expense-cat-prop": "acct-expcat-services"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-003-1",
+            "universal_id": "acct-line-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-li-description": "Project Management Suite",
+                "acct-li-quantity": { "value": 50.0, "unit": "licenses" },
+                "acct-li-unit-price": { "value": 125.00, "unit": "usd" },
+                "acct-li-expense-cat-prop": "acct-expcat-software"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-003-2",
+            "universal_id": "acct-line-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-li-description": "Cloud Storage Add-on",
+                "acct-li-quantity": { "value": 10.0, "unit": "TB" },
+                "acct-li-unit-price": { "value": 250.00, "unit": "usd" },
+                "acct-li-expense-cat-prop": "acct-expcat-software"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-004-1",
+            "universal_id": "acct-line-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-li-description": "Printer Paper A4",
+                "acct-li-quantity": { "value": 100.0, "unit": "reams" },
+                "acct-li-unit-price": { "value": 12.00, "unit": "usd" },
+                "acct-li-expense-cat-prop": "acct-expcat-supplies"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-004-2",
+            "universal_id": "acct-line-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-li-description": "Ink Cartridges",
+                "acct-li-quantity": { "value": 20.0, "unit": "units" },
+                "acct-li-unit-price": { "value": 100.00, "unit": "usd" },
+                "acct-li-expense-cat-prop": "acct-expcat-supplies"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-006-1",
+            "universal_id": "acct-line-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-li-description": "Penetration Testing",
+                "acct-li-quantity": { "value": 10.0, "unit": "days" },
+                "acct-li-unit-price": { "value": 4500.00, "unit": "usd" },
+                "acct-li-expense-cat-prop": "acct-expcat-services"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-006-2",
+            "universal_id": "acct-line-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-li-description": "Security Compliance Report",
+                "acct-li-quantity": { "value": 1.0, "unit": "report" },
+                "acct-li-unit-price": { "value": 22000.00, "unit": "usd" },
+                "acct-li-expense-cat-prop": "acct-expcat-services"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== PAYMENTS ===",
+            "id": "acct-pay-001",
+            "universal_id": "acct-payment",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-pay-reference": "PAY-2025-001",
+                "acct-pay-amount": { "value": 25000.00, "unit": "usd" },
+                "acct-pay-date": "2025-02-10",
+                "acct-pay-method-prop": "acct-method-wire"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-pay-002",
+            "universal_id": "acct-payment",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-pay-reference": "PAY-2025-002",
+                "acct-pay-amount": { "value": 4800.00, "unit": "usd" },
+                "acct-pay-date": "2025-02-20",
+                "acct-pay-method-prop": "acct-method-ach"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-pay-003",
+            "universal_id": "acct-payment",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-pay-reference": "PAY-2025-003",
+                "acct-pay-amount": { "value": 12500.00, "unit": "usd" },
+                "acct-pay-date": "2025-03-05",
+                "acct-pay-method-prop": "acct-method-check"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-pay-004",
+            "universal_id": "acct-payment",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-pay-reference": "PAY-2025-004",
+                "acct-pay-amount": { "value": 3200.00, "unit": "usd" },
+                "acct-pay-date": "2025-03-12",
+                "acct-pay-method-prop": "acct-method-card"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-pay-005",
+            "universal_id": "acct-payment",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-pay-reference": "PAY-2025-005",
+                "acct-pay-amount": { "value": 8750.00, "unit": "usd" },
+                "acct-pay-date": "2025-03-18",
+                "acct-pay-method-prop": "acct-method-check"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-pay-006",
+            "universal_id": "acct-payment",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "acct-pay-reference": "PAY-2025-006",
+                "acct-pay-amount": { "value": 1500.00, "unit": "usd" },
+                "acct-pay-date": "2025-03-25",
+                "acct-pay-method-prop": "acct-method-card"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== INVOICE APPROVAL PROCESS INSTANCES ===",
+            "id": "acct-process-inv006-approval",
+            "universal_id": "acct-invoice-approval",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "base-process-status-prop": "Active",
+                "base-process-current-stage-prop": { "value": 3, "unit": "count" },
+                "base-process-subject-ref-prop": "acct-inv-006",
+                "acct-approval-urgency-prop": "High"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-process-inv003-approval",
+            "universal_id": "acct-invoice-approval",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "base-process-status-prop": "Active",
+                "base-process-current-stage-prop": { "value": 1, "unit": "count" },
+                "base-process-subject-ref-prop": "acct-inv-003",
+                "acct-approval-urgency-prop": "Normal"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-process-inv001-approval",
+            "universal_id": "acct-invoice-approval",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "base-process-status-prop": "Completed",
+                "base-process-current-stage-prop": { "value": 2, "unit": "count" },
+                "base-process-subject-ref-prop": "acct-inv-001",
+                "acct-approval-urgency-prop": "Normal"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-process-inv002-approval",
+            "universal_id": "acct-invoice-approval",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "base-process-status-prop": "Completed",
+                "base-process-current-stage-prop": { "value": 2, "unit": "count" },
+                "base-process-subject-ref-prop": "acct-inv-002",
+                "acct-approval-urgency-prop": "Normal"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== STAGE INSTANCES FOR acct-process-inv006-approval (stage 3 = Active) ===",
+            "id": "acct-inv006-initial-review-stage",
+            "universal_id": "acct-initial-review-stage",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "base-stage-status-prop": "Completed",
+                "base-stage-sequence-prop": { "value": 1, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv006-manager-review-stage",
+            "universal_id": "acct-manager-review-stage",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "base-stage-status-prop": "Completed",
+                "base-stage-sequence-prop": { "value": 2, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv006-director-review-stage",
+            "universal_id": "acct-director-review-stage",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "base-stage-status-prop": "Active",
+                "base-stage-sequence-prop": { "value": 3, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv006-cfo-review-stage",
+            "universal_id": "acct-cfo-review-stage",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "base-stage-status-prop": "Pending",
+                "base-stage-sequence-prop": { "value": 4, "unit": "count" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== STAGE INSTANCES FOR acct-process-inv003-approval (stage 1 = Active) ===",
+            "id": "acct-inv003-initial-review-stage",
+            "universal_id": "acct-initial-review-stage",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "base-stage-status-prop": "Active",
+                "base-stage-sequence-prop": { "value": 1, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv003-manager-review-stage",
+            "universal_id": "acct-manager-review-stage",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "base-stage-status-prop": "Pending",
+                "base-stage-sequence-prop": { "value": 2, "unit": "count" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== STAGE INSTANCES FOR acct-process-inv001-approval (completed, 2 stages) ===",
+            "id": "acct-inv001-initial-review-stage",
+            "universal_id": "acct-initial-review-stage",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "base-stage-status-prop": "Completed",
+                "base-stage-sequence-prop": { "value": 1, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv001-manager-review-stage",
+            "universal_id": "acct-manager-review-stage",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "base-stage-status-prop": "Completed",
+                "base-stage-sequence-prop": { "value": 2, "unit": "count" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== OBLIGATION INSTANCES ===",
+            "id": "acct-inv006-director-obligation",
+            "universal_id": "acct-director-review-obligation",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "base-obligation-status-prop": "Active"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv006-initial-obligation",
+            "universal_id": "acct-initial-review-obligation",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "base-obligation-status-prop": "Completed"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv006-manager-obligation",
+            "universal_id": "acct-manager-review-obligation",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "base-obligation-status-prop": "Completed"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv003-initial-obligation",
+            "universal_id": "acct-initial-review-obligation",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "base-obligation-status-prop": "Active"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv001-initial-obligation",
+            "universal_id": "acct-initial-review-obligation",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "base-obligation-status-prop": "Completed"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv001-manager-obligation",
+            "universal_id": "acct-manager-review-obligation",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "base-obligation-status-prop": "Completed"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== WIDGET DEFINITIONS ===",
+            "id": "wd-budget-gauge",
+            "universal_id": "platform-widget-definition",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "platform-widget-code-prop": "budget-gauge",
+                "platform-widget-type-prop": "bullet_gauge",
+                "platform-widget-priority-prop": {"value": 10, "unit": "ordinal"},
+                "platform-widget-rules-prop": "{\"operator\":\"OR\",\"rules\":[{\"type\":\"RelatorPredicateMatch\",\"predicate_sets\":[[\"normative\"],[\"descriptive\"]]},{\"type\":\"PropertyPredicateMatch\",\"predicate_sets\":[[\"normative\"],[\"descriptive\"]]}]}",
+                "platform-widget-bindings-prop": "{\"source\":\"relator_group\",\"properties\":{\"normative\":{\"predicates\":[\"normative\"],\"type\":\"measurement\",\"required\":true},\"descriptive\":{\"predicates\":[\"descriptive\"],\"type\":\"measurement\",\"required\":true},\"variance\":{\"predicates\":[\"variance\"],\"type\":\"measurement\",\"required\":false},\"name\":{\"predicates\":[\"name\"],\"type\":\"categorical\",\"required\":false},\"period\":{\"predicates\":[\"period\"],\"type\":\"categorical\",\"required\":false}},\"sort_by\":\"period\",\"sort_order\":\"descending\"}"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "wd-acct-payment-sparkline",
+            "universal_id": "platform-widget-definition",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "platform-widget-code-prop": "payment-sparkline",
+                "platform-widget-type-prop": "sparkline",
+                "platform-widget-priority-prop": {"value": 20, "unit": "ordinal"},
+                "platform-widget-rules-prop": "{\"operator\":\"AND\",\"rules\":[{\"type\":\"RelatorPredicateMatch\",\"predicate_sets\":[[\"amount\"],[\"date\",\"payment\"]]}]}",
+                "platform-widget-bindings-prop": "{\"source\":\"relator_group\",\"properties\":{\"date\":{\"predicates\":[\"date\",\"payment\"],\"type\":\"categorical\",\"required\":true},\"amount\":{\"predicates\":[\"amount\"],\"type\":\"measurement\",\"required\":true},\"method\":{\"predicates\":[\"method\"],\"type\":\"categorical\",\"required\":false}},\"sort_by\":\"date\",\"sort_order\":\"ascending\"}"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "wd-acct-invoice-sparkline",
+            "universal_id": "platform-widget-definition",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "platform-widget-code-prop": "invoice-sparkline",
+                "platform-widget-type-prop": "sparkline",
+                "platform-widget-priority-prop": {"value": 30, "unit": "ordinal"},
+                "platform-widget-rules-prop": "{\"operator\":\"AND\",\"rules\":[{\"type\":\"RelatorPredicateMatch\",\"predicate_sets\":[[\"amount\",\"total\"],[\"date\",\"issued\"]]}]}",
+                "platform-widget-bindings-prop": "{\"source\":\"relator_group\",\"properties\":{\"date\":{\"predicates\":[\"date\",\"issued\"],\"type\":\"categorical\",\"required\":true},\"amount\":{\"predicates\":[\"amount\",\"total\"],\"type\":\"measurement\",\"required\":true},\"currency\":{\"predicates\":[\"currency\"],\"type\":\"categorical\",\"required\":false}},\"sort_by\":\"date\",\"sort_order\":\"ascending\"}"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "wd-acct-invoice-timeline",
+            "universal_id": "platform-widget-definition",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "platform-widget-code-prop": "invoice-timeline",
+                "platform-widget-type-prop": "timeline",
+                "platform-widget-priority-prop": {"value": 40, "unit": "ordinal"},
+                "platform-widget-rules-prop": "{\"operator\":\"AND\",\"rules\":[{\"type\":\"RelatorPredicateMatch\",\"predicate_sets\":[[\"date\",\"issued\"],[\"status\"]]}]}",
+                "platform-widget-bindings-prop": "{\"source\":\"relator_group\",\"properties\":{\"event_date\":{\"predicates\":[\"date\",\"issued\"],\"type\":\"categorical\",\"required\":true},\"event_type\":{\"predicates\":[\"status\"],\"type\":\"categorical\",\"required\":true},\"rating\":{\"predicates\":[\"amount\",\"total\"],\"type\":\"measurement\",\"required\":false},\"notes\":{\"predicates\":[\"description\"],\"type\":\"categorical\",\"required\":false}},\"sort_by\":\"event_date\",\"sort_order\":\"descending\"}"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "wd-acct-entity-count",
+            "universal_id": "platform-widget-definition",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "platform-widget-code-prop": "entity-count",
+                "platform-widget-type-prop": "count_compare",
+                "platform-widget-priority-prop": {"value": 50, "unit": "ordinal"},
+                "platform-widget-rules-prop": "{\"operator\":\"AND\",\"rules\":[{\"type\":\"InboundRelatorCount\",\"min_count\":1}]}",
+                "platform-widget-bindings-prop": "{\"source\":\"inbound_count\"}"
+            },
+            "use_seed": true
+        }
+    ],
+
+    "relator_instances": [
+        {
+            "_comment": "=== INVOICE-VENDOR RELATIONSHIPS ===",
+            "id": "rel-inv001-vendor",
+            "relator_id": "acct-inv-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-001",
+                "vendor": "acct-vendor-acme"
+            }
+        },
+        {
+            "id": "rel-inv002-vendor",
+            "relator_id": "acct-inv-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-002",
+                "vendor": "acct-vendor-techsupply"
+            }
+        },
+        {
+            "id": "rel-inv003-vendor",
+            "relator_id": "acct-inv-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-003",
+                "vendor": "acct-vendor-cloudsoft"
+            }
+        },
+        {
+            "id": "rel-inv004-vendor",
+            "relator_id": "acct-inv-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-004",
+                "vendor": "acct-vendor-officeworld"
+            }
+        },
+        {
+            "id": "rel-inv005-vendor",
+            "relator_id": "acct-inv-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-005",
+                "vendor": "acct-vendor-acme"
+            }
+        },
+        {
+            "id": "rel-inv006-vendor",
+            "relator_id": "acct-inv-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-006",
+                "vendor": "acct-vendor-acme"
+            }
+        },
+        {
+            "id": "rel-inv007-vendor",
+            "relator_id": "acct-inv-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-007",
+                "vendor": "acct-vendor-travelmax"
+            }
+        },
+        {
+            "id": "rel-inv008-vendor",
+            "relator_id": "acct-inv-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-008",
+                "vendor": "acct-vendor-cloudsoft"
+            }
+        },
+
+        {
+            "_comment": "=== INVOICE-DEPARTMENT RELATIONSHIPS ===",
+            "id": "rel-inv001-dept",
+            "relator_id": "acct-inv-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-001",
+                "department": "acct-dept-engineering"
+            }
+        },
+        {
+            "id": "rel-inv002-dept",
+            "relator_id": "acct-inv-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-002",
+                "department": "acct-dept-operations"
+            }
+        },
+        {
+            "id": "rel-inv003-dept",
+            "relator_id": "acct-inv-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-003",
+                "department": "acct-dept-engineering"
+            }
+        },
+        {
+            "id": "rel-inv004-dept",
+            "relator_id": "acct-inv-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-004",
+                "department": "acct-dept-operations"
+            }
+        },
+        {
+            "id": "rel-inv005-dept",
+            "relator_id": "acct-inv-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-005",
+                "department": "acct-dept-marketing"
+            }
+        },
+        {
+            "id": "rel-inv006-dept",
+            "relator_id": "acct-inv-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-006",
+                "department": "acct-dept-engineering"
+            }
+        },
+        {
+            "id": "rel-inv007-dept",
+            "relator_id": "acct-inv-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-007",
+                "department": "acct-dept-sales"
+            }
+        },
+        {
+            "id": "rel-inv008-dept",
+            "relator_id": "acct-inv-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-008",
+                "department": "acct-dept-engineering"
+            }
+        },
+
+        {
+            "_comment": "=== INVOICE-LINEITEM RELATIONSHIPS ===",
+            "id": "rel-inv001-li1",
+            "relator_id": "acct-inv-lineitem-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-001",
+                "line_item": "acct-li-001-1"
+            }
+        },
+        {
+            "id": "rel-inv001-li2",
+            "relator_id": "acct-inv-lineitem-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-001",
+                "line_item": "acct-li-001-2"
+            }
+        },
+        {
+            "id": "rel-inv002-li1",
+            "relator_id": "acct-inv-lineitem-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-002",
+                "line_item": "acct-li-002-1"
+            }
+        },
+        {
+            "id": "rel-inv002-li2",
+            "relator_id": "acct-inv-lineitem-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-002",
+                "line_item": "acct-li-002-2"
+            }
+        },
+        {
+            "id": "rel-inv003-li1",
+            "relator_id": "acct-inv-lineitem-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-003",
+                "line_item": "acct-li-003-1"
+            }
+        },
+        {
+            "id": "rel-inv003-li2",
+            "relator_id": "acct-inv-lineitem-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-003",
+                "line_item": "acct-li-003-2"
+            }
+        },
+        {
+            "id": "rel-inv004-li1",
+            "relator_id": "acct-inv-lineitem-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-004",
+                "line_item": "acct-li-004-1"
+            }
+        },
+        {
+            "id": "rel-inv004-li2",
+            "relator_id": "acct-inv-lineitem-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-004",
+                "line_item": "acct-li-004-2"
+            }
+        },
+        {
+            "id": "rel-inv006-li1",
+            "relator_id": "acct-inv-lineitem-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-006",
+                "line_item": "acct-li-006-1"
+            }
+        },
+        {
+            "id": "rel-inv006-li2",
+            "relator_id": "acct-inv-lineitem-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-006",
+                "line_item": "acct-li-006-2"
+            }
+        },
+
+        {
+            "_comment": "=== LINEITEM-GL ACCOUNT RELATIONSHIPS ===",
+            "id": "rel-li001-1-gl",
+            "relator_id": "acct-lineitem-gl-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-001-1",
+                "gl_account": "acct-gl-5100"
+            }
+        },
+        {
+            "id": "rel-li001-2-gl",
+            "relator_id": "acct-lineitem-gl-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-001-2",
+                "gl_account": "acct-gl-5100"
+            }
+        },
+        {
+            "id": "rel-li002-1-gl",
+            "relator_id": "acct-lineitem-gl-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-002-1",
+                "gl_account": "acct-gl-5400"
+            }
+        },
+        {
+            "id": "rel-li002-2-gl",
+            "relator_id": "acct-lineitem-gl-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-002-2",
+                "gl_account": "acct-gl-5100"
+            }
+        },
+        {
+            "id": "rel-li003-1-gl",
+            "relator_id": "acct-lineitem-gl-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-003-1",
+                "gl_account": "acct-gl-5300"
+            }
+        },
+        {
+            "id": "rel-li003-2-gl",
+            "relator_id": "acct-lineitem-gl-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-003-2",
+                "gl_account": "acct-gl-5300"
+            }
+        },
+        {
+            "id": "rel-li004-1-gl",
+            "relator_id": "acct-lineitem-gl-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-004-1",
+                "gl_account": "acct-gl-5200"
+            }
+        },
+        {
+            "id": "rel-li004-2-gl",
+            "relator_id": "acct-lineitem-gl-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-004-2",
+                "gl_account": "acct-gl-5200"
+            }
+        },
+        {
+            "id": "rel-li006-1-gl",
+            "relator_id": "acct-lineitem-gl-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-006-1",
+                "gl_account": "acct-gl-5100"
+            }
+        },
+        {
+            "id": "rel-li006-2-gl",
+            "relator_id": "acct-lineitem-gl-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-006-2",
+                "gl_account": "acct-gl-5100"
+            }
+        },
+
+        {
+            "_comment": "=== LINEITEM-TAX RATE RELATIONSHIPS ===",
+            "id": "rel-li001-1-tax",
+            "relator_id": "acct-lineitem-tax-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-001-1",
+                "tax_rate": "acct-tax-vat-standard"
+            }
+        },
+        {
+            "id": "rel-li001-2-tax",
+            "relator_id": "acct-lineitem-tax-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-001-2",
+                "tax_rate": "acct-tax-vat-standard"
+            }
+        },
+        {
+            "id": "rel-li002-1-tax",
+            "relator_id": "acct-lineitem-tax-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-002-1",
+                "tax_rate": "acct-tax-vat-standard"
+            }
+        },
+        {
+            "id": "rel-li003-1-tax",
+            "relator_id": "acct-lineitem-tax-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-003-1",
+                "tax_rate": "acct-tax-vat-reduced"
+            }
+        },
+        {
+            "id": "rel-li003-2-tax",
+            "relator_id": "acct-lineitem-tax-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-003-2",
+                "tax_rate": "acct-tax-vat-reduced"
+            }
+        },
+        {
+            "id": "rel-li004-1-tax",
+            "relator_id": "acct-lineitem-tax-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-004-1",
+                "tax_rate": "acct-tax-vat-standard"
+            }
+        },
+        {
+            "id": "rel-li007-tax",
+            "relator_id": "acct-lineitem-tax-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-004-2",
+                "tax_rate": "acct-tax-vat-standard"
+            }
+        },
+        {
+            "id": "rel-li006-1-tax",
+            "relator_id": "acct-lineitem-tax-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-006-1",
+                "tax_rate": "acct-tax-vat-standard"
+            }
+        },
+        {
+            "id": "rel-li006-2-tax",
+            "relator_id": "acct-lineitem-tax-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "line_item": "acct-li-006-2",
+                "tax_rate": "acct-tax-vat-standard"
+            }
+        },
+
+        {
+            "_comment": "=== INVOICE-PAYMENT RELATIONSHIPS ===",
+            "id": "rel-inv001-pay",
+            "relator_id": "acct-inv-payment-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-001",
+                "payment": "acct-pay-001"
+            }
+        },
+        {
+            "id": "rel-inv007-pay",
+            "relator_id": "acct-inv-payment-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-007",
+                "payment": "acct-pay-002"
+            }
+        },
+        {
+            "id": "rel-inv002-pay",
+            "relator_id": "acct-inv-payment-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-002",
+                "payment": "acct-pay-003"
+            }
+        },
+        {
+            "id": "rel-inv003-pay",
+            "relator_id": "acct-inv-payment-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-003",
+                "payment": "acct-pay-004"
+            }
+        },
+        {
+            "id": "rel-inv005-pay",
+            "relator_id": "acct-inv-payment-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-005",
+                "payment": "acct-pay-005"
+            }
+        },
+        {
+            "id": "rel-inv006-pay",
+            "relator_id": "acct-inv-payment-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "invoice": "acct-inv-006",
+                "payment": "acct-pay-006"
+            }
+        },
+
+        {
+            "_comment": "=== PAYMENT-METHOD RELATIONSHIPS ===",
+            "id": "rel-pay001-method",
+            "relator_id": "acct-pay-method-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "payment": "acct-pay-001",
+                "method": "acct-method-wire"
+            }
+        },
+        {
+            "id": "rel-pay002-method",
+            "relator_id": "acct-pay-method-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "payment": "acct-pay-002",
+                "method": "acct-method-ach"
+            }
+        },
+        {
+            "id": "rel-pay003-method",
+            "relator_id": "acct-pay-method-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "payment": "acct-pay-003",
+                "method": "acct-method-check"
+            }
+        },
+        {
+            "id": "rel-pay004-method",
+            "relator_id": "acct-pay-method-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "payment": "acct-pay-004",
+                "method": "acct-method-card"
+            }
+        },
+        {
+            "id": "rel-pay005-method",
+            "relator_id": "acct-pay-method-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "payment": "acct-pay-005",
+                "method": "acct-method-check"
+            }
+        },
+        {
+            "id": "rel-pay006-method",
+            "relator_id": "acct-pay-method-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "payment": "acct-pay-006",
+                "method": "acct-method-card"
+            }
+        },
+
+        {
+            "_comment": "=== BUDGET-DEPARTMENT RELATIONSHIPS ===",
+            "id": "rel-budget-eng",
+            "relator_id": "acct-budget-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "budget": "acct-budget-eng-q1",
+                "department": "acct-dept-engineering"
+            }
+        },
+        {
+            "id": "rel-budget-mkt",
+            "relator_id": "acct-budget-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "budget": "acct-budget-mkt-q1",
+                "department": "acct-dept-marketing"
+            }
+        },
+        {
+            "id": "rel-budget-ops",
+            "relator_id": "acct-budget-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "budget": "acct-budget-ops-q1",
+                "department": "acct-dept-operations"
+            }
+        },
+        {
+            "id": "rel-budget-sales",
+            "relator_id": "acct-budget-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "budget": "acct-budget-sales-q1",
+                "department": "acct-dept-sales"
+            }
+        },
+        {
+            "id": "rel-budget-fin",
+            "relator_id": "acct-budget-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "budget": "acct-budget-fin-q1",
+                "department": "acct-dept-finance"
+            }
+        },
+        {
+            "id": "rel-budget-hr",
+            "relator_id": "acct-budget-dept-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "budget": "acct-budget-hr-q1",
+                "department": "acct-dept-hr"
+            }
+        },
+
+        {
+            "_comment": "=== PROCESS -> STAGE COMPOSITION RELATORS (inv006) ===",
+            "id": "rel-inv006-initial-stage",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-process-inv006-approval",
+                "component": "acct-inv006-initial-review-stage"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-inv006-manager-stage",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-process-inv006-approval",
+                "component": "acct-inv006-manager-review-stage"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-inv006-director-stage",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-process-inv006-approval",
+                "component": "acct-inv006-director-review-stage"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-inv006-cfo-stage",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-process-inv006-approval",
+                "component": "acct-inv006-cfo-review-stage"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== PROCESS -> STAGE COMPOSITION RELATORS (inv003) ===",
+            "id": "rel-inv003-initial-stage",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-process-inv003-approval",
+                "component": "acct-inv003-initial-review-stage"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-inv003-manager-stage",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-process-inv003-approval",
+                "component": "acct-inv003-manager-review-stage"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== STAGE -> OBLIGATION COMPOSITION RELATORS (inv006) ===",
+            "id": "rel-inv006-initial-obl",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-inv006-initial-review-stage",
+                "component": "acct-inv006-initial-obligation"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-inv006-manager-obl",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-inv006-manager-review-stage",
+                "component": "acct-inv006-manager-obligation"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-inv006-director-obl",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-inv006-director-review-stage",
+                "component": "acct-inv006-director-obligation"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== STAGE -> OBLIGATION COMPOSITION RELATORS (inv003) ===",
+            "id": "rel-inv003-initial-obl",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-inv003-initial-review-stage",
+                "component": "acct-inv003-initial-obligation"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== PROCESS -> STAGE COMPOSITION RELATORS (inv001 - completed) ===",
+            "id": "rel-inv001-initial-stage",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-process-inv001-approval",
+                "component": "acct-inv001-initial-review-stage"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-inv001-manager-stage",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-process-inv001-approval",
+                "component": "acct-inv001-manager-review-stage"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== STAGE -> OBLIGATION COMPOSITION RELATORS (inv001 - completed) ===",
+            "id": "rel-inv001-initial-obl",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-inv001-initial-review-stage",
+                "component": "acct-inv001-initial-obligation"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-inv001-manager-obl",
+            "relator_id": "composition-relator",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "acct-inv001-manager-review-stage",
+                "component": "acct-inv001-manager-obligation"
+            },
+            "use_seed": true
+        }
+    ]
+}

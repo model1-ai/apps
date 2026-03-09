@@ -1,0 +1,1801 @@
+{
+    "_comment": "=== APP COSTA BANANA INTELLIGENCE REACTIVE EXAMPLE ===",
+    "_description": "Costa Bananas bakery example: banana bread recipes, ingredients with nutritional data, baking batches, supplier management, normative processes (Baking Process 5-stage and Ingredient Acquisition 3-stage), and intelligence artifacts for calorie, weight, and nutritional analysis.",
+    "organizations": [
+        {
+            "id": "costa-bananas-org",
+            "label": { "en": "Costa Bananas" },
+            "use_seed": true
+        }
+    ],
+    "tenants": [
+        {
+            "id": "costa-food-industries-tenant",
+            "organization_id": "costa-bananas-org",
+            "label": { "en": "Costa Food Industries" },
+            "use_seed": true
+        }
+    ],
+    "universals": [
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Batch Status ===",
+            "id": "cb-batch-status-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Batch Status" },
+            "description": { "en": "Baking batch lifecycle status enumeration" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Ingredient Category ===",
+            "id": "cb-ingredient-category-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Ingredient Category" },
+            "description": { "en": "Ingredient classification by type" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Order Status ===",
+            "id": "cb-order-status-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Order Status" },
+            "description": { "en": "Ingredient order lifecycle status enumeration" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Delivery Status ===",
+            "id": "cb-delivery-status-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Delivery Status" },
+            "description": { "en": "Delivery shipment lifecycle status enumeration" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Nutrition Type ===",
+            "id": "cb-nutrition-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Nutrition Type" },
+            "description": { "en": "Nutritional metric type enumeration" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY UNIVERSAL: Banana Bread Recipe ===",
+            "id": "cb-banana-bread-recipe",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Banana Bread Recipe" },
+            "description": { "en": "Recipe template for banana bread variants" },
+            "label_schema": {
+                "separator": " v",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY UNIVERSAL: Ingredient ===",
+            "id": "cb-ingredient",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Ingredient" },
+            "description": { "en": "Individual ingredient with nutritional data" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY UNIVERSAL: Baking Batch (Subject of Baking Process) ===",
+            "id": "cb-baking-batch",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Baking Batch" },
+            "description": { "en": "A production batch of banana bread loaves - subject of the Baking Process" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY UNIVERSAL: Ingredient Order (Subject of Acquisition Process) ===",
+            "id": "cb-ingredient-order",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Ingredient Order" },
+            "description": { "en": "Purchase order for ingredients from suppliers - subject of the Acquisition Process" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY UNIVERSAL: Supplier ===",
+            "id": "cb-supplier",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Supplier" },
+            "description": { "en": "Ingredient supplier company" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY UNIVERSAL: Delivery Shipment ===",
+            "id": "cb-delivery-shipment",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Delivery Shipment" },
+            "description": { "en": "Shipping and logistics tracking for baked goods" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY UNIVERSAL: Product Package ===",
+            "id": "cb-product-package",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Product Package" },
+            "description": { "en": "Packaged final product ready for delivery" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY UNIVERSAL: Analytics Summary (Artifact Output) ===",
+            "id": "cb-analytics-summary",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Analytics Summary" },
+            "description": { "en": "Materialized intelligence artifact output universal" },
+            "label_schema": {
+                "separator": " | ",
+                "max_length": 60,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== FUNCTIONAL ROLE: Head Baker ===",
+            "id": "role-head-baker",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": { "en": "Head Baker" },
+            "description": { "en": "Responsible for ingredient setup and baking execution" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== FUNCTIONAL ROLE: Quality Inspector ===",
+            "id": "role-quality-inspector",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": { "en": "Quality Inspector" },
+            "description": { "en": "Responsible for pre-baking quality control checks" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== FUNCTIONAL ROLE: Logistics Coordinator ===",
+            "id": "role-logistics-coordinator",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": { "en": "Logistics Coordinator" },
+            "description": { "en": "Responsible for packaging and shipment coordination" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== FUNCTIONAL ROLE: Procurement Officer ===",
+            "id": "role-procurement-officer",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": { "en": "Procurement Officer" },
+            "description": { "en": "Responsible for ingredient procurement and supplier management" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== FUNCTIONAL ROLE: Bakery Manager ===",
+            "id": "role-bakery-manager",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": { "en": "Bakery Manager" },
+            "description": { "en": "Final authority for delivery approval and receipt sign-off" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DOMAIN RELATOR: Recipe Has Ingredient ===",
+            "id": "cb-recipe-has-ingredient",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Recipe Has Ingredient" },
+            "description": { "en": "Composition: a recipe contains an ingredient with a specific quantity" },
+            "roles": [
+                { "name": "recipe", "universal_id": "cb-banana-bread-recipe" },
+                { "name": "ingredient", "universal_id": "cb-ingredient" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DOMAIN RELATOR: Batch Uses Recipe ===",
+            "id": "cb-batch-uses-recipe",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Batch Uses Recipe" },
+            "description": { "en": "Association: a baking batch follows a specific recipe" },
+            "roles": [
+                { "name": "batch", "universal_id": "cb-baking-batch" },
+                { "name": "recipe", "universal_id": "cb-banana-bread-recipe" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DOMAIN RELATOR: Order For Ingredient ===",
+            "id": "cb-order-for-ingredient",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Order For Ingredient" },
+            "description": { "en": "Association: an order is placed for a specific ingredient" },
+            "roles": [
+                { "name": "order", "universal_id": "cb-ingredient-order" },
+                { "name": "ingredient", "universal_id": "cb-ingredient" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DOMAIN RELATOR: Order From Supplier ===",
+            "id": "cb-order-from-supplier",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Order From Supplier" },
+            "description": { "en": "Association: an order is placed with a supplier" },
+            "roles": [
+                { "name": "order", "universal_id": "cb-ingredient-order" },
+                { "name": "supplier", "universal_id": "cb-supplier" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DOMAIN RELATOR: Shipment For Batch ===",
+            "id": "cb-shipment-for-batch",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Shipment For Batch" },
+            "description": { "en": "Association: a delivery shipment carries products from a baking batch" },
+            "roles": [
+                { "name": "shipment", "universal_id": "cb-delivery-shipment" },
+                { "name": "batch", "universal_id": "cb-baking-batch" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DOMAIN RELATOR: Batch Produces Package ===",
+            "id": "cb-batch-produces-package",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Batch Produces Package" },
+            "description": { "en": "Derivation: a baking batch produces packaged products" },
+            "roles": [
+                { "name": "batch", "universal_id": "cb-baking-batch" },
+                { "name": "package", "universal_id": "cb-product-package" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "derivation-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DOMAIN RELATOR: Ingredient Has Nutrition ===",
+            "id": "cb-ingredient-has-nutrition",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Ingredient Has Nutrition" },
+            "description": { "en": "Attribution: an ingredient has a nutritional metric value" },
+            "roles": [
+                { "name": "ingredient", "universal_id": "cb-ingredient" },
+                { "name": "nutrition_type", "universal_id": "cb-nutrition-type" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "attribution-relator" }
+            ],
+            "use_seed": true
+        }
+    ],
+    "property_definitions": [
+        {
+            "_comment": "=== ENUM PROPERTY: Batch Status Name ===",
+            "id": "cb-batch-status-name-prop",
+            "universal_id": "cb-batch-status-type",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUM PROPERTY: Ingredient Category Name ===",
+            "id": "cb-ingredient-category-name-prop",
+            "universal_id": "cb-ingredient-category-type",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUM PROPERTY: Order Status Name ===",
+            "id": "cb-order-status-name-prop",
+            "universal_id": "cb-order-status-type",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUM PROPERTY: Delivery Status Name ===",
+            "id": "cb-delivery-status-name-prop",
+            "universal_id": "cb-delivery-status-type",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUM PROPERTY: Nutrition Type Name ===",
+            "id": "cb-nutrition-type-name-prop",
+            "universal_id": "cb-nutrition-type",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RECIPE PROPERTIES ===",
+            "id": "cb-recipe-name-prop",
+            "universal_id": "cb-banana-bread-recipe",
+            "label": { "en": "Recipe Name" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "cb-recipe-version-prop",
+            "universal_id": "cb-banana-bread-recipe",
+            "label": { "en": "Version" },
+            "property_schema": {
+                "predicates": ["version"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2 },
+            "use_seed": true
+        },
+        {
+            "id": "cb-recipe-description-prop",
+            "universal_id": "cb-banana-bread-recipe",
+            "label": { "en": "Description" },
+            "property_schema": {
+                "predicates": ["description"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-recipe-prep-time-prop",
+            "universal_id": "cb-banana-bread-recipe",
+            "label": { "en": "Prep Time" },
+            "property_schema": {
+                "predicates": ["time", "preparation"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-recipe-bake-time-prop",
+            "universal_id": "cb-banana-bread-recipe",
+            "label": { "en": "Bake Time" },
+            "property_schema": {
+                "predicates": ["time", "baking"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-recipe-yield-prop",
+            "universal_id": "cb-banana-bread-recipe",
+            "label": { "en": "Yield" },
+            "property_schema": {
+                "predicates": ["yield", "servings"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== INGREDIENT PROPERTIES ===",
+            "id": "cb-ingredient-name-prop",
+            "universal_id": "cb-ingredient",
+            "label": { "en": "Ingredient Name" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "cb-ingredient-category-prop",
+            "universal_id": "cb-ingredient",
+            "label": { "en": "Category" },
+            "property_schema": {
+                "predicates": ["category"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": "cb-ingredient-category-type", "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2 },
+            "use_seed": true
+        },
+        {
+            "id": "cb-ingredient-quantity-prop",
+            "universal_id": "cb-ingredient",
+            "label": { "en": "Default Quantity" },
+            "property_schema": {
+                "predicates": ["quantity", "weight"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-ingredient-calories-prop",
+            "universal_id": "cb-ingredient",
+            "label": { "en": "Calories" },
+            "property_schema": {
+                "predicates": ["calories", "energy"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-ingredient-protein-prop",
+            "universal_id": "cb-ingredient",
+            "label": { "en": "Protein" },
+            "property_schema": {
+                "predicates": ["protein", "nutrition"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-ingredient-fat-prop",
+            "universal_id": "cb-ingredient",
+            "label": { "en": "Fat" },
+            "property_schema": {
+                "predicates": ["fat", "nutrition"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-ingredient-carbs-prop",
+            "universal_id": "cb-ingredient",
+            "label": { "en": "Carbohydrates" },
+            "property_schema": {
+                "predicates": ["carbohydrates", "nutrition"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-ingredient-fiber-prop",
+            "universal_id": "cb-ingredient",
+            "label": { "en": "Fiber" },
+            "property_schema": {
+                "predicates": ["fiber", "nutrition"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== BAKING BATCH PROPERTIES ===",
+            "id": "cb-batch-code-prop",
+            "universal_id": "cb-baking-batch",
+            "label": { "en": "Batch Code" },
+            "property_schema": {
+                "predicates": ["identifier", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1, "prefix": "BATCH-" },
+            "use_seed": true
+        },
+        {
+            "id": "cb-batch-status-prop",
+            "universal_id": "cb-baking-batch",
+            "label": { "en": "Status" },
+            "property_schema": {
+                "predicates": ["status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": "cb-batch-status-type", "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2 },
+            "use_seed": true
+        },
+        {
+            "id": "cb-batch-start-date-prop",
+            "universal_id": "cb-baking-batch",
+            "label": { "en": "Start Date" },
+            "property_schema": {
+                "predicates": ["date", "start"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-batch-quantity-prop",
+            "universal_id": "cb-baking-batch",
+            "label": { "en": "Quantity (Loaves)" },
+            "property_schema": {
+                "predicates": ["quantity", "count"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-batch-oven-temp-prop",
+            "universal_id": "cb-baking-batch",
+            "label": { "en": "Oven Temperature" },
+            "property_schema": {
+                "predicates": ["temperature", "oven"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-batch-total-weight-prop",
+            "universal_id": "cb-baking-batch",
+            "label": { "en": "Total Weight" },
+            "property_schema": {
+                "predicates": ["weight", "total"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-batch-notes-prop",
+            "universal_id": "cb-baking-batch",
+            "label": { "en": "Notes" },
+            "property_schema": {
+                "predicates": ["notes"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== INGREDIENT ORDER PROPERTIES ===",
+            "id": "cb-order-code-prop",
+            "universal_id": "cb-ingredient-order",
+            "label": { "en": "Order Code" },
+            "property_schema": {
+                "predicates": ["identifier", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1, "prefix": "ORD-" },
+            "use_seed": true
+        },
+        {
+            "id": "cb-order-status-prop",
+            "universal_id": "cb-ingredient-order",
+            "label": { "en": "Status" },
+            "property_schema": {
+                "predicates": ["status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": "cb-order-status-type", "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2 },
+            "use_seed": true
+        },
+        {
+            "id": "cb-order-quantity-prop",
+            "universal_id": "cb-ingredient-order",
+            "label": { "en": "Order Quantity" },
+            "property_schema": {
+                "predicates": ["quantity", "weight"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-order-unit-price-prop",
+            "universal_id": "cb-ingredient-order",
+            "label": { "en": "Unit Price" },
+            "property_schema": {
+                "predicates": ["price", "unit"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-order-total-cost-prop",
+            "universal_id": "cb-ingredient-order",
+            "label": { "en": "Total Cost" },
+            "property_schema": {
+                "predicates": ["cost", "total"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-order-date-prop",
+            "universal_id": "cb-ingredient-order",
+            "label": { "en": "Order Date" },
+            "property_schema": {
+                "predicates": ["date", "order"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== SUPPLIER PROPERTIES ===",
+            "id": "cb-supplier-name-prop",
+            "universal_id": "cb-supplier",
+            "label": { "en": "Supplier Name" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "cb-supplier-code-prop",
+            "universal_id": "cb-supplier",
+            "label": { "en": "Supplier Code" },
+            "property_schema": {
+                "predicates": ["identifier", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2, "prefix": "SUP-" },
+            "use_seed": true
+        },
+        {
+            "id": "cb-supplier-contact-prop",
+            "universal_id": "cb-supplier",
+            "label": { "en": "Contact" },
+            "property_schema": {
+                "predicates": ["contact", "email"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-supplier-rating-prop",
+            "universal_id": "cb-supplier",
+            "label": { "en": "Rating" },
+            "property_schema": {
+                "predicates": ["rating"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-supplier-location-prop",
+            "universal_id": "cb-supplier",
+            "label": { "en": "Location" },
+            "property_schema": {
+                "predicates": ["location"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DELIVERY SHIPMENT PROPERTIES ===",
+            "id": "cb-shipment-code-prop",
+            "universal_id": "cb-delivery-shipment",
+            "label": { "en": "Shipment Code" },
+            "property_schema": {
+                "predicates": ["identifier", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1, "prefix": "SHP-" },
+            "use_seed": true
+        },
+        {
+            "id": "cb-shipment-status-prop",
+            "universal_id": "cb-delivery-shipment",
+            "label": { "en": "Status" },
+            "property_schema": {
+                "predicates": ["status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": "cb-delivery-status-type", "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2 },
+            "use_seed": true
+        },
+        {
+            "id": "cb-shipment-destination-prop",
+            "universal_id": "cb-delivery-shipment",
+            "label": { "en": "Destination" },
+            "property_schema": {
+                "predicates": ["destination", "address"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-shipment-weight-prop",
+            "universal_id": "cb-delivery-shipment",
+            "label": { "en": "Weight" },
+            "property_schema": {
+                "predicates": ["weight"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-shipment-dispatch-date-prop",
+            "universal_id": "cb-delivery-shipment",
+            "label": { "en": "Dispatch Date" },
+            "property_schema": {
+                "predicates": ["date", "dispatch"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-shipment-delivery-date-prop",
+            "universal_id": "cb-delivery-shipment",
+            "label": { "en": "Delivery Date" },
+            "property_schema": {
+                "predicates": ["date", "delivery"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== PRODUCT PACKAGE PROPERTIES ===",
+            "id": "cb-package-code-prop",
+            "universal_id": "cb-product-package",
+            "label": { "en": "Package Code" },
+            "property_schema": {
+                "predicates": ["identifier", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1, "prefix": "PKG-" },
+            "use_seed": true
+        },
+        {
+            "id": "cb-package-loaf-count-prop",
+            "universal_id": "cb-product-package",
+            "label": { "en": "Loaf Count" },
+            "property_schema": {
+                "predicates": ["count", "quantity"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-package-total-weight-prop",
+            "universal_id": "cb-product-package",
+            "label": { "en": "Total Weight" },
+            "property_schema": {
+                "predicates": ["weight", "total"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-package-total-calories-prop",
+            "universal_id": "cb-product-package",
+            "label": { "en": "Total Calories" },
+            "property_schema": {
+                "predicates": ["calories", "total"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-package-date-prop",
+            "universal_id": "cb-product-package",
+            "label": { "en": "Package Date" },
+            "property_schema": {
+                "predicates": ["date", "packaging"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ANALYTICS SUMMARY PROPERTIES ===",
+            "id": "cb-summary-dimension-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Dimension" },
+            "property_schema": {
+                "predicates": ["dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-group-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Group" },
+            "property_schema": {
+                "predicates": ["group"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2 },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-total-calories-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Total Calories" },
+            "property_schema": {
+                "predicates": ["calories", "total"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-total-weight-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Total Weight" },
+            "property_schema": {
+                "predicates": ["weight", "total"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-avg-protein-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Avg Protein" },
+            "property_schema": {
+                "predicates": ["protein", "average"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-record-count-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Record Count" },
+            "property_schema": {
+                "predicates": ["count"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-avg-fat-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Avg Fat" },
+            "property_schema": {
+                "predicates": ["fat", "average"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-avg-calories-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Avg Calories" },
+            "property_schema": {
+                "predicates": ["calories", "average"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-total-protein-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Total Protein" },
+            "property_schema": {
+                "predicates": ["protein", "total"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-total-fat-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Total Fat" },
+            "property_schema": {
+                "predicates": ["fat", "total"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-total-carbs-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Total Carbs" },
+            "property_schema": {
+                "predicates": ["carbohydrates", "total"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-total-fiber-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Total Fiber" },
+            "property_schema": {
+                "predicates": ["fiber", "total"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-min-quantity-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Min Quantity" },
+            "property_schema": {
+                "predicates": ["quantity", "minimum"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-max-quantity-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Max Quantity" },
+            "property_schema": {
+                "predicates": ["quantity", "maximum"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "cb-summary-threshold-state-prop",
+            "universal_id": "cb-analytics-summary",
+            "label": { "en": "Threshold State" },
+            "property_schema": {
+                "predicates": ["threshold", "state"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR PROPERTY: Recipe-Ingredient Quantity ===",
+            "id": "cb-recipe-ingredient-quantity-prop",
+            "universal_id": "cb-recipe-has-ingredient",
+            "label": { "en": "Quantity" },
+            "property_schema": {
+                "predicates": ["quantity", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        }
+    ],
+    "event_definitions": [
+        {
+            "id": "cb-baking-process-approved",
+            "app_id": "costa-banana-intelligence-app",
+            "scope": "tenant",
+            "label": { "en": "Baking Process Approved" },
+            "description": { "en": "Emitted when a baking batch is approved through all process stages" },
+            "payload_schema": [
+                { "name": "batch_id", "field_type": "uuid", "required": true },
+                { "name": "process_id", "field_type": "uuid", "required": true }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "cb-baking-process-rejected",
+            "app_id": "costa-banana-intelligence-app",
+            "scope": "tenant",
+            "label": { "en": "Baking Process Rejected" },
+            "description": { "en": "Emitted when a baking batch is rejected at any process stage" },
+            "payload_schema": [
+                { "name": "batch_id", "field_type": "uuid", "required": true },
+                { "name": "process_id", "field_type": "uuid", "required": true },
+                { "name": "rejected_stage", "field_type": "string", "required": true }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "cb-acquisition-approved",
+            "app_id": "costa-banana-intelligence-app",
+            "scope": "tenant",
+            "label": { "en": "Acquisition Approved" },
+            "description": { "en": "Emitted when an ingredient order is approved through all acquisition stages" },
+            "payload_schema": [
+                { "name": "order_id", "field_type": "uuid", "required": true },
+                { "name": "process_id", "field_type": "uuid", "required": true }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "cb-high-calorie-threshold-event",
+            "app_id": "costa-banana-intelligence-app",
+            "scope": "tenant",
+            "label": { "en": "High Calorie Threshold Crossed" },
+            "description": { "en": "Emitted when average calories per ingredient category exceeds 300 kcal" },
+            "payload_schema": [
+                { "name": "artifact_instance_id", "field_type": "uuid" },
+                { "name": "measure_value", "field_type": "measurement", "measurement_frame": "Ratio" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "cb-heavy-recipe-threshold-event",
+            "app_id": "costa-banana-intelligence-app",
+            "scope": "tenant",
+            "label": { "en": "Heavy Recipe Threshold Crossed" },
+            "description": { "en": "Emitted when total ingredient weight in a recipe exceeds 2000 grams" },
+            "payload_schema": [
+                { "name": "artifact_instance_id", "field_type": "uuid" },
+                { "name": "measure_value", "field_type": "measurement", "measurement_frame": "Ratio" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "cb-high-fat-threshold-event",
+            "app_id": "costa-banana-intelligence-app",
+            "scope": "tenant",
+            "label": { "en": "High Fat Threshold Crossed" },
+            "description": { "en": "Emitted when total fat per ingredient category exceeds 15 grams" },
+            "payload_schema": [
+                { "name": "artifact_instance_id", "field_type": "uuid" },
+                { "name": "measure_value", "field_type": "measurement", "measurement_frame": "Ratio" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "cb-acquisition-rejected",
+            "app_id": "costa-banana-intelligence-app",
+            "scope": "tenant",
+            "label": { "en": "Acquisition Rejected" },
+            "description": { "en": "Emitted when an ingredient order is rejected at any acquisition stage" },
+            "payload_schema": [
+                { "name": "order_id", "field_type": "uuid", "required": true },
+                { "name": "process_id", "field_type": "uuid", "required": true },
+                { "name": "rejected_stage", "field_type": "string", "required": true }
+            ],
+            "use_seed": true
+        }
+    ],
+    "artifact_definitions": [
+        {
+            "_comment": "=== ARTIFACT 1: Calorie Analysis ===",
+            "id": "cb-calorie-analysis",
+            "name": "Calorie Analysis",
+            "description": { "en": "Calorie analysis of ingredients by category and recipe, with high-calorie threshold alert" },
+            "source": {
+                "universal_id": "cb-ingredient"
+            },
+            "artifact_universal_id": "cb-analytics-summary",
+            "app_id": "costa-banana-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "cb-cal-category-dim",
+                    "code": "ingredient_category",
+                    "source": {
+                        "type": "Property",
+                        "property_id": "cb-ingredient-category-prop"
+                    },
+                    "artifact_property_id": "cb-summary-dimension-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "cb-cal-recipe-dim",
+                    "code": "recipe_name",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "cb-recipe-has-ingredient",
+                                "role_name": "recipe"
+                            }
+                        ],
+                        "property_id": "cb-recipe-name-prop"
+                    },
+                    "artifact_property_id": "cb-summary-group-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "cb-cal-sum",
+                    "code": "total_calories",
+                    "property_id": "cb-ingredient-calories-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "cb-summary-total-calories-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "cb-cal-avg",
+                    "code": "avg_calories",
+                    "property_id": "cb-ingredient-calories-prop",
+                    "function": "Avg",
+                    "artifact_property_id": "cb-summary-avg-calories-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "cb-cal-count",
+                    "code": "ingredient_count",
+                    "function": "Count",
+                    "artifact_property_id": "cb-summary-record-count-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [
+                {
+                    "id": "cb-high-calorie-threshold",
+                    "code": "high_calories",
+                    "measure_id": "cb-cal-avg",
+                    "condition": {
+                        "operator": "GreaterThan",
+                        "value": 300
+                    },
+                    "event_type_id": "cb-high-calorie-threshold-event",
+                    "state_property_id": "cb-summary-threshold-state-prop",
+                    "reset_on": "OnDimensionChange",
+                    "use_seed": true
+                }
+            ],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 2: Weight Aggregates ===",
+            "id": "cb-weight-aggregates",
+            "name": "Weight Aggregates",
+            "description": { "en": "Weight distribution of ingredients by category and recipe with heavy-recipe threshold" },
+            "source": {
+                "universal_id": "cb-ingredient"
+            },
+            "artifact_universal_id": "cb-analytics-summary",
+            "app_id": "costa-banana-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "cb-wt-category-dim",
+                    "code": "ingredient_category",
+                    "source": {
+                        "type": "Property",
+                        "property_id": "cb-ingredient-category-prop"
+                    },
+                    "artifact_property_id": "cb-summary-dimension-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "cb-wt-recipe-dim",
+                    "code": "recipe_name",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "cb-recipe-has-ingredient",
+                                "role_name": "recipe"
+                            }
+                        ],
+                        "property_id": "cb-recipe-name-prop"
+                    },
+                    "artifact_property_id": "cb-summary-group-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "cb-wt-sum",
+                    "code": "total_weight",
+                    "property_id": "cb-ingredient-quantity-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "cb-summary-total-weight-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "cb-wt-avg",
+                    "code": "avg_weight",
+                    "property_id": "cb-ingredient-quantity-prop",
+                    "function": "Avg",
+                    "artifact_property_id": "cb-summary-avg-protein-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "cb-wt-min",
+                    "code": "min_weight",
+                    "property_id": "cb-ingredient-quantity-prop",
+                    "function": "Min",
+                    "artifact_property_id": "cb-summary-min-quantity-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "cb-wt-max",
+                    "code": "max_weight",
+                    "property_id": "cb-ingredient-quantity-prop",
+                    "function": "Max",
+                    "artifact_property_id": "cb-summary-max-quantity-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [
+                {
+                    "id": "cb-heavy-recipe-threshold",
+                    "code": "heavy_recipe",
+                    "measure_id": "cb-wt-sum",
+                    "condition": {
+                        "operator": "GreaterThan",
+                        "value": 2000
+                    },
+                    "event_type_id": "cb-heavy-recipe-threshold-event",
+                    "state_property_id": "cb-summary-threshold-state-prop",
+                    "reset_on": "OnDimensionChange",
+                    "use_seed": true
+                }
+            ],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 3: Nutritional Facts ===",
+            "id": "cb-nutritional-facts",
+            "name": "Nutritional Facts",
+            "description": { "en": "Nutritional breakdown by ingredient category with high-fat threshold alert" },
+            "source": {
+                "universal_id": "cb-ingredient"
+            },
+            "artifact_universal_id": "cb-analytics-summary",
+            "app_id": "costa-banana-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "cb-nf-category-dim",
+                    "code": "ingredient_category",
+                    "source": {
+                        "type": "Property",
+                        "property_id": "cb-ingredient-category-prop"
+                    },
+                    "artifact_property_id": "cb-summary-dimension-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "cb-nf-protein-sum",
+                    "code": "total_protein",
+                    "property_id": "cb-ingredient-protein-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "cb-summary-total-protein-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "cb-nf-fat-sum",
+                    "code": "total_fat",
+                    "property_id": "cb-ingredient-fat-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "cb-summary-total-fat-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "cb-nf-carbs-sum",
+                    "code": "total_carbs",
+                    "property_id": "cb-ingredient-carbs-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "cb-summary-total-carbs-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "cb-nf-fiber-sum",
+                    "code": "total_fiber",
+                    "property_id": "cb-ingredient-fiber-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "cb-summary-total-fiber-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "cb-nf-cal-avg",
+                    "code": "avg_calories",
+                    "property_id": "cb-ingredient-calories-prop",
+                    "function": "Avg",
+                    "artifact_property_id": "cb-summary-avg-calories-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [
+                {
+                    "id": "cb-high-fat-threshold",
+                    "code": "high_fat",
+                    "measure_id": "cb-nf-fat-sum",
+                    "condition": {
+                        "operator": "GreaterThan",
+                        "value": 15
+                    },
+                    "event_type_id": "cb-high-fat-threshold-event",
+                    "state_property_id": "cb-summary-threshold-state-prop",
+                    "reset_on": "OnDimensionChange",
+                    "use_seed": true
+                }
+            ],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        }
+    ],
+    "apps": [
+        {
+            "id": "costa-banana-intelligence-app",
+            "tenant_id": "costa-food-industries-tenant",
+            "label": { "en": "Costa Banana Intelligence" },
+            "description": { "en": "Banana bread bakery management with recipes, ingredients, baking batches, supplier management, normative processes for baking and ingredient acquisition, and intelligence artifacts for nutritional analysis" },
+            "use_seed": true,
+            "modules": [
+                {
+                    "id": "costa-process-module",
+                    "use_seed": true,
+                    "label": { "en": "Costa Process Module" },
+                    "description": { "en": "Normative processes: baking batch approval (5-stage) and ingredient acquisition (3-stage)" },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": [
+                            "cb-baking-process-approved",
+                            "cb-baking-process-rejected",
+                            "cb-acquisition-approved",
+                            "cb-acquisition-rejected"
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "users": [
+        {
+            "id": "costa-org-admin-user",
+            "tenant_id": "costa-food-industries-tenant",
+            "email": "costa-org-admin@test.model1.ai",
+            "display_name": "Carlos Org Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["OrgAdmin"],
+            "use_seed": true
+        },
+        {
+            "id": "costa-tenant-admin-user",
+            "tenant_id": "costa-food-industries-tenant",
+            "email": "costa-tenant-admin@test.model1.ai",
+            "display_name": "Teresa Tenant Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["TenantAdmin"],
+            "use_seed": true
+        },
+        {
+            "id": "costa-app-admin-user",
+            "tenant_id": "costa-food-industries-tenant",
+            "email": "costa-app-admin@test.model1.ai",
+            "display_name": "Ana App Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppAdmin"],
+            "use_seed": true
+        },
+        {
+            "id": "costa-app-dev-user",
+            "tenant_id": "costa-food-industries-tenant",
+            "email": "costa-app-dev@test.model1.ai",
+            "display_name": "Diego App Developer",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppDeveloper"],
+            "use_seed": true
+        },
+        {
+            "id": "costa-baker-user",
+            "tenant_id": "costa-food-industries-tenant",
+            "email": "costa-baker@test.model1.ai",
+            "display_name": "Bruno Head Baker",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppUser"],
+            "use_seed": true
+        },
+        {
+            "id": "costa-inspector-user",
+            "tenant_id": "costa-food-industries-tenant",
+            "email": "costa-inspector@test.model1.ai",
+            "display_name": "Isabel Quality Inspector",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppUser"],
+            "use_seed": true
+        }
+    ],
+    "foundation_role_assignments": [
+        {
+            "id": "fra-costa-org-admin",
+            "user_id": "costa-org-admin-user",
+            "role": "OrgAdmin",
+            "scope": {
+                "type": "Organization",
+                "org_id": "costa-bananas-org"
+            },
+            "assigned_by": "costa-org-admin-user",
+            "use_seed": true
+        },
+        {
+            "id": "fra-costa-tenant-admin",
+            "user_id": "costa-tenant-admin-user",
+            "role": "TenantAdmin",
+            "scope": {
+                "type": "Tenant",
+                "tenant_id": "costa-food-industries-tenant"
+            },
+            "assigned_by": "costa-org-admin-user",
+            "use_seed": true
+        },
+        {
+            "id": "fra-costa-app-admin",
+            "user_id": "costa-app-admin-user",
+            "role": "AppAdmin",
+            "scope": {
+                "type": "App",
+                "tenant_id": "costa-food-industries-tenant",
+                "app_id": "costa-banana-intelligence-app"
+            },
+            "assigned_by": "costa-tenant-admin-user",
+            "use_seed": true
+        },
+        {
+            "id": "fra-costa-app-dev",
+            "user_id": "costa-app-dev-user",
+            "role": "AppDeveloper",
+            "scope": {
+                "type": "App",
+                "tenant_id": "costa-food-industries-tenant",
+                "app_id": "costa-banana-intelligence-app"
+            },
+            "assigned_by": "costa-app-admin-user",
+            "use_seed": true
+        },
+        {
+            "id": "fra-costa-baker",
+            "user_id": "costa-baker-user",
+            "role": "AppUser",
+            "scope": {
+                "type": "App",
+                "tenant_id": "costa-food-industries-tenant",
+                "app_id": "costa-banana-intelligence-app"
+            },
+            "assigned_by": "costa-app-admin-user",
+            "use_seed": true
+        },
+        {
+            "id": "fra-costa-inspector",
+            "user_id": "costa-inspector-user",
+            "role": "AppUser",
+            "scope": {
+                "type": "App",
+                "tenant_id": "costa-food-industries-tenant",
+                "app_id": "costa-banana-intelligence-app"
+            },
+            "assigned_by": "costa-app-admin-user",
+            "use_seed": true
+        }
+    ]
+}

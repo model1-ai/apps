@@ -1,0 +1,79 @@
+{
+  "_comment": "Document Sign-Off — Sample instances (Tier 0 process, no stages/obligations)",
+
+  "instances": [
+    {
+      "_comment": "=== DOCUMENTS ===",
+      "id": "doc-security-policy",
+      "universal_id": "document",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "document-title-prop": { "en": "Information Security Policy v3.1" },
+        "document-version-prop": "3.1",
+        "document-status-prop": "PendingReview"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "doc-onboarding-guide",
+      "universal_id": "document",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "document-title-prop": { "en": "Employee Onboarding Guide" },
+        "document-version-prop": "2.0",
+        "document-status-prop": "Draft"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "doc-api-spec",
+      "universal_id": "document",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "document-title-prop": { "en": "REST API Specification" },
+        "document-version-prop": "1.0",
+        "document-status-prop": "PendingReview"
+      },
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== SIGN-OFF PROCESS INSTANCES (inherit base-process properties) ===",
+      "id": "signoff-security-policy",
+      "universal_id": "document-signoff",
+      "tenant_id": "model1-testing-tenant",
+      "skip_composition": true,
+      "properties": {
+        "base-process-status-prop": "Active",
+        "base-process-final-outcome-prop": "",
+        "signoff-reviewer-notes-prop": { "en": "Reviewing security policy for annual compliance update" }
+      },
+      "use_seed": true
+    },
+    {
+      "id": "signoff-onboarding-guide",
+      "universal_id": "document-signoff",
+      "tenant_id": "model1-testing-tenant",
+      "skip_composition": true,
+      "properties": {
+        "base-process-status-prop": "Completed",
+        "base-process-final-outcome-prop": "Approved",
+        "signoff-reviewer-notes-prop": { "en": "Guide updated with new benefits information. Approved." }
+      },
+      "use_seed": true
+    },
+    {
+      "id": "signoff-api-spec",
+      "universal_id": "document-signoff",
+      "tenant_id": "model1-testing-tenant",
+      "skip_composition": true,
+      "properties": {
+        "base-process-status-prop": "Pending",
+        "base-process-final-outcome-prop": ""
+      },
+      "use_seed": true
+    }
+  ],
+
+  "relator_instances": []
+}

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Approval Example (Tier 2)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #333; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 0.5rem; }
+        h2 { color: #2c3e50; border-bottom: 1px solid #bdc3c7; padding-bottom: 0.3rem; }
+        .diagram-container { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 1rem; margin: 1rem 0; text-align: center; }
+        .info-box { background: #e3f2fd; border-left: 4px solid #2196F3; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .warning-box { background: #fff3e0; border-left: 4px solid #ff9800; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { border: 1px solid #dee2e6; padding: 0.5rem; text-align: left; }
+        th { background: #f8f9fa; }
+        tr:nth-child(even) { background: #f8f9fa; }
+        code { background: #f4f4f4; padding: 0.15rem 0.3rem; border-radius: 3px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>Purchase Approval Example (Tier 2 - Approval)</h1>
+
+    <p>This example demonstrates a <strong>Tier 2 (Approval)</strong> process with 2 stages,
+    each containing a role-based obligation. The composition tree has depth 2
+    (process &rarr; stages &rarr; obligations), and <strong>composition auto-instantiation</strong>
+    recursively creates both stage and obligation instances when a process is created.</p>
+
+    <h2>Overview</h2>
+
+    <div class="info-box">
+        <strong>Capability Tier:</strong> 2 (Approval)<br>
+        <strong>Composition Depth:</strong> 2 (process &rarr; stages &rarr; obligations)<br>
+        <strong>Key Feature:</strong> Recursive composition auto-instantiation creates stages AND obligations
+    </div>
+
+    <h2>Universal Hierarchy</h2>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+        classDiagram
+            class BaseProcess {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+            }
+            class BaseStage {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+            }
+            class BaseObligation {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+            }
+
+            class PurchaseApproval {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+                po_ref: InstanceRef
+                urgency: Categorical
+            }
+
+            class BudgetReview {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+            }
+            class ProcurementReview {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+            }
+            class BudgetApprovalObl {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+            }
+            class ProcurementApprovalObl {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+            }
+
+            class BudgetOwner {
+                &lt;&lt;FunctionalRole&gt;&gt;
+            }
+            class ProcurementManager {
+                &lt;&lt;FunctionalRole&gt;&gt;
+            }
+
+            class PurchaseOrder {
+                &lt;&lt;Kind / Endurant&gt;&gt;
+                po_number: Categorical
+                amount: Currency
+                vendor: Textual
+            }
+
+            BaseProcess &lt;|-- PurchaseApproval : generalizes
+            BaseStage &lt;|-- BudgetReview : generalizes
+            BaseStage &lt;|-- ProcurementReview : generalizes
+            BaseObligation &lt;|-- BudgetApprovalObl : generalizes
+            BaseObligation &lt;|-- ProcurementApprovalObl : generalizes
+
+            PurchaseApproval *-- BudgetReview : composition
+            PurchaseApproval *-- ProcurementReview : composition
+            BudgetReview *-- BudgetApprovalObl : composition
+            ProcurementReview *-- ProcurementApprovalObl : composition
+
+            BudgetApprovalObl --> BudgetOwner : requires role
+            ProcurementApprovalObl --> ProcurementManager : requires role
+
+            PurchaseApproval --> PurchaseOrder : governs
+        </div>
+    </div>
+
+    <h2>Composition Tree (Depth 2)</h2>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+        graph TB
+            PA[PurchaseApproval] -->|composition| BR[Budget Review]
+            PA -->|composition| PR[Procurement Review]
+            BR -->|composition| BAO[Budget Approval Obligation]
+            PR -->|composition| PAO[Procurement Approval Obligation]
+
+            style PA fill:#e3f2fd
+            style BR fill:#fff3e0
+            style PR fill:#fff3e0
+            style BAO fill:#e8f5e9
+            style PAO fill:#e8f5e9
+        </div>
+    </div>
+
+    <div class="warning-box">
+        <strong>Recursive Auto-Instantiation:</strong> When a <code>purchase-approval</code> instance
+        is created, the system walks the full composition tree:
+        <ol>
+            <li>Creates Budget Review stage instance + Procurement Review stage instance</li>
+            <li>For each stage, creates its obligation instance (Budget Approval Obligation, Procurement Approval Obligation)</li>
+        </ol>
+        Total auto-created: 2 stages + 2 obligations = 4 instances, all linked via composition relator instances.
+    </div>
+
+    <h2>Approval Flow</h2>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+        sequenceDiagram
+            participant P as Process
+            participant S1 as Budget Review
+            participant O1 as Budget Obligation
+            participant S2 as Procurement Review
+            participant O2 as Procurement Obligation
+
+            P->>S1: activate stage #1
+            S1->>O1: create obligation (Budget Owner)
+            Note over O1: Budget Owner reviews amount
+            O1-->>S1: decision: Approved
+            S1-->>P: stage completed
+            P->>S2: activate stage #2
+            S2->>O2: create obligation (Procurement Mgr)
+            Note over O2: Procurement reviews vendor
+            O2-->>S2: decision: Approved
+            S2-->>P: stage completed
+            Note over P: Process Completed (Approved)
+        </div>
+    </div>
+
+    <h2>Domain Model</h2>
+
+    <table>
+        <tr>
+            <th>Universal</th>
+            <th>Meta Category</th>
+            <th>Specializes</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td><code>purchase-order</code></td>
+            <td>Kind</td>
+            <td>-</td>
+            <td>Subject entity: purchase order requiring approval</td>
+        </tr>
+        <tr>
+            <td><code>budget-owner-role</code></td>
+            <td>FunctionalRole</td>
+            <td>-</td>
+            <td>Role: responsible for budget review</td>
+        </tr>
+        <tr>
+            <td><code>procurement-manager-role</code></td>
+            <td>FunctionalRole</td>
+            <td>-</td>
+            <td>Role: responsible for procurement review</td>
+        </tr>
+        <tr>
+            <td><code>purchase-approval</code></td>
+            <td>Kind</td>
+            <td>base-process</td>
+            <td>Process: 2 stages with obligations</td>
+        </tr>
+        <tr>
+            <td><code>budget-review-stage</code></td>
+            <td>Kind</td>
+            <td>base-stage</td>
+            <td>Stage 1: budget owner reviews</td>
+        </tr>
+        <tr>
+            <td><code>procurement-review-stage</code></td>
+            <td>Kind</td>
+            <td>base-stage</td>
+            <td>Stage 2: procurement reviews</td>
+        </tr>
+        <tr>
+            <td><code>budget-approval-obligation</code></td>
+            <td>Kind</td>
+            <td>base-obligation</td>
+            <td>Obligation for budget owner</td>
+        </tr>
+        <tr>
+            <td><code>procurement-approval-obligation</code></td>
+            <td>Kind</td>
+            <td>base-obligation</td>
+            <td>Obligation for procurement manager</td>
+        </tr>
+    </table>
+
+    <h2>Sample Instances</h2>
+
+    <table>
+        <tr>
+            <th>Purchase Order</th>
+            <th>Amount</th>
+            <th>Urgency</th>
+            <th>Status</th>
+            <th>Current Stage</th>
+        </tr>
+        <tr>
+            <td>PO-2026-0042 (Laptops)</td>
+            <td>$75,000</td>
+            <td>Normal</td>
+            <td>Active</td>
+            <td>#1 Budget Review</td>
+        </tr>
+        <tr>
+            <td>PO-2026-0043 (Furniture)</td>
+            <td>$12,500</td>
+            <td>Low</td>
+            <td>Pending</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>PO-2026-0044 (Cloud)</td>
+            <td>$240,000</td>
+            <td>High</td>
+            <td>Active</td>
+            <td>#2 Procurement Review</td>
+        </tr>
+    </table>
+
+    <h2>Key Features Demonstrated</h2>
+
+    <ul>
+        <li><strong>Recursive Composition</strong>: Depth-2 tree (process &rarr; stages &rarr; obligations)</li>
+        <li><strong>Auto-Instantiation</strong>: Both stages AND obligations created automatically</li>
+        <li><strong>FunctionalRoles</strong>: Budget Owner and Procurement Manager as obligation assignees</li>
+        <li><strong>Sequential Stages</strong>: Budget review must complete before procurement review</li>
+        <li><strong>Tier Detection</strong>: Engine finds composition depth 2 (stages + obligations) = Approval tier</li>
+        <li><strong>Obligation Lifecycle</strong>: Active &rarr; Fulfilled (decision) or Violated (SLO breach)</li>
+    </ul>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    </script>
+</body>
+</html>

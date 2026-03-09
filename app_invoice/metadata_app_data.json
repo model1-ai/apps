@@ -1,0 +1,1766 @@
+{
+    "_comment": "=== APP INVOICE REACTIVE EXAMPLE - INSTANCE DATA ===",
+    "_description": "6 status enums, 5 vendors, 20 invoices, ~60 items, ~80 relator instances",
+
+    "instances": [
+        {
+            "_comment": "=== INVOICE STATUS ENUM INSTANCES ===",
+            "id": "ai-status-draft",
+            "universal_id": "ai-invoice-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "ai-status-name-prop": "DRAFT" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-status-submitted",
+            "universal_id": "ai-invoice-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "ai-status-name-prop": "SUBMITTED" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-status-under-review",
+            "universal_id": "ai-invoice-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "ai-status-name-prop": "UNDER_REVIEW" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-status-approved",
+            "universal_id": "ai-invoice-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "ai-status-name-prop": "APPROVED" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-status-rejected",
+            "universal_id": "ai-invoice-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "ai-status-name-prop": "REJECTED" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-status-paid",
+            "universal_id": "ai-invoice-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "ai-status-name-prop": "PAID" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== VENDOR INSTANCES (5) ===",
+            "id": "ai-vendor-techsolutions",
+            "universal_id": "ai-vendor",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-vendor-code": "TECH-001",
+                "ai-vendor-name": "TechSolutions Inc",
+                "ai-vendor-contact-email": "billing@techsolutions.com"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-vendor-cloudpro",
+            "universal_id": "ai-vendor",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-vendor-code": "CLOUD-002",
+                "ai-vendor-name": "CloudPro Services",
+                "ai-vendor-contact-email": "invoices@cloudpro.io"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-vendor-brightmind",
+            "universal_id": "ai-vendor",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-vendor-code": "BM-003",
+                "ai-vendor-name": "BrightMind Consulting",
+                "ai-vendor-contact-email": "accounts@brightmind.com"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-vendor-officepro",
+            "universal_id": "ai-vendor",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-vendor-code": "OFF-004",
+                "ai-vendor-name": "OfficePro Supplies",
+                "ai-vendor-contact-email": "sales@officepro.com"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-vendor-legaledge",
+            "universal_id": "ai-vendor",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-vendor-code": "LEG-005",
+                "ai-vendor-name": "LegalEdge Partners",
+                "ai-vendor-contact-email": "billing@legaledge.com"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== INVOICE INSTANCES (20) ===",
+            "_comment2": "Invoices span 2023-2024, various statuses, vendors, and payment terms",
+
+            "id": "ai-inv-001",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2024-001",
+                "ai-invoice-date": "2024-01-15",
+                "ai-invoice-due-date": "2024-02-14",
+                "ai-invoice-status-prop": "ai-status-approved",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2024",
+                "ai-invoice-notes": "Q1 IT infrastructure upgrade"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-002",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2024-002",
+                "ai-invoice-date": "2024-01-22",
+                "ai-invoice-due-date": "2024-02-21",
+                "ai-invoice-status-prop": "ai-status-paid",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2024"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-003",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2024-003",
+                "ai-invoice-date": "2024-02-10",
+                "ai-invoice-due-date": "2024-03-11",
+                "ai-invoice-status-prop": "ai-status-approved",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2024"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-004",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2024-004",
+                "ai-invoice-date": "2024-03-05",
+                "ai-invoice-due-date": "2024-04-04",
+                "ai-invoice-status-prop": "ai-status-under-review",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2024"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-005",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2024-005",
+                "ai-invoice-date": "2024-03-20",
+                "ai-invoice-due-date": "2024-04-19",
+                "ai-invoice-status-prop": "ai-status-draft",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "EUR",
+                "ai-invoice-year": "2024"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-006",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2024-006",
+                "ai-invoice-date": "2024-04-12",
+                "ai-invoice-due-date": "2024-05-12",
+                "ai-invoice-status-prop": "ai-status-paid",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2024"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-007",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2024-007",
+                "ai-invoice-date": "2024-05-08",
+                "ai-invoice-due-date": "2024-06-07",
+                "ai-invoice-status-prop": "ai-status-submitted",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2024"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-008",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2024-008",
+                "ai-invoice-date": "2024-06-15",
+                "ai-invoice-due-date": "2024-07-15",
+                "ai-invoice-status-prop": "ai-status-approved",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2024"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-009",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2024-009",
+                "ai-invoice-date": "2024-07-01",
+                "ai-invoice-due-date": "2024-07-31",
+                "ai-invoice-status-prop": "ai-status-rejected",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2024",
+                "ai-invoice-notes": "Rejected: duplicate billing for same period"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-010",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2024-010",
+                "ai-invoice-date": "2024-08-18",
+                "ai-invoice-due-date": "2024-09-17",
+                "ai-invoice-status-prop": "ai-status-paid",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2024"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-011",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2024-011",
+                "ai-invoice-date": "2024-09-05",
+                "ai-invoice-due-date": "2024-10-05",
+                "ai-invoice-status-prop": "ai-status-draft",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "GBP",
+                "ai-invoice-year": "2024"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-012",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2024-012",
+                "ai-invoice-date": "2024-10-20",
+                "ai-invoice-due-date": "2024-11-19",
+                "ai-invoice-status-prop": "ai-status-submitted",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2024"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-013",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2023-001",
+                "ai-invoice-date": "2023-02-15",
+                "ai-invoice-due-date": "2023-03-17",
+                "ai-invoice-status-prop": "ai-status-paid",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2023"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-014",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2023-002",
+                "ai-invoice-date": "2023-04-10",
+                "ai-invoice-due-date": "2023-05-10",
+                "ai-invoice-status-prop": "ai-status-paid",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2023"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-015",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2023-003",
+                "ai-invoice-date": "2023-06-22",
+                "ai-invoice-due-date": "2023-07-22",
+                "ai-invoice-status-prop": "ai-status-paid",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2023"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-016",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2023-004",
+                "ai-invoice-date": "2023-08-05",
+                "ai-invoice-due-date": "2023-09-04",
+                "ai-invoice-status-prop": "ai-status-paid",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "EUR",
+                "ai-invoice-year": "2023"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-017",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2023-005",
+                "ai-invoice-date": "2023-09-18",
+                "ai-invoice-due-date": "2023-10-18",
+                "ai-invoice-status-prop": "ai-status-paid",
+                "ai-invoice-payment-terms": "Net60",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2023"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-018",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2023-006",
+                "ai-invoice-date": "2023-10-30",
+                "ai-invoice-due-date": "2023-11-29",
+                "ai-invoice-status-prop": "ai-status-paid",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2023"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-019",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2023-007",
+                "ai-invoice-date": "2023-11-15",
+                "ai-invoice-due-date": "2023-12-15",
+                "ai-invoice-status-prop": "ai-status-paid",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2023"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-inv-020",
+            "universal_id": "ai-invoice",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-invoice-number": "INV-2023-008",
+                "ai-invoice-date": "2023-12-01",
+                "ai-invoice-due-date": "2023-12-31",
+                "ai-invoice-status-prop": "ai-status-approved",
+                "ai-invoice-payment-terms": "Net30",
+                "ai-invoice-currency": "USD",
+                "ai-invoice-year": "2023"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== INVOICE ITEM INSTANCES (~60 items, ~3 per invoice) ===",
+            "_comment2": "Items have varied categories, quantities, prices, and tax rates",
+
+            "id": "ai-item-001-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Cloud Server - Q1 2024",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 3, "unit": "units" },
+                "ai-item-unit-price": { "value": 1500.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-001-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Software License Renewal",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 10, "unit": "units" },
+                "ai-item-unit-price": { "value": 250.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-001-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Network Setup Fee",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 2000.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-002-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Cloud Storage - Annual Plan",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 4800.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-002-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "CDN Service - Q1",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 1200.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-002-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "SSL Certificate",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 5, "unit": "units" },
+                "ai-item-unit-price": { "value": 120.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-003-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Strategy Workshop - 2 Days",
+                "ai-item-service-category": "Consulting",
+                "ai-item-quantity": { "value": 2, "unit": "units" },
+                "ai-item-unit-price": { "value": 3500.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-003-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Executive Coaching - Q1",
+                "ai-item-service-category": "Consulting",
+                "ai-item-quantity": { "value": 4, "unit": "units" },
+                "ai-item-unit-price": { "value": 800.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-003-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Market Analysis Report",
+                "ai-item-service-category": "Consulting",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 5000.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-004-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Ergonomic Desk Chair",
+                "ai-item-service-category": "Office Supplies",
+                "ai-item-quantity": { "value": 8, "unit": "units" },
+                "ai-item-unit-price": { "value": 450.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-004-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Standing Desk Converter",
+                "ai-item-service-category": "Office Supplies",
+                "ai-item-quantity": { "value": 4, "unit": "units" },
+                "ai-item-unit-price": { "value": 350.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-004-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Monitor Arms",
+                "ai-item-service-category": "Office Supplies",
+                "ai-item-quantity": { "value": 8, "unit": "units" },
+                "ai-item-unit-price": { "value": 85.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-005-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Social Media Campaign - Spring",
+                "ai-item-service-category": "Marketing",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 8500.00, "unit": "eur" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-005-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Brand Design Refresh",
+                "ai-item-service-category": "Marketing",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 4200.00, "unit": "eur" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-005-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "SEO Audit",
+                "ai-item-service-category": "Marketing",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 2500.00, "unit": "eur" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-006-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Contract Review - Vendor Agreement",
+                "ai-item-service-category": "Legal Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 3200.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 5.0, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-006-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "IP Filing - Patent Application",
+                "ai-item-service-category": "Legal Services",
+                "ai-item-quantity": { "value": 2, "unit": "units" },
+                "ai-item-unit-price": { "value": 1800.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 5.0, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-006-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Compliance Audit Q2",
+                "ai-item-service-category": "Legal Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 4500.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 5.0, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-007-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Database Migration Service",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 6500.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-007-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Security Audit",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 3200.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-007-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "API Integration Support",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 20, "unit": "units" },
+                "ai-item-unit-price": { "value": 175.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-008-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Process Optimization Consulting",
+                "ai-item-service-category": "Consulting",
+                "ai-item-quantity": { "value": 5, "unit": "units" },
+                "ai-item-unit-price": { "value": 2200.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-008-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Change Management Training",
+                "ai-item-service-category": "Consulting",
+                "ai-item-quantity": { "value": 2, "unit": "units" },
+                "ai-item-unit-price": { "value": 1800.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-008-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Business Analysis Report",
+                "ai-item-service-category": "Consulting",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 3500.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-009-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Cloud Monitoring - Jul",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 2400.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-009-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Backup Service - Jul",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 800.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-009-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Disaster Recovery Plan",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 5500.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-010-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Printer Supplies - Q3",
+                "ai-item-service-category": "Office Supplies",
+                "ai-item-quantity": { "value": 20, "unit": "units" },
+                "ai-item-unit-price": { "value": 65.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-010-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Office Furniture Set",
+                "ai-item-service-category": "Office Supplies",
+                "ai-item-quantity": { "value": 2, "unit": "units" },
+                "ai-item-unit-price": { "value": 1200.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-010-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Whiteboard and Markers",
+                "ai-item-service-category": "Office Supplies",
+                "ai-item-quantity": { "value": 5, "unit": "units" },
+                "ai-item-unit-price": { "value": 150.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-011-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Content Marketing Plan",
+                "ai-item-service-category": "Marketing",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 6000.00, "unit": "gbp" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-011-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Video Production - 3 Clips",
+                "ai-item-service-category": "Marketing",
+                "ai-item-quantity": { "value": 3, "unit": "units" },
+                "ai-item-unit-price": { "value": 2800.00, "unit": "gbp" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-011-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Email Campaign Setup",
+                "ai-item-service-category": "Marketing",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 1500.00, "unit": "gbp" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-012-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Trademark Registration",
+                "ai-item-service-category": "Legal Services",
+                "ai-item-quantity": { "value": 3, "unit": "units" },
+                "ai-item-unit-price": { "value": 2200.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 5.0, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-012-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "NDA Drafting",
+                "ai-item-service-category": "Legal Services",
+                "ai-item-quantity": { "value": 5, "unit": "units" },
+                "ai-item-unit-price": { "value": 500.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 5.0, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-012-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Regulatory Compliance Review",
+                "ai-item-service-category": "Legal Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 3800.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 5.0, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-013-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Server Hosting - Feb 2023",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 5, "unit": "units" },
+                "ai-item-unit-price": { "value": 900.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-013-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Domain Registration - 5yr",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 10, "unit": "units" },
+                "ai-item-unit-price": { "value": 45.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-013-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Email Hosting - Annual",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 50, "unit": "units" },
+                "ai-item-unit-price": { "value": 12.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-014-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Management Consulting - Apr",
+                "ai-item-service-category": "Consulting",
+                "ai-item-quantity": { "value": 3, "unit": "units" },
+                "ai-item-unit-price": { "value": 2800.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-014-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Team Assessment Workshop",
+                "ai-item-service-category": "Consulting",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 4200.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-014-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Stakeholder Analysis",
+                "ai-item-service-category": "Consulting",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 1500.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-015-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Laptop Procurement - 5 units",
+                "ai-item-service-category": "Office Supplies",
+                "ai-item-quantity": { "value": 5, "unit": "units" },
+                "ai-item-unit-price": { "value": 1800.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-015-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Peripheral Package",
+                "ai-item-service-category": "Office Supplies",
+                "ai-item-quantity": { "value": 5, "unit": "units" },
+                "ai-item-unit-price": { "value": 320.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-015-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Docking Stations",
+                "ai-item-service-category": "Office Supplies",
+                "ai-item-quantity": { "value": 5, "unit": "units" },
+                "ai-item-unit-price": { "value": 250.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-016-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Digital Advertising - Summer",
+                "ai-item-service-category": "Marketing",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 7500.00, "unit": "eur" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-016-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Landing Page Design",
+                "ai-item-service-category": "Marketing",
+                "ai-item-quantity": { "value": 3, "unit": "units" },
+                "ai-item-unit-price": { "value": 1200.00, "unit": "eur" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-016-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Analytics Setup",
+                "ai-item-service-category": "Marketing",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 2000.00, "unit": "eur" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-017-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Employment Contract Review",
+                "ai-item-service-category": "Legal Services",
+                "ai-item-quantity": { "value": 10, "unit": "units" },
+                "ai-item-unit-price": { "value": 350.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 5.0, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-017-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Data Privacy Assessment",
+                "ai-item-service-category": "Legal Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 5500.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 5.0, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-017-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Vendor Agreement Negotiation",
+                "ai-item-service-category": "Legal Services",
+                "ai-item-quantity": { "value": 2, "unit": "units" },
+                "ai-item-unit-price": { "value": 2200.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 5.0, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-018-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Cloud Migration - Phase 2",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 12000.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-018-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Load Testing Service",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 3500.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-018-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "DevOps Tooling Setup",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 4500.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-019-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Digital Transformation Workshop",
+                "ai-item-service-category": "Consulting",
+                "ai-item-quantity": { "value": 2, "unit": "units" },
+                "ai-item-unit-price": { "value": 4000.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-019-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Technology Roadmap",
+                "ai-item-service-category": "Consulting",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 6500.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-019-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Vendor Selection Analysis",
+                "ai-item-service-category": "Consulting",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 3000.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-020-1",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Year-End IT Audit",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 8000.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-020-2",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Infrastructure Review",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 4500.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-020-3",
+            "universal_id": "ai-invoice-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "ai-item-description": "Capacity Planning Report",
+                "ai-item-service-category": "IT Services",
+                "ai-item-quantity": { "value": 1, "unit": "units" },
+                "ai-item-unit-price": { "value": 3200.00, "unit": "usd" },
+                "ai-item-tax-rate": { "value": 8.5, "unit": "percent" }
+            },
+            "use_seed": true
+        }
+    ],
+
+    "relator_instances": [
+        {
+            "_comment": "=== INVOICE -> VENDOR RELATOR INSTANCES (20) ===",
+            "id": "ai-rel-inv001-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "invoice": "ai-inv-001",
+                "vendor": "ai-vendor-techsolutions"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv002-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-002", "vendor": "ai-vendor-cloudpro" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv003-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-003", "vendor": "ai-vendor-brightmind" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv004-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-004", "vendor": "ai-vendor-officepro" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv005-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-005", "vendor": "ai-vendor-brightmind" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv006-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-006", "vendor": "ai-vendor-legaledge" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv007-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-007", "vendor": "ai-vendor-techsolutions" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv008-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-008", "vendor": "ai-vendor-brightmind" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv009-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-009", "vendor": "ai-vendor-cloudpro" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv010-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-010", "vendor": "ai-vendor-officepro" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv011-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-011", "vendor": "ai-vendor-brightmind" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv012-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-012", "vendor": "ai-vendor-legaledge" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv013-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-013", "vendor": "ai-vendor-techsolutions" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv014-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-014", "vendor": "ai-vendor-brightmind" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv015-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-015", "vendor": "ai-vendor-officepro" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv016-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-016", "vendor": "ai-vendor-brightmind" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv017-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-017", "vendor": "ai-vendor-legaledge" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv018-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-018", "vendor": "ai-vendor-techsolutions" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv019-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-019", "vendor": "ai-vendor-brightmind" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv020-vendor",
+            "relator_id": "ai-invoice-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-020", "vendor": "ai-vendor-cloudpro" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== INVOICE -> ITEM RELATOR INSTANCES (60: 3 per invoice) ===",
+            "id": "ai-rel-inv001-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-001", "item": "ai-item-001-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv001-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-001", "item": "ai-item-001-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv001-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-001", "item": "ai-item-001-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv002-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-002", "item": "ai-item-002-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv002-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-002", "item": "ai-item-002-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv002-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-002", "item": "ai-item-002-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv003-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-003", "item": "ai-item-003-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv003-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-003", "item": "ai-item-003-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv003-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-003", "item": "ai-item-003-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv004-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-004", "item": "ai-item-004-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv004-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-004", "item": "ai-item-004-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv004-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-004", "item": "ai-item-004-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv005-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-005", "item": "ai-item-005-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv005-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-005", "item": "ai-item-005-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv005-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-005", "item": "ai-item-005-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv006-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-006", "item": "ai-item-006-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv006-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-006", "item": "ai-item-006-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv006-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-006", "item": "ai-item-006-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv007-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-007", "item": "ai-item-007-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv007-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-007", "item": "ai-item-007-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv007-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-007", "item": "ai-item-007-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv008-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-008", "item": "ai-item-008-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv008-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-008", "item": "ai-item-008-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv008-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-008", "item": "ai-item-008-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv009-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-009", "item": "ai-item-009-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv009-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-009", "item": "ai-item-009-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv009-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-009", "item": "ai-item-009-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv010-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-010", "item": "ai-item-010-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv010-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-010", "item": "ai-item-010-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv010-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-010", "item": "ai-item-010-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv011-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-011", "item": "ai-item-011-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv011-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-011", "item": "ai-item-011-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv011-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-011", "item": "ai-item-011-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv012-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-012", "item": "ai-item-012-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv012-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-012", "item": "ai-item-012-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv012-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-012", "item": "ai-item-012-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv013-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-013", "item": "ai-item-013-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv013-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-013", "item": "ai-item-013-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv013-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-013", "item": "ai-item-013-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv014-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-014", "item": "ai-item-014-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv014-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-014", "item": "ai-item-014-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv014-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-014", "item": "ai-item-014-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv015-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-015", "item": "ai-item-015-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv015-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-015", "item": "ai-item-015-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv015-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-015", "item": "ai-item-015-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv016-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-016", "item": "ai-item-016-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv016-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-016", "item": "ai-item-016-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv016-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-016", "item": "ai-item-016-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv017-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-017", "item": "ai-item-017-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv017-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-017", "item": "ai-item-017-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv017-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-017", "item": "ai-item-017-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv018-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-018", "item": "ai-item-018-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv018-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-018", "item": "ai-item-018-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv018-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-018", "item": "ai-item-018-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv019-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-019", "item": "ai-item-019-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv019-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-019", "item": "ai-item-019-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv019-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-019", "item": "ai-item-019-3" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv020-item1",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-020", "item": "ai-item-020-1" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv020-item2",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-020", "item": "ai-item-020-2" },
+            "use_seed": true
+        },
+        {
+            "id": "ai-rel-inv020-item3",
+            "relator_id": "ai-invoice-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "invoice": "ai-inv-020", "item": "ai-item-020-3" },
+            "use_seed": true
+        }
+    ]
+}

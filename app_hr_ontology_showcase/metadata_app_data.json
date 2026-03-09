@@ -1,0 +1,423 @@
+{
+    "_comment": "=== HR ONTOLOGY SHOWCASE -- Instance Data ===",
+    "_description": "Persons, Employees, Organizations, and relator instances testing relator inheritance across the Person->Employee hierarchy.",
+
+    "instances": [
+        {
+            "_comment": "=== LivingBeing instances (level 1: root) -- only LivingBeing properties ===",
+            "_note": "Demonstrates instances at the root universal level with only root-level properties",
+            "id": "hr-buddy-dog",
+            "universal_id": "hr-living-being",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-kingdom-prop": "hr-kingdom-animalia",
+                "hr-species-prop": { "en": "Golden Retriever" },
+                "hr-birth-date-prop": "2020-04-12"
+            }
+        },
+        {
+            "id": "hr-max-dog",
+            "universal_id": "hr-living-being",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-kingdom-prop": "hr-kingdom-animalia",
+                "hr-species-prop": { "en": "German Shepherd" },
+                "hr-birth-date-prop": "2018-09-03",
+                "hr-death-date-prop": "2025-12-01"
+            }
+        },
+
+        {
+            "_comment": "=== Human instances (level 2: LivingBeing > Human) -- LivingBeing + Human properties only ===",
+            "_note": "Humans known by name but not registered as contactable Persons",
+            "id": "hr-james-wilson",
+            "universal_id": "hr-human",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-kingdom-prop": "hr-kingdom-animalia",
+                "hr-species-prop": { "en": "Homo sapiens" },
+                "hr-birth-date-prop": "1945-02-20",
+                "hr-death-date-prop": "2015-08-10",
+                "hr-full-name-prop": { "en": "James Wilson" },
+                "hr-gender-prop": "MALE"
+            }
+        },
+        {
+            "id": "hr-sofia-reyes",
+            "universal_id": "hr-human",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-kingdom-prop": "hr-kingdom-animalia",
+                "hr-species-prop": { "en": "Homo sapiens" },
+                "hr-birth-date-prop": "1960-11-15",
+                "hr-full-name-prop": { "en": "Sofia Reyes" },
+                "hr-gender-prop": "FEMALE"
+            }
+        },
+
+        {
+            "_comment": "=== Person instances (level 3: LivingBeing > Human > Person) ===",
+            "id": "hr-alice-johnson",
+            "universal_id": "hr-person",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-kingdom-prop": "hr-kingdom-animalia",
+                "hr-species-prop": { "en": "Homo sapiens" },
+                "hr-birth-date-prop": "1985-03-15",
+                "hr-full-name-prop": { "en": "Alice Johnson" },
+                "hr-gender-prop": "FEMALE",
+                "hr-email-prop": { "en": "alice.johnson@example.com" },
+                "hr-phone-prop": { "en": "+1-555-0101" }
+            }
+        },
+        {
+            "id": "hr-bob-williams",
+            "universal_id": "hr-person",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-kingdom-prop": "hr-kingdom-animalia",
+                "hr-species-prop": { "en": "Homo sapiens" },
+                "hr-birth-date-prop": "1990-07-22",
+                "hr-full-name-prop": { "en": "Bob Williams" },
+                "hr-gender-prop": "MALE",
+                "hr-email-prop": { "en": "bob.williams@example.com" },
+                "hr-phone-prop": { "en": "+1-555-0102" }
+            }
+        },
+        {
+            "id": "hr-carol-martinez",
+            "universal_id": "hr-person",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-kingdom-prop": "hr-kingdom-animalia",
+                "hr-species-prop": { "en": "Homo sapiens" },
+                "hr-birth-date-prop": "1988-11-30",
+                "hr-full-name-prop": { "en": "Carol Martinez" },
+                "hr-gender-prop": "FEMALE",
+                "hr-email-prop": { "en": "carol.martinez@example.com" },
+                "hr-phone-prop": { "en": "+1-555-0103" }
+            }
+        },
+
+        {
+            "_comment": "=== Employee instances (level 4: LivingBeing > Human > Person > Employee) ===",
+            "_note": "Employees include inherited properties from all ancestor levels",
+            "id": "hr-dave-chen",
+            "universal_id": "hr-employee",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-kingdom-prop": "hr-kingdom-animalia",
+                "hr-species-prop": { "en": "Homo sapiens" },
+                "hr-birth-date-prop": "1982-01-10",
+                "hr-full-name-prop": { "en": "Dave Chen" },
+                "hr-gender-prop": "MALE",
+                "hr-email-prop": { "en": "dave.chen@acmecorp.com" },
+                "hr-phone-prop": { "en": "+1-555-0201" },
+                "hr-employee-id-prop": "1001",
+                "hr-hire-date-prop": "2018-06-01",
+                "hr-department-prop": { "en": "Engineering" }
+            }
+        },
+        {
+            "id": "hr-eve-kumar",
+            "universal_id": "hr-employee",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-kingdom-prop": "hr-kingdom-animalia",
+                "hr-species-prop": { "en": "Homo sapiens" },
+                "hr-birth-date-prop": "1995-04-18",
+                "hr-full-name-prop": { "en": "Eve Kumar" },
+                "hr-gender-prop": "FEMALE",
+                "hr-email-prop": { "en": "eve.kumar@acmecorp.com" },
+                "hr-phone-prop": { "en": "+1-555-0202" },
+                "hr-employee-id-prop": "1002",
+                "hr-hire-date-prop": "2022-01-15",
+                "hr-department-prop": { "en": "Engineering" }
+            }
+        },
+        {
+            "id": "hr-frank-russo",
+            "universal_id": "hr-employee",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-kingdom-prop": "hr-kingdom-animalia",
+                "hr-species-prop": { "en": "Homo sapiens" },
+                "hr-birth-date-prop": "1979-09-05",
+                "hr-full-name-prop": { "en": "Frank Russo" },
+                "hr-gender-prop": "MALE",
+                "hr-email-prop": { "en": "frank.russo@techstart.io" },
+                "hr-phone-prop": { "en": "+1-555-0203" },
+                "hr-employee-id-prop": "2001",
+                "hr-hire-date-prop": "2020-03-10",
+                "hr-department-prop": { "en": "Product" }
+            }
+        },
+
+        {
+            "_comment": "=== Organization instances ===",
+            "id": "hr-acme-corporation",
+            "universal_id": "hr-organization",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-org-name-prop": { "en": "Acme Corporation" },
+                "hr-org-industry-prop": "TECHNOLOGY"
+            }
+        },
+        {
+            "id": "hr-techstart-inc",
+            "universal_id": "hr-organization",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-org-name-prop": { "en": "TechStart Inc" },
+                "hr-org-industry-prop": "SOFTWARE"
+            }
+        },
+
+        {
+            "_comment": "=== Enum instances: Gender Type ===",
+            "id": "hr-gender-male",
+            "universal_id": "hr-gender-type",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-gender-type-name-prop": "MALE"
+            }
+        },
+        {
+            "id": "hr-gender-female",
+            "universal_id": "hr-gender-type",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-gender-type-name-prop": "FEMALE"
+            }
+        },
+        {
+            "id": "hr-gender-other",
+            "universal_id": "hr-gender-type",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-gender-type-name-prop": "OTHER"
+            }
+        },
+
+        {
+            "_comment": "=== Enum instances: Industry Type ===",
+            "id": "hr-industry-technology",
+            "universal_id": "hr-industry-type",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-industry-type-name-prop": "TECHNOLOGY"
+            }
+        },
+        {
+            "id": "hr-industry-software",
+            "universal_id": "hr-industry-type",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-industry-type-name-prop": "SOFTWARE"
+            }
+        },
+        {
+            "id": "hr-industry-finance",
+            "universal_id": "hr-industry-type",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-industry-type-name-prop": "FINANCE"
+            }
+        },
+
+        {
+            "_comment": "=== Enum instances: Kingdom Type ===",
+            "id": "hr-kingdom-animalia",
+            "universal_id": "hr-kingdom-type",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-kingdom-type-name-prop": "ANIMALIA"
+            }
+        },
+        {
+            "id": "hr-kingdom-plantae",
+            "universal_id": "hr-kingdom-type",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-kingdom-type-name-prop": "PLANTAE"
+            }
+        },
+        {
+            "id": "hr-kingdom-fungi",
+            "universal_id": "hr-kingdom-type",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-kingdom-type-name-prop": "FUNGI"
+            }
+        },
+
+        {
+            "_comment": "=== Enum instances: Relationship Type ===",
+            "id": "hr-reltype-parent",
+            "universal_id": "hr-relationship-type",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-relationship-type-name-prop": "PARENT"
+            }
+        },
+        {
+            "id": "hr-reltype-sibling",
+            "universal_id": "hr-relationship-type",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-relationship-type-name-prop": "SIBLING"
+            }
+        },
+        {
+            "id": "hr-reltype-spouse",
+            "universal_id": "hr-relationship-type",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-relationship-type-name-prop": "SPOUSE"
+            }
+        },
+        {
+            "id": "hr-reltype-child",
+            "universal_id": "hr-relationship-type",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hr-relationship-type-name-prop": "CHILD"
+            }
+        }
+    ],
+
+    "relator_instances": [
+        {
+            "_comment": "=== Person-level relators (baseline: Person <-> Person) ===",
+
+            "_test": "Person-level baseline: two Persons in a Friendship",
+            "id": "hr-ri-alice-bob-friendship",
+            "relator_id": "hr-friendship-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "friend_a": "hr-alice-johnson",
+                "friend_b": "hr-bob-williams"
+            }
+        },
+        {
+            "_test": "Person-level with family bond: Alice and Carol are siblings",
+            "id": "hr-ri-alice-carol-family",
+            "relator_id": "hr-family-bond-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "family_member_a": "hr-alice-johnson",
+                "family_member_b": "hr-carol-martinez"
+            }
+        },
+
+        {
+            "_comment": "=== Inheritance tests: Employee instances in Person-typed relators ===",
+
+            "_test": "INHERITANCE: Two Employees participating in Person-typed Friendship relator",
+            "id": "hr-ri-dave-eve-friendship",
+            "relator_id": "hr-friendship-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "friend_a": "hr-dave-chen",
+                "friend_b": "hr-eve-kumar"
+            }
+        },
+        {
+            "_test": "CROSS-LEVEL: Employee (Dave) + Person (Alice) in Person-typed Friendship",
+            "id": "hr-ri-dave-alice-friendship",
+            "relator_id": "hr-friendship-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "friend_a": "hr-dave-chen",
+                "friend_b": "hr-alice-johnson"
+            }
+        },
+        {
+            "_test": "INHERITANCE: Two Employees in Person-typed Work Colleague relator",
+            "id": "hr-ri-dave-frank-colleague",
+            "relator_id": "hr-work-colleague-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "colleague_a": "hr-dave-chen",
+                "colleague_b": "hr-frank-russo"
+            }
+        },
+
+        {
+            "_comment": "=== Employee-specific relators (NOT inherited upward to Person) ===",
+
+            "_test": "Employee-specific: Mentorship between two Employees",
+            "id": "hr-ri-dave-eve-mentorship",
+            "relator_id": "hr-mentorship-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "mentor": "hr-dave-chen",
+                "mentee": "hr-eve-kumar"
+            }
+        },
+        {
+            "_test": "Employee-specific: Dave employed at Acme",
+            "id": "hr-ri-dave-acme-employment",
+            "relator_id": "hr-employment-contract-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "employee": "hr-dave-chen",
+                "employer": "hr-acme-corporation"
+            }
+        },
+        {
+            "_test": "Employee-specific: Eve employed at Acme",
+            "id": "hr-ri-eve-acme-employment",
+            "relator_id": "hr-employment-contract-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "employee": "hr-eve-kumar",
+                "employer": "hr-acme-corporation"
+            }
+        },
+        {
+            "_test": "Employee-specific: Frank employed at TechStart",
+            "id": "hr-ri-frank-techstart-employment",
+            "relator_id": "hr-employment-contract-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "employee": "hr-frank-russo",
+                "employer": "hr-techstart-inc"
+            }
+        }
+    ]
+}

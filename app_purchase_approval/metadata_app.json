@@ -1,0 +1,441 @@
+{
+  "_comment": "Purchase Approval — Tier 2 process example (stages + obligations)",
+  "_description": "A staged approval process for purchase orders. Specializes base-process with 2 stages, each containing obligations composed via composition-relator. Demonstrates Tier 2 (Approval) capability where composition auto-instantiation creates stages AND obligations per stage.",
+
+  "organizations": [
+    {
+      "id": "model1-testing-org",
+      "label": { "en": "Model1 Testing Org" },
+      "use_seed": true
+    }
+  ],
+
+  "tenants": [
+    {
+      "id": "model1-testing-tenant",
+      "organization_id": "model1-testing-org",
+      "label": { "en": "Model1 Testing Tenant" },
+      "use_seed": true
+    }
+  ],
+
+  "users": [
+    {
+      "id": "purchase-admin",
+      "tenant_id": "model1-testing-tenant",
+      "email": "purchase-admin@test.model1.ai",
+      "display_name": "Purchase Admin",
+      "password": "TestPass123!_",
+      "is_active": true,
+      "roles": [
+        "AppAdmin", "AppDeveloper", "AppUser"
+      ],
+      "use_seed": true
+    }
+  ],
+
+  "foundation_role_assignments": [
+    {
+      "id": "fra-purchase-admin-tenant",
+      "user_id": "purchase-admin",
+      "role": "TenantAdmin",
+      "scope": {
+        "type": "Tenant",
+        "tenant_id": "model1-testing-tenant"
+      },
+      "assigned_by": "purchase-admin",
+      "use_seed": true
+    },
+    {
+      "id": "fra-purchase-admin-app",
+      "user_id": "purchase-admin",
+      "role": "AppAdmin",
+      "scope": {
+        "type": "App",
+        "tenant_id": "model1-testing-tenant",
+        "app_id": "purchase-approval-app"
+      },
+      "assigned_by": "purchase-admin",
+      "use_seed": true
+    }
+  ],
+
+  "apps": [
+    {
+      "id": "purchase-approval-app",
+      "tenant_id": "model1-testing-tenant",
+      "label": { "en": "Purchase Approval" },
+      "description": { "en": "Purchase order approval workflow — Tier 2 (Approval) with stages and obligations" },
+      "use_seed": true,
+      "modules": [
+        {
+          "id": "purchase-approval-module",
+          "app_id": "purchase-approval-app",
+          "label": { "en": "Purchase Approval Module" },
+          "use_seed": true
+        }
+      ]
+    }
+  ],
+
+  "universals": [
+    {
+      "_comment": "=== PURCHASE ORDER (subject entity) ===",
+      "id": "purchase-order",
+      "app_id": "purchase-approval-app",
+      "temporal_nature": "Endurant",
+      "meta_category": "Kind",
+      "label": { "en": "Purchase Order" },
+      "description": { "en": "A purchase order that requires approval before procurement" },
+      "label_schema": {
+        "separator": " - ",
+        "max_length": 50,
+        "fallback_language": "en"
+      },
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== FUNCTIONAL ROLES ===",
+      "id": "budget-owner-role",
+      "app_id": "purchase-approval-app",
+      "temporal_nature": "Endurant",
+      "meta_category": "FunctionalRole",
+      "label": { "en": "Budget Owner" },
+      "description": { "en": "Role responsible for budget review and approval" },
+      "use_seed": true
+    },
+    {
+      "id": "procurement-manager-role",
+      "app_id": "purchase-approval-app",
+      "temporal_nature": "Endurant",
+      "meta_category": "FunctionalRole",
+      "label": { "en": "Procurement Manager" },
+      "description": { "en": "Role responsible for procurement process approval" },
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== PURCHASE APPROVAL PROCESS (specializes base-process) ===",
+      "id": "purchase-approval",
+      "app_id": "purchase-approval-app",
+      "temporal_nature": "Perdurant",
+      "meta_category": "Kind",
+      "label": { "en": "Purchase Approval" },
+      "description": { "en": "A Tier 2 (Approval) process for purchase orders. Has 2 stages (Budget Review, Procurement Review) each with role-based obligations." },
+      "label_schema": {
+        "separator": " - ",
+        "max_length": 50,
+        "fallback_language": "en"
+      },
+      "taxonomy": [
+        {
+          "relator_universal_id": "generalization-relator",
+          "target_universal_id": "base-process"
+        },
+        {
+          "relator_universal_id": "composition-relator",
+          "target_universal_id": "budget-review-stage"
+        },
+        {
+          "relator_universal_id": "composition-relator",
+          "target_universal_id": "procurement-review-stage"
+        },
+        {
+          "relator_universal_id": "association-relator",
+          "target_universal_id": "purchase-order"
+        }
+      ],
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== STAGE UNIVERSALS (specialize base-stage) ===",
+      "id": "budget-review-stage",
+      "app_id": "purchase-approval-app",
+      "temporal_nature": "Perdurant",
+      "meta_category": "Kind",
+      "label": { "en": "Budget Review" },
+      "description": { "en": "Stage where the budget owner reviews and approves the expenditure" },
+      "label_schema": {
+        "separator": " - ",
+        "max_length": 40,
+        "fallback_language": "en"
+      },
+      "taxonomy": [
+        {
+          "relator_universal_id": "generalization-relator",
+          "target_universal_id": "base-stage"
+        },
+        {
+          "relator_universal_id": "composition-relator",
+          "target_universal_id": "budget-approval-obligation"
+        }
+      ],
+      "use_seed": true
+    },
+    {
+      "id": "procurement-review-stage",
+      "app_id": "purchase-approval-app",
+      "temporal_nature": "Perdurant",
+      "meta_category": "Kind",
+      "label": { "en": "Procurement Review" },
+      "description": { "en": "Stage where the procurement manager reviews vendor selection and compliance" },
+      "label_schema": {
+        "separator": " - ",
+        "max_length": 40,
+        "fallback_language": "en"
+      },
+      "taxonomy": [
+        {
+          "relator_universal_id": "generalization-relator",
+          "target_universal_id": "base-stage"
+        },
+        {
+          "relator_universal_id": "composition-relator",
+          "target_universal_id": "procurement-approval-obligation"
+        }
+      ],
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== OBLIGATION UNIVERSALS (specialize base-obligation) ===",
+      "id": "budget-approval-obligation",
+      "app_id": "purchase-approval-app",
+      "temporal_nature": "Perdurant",
+      "meta_category": "Kind",
+      "label": { "en": "Budget Approval Obligation" },
+      "description": { "en": "Obligation for the budget owner to review and decide on the purchase" },
+      "label_schema": {
+        "separator": " - ",
+        "max_length": 40,
+        "fallback_language": "en"
+      },
+      "taxonomy": [
+        {
+          "relator_universal_id": "generalization-relator",
+          "target_universal_id": "base-obligation"
+        },
+        {
+          "relator_universal_id": "association-relator",
+          "target_universal_id": "budget-owner-role"
+        }
+      ],
+      "use_seed": true
+    },
+    {
+      "id": "procurement-approval-obligation",
+      "app_id": "purchase-approval-app",
+      "temporal_nature": "Perdurant",
+      "meta_category": "Kind",
+      "label": { "en": "Procurement Approval Obligation" },
+      "description": { "en": "Obligation for the procurement manager to verify vendor and compliance" },
+      "label_schema": {
+        "separator": " - ",
+        "max_length": 40,
+        "fallback_language": "en"
+      },
+      "taxonomy": [
+        {
+          "relator_universal_id": "generalization-relator",
+          "target_universal_id": "base-obligation"
+        },
+        {
+          "relator_universal_id": "association-relator",
+          "target_universal_id": "procurement-manager-role"
+        }
+      ],
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== COMPOSITION RELATORS (process → stages) ===",
+      "id": "purchase-has-budget-review",
+      "app_id": "purchase-approval-app",
+      "temporal_nature": "Perdurant",
+      "meta_category": "Relator",
+      "label": { "en": "Purchase Has Budget Review" },
+      "roles": [
+        { "name": "process", "universal_id": "purchase-approval" },
+        { "name": "stage", "universal_id": "budget-review-stage" }
+      ],
+      "taxonomy": [
+        {
+          "relator_universal_id": "generalization-relator",
+          "target_universal_id": "composition-relator"
+        }
+      ],
+      "use_seed": true
+    },
+    {
+      "id": "purchase-has-procurement-review",
+      "app_id": "purchase-approval-app",
+      "temporal_nature": "Perdurant",
+      "meta_category": "Relator",
+      "label": { "en": "Purchase Has Procurement Review" },
+      "roles": [
+        { "name": "process", "universal_id": "purchase-approval" },
+        { "name": "stage", "universal_id": "procurement-review-stage" }
+      ],
+      "taxonomy": [
+        {
+          "relator_universal_id": "generalization-relator",
+          "target_universal_id": "composition-relator"
+        }
+      ],
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== COMPOSITION RELATORS (stage → obligations) ===",
+      "id": "budget-review-has-approval",
+      "app_id": "purchase-approval-app",
+      "temporal_nature": "Perdurant",
+      "meta_category": "Relator",
+      "label": { "en": "Budget Review Has Approval Obligation" },
+      "roles": [
+        { "name": "stage", "universal_id": "budget-review-stage" },
+        { "name": "obligation", "universal_id": "budget-approval-obligation" }
+      ],
+      "taxonomy": [
+        {
+          "relator_universal_id": "generalization-relator",
+          "target_universal_id": "composition-relator"
+        }
+      ],
+      "use_seed": true
+    },
+    {
+      "id": "procurement-review-has-approval",
+      "app_id": "purchase-approval-app",
+      "temporal_nature": "Perdurant",
+      "meta_category": "Relator",
+      "label": { "en": "Procurement Review Has Approval Obligation" },
+      "roles": [
+        { "name": "stage", "universal_id": "procurement-review-stage" },
+        { "name": "obligation", "universal_id": "procurement-approval-obligation" }
+      ],
+      "taxonomy": [
+        {
+          "relator_universal_id": "generalization-relator",
+          "target_universal_id": "composition-relator"
+        }
+      ],
+      "use_seed": true
+    }
+  ],
+
+  "property_definitions": [
+    {
+      "_comment": "=== PURCHASE ORDER PROPERTIES ===",
+      "id": "po-number-prop",
+      "universal_id": "purchase-order",
+      "label": { "en": "PO Number" },
+      "property_schema": {
+        "predicates": ["number", "identifier"],
+        "relator": { "relator_type": "Attribution" },
+        "constraints": {
+          "property_value_type": { "type": "Categorical" },
+          "cardinality": { "min": 1, "max": 1 }
+        }
+      },
+      "label_options": {
+        "participates": true,
+        "sequence": 1,
+        "prefix": "PO-"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "po-description-prop",
+      "universal_id": "purchase-order",
+      "label": { "en": "Description" },
+      "property_schema": {
+        "predicates": ["description"],
+        "relator": { "relator_type": "Attribution" },
+        "constraints": {
+          "property_value_type": { "type": "Textual" },
+          "cardinality": { "min": 1, "max": 1 }
+        }
+      },
+      "use_seed": true
+    },
+    {
+      "id": "po-amount-prop",
+      "universal_id": "purchase-order",
+      "label": { "en": "Amount" },
+      "property_schema": {
+        "predicates": ["amount", "total"],
+        "relator": { "relator_type": "Attribution" },
+        "constraints": {
+          "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-currency" },
+          "cardinality": { "min": 1, "max": 1 }
+        }
+      },
+      "label_options": {
+        "participates": true,
+        "sequence": 2
+      },
+      "use_seed": true
+    },
+    {
+      "id": "po-vendor-prop",
+      "universal_id": "purchase-order",
+      "label": { "en": "Vendor" },
+      "property_schema": {
+        "predicates": ["vendor", "supplier"],
+        "relator": { "relator_type": "Attribution" },
+        "constraints": {
+          "property_value_type": { "type": "Textual" },
+          "cardinality": { "min": 1, "max": 1 }
+        }
+      },
+      "use_seed": true
+    },
+    {
+      "id": "po-status-prop",
+      "universal_id": "purchase-order",
+      "label": { "en": "Status" },
+      "property_schema": {
+        "predicates": ["status"],
+        "relator": { "relator_type": "Attribution" },
+        "constraints": {
+          "property_value_type": { "type": "Categorical" },
+          "cardinality": { "min": 1, "max": 1 }
+        }
+      },
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== PURCHASE APPROVAL CUSTOM PROPERTIES ===",
+      "id": "approval-po-ref-prop",
+      "universal_id": "purchase-approval",
+      "label": { "en": "Purchase Order Reference" },
+      "property_schema": {
+        "predicates": ["purchase", "order", "reference"],
+        "relator": { "relator_type": "Attribution" },
+        "constraints": {
+          "property_value_type": { "type": "InstanceRefs", "min_refs": 0 },
+          "cardinality": { "min": 1, "max": 1 }
+        }
+      },
+      "use_seed": true
+    },
+    {
+      "id": "approval-urgency-prop",
+      "universal_id": "purchase-approval",
+      "label": { "en": "Urgency" },
+      "property_schema": {
+        "predicates": ["urgency", "priority"],
+        "relator": { "relator_type": "Attribution" },
+        "constraints": {
+          "property_value_type": { "type": "Categorical" },
+          "cardinality": { "min": 0, "max": 1 }
+        }
+      },
+      "use_seed": true
+    }
+  ]
+}

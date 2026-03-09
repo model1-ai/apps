@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Moderation Example (Tier 1)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #333; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 0.5rem; }
+        h2 { color: #2c3e50; border-bottom: 1px solid #bdc3c7; padding-bottom: 0.3rem; }
+        .diagram-container { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 1rem; margin: 1rem 0; text-align: center; }
+        .info-box { background: #e3f2fd; border-left: 4px solid #2196F3; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .warning-box { background: #fff3e0; border-left: 4px solid #ff9800; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { border: 1px solid #dee2e6; padding: 0.5rem; text-align: left; }
+        th { background: #f8f9fa; }
+        tr:nth-child(even) { background: #f8f9fa; }
+        code { background: #f4f4f4; padding: 0.15rem 0.3rem; border-radius: 3px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>Content Moderation Example (Tier 1 - Worklist)</h1>
+
+    <p>This example demonstrates a <strong>Tier 1 (Worklist)</strong> process with 3 sequential
+    stages composed into the process universal via <code>composition-relator</code>. When a
+    moderation process instance is created, <strong>composition auto-instantiation</strong>
+    automatically creates the 3 stage instances.</p>
+
+    <h2>Overview</h2>
+
+    <div class="info-box">
+        <strong>Capability Tier:</strong> 1 (Worklist)<br>
+        <strong>Composition Depth:</strong> 1 (process &rarr; stages)<br>
+        <strong>Key Feature:</strong> Stages auto-created via composition auto-instantiation (Phase 1)
+    </div>
+
+    <h2>Universal Hierarchy</h2>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+        classDiagram
+            class BaseProcess {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+            }
+            class BaseStage {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+            }
+
+            class ContentModeration {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+                content_ref: InstanceRef
+                priority: Categorical
+            }
+
+            class InitialReview {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+            }
+            class DetailedAnalysis {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+            }
+            class FinalDecision {
+                &lt;&lt;Kind / Perdurant&gt;&gt;
+            }
+
+            class ContentItem {
+                &lt;&lt;Kind / Endurant&gt;&gt;
+                title: Textual
+                content_type: Categorical
+                risk_score: Score
+            }
+
+            BaseProcess &lt;|-- ContentModeration : generalizes
+            BaseStage &lt;|-- InitialReview : generalizes
+            BaseStage &lt;|-- DetailedAnalysis : generalizes
+            BaseStage &lt;|-- FinalDecision : generalizes
+
+            ContentModeration *-- InitialReview : composition
+            ContentModeration *-- DetailedAnalysis : composition
+            ContentModeration *-- FinalDecision : composition
+
+            ContentModeration --> ContentItem : governs
+        </div>
+    </div>
+
+    <h2>Composition Tree</h2>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+        graph TB
+            CM[ContentModeration] -->|composition| IR[Initial Review]
+            CM -->|composition| DA[Detailed Analysis]
+            CM -->|composition| FD[Final Decision]
+
+            style CM fill:#e3f2fd
+            style IR fill:#fff3e0
+            style DA fill:#fff3e0
+            style FD fill:#fff3e0
+        </div>
+    </div>
+
+    <div class="warning-box">
+        <strong>Auto-Instantiation:</strong> When a <code>content-moderation</code> instance is created,
+        the composition auto-instantiation system walks this tree and automatically creates one instance
+        each of Initial Review, Detailed Analysis, and Final Decision, linked via composition relator instances.
+    </div>
+
+    <h2>Stage Sequence</h2>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+        sequenceDiagram
+            participant P as Process
+            participant S1 as Initial Review
+            participant S2 as Detailed Analysis
+            participant S3 as Final Decision
+
+            P->>S1: activate (sequence #1)
+            Note over S1: Auto/human screening
+            S1-->>P: completed
+            P->>S2: activate (sequence #2)
+            Note over S2: Policy violation check
+            S2-->>P: completed
+            P->>S3: activate (sequence #3)
+            Note over S3: Publish/reject/escalate
+            S3-->>P: completed
+            Note over P: Process Completed
+        </div>
+    </div>
+
+    <h2>Domain Model</h2>
+
+    <table>
+        <tr>
+            <th>Universal</th>
+            <th>Meta Category</th>
+            <th>Specializes</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td><code>content-item</code></td>
+            <td>Kind</td>
+            <td>-</td>
+            <td>Subject entity: content requiring moderation</td>
+        </tr>
+        <tr>
+            <td><code>content-moderation</code></td>
+            <td>Kind</td>
+            <td>base-process</td>
+            <td>Process with 3 composed stages</td>
+        </tr>
+        <tr>
+            <td><code>moderation-initial-review</code></td>
+            <td>Kind</td>
+            <td>base-stage</td>
+            <td>Stage 1: initial screening</td>
+        </tr>
+        <tr>
+            <td><code>moderation-detailed-analysis</code></td>
+            <td>Kind</td>
+            <td>base-stage</td>
+            <td>Stage 2: policy review</td>
+        </tr>
+        <tr>
+            <td><code>moderation-final-decision</code></td>
+            <td>Kind</td>
+            <td>base-stage</td>
+            <td>Stage 3: final decision</td>
+        </tr>
+    </table>
+
+    <h2>Sample Instances</h2>
+
+    <table>
+        <tr>
+            <th>Content</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Current Stage</th>
+        </tr>
+        <tr>
+            <td>User Review: Product XYZ</td>
+            <td>High</td>
+            <td>Active</td>
+            <td>#1 Initial Review</td>
+        </tr>
+        <tr>
+            <td>Discussion: Platform Features</td>
+            <td>Critical</td>
+            <td>Active</td>
+            <td>#2 Detailed Analysis</td>
+        </tr>
+        <tr>
+            <td>Profile Photo Upload</td>
+            <td>Low</td>
+            <td>Pending</td>
+            <td>-</td>
+        </tr>
+    </table>
+
+    <h2>Key Features Demonstrated</h2>
+
+    <ul>
+        <li><strong>Stage Composition</strong>: 3 stages composed into process via composition-relator</li>
+        <li><strong>Auto-Instantiation</strong>: Stage instances created automatically on process creation</li>
+        <li><strong>Sequential Stages</strong>: Stages activate in sequence order</li>
+        <li><strong>No Obligations</strong>: Stages are worked from a worklist/kanban view without role assignments</li>
+        <li><strong>Tier Detection</strong>: Engine finds composition depth 1 (stages only) = Worklist tier</li>
+    </ul>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    </script>
+</body>
+</html>

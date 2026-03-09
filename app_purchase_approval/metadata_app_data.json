@@ -1,0 +1,298 @@
+{
+  "_comment": "Purchase Approval — Sample instances (Tier 2 process with stages + obligations)",
+
+  "instances": [
+    {
+      "_comment": "=== PURCHASE ORDERS ===",
+      "id": "po-laptops-2026",
+      "universal_id": "purchase-order",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "po-number-prop": "2026-0042",
+        "po-description-prop": { "en": "50x Developer Laptops for Q2 hiring" },
+        "po-amount-prop": { "value": 75000.00, "unit": "usd" },
+        "po-vendor-prop": { "en": "TechSupply Corp" },
+        "po-status-prop": "PendingApproval"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "po-office-furniture",
+      "universal_id": "purchase-order",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "po-number-prop": "2026-0043",
+        "po-description-prop": { "en": "Office furniture for new floor" },
+        "po-amount-prop": { "value": 12500.00, "unit": "usd" },
+        "po-vendor-prop": { "en": "FurniturePlus" },
+        "po-status-prop": "PendingApproval"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "po-cloud-services",
+      "universal_id": "purchase-order",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "po-number-prop": "2026-0044",
+        "po-description-prop": { "en": "Annual cloud infrastructure renewal" },
+        "po-amount-prop": { "value": 240000.00, "unit": "usd" },
+        "po-vendor-prop": { "en": "CloudProvider Inc" },
+        "po-status-prop": "InReview"
+      },
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== PURCHASE APPROVAL PROCESS INSTANCES ===",
+      "id": "approval-laptops",
+      "universal_id": "purchase-approval",
+      "tenant_id": "model1-testing-tenant",
+      "skip_composition": true,
+      "properties": {
+        "base-process-status-prop": "Active",
+        "base-process-current-stage-prop": { "value": 1, "unit": "count" },
+        "base-process-subject-ref-prop": "po-laptops-2026",
+        "approval-urgency-prop": "Normal"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "approval-furniture",
+      "universal_id": "purchase-approval",
+      "tenant_id": "model1-testing-tenant",
+      "skip_composition": true,
+      "properties": {
+        "base-process-status-prop": "Pending",
+        "base-process-subject-ref-prop": "po-office-furniture",
+        "approval-urgency-prop": "Low"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "approval-cloud",
+      "universal_id": "purchase-approval",
+      "tenant_id": "model1-testing-tenant",
+      "skip_composition": true,
+      "properties": {
+        "base-process-status-prop": "Active",
+        "base-process-current-stage-prop": { "value": 2, "unit": "count" },
+        "base-process-subject-ref-prop": "po-cloud-services",
+        "approval-urgency-prop": "High"
+      },
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== STAGE INSTANCES FOR approval-laptops (stage 1 = Active) ===",
+      "id": "approval-laptops-budget-stage",
+      "universal_id": "budget-review-stage",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "base-stage-status-prop": "Active",
+        "base-stage-sequence-prop": { "value": 1, "unit": "count" }
+      },
+      "use_seed": true
+    },
+    {
+      "id": "approval-laptops-procurement-stage",
+      "universal_id": "procurement-review-stage",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "base-stage-status-prop": "Pending",
+        "base-stage-sequence-prop": { "value": 2, "unit": "count" }
+      },
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== STAGE INSTANCES FOR approval-furniture (pending, no active stage) ===",
+      "id": "approval-furniture-budget-stage",
+      "universal_id": "budget-review-stage",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "base-stage-status-prop": "Pending",
+        "base-stage-sequence-prop": { "value": 1, "unit": "count" }
+      },
+      "use_seed": true
+    },
+    {
+      "id": "approval-furniture-procurement-stage",
+      "universal_id": "procurement-review-stage",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "base-stage-status-prop": "Pending",
+        "base-stage-sequence-prop": { "value": 2, "unit": "count" }
+      },
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== STAGE INSTANCES FOR approval-cloud (stage 2 = Active) ===",
+      "id": "approval-cloud-budget-stage",
+      "universal_id": "budget-review-stage",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "base-stage-status-prop": "Completed",
+        "base-stage-sequence-prop": { "value": 1, "unit": "count" }
+      },
+      "use_seed": true
+    },
+    {
+      "id": "approval-cloud-procurement-stage",
+      "universal_id": "procurement-review-stage",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "base-stage-status-prop": "Active",
+        "base-stage-sequence-prop": { "value": 2, "unit": "count" }
+      },
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== OBLIGATION INSTANCES ===",
+      "id": "approval-laptops-budget-obligation",
+      "universal_id": "budget-approval-obligation",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "base-obligation-status-prop": "Active"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "approval-laptops-procurement-obligation",
+      "universal_id": "procurement-approval-obligation",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "base-obligation-status-prop": "Pending"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "approval-cloud-budget-obligation",
+      "universal_id": "budget-approval-obligation",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "base-obligation-status-prop": "Completed"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "approval-cloud-procurement-obligation",
+      "universal_id": "procurement-approval-obligation",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "base-obligation-status-prop": "Active"
+      },
+      "use_seed": true
+    }
+  ],
+
+  "relator_instances": [
+    {
+      "_comment": "=== PROCESS → STAGE COMPOSITION RELATORS (approval-laptops) ===",
+      "id": "rel-laptops-budget-stage",
+      "relator_id": "composition-relator",
+      "tenant_id": "model1-testing-tenant",
+      "participants": {
+        "composite": "approval-laptops",
+        "component": "approval-laptops-budget-stage"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "rel-laptops-procurement-stage",
+      "relator_id": "composition-relator",
+      "tenant_id": "model1-testing-tenant",
+      "participants": {
+        "composite": "approval-laptops",
+        "component": "approval-laptops-procurement-stage"
+      },
+      "use_seed": true
+    },
+    {
+      "_comment": "approval-furniture → stages",
+      "id": "rel-furniture-budget-stage",
+      "relator_id": "composition-relator",
+      "tenant_id": "model1-testing-tenant",
+      "participants": {
+        "composite": "approval-furniture",
+        "component": "approval-furniture-budget-stage"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "rel-furniture-procurement-stage",
+      "relator_id": "composition-relator",
+      "tenant_id": "model1-testing-tenant",
+      "participants": {
+        "composite": "approval-furniture",
+        "component": "approval-furniture-procurement-stage"
+      },
+      "use_seed": true
+    },
+    {
+      "_comment": "approval-cloud → stages",
+      "id": "rel-cloud-budget-stage",
+      "relator_id": "composition-relator",
+      "tenant_id": "model1-testing-tenant",
+      "participants": {
+        "composite": "approval-cloud",
+        "component": "approval-cloud-budget-stage"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "rel-cloud-procurement-stage",
+      "relator_id": "composition-relator",
+      "tenant_id": "model1-testing-tenant",
+      "participants": {
+        "composite": "approval-cloud",
+        "component": "approval-cloud-procurement-stage"
+      },
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== STAGE → OBLIGATION COMPOSITION RELATORS ===",
+      "id": "rel-laptops-budget-obl",
+      "relator_id": "composition-relator",
+      "tenant_id": "model1-testing-tenant",
+      "participants": {
+        "composite": "approval-laptops-budget-stage",
+        "component": "approval-laptops-budget-obligation"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "rel-laptops-procurement-obl",
+      "relator_id": "composition-relator",
+      "tenant_id": "model1-testing-tenant",
+      "participants": {
+        "composite": "approval-laptops-procurement-stage",
+        "component": "approval-laptops-procurement-obligation"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "rel-cloud-budget-obl",
+      "relator_id": "composition-relator",
+      "tenant_id": "model1-testing-tenant",
+      "participants": {
+        "composite": "approval-cloud-budget-stage",
+        "component": "approval-cloud-budget-obligation"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "rel-cloud-procurement-obl",
+      "relator_id": "composition-relator",
+      "tenant_id": "model1-testing-tenant",
+      "participants": {
+        "composite": "approval-cloud-procurement-stage",
+        "component": "approval-cloud-procurement-obligation"
+      },
+      "use_seed": true
+    }
+  ]
+}

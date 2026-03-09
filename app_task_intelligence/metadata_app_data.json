@@ -1,0 +1,1270 @@
+{
+    "_comment": "=== APP TASK INTELLIGENCE - INSTANCE DATA ===",
+    "_description": "Sample data for the Task Intelligence app: 3 projects, 5 team members, 12 tasks in various Kanban stages, 1 HW worklist definition with 4 stages (Backlog, Todo, In Progress, Done), and runtime process instances showing tasks flowing through the board.",
+    "instances": [
+        {
+            "_comment": "=== PRIORITY ENUMERATION INSTANCES ===",
+            "id": "task-priority-critical",
+            "universal_id": "task-priority-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "task-priority-name-prop": "CRITICAL" },
+            "use_seed": true
+        },
+        {
+            "id": "task-priority-high",
+            "universal_id": "task-priority-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "task-priority-name-prop": "HIGH" },
+            "use_seed": true
+        },
+        {
+            "id": "task-priority-medium",
+            "universal_id": "task-priority-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "task-priority-name-prop": "MEDIUM" },
+            "use_seed": true
+        },
+        {
+            "id": "task-priority-low",
+            "universal_id": "task-priority-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "task-priority-name-prop": "LOW" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== CATEGORY ENUMERATION INSTANCES ===",
+            "id": "task-category-feature",
+            "universal_id": "task-category-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "task-category-name-prop": "FEATURE" },
+            "use_seed": true
+        },
+        {
+            "id": "task-category-bug",
+            "universal_id": "task-category-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "task-category-name-prop": "BUG" },
+            "use_seed": true
+        },
+        {
+            "id": "task-category-chore",
+            "universal_id": "task-category-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "task-category-name-prop": "CHORE" },
+            "use_seed": true
+        },
+        {
+            "id": "task-category-spike",
+            "universal_id": "task-category-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "task-category-name-prop": "SPIKE" },
+            "use_seed": true
+        },
+        {
+            "id": "task-category-docs",
+            "universal_id": "task-category-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "task-category-name-prop": "DOCUMENTATION" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== PROJECTS (3) ===",
+            "id": "project-platform",
+            "universal_id": "task-project",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-project-code-prop": "PLAT",
+                "task-project-name-prop": { "en": "Platform Core" }
+            }
+        },
+        {
+            "id": "project-mobile",
+            "universal_id": "task-project",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-project-code-prop": "MOB",
+                "task-project-name-prop": { "en": "Mobile App" }
+            }
+        },
+        {
+            "id": "project-analytics",
+            "universal_id": "task-project",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-project-code-prop": "ANA",
+                "task-project-name-prop": { "en": "Analytics Dashboard" }
+            }
+        },
+
+        {
+            "_comment": "=== TEAM MEMBERS (5) ===",
+            "id": "member-alice",
+            "universal_id": "task-team-member",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-member-name-prop": { "en": "Alice Chen" },
+                "task-member-role-prop": "Tech Lead"
+            }
+        },
+        {
+            "id": "member-bob",
+            "universal_id": "task-team-member",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-member-name-prop": { "en": "Bob Martinez" },
+                "task-member-role-prop": "Senior Developer"
+            }
+        },
+        {
+            "id": "member-carol",
+            "universal_id": "task-team-member",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-member-name-prop": { "en": "Carol Johnson" },
+                "task-member-role-prop": "Developer"
+            }
+        },
+        {
+            "id": "member-dave",
+            "universal_id": "task-team-member",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-member-name-prop": { "en": "Dave Kim" },
+                "task-member-role-prop": "Developer"
+            }
+        },
+        {
+            "id": "member-eve",
+            "universal_id": "task-team-member",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-member-name-prop": { "en": "Eve Thompson" },
+                "task-member-role-prop": "QA Engineer"
+            }
+        },
+
+        {
+            "_comment": "=== TASKS (12) - Various statuses across the Kanban board ===",
+            "_comment2": "--- Backlog tasks (3) ---",
+            "id": "task-001",
+            "universal_id": "task-item",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-code-prop": "PLAT-101",
+                "task-title-prop": { "en": "Add WebSocket reconnection logic" },
+                "task-description-prop": { "en": "Implement automatic reconnection with exponential backoff when WS connection drops" },
+                "task-status-prop": "Backlog",
+                "task-priority-prop": "MEDIUM",
+                "task-category-prop": "FEATURE",
+                "task-story-points-prop": { "value": 5, "unit": "points" },
+                "task-created-at-prop": { "value": 1740000000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "task-002",
+            "universal_id": "task-item",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-code-prop": "ANA-201",
+                "task-title-prop": { "en": "Design chart color palette" },
+                "task-description-prop": { "en": "Create accessible color palette for dashboard charts with dark mode support" },
+                "task-status-prop": "Backlog",
+                "task-priority-prop": "LOW",
+                "task-category-prop": "FEATURE",
+                "task-story-points-prop": { "value": 3, "unit": "points" },
+                "task-created-at-prop": { "value": 1740100000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "task-003",
+            "universal_id": "task-item",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-code-prop": "MOB-301",
+                "task-title-prop": { "en": "Spike: evaluate offline sync libraries" },
+                "task-description-prop": { "en": "Research and compare offline data sync solutions for mobile" },
+                "task-status-prop": "Backlog",
+                "task-priority-prop": "MEDIUM",
+                "task-category-prop": "SPIKE",
+                "task-story-points-prop": { "value": 2, "unit": "points" },
+                "task-created-at-prop": { "value": 1740200000, "unit": "seconds" }
+            }
+        },
+
+        {
+            "_comment2": "--- Todo tasks (3) ---",
+            "id": "task-004",
+            "universal_id": "task-item",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-code-prop": "PLAT-102",
+                "task-title-prop": { "en": "Fix pagination offset bug in list API" },
+                "task-description-prop": { "en": "When offset exceeds total count, API returns 500 instead of empty page" },
+                "task-status-prop": "Todo",
+                "task-priority-prop": "HIGH",
+                "task-category-prop": "BUG",
+                "task-story-points-prop": { "value": 2, "unit": "points" },
+                "task-created-at-prop": { "value": 1739800000, "unit": "seconds" },
+                "task-reference-activity-prop": ["project-platform-core"]
+            }
+        },
+        {
+            "id": "task-005",
+            "universal_id": "task-item",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-code-prop": "ANA-202",
+                "task-title-prop": { "en": "Add export to CSV button" },
+                "task-description-prop": { "en": "Allow users to export dashboard data as CSV files" },
+                "task-status-prop": "Todo",
+                "task-priority-prop": "MEDIUM",
+                "task-category-prop": "FEATURE",
+                "task-story-points-prop": { "value": 3, "unit": "points" },
+                "task-created-at-prop": { "value": 1739900000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "task-006",
+            "universal_id": "task-item",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-code-prop": "PLAT-103",
+                "task-title-prop": { "en": "Update Rust dependencies to latest" },
+                "task-description-prop": { "en": "Run cargo update and fix any breaking changes" },
+                "task-status-prop": "Todo",
+                "task-priority-prop": "LOW",
+                "task-category-prop": "CHORE",
+                "task-story-points-prop": { "value": 1, "unit": "points" },
+                "task-created-at-prop": { "value": 1740050000, "unit": "seconds" }
+            }
+        },
+
+        {
+            "_comment2": "--- In Progress tasks (3) ---",
+            "id": "task-007",
+            "universal_id": "task-item",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-code-prop": "PLAT-104",
+                "task-title-prop": { "en": "Implement tenant isolation middleware" },
+                "task-description-prop": { "en": "Ensure all API routes validate tenant context from JWT" },
+                "task-status-prop": "InProgress",
+                "task-priority-prop": "CRITICAL",
+                "task-category-prop": "FEATURE",
+                "task-story-points-prop": { "value": 8, "unit": "points" },
+                "task-due-date-prop": { "value": 1741000000, "unit": "seconds" },
+                "task-created-at-prop": { "value": 1739500000, "unit": "seconds" },
+                "task-reference-activity-prop": ["member-alice-chen"]
+            }
+        },
+        {
+            "id": "task-008",
+            "universal_id": "task-item",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-code-prop": "MOB-302",
+                "task-title-prop": { "en": "Build push notification service" },
+                "task-description-prop": { "en": "Integrate Firebase Cloud Messaging for real-time push notifications" },
+                "task-status-prop": "InProgress",
+                "task-priority-prop": "HIGH",
+                "task-category-prop": "FEATURE",
+                "task-story-points-prop": { "value": 5, "unit": "points" },
+                "task-created-at-prop": { "value": 1739600000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "task-009",
+            "universal_id": "task-item",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-code-prop": "ANA-203",
+                "task-title-prop": { "en": "Write API documentation for analytics endpoints" },
+                "task-description-prop": { "en": "Document all analytics REST endpoints with OpenAPI spec" },
+                "task-status-prop": "InProgress",
+                "task-priority-prop": "MEDIUM",
+                "task-category-prop": "DOCUMENTATION",
+                "task-story-points-prop": { "value": 3, "unit": "points" },
+                "task-created-at-prop": { "value": 1739700000, "unit": "seconds" }
+            }
+        },
+
+        {
+            "_comment2": "--- Done tasks (3) ---",
+            "id": "task-010",
+            "universal_id": "task-item",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-code-prop": "PLAT-100",
+                "task-title-prop": { "en": "Set up CI/CD pipeline" },
+                "task-description-prop": { "en": "Configure GitHub Actions for build, test, and deploy" },
+                "task-status-prop": "Done",
+                "task-priority-prop": "HIGH",
+                "task-category-prop": "CHORE",
+                "task-story-points-prop": { "value": 5, "unit": "points" },
+                "task-created-at-prop": { "value": 1739000000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "task-011",
+            "universal_id": "task-item",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-code-prop": "MOB-300",
+                "task-title-prop": { "en": "Fix login screen crash on Android 12" },
+                "task-description-prop": { "en": "App crashes when biometric prompt is cancelled on Android 12+" },
+                "task-status-prop": "Done",
+                "task-priority-prop": "CRITICAL",
+                "task-category-prop": "BUG",
+                "task-story-points-prop": { "value": 3, "unit": "points" },
+                "task-created-at-prop": { "value": 1739100000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "task-012",
+            "universal_id": "task-item",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "task-code-prop": "ANA-200",
+                "task-title-prop": { "en": "Create analytics summary universal schema" },
+                "task-description-prop": { "en": "Define universals and properties for aggregated analytics output" },
+                "task-status-prop": "Done",
+                "task-priority-prop": "HIGH",
+                "task-category-prop": "FEATURE",
+                "task-story-points-prop": { "value": 5, "unit": "points" },
+                "task-created-at-prop": { "value": 1739200000, "unit": "seconds" }
+            }
+        },
+
+        {
+            "_comment": "=== HW WORKLIST DEFINITION (the Kanban board) ===",
+            "id": "procdef-task-kanban",
+            "universal_id": "hw-worklist-definition",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "label": { "en": "Task Kanban Board" },
+            "properties": {
+                "hw-procdef-code": "task-kanban",
+                "hw-procdef-label": { "en": "Task Kanban Board" },
+                "hw-procdef-version": { "value": 1, "unit": "version" },
+                "hw-procdef-intent": "MANAGE",
+                "hw-procdef-display-sequence": { "value": 1, "unit": "sequence" }
+            }
+        },
+
+        {
+            "_comment": "=== HW STAGE DEFINITIONS (4 Kanban columns) ===",
+            "id": "stagedef-backlog",
+            "universal_id": "hw-stage-definition",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "label": { "en": "Backlog" },
+            "properties": {
+                "hw-stagedef-code": "backlog",
+                "hw-stagedef-sequence": { "value": 1, "unit": "ordinal" },
+                "hw-stagedef-allowed-outcomes": "[\"MovedToTodo\"]"
+            }
+        },
+        {
+            "id": "stagedef-todo",
+            "universal_id": "hw-stage-definition",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "label": { "en": "To Do" },
+            "properties": {
+                "hw-stagedef-code": "todo",
+                "hw-stagedef-sequence": { "value": 2, "unit": "ordinal" },
+                "hw-stagedef-allowed-outcomes": "[\"StartedWork\", \"ReturnedToBacklog\"]"
+            }
+        },
+        {
+            "id": "stagedef-in-progress",
+            "universal_id": "hw-stage-definition",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "label": { "en": "In Progress" },
+            "properties": {
+                "hw-stagedef-code": "in-progress",
+                "hw-stagedef-sequence": { "value": 3, "unit": "ordinal" },
+                "hw-stagedef-allowed-outcomes": "[\"Completed\", \"Blocked\"]"
+            }
+        },
+        {
+            "id": "stagedef-done",
+            "universal_id": "hw-stage-definition",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "label": { "en": "Done" },
+            "properties": {
+                "hw-stagedef-code": "done",
+                "hw-stagedef-sequence": { "value": 4, "unit": "ordinal" }
+            }
+        },
+
+        {
+            "_comment": "=== HW RUNTIME: Process Instances (6 active/completed workflows) ===",
+            "_comment2": "--- 3 In-Progress tasks have active worklist processes ---",
+            "id": "proc-task-007",
+            "universal_id": "hw-worklist-process",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "label": { "en": "PLAT-104 Workflow" },
+            "properties": {
+                "hw-process-status": "Active",
+                "hw-process-definition-ref": "procdef-task-kanban",
+                "hw-process-subject-ref": "task-007",
+                "hw-process-current-stage": { "value": 3, "unit": "count" },
+                "hw-process-started-at": { "value": 1739500000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "proc-task-008",
+            "universal_id": "hw-worklist-process",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "label": { "en": "MOB-302 Workflow" },
+            "properties": {
+                "hw-process-status": "Active",
+                "hw-process-definition-ref": "procdef-task-kanban",
+                "hw-process-subject-ref": "task-008",
+                "hw-process-current-stage": { "value": 3, "unit": "count" },
+                "hw-process-started-at": { "value": 1739600000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "proc-task-009",
+            "universal_id": "hw-worklist-process",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "label": { "en": "ANA-203 Workflow" },
+            "properties": {
+                "hw-process-status": "Active",
+                "hw-process-definition-ref": "procdef-task-kanban",
+                "hw-process-subject-ref": "task-009",
+                "hw-process-current-stage": { "value": 3, "unit": "count" },
+                "hw-process-started-at": { "value": 1739700000, "unit": "seconds" }
+            }
+        },
+
+        {
+            "_comment2": "--- 3 Done tasks have completed worklist processes ---",
+            "id": "proc-task-010",
+            "universal_id": "hw-worklist-process",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "label": { "en": "PLAT-100 Workflow" },
+            "properties": {
+                "hw-process-status": "Completed",
+                "hw-process-definition-ref": "procdef-task-kanban",
+                "hw-process-subject-ref": "task-010",
+                "hw-process-current-stage": { "value": 4, "unit": "count" },
+                "hw-process-started-at": { "value": 1739000000, "unit": "seconds" },
+                "hw-process-completed-at": { "value": 1739400000, "unit": "seconds" },
+                "hw-process-final-outcome": "Completed"
+            }
+        },
+        {
+            "id": "proc-task-011",
+            "universal_id": "hw-worklist-process",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "label": { "en": "MOB-300 Workflow" },
+            "properties": {
+                "hw-process-status": "Completed",
+                "hw-process-definition-ref": "procdef-task-kanban",
+                "hw-process-subject-ref": "task-011",
+                "hw-process-current-stage": { "value": 4, "unit": "count" },
+                "hw-process-started-at": { "value": 1739100000, "unit": "seconds" },
+                "hw-process-completed-at": { "value": 1739350000, "unit": "seconds" },
+                "hw-process-final-outcome": "Completed"
+            }
+        },
+        {
+            "id": "proc-task-012",
+            "universal_id": "hw-worklist-process",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "label": { "en": "ANA-200 Workflow" },
+            "properties": {
+                "hw-process-status": "Completed",
+                "hw-process-definition-ref": "procdef-task-kanban",
+                "hw-process-subject-ref": "task-012",
+                "hw-process-current-stage": { "value": 4, "unit": "count" },
+                "hw-process-started-at": { "value": 1739200000, "unit": "seconds" },
+                "hw-process-completed-at": { "value": 1739450000, "unit": "seconds" },
+                "hw-process-final-outcome": "Completed"
+            }
+        },
+
+        {
+            "_comment": "=== HW RUNTIME: Stage Instances ===",
+            "_comment2": "--- Active processes: current In Progress stage instances ---",
+            "id": "stage-task-007-inprogress",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-in-progress",
+                "hw-stage-sequence": { "value": 3, "unit": "ordinal" },
+                "hw-stage-status": "Active",
+                "hw-stage-started-at": { "value": 1739800000, "unit": "seconds" },
+                "hw-stage-data-mode": "edit"
+            }
+        },
+        {
+            "id": "stage-task-008-inprogress",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-in-progress",
+                "hw-stage-sequence": { "value": 3, "unit": "ordinal" },
+                "hw-stage-status": "Active",
+                "hw-stage-started-at": { "value": 1739850000, "unit": "seconds" },
+                "hw-stage-data-mode": "edit"
+            }
+        },
+        {
+            "id": "stage-task-009-inprogress",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-in-progress",
+                "hw-stage-sequence": { "value": 3, "unit": "ordinal" },
+                "hw-stage-status": "Active",
+                "hw-stage-started-at": { "value": 1739900000, "unit": "seconds" },
+                "hw-stage-data-mode": "edit"
+            }
+        },
+
+        {
+            "_comment2": "--- Completed processes: final Done stage instances ---",
+            "id": "stage-task-010-done",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-done",
+                "hw-stage-sequence": { "value": 4, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739380000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739400000, "unit": "seconds" },
+                "hw-stage-data-mode": "review"
+            }
+        },
+        {
+            "id": "stage-task-011-done",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-done",
+                "hw-stage-sequence": { "value": 4, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739330000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739350000, "unit": "seconds" },
+                "hw-stage-data-mode": "review"
+            }
+        },
+        {
+            "id": "stage-task-012-done",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-done",
+                "hw-stage-sequence": { "value": 4, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739430000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739450000, "unit": "seconds" },
+                "hw-stage-data-mode": "review"
+            }
+        },
+
+        {
+            "_comment": "=== MISSING RUNTIME STAGES (move_to_stage requires ALL stages per process) ===",
+            "_comment2": "--- proc-task-007: Backlog(Completed), Todo(Completed), Done(Pending) ---",
+            "id": "stage-task-007-backlog",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-backlog",
+                "hw-stage-sequence": { "value": 1, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739500000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739550000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "stage-task-007-todo",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-todo",
+                "hw-stage-sequence": { "value": 2, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739550000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739800000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "stage-task-007-done",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-done",
+                "hw-stage-sequence": { "value": 4, "unit": "ordinal" },
+                "hw-stage-status": "Pending"
+            }
+        },
+
+        {
+            "_comment2": "--- proc-task-008: Backlog(Completed), Todo(Completed), Done(Pending) ---",
+            "id": "stage-task-008-backlog",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-backlog",
+                "hw-stage-sequence": { "value": 1, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739600000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739650000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "stage-task-008-todo",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-todo",
+                "hw-stage-sequence": { "value": 2, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739650000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739850000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "stage-task-008-done",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-done",
+                "hw-stage-sequence": { "value": 4, "unit": "ordinal" },
+                "hw-stage-status": "Pending"
+            }
+        },
+
+        {
+            "_comment2": "--- proc-task-009: Backlog(Completed), Todo(Completed), Done(Pending) ---",
+            "id": "stage-task-009-backlog",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-backlog",
+                "hw-stage-sequence": { "value": 1, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739700000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739750000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "stage-task-009-todo",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-todo",
+                "hw-stage-sequence": { "value": 2, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739750000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739900000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "stage-task-009-done",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-done",
+                "hw-stage-sequence": { "value": 4, "unit": "ordinal" },
+                "hw-stage-status": "Pending"
+            }
+        },
+
+        {
+            "_comment2": "--- proc-task-010: Backlog(Completed), Todo(Completed), InProgress(Completed) ---",
+            "id": "stage-task-010-backlog",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-backlog",
+                "hw-stage-sequence": { "value": 1, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739000000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739100000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "stage-task-010-todo",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-todo",
+                "hw-stage-sequence": { "value": 2, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739100000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739200000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "stage-task-010-inprogress",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-in-progress",
+                "hw-stage-sequence": { "value": 3, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739200000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739380000, "unit": "seconds" }
+            }
+        },
+
+        {
+            "_comment2": "--- proc-task-011: Backlog(Completed), Todo(Completed), InProgress(Completed) ---",
+            "id": "stage-task-011-backlog",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-backlog",
+                "hw-stage-sequence": { "value": 1, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739100000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739150000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "stage-task-011-todo",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-todo",
+                "hw-stage-sequence": { "value": 2, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739150000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739250000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "stage-task-011-inprogress",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-in-progress",
+                "hw-stage-sequence": { "value": 3, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739250000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739330000, "unit": "seconds" }
+            }
+        },
+
+        {
+            "_comment2": "--- proc-task-012: Backlog(Completed), Todo(Completed), InProgress(Completed) ---",
+            "id": "stage-task-012-backlog",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-backlog",
+                "hw-stage-sequence": { "value": 1, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739200000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739250000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "stage-task-012-todo",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-todo",
+                "hw-stage-sequence": { "value": 2, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739250000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739350000, "unit": "seconds" }
+            }
+        },
+        {
+            "id": "stage-task-012-inprogress",
+            "universal_id": "hw-process-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "hw-stage-definition-ref": "stagedef-in-progress",
+                "hw-stage-sequence": { "value": 3, "unit": "ordinal" },
+                "hw-stage-status": "Completed",
+                "hw-stage-started-at": { "value": 1739350000, "unit": "seconds" },
+                "hw-stage-completed-at": { "value": 1739430000, "unit": "seconds" }
+            }
+        }
+    ],
+
+    "relator_instances": [
+        {
+            "_comment": "=== TASK → PROJECT ASSIGNMENTS (12 tasks → 3 projects) ===",
+            "id": "rel-task-001-proj",
+            "relator_id": "task-belongs-to-project-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-001", "project": "project-platform" }
+        },
+        {
+            "id": "rel-task-002-proj",
+            "relator_id": "task-belongs-to-project-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-002", "project": "project-analytics" }
+        },
+        {
+            "id": "rel-task-003-proj",
+            "relator_id": "task-belongs-to-project-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-003", "project": "project-mobile" }
+        },
+        {
+            "id": "rel-task-004-proj",
+            "relator_id": "task-belongs-to-project-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-004", "project": "project-platform" }
+        },
+        {
+            "id": "rel-task-005-proj",
+            "relator_id": "task-belongs-to-project-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-005", "project": "project-analytics" }
+        },
+        {
+            "id": "rel-task-006-proj",
+            "relator_id": "task-belongs-to-project-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-006", "project": "project-platform" }
+        },
+        {
+            "id": "rel-task-007-proj",
+            "relator_id": "task-belongs-to-project-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-007", "project": "project-platform" }
+        },
+        {
+            "id": "rel-task-008-proj",
+            "relator_id": "task-belongs-to-project-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-008", "project": "project-mobile" }
+        },
+        {
+            "id": "rel-task-009-proj",
+            "relator_id": "task-belongs-to-project-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-009", "project": "project-analytics" }
+        },
+        {
+            "id": "rel-task-010-proj",
+            "relator_id": "task-belongs-to-project-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-010", "project": "project-platform" }
+        },
+        {
+            "id": "rel-task-011-proj",
+            "relator_id": "task-belongs-to-project-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-011", "project": "project-mobile" }
+        },
+        {
+            "id": "rel-task-012-proj",
+            "relator_id": "task-belongs-to-project-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-012", "project": "project-analytics" }
+        },
+
+        {
+            "_comment": "=== TASK → TEAM MEMBER ASSIGNMENTS (9 tasks have assignees) ===",
+            "id": "rel-task-004-assignee",
+            "relator_id": "task-assigned-to-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-004", "assignee": "member-bob" }
+        },
+        {
+            "id": "rel-task-005-assignee",
+            "relator_id": "task-assigned-to-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-005", "assignee": "member-carol" }
+        },
+        {
+            "id": "rel-task-006-assignee",
+            "relator_id": "task-assigned-to-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-006", "assignee": "member-dave" }
+        },
+        {
+            "id": "rel-task-007-assignee",
+            "relator_id": "task-assigned-to-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-007", "assignee": "member-alice" }
+        },
+        {
+            "id": "rel-task-008-assignee",
+            "relator_id": "task-assigned-to-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-008", "assignee": "member-bob" }
+        },
+        {
+            "id": "rel-task-009-assignee",
+            "relator_id": "task-assigned-to-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-009", "assignee": "member-carol" }
+        },
+        {
+            "id": "rel-task-010-assignee",
+            "relator_id": "task-assigned-to-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-010", "assignee": "member-alice" }
+        },
+        {
+            "id": "rel-task-011-assignee",
+            "relator_id": "task-assigned-to-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-011", "assignee": "member-dave" }
+        },
+        {
+            "id": "rel-task-012-assignee",
+            "relator_id": "task-assigned-to-rel",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "task": "task-012", "assignee": "member-eve" }
+        },
+
+        {
+            "_comment": "=== HW DEFINITION RELATORS ===",
+            "_comment2": "--- Worklist definition governs Task universal ---",
+            "id": "rel-procdef-taskkanban-governs",
+            "relator_id": "hw-definition-governs-universal",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "process_definition": "procdef-task-kanban",
+                "subject_universal": "task-item"
+            },
+            "properties": {
+                "hw-governs-status-property-id-prop": ["task-status-prop"]
+            }
+        },
+        {
+            "_comment2": "--- Worklist definition has 4 stage definitions ---",
+            "id": "rel-procdef-taskkanban-has-backlog",
+            "relator_id": "hw-definition-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "process_definition": "procdef-task-kanban",
+                "stage_definition": "stagedef-backlog"
+            }
+        },
+        {
+            "id": "rel-procdef-taskkanban-has-todo",
+            "relator_id": "hw-definition-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "process_definition": "procdef-task-kanban",
+                "stage_definition": "stagedef-todo"
+            }
+        },
+        {
+            "id": "rel-procdef-taskkanban-has-inprogress",
+            "relator_id": "hw-definition-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "process_definition": "procdef-task-kanban",
+                "stage_definition": "stagedef-in-progress"
+            }
+        },
+        {
+            "id": "rel-procdef-taskkanban-has-done",
+            "relator_id": "hw-definition-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "process_definition": "procdef-task-kanban",
+                "stage_definition": "stagedef-done"
+            }
+        },
+
+        {
+            "_comment2": "--- Worklist definition uses HW profile ---",
+            "id": "rel-procdef-taskkanban-uses-hw-profile",
+            "relator_id": "definition-uses-profile",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "process_definition": "procdef-task-kanban",
+                "framework_profile": "hw-profile"
+            }
+        },
+
+        {
+            "_comment": "=== HW RUNTIME RELATORS: Process → Stage links ===",
+            "id": "rel-proc-007-has-stage",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "process": "proc-task-007",
+                "stage": "stage-task-007-inprogress"
+            }
+        },
+        {
+            "id": "rel-proc-008-has-stage",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "process": "proc-task-008",
+                "stage": "stage-task-008-inprogress"
+            }
+        },
+        {
+            "id": "rel-proc-009-has-stage",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "process": "proc-task-009",
+                "stage": "stage-task-009-inprogress"
+            }
+        },
+        {
+            "id": "rel-proc-010-has-stage",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "process": "proc-task-010",
+                "stage": "stage-task-010-done"
+            }
+        },
+        {
+            "id": "rel-proc-011-has-stage",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "process": "proc-task-011",
+                "stage": "stage-task-011-done"
+            }
+        },
+        {
+            "id": "rel-proc-012-has-stage",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "process": "proc-task-012",
+                "stage": "stage-task-012-done"
+            }
+        },
+
+        {
+            "_comment": "=== MISSING RUNTIME RELATORS: All stages per process ===",
+            "_comment2": "--- proc-task-007: 3 additional stage links ---",
+            "id": "rel-proc-007-has-backlog",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-007", "stage": "stage-task-007-backlog" }
+        },
+        {
+            "id": "rel-proc-007-has-todo",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-007", "stage": "stage-task-007-todo" }
+        },
+        {
+            "id": "rel-proc-007-has-done",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-007", "stage": "stage-task-007-done" }
+        },
+
+        {
+            "_comment2": "--- proc-task-008: 3 additional stage links ---",
+            "id": "rel-proc-008-has-backlog",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-008", "stage": "stage-task-008-backlog" }
+        },
+        {
+            "id": "rel-proc-008-has-todo",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-008", "stage": "stage-task-008-todo" }
+        },
+        {
+            "id": "rel-proc-008-has-done",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-008", "stage": "stage-task-008-done" }
+        },
+
+        {
+            "_comment2": "--- proc-task-009: 3 additional stage links ---",
+            "id": "rel-proc-009-has-backlog",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-009", "stage": "stage-task-009-backlog" }
+        },
+        {
+            "id": "rel-proc-009-has-todo",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-009", "stage": "stage-task-009-todo" }
+        },
+        {
+            "id": "rel-proc-009-has-done",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-009", "stage": "stage-task-009-done" }
+        },
+
+        {
+            "_comment2": "--- proc-task-010: 3 additional stage links ---",
+            "id": "rel-proc-010-has-backlog",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-010", "stage": "stage-task-010-backlog" }
+        },
+        {
+            "id": "rel-proc-010-has-todo",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-010", "stage": "stage-task-010-todo" }
+        },
+        {
+            "id": "rel-proc-010-has-inprogress",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-010", "stage": "stage-task-010-inprogress" }
+        },
+
+        {
+            "_comment2": "--- proc-task-011: 3 additional stage links ---",
+            "id": "rel-proc-011-has-backlog",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-011", "stage": "stage-task-011-backlog" }
+        },
+        {
+            "id": "rel-proc-011-has-todo",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-011", "stage": "stage-task-011-todo" }
+        },
+        {
+            "id": "rel-proc-011-has-inprogress",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-011", "stage": "stage-task-011-inprogress" }
+        },
+
+        {
+            "_comment2": "--- proc-task-012: 3 additional stage links ---",
+            "id": "rel-proc-012-has-backlog",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-012", "stage": "stage-task-012-backlog" }
+        },
+        {
+            "id": "rel-proc-012-has-todo",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-012", "stage": "stage-task-012-todo" }
+        },
+        {
+            "id": "rel-proc-012-has-inprogress",
+            "relator_id": "hw-process-has-stage",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": { "process": "proc-task-012", "stage": "stage-task-012-inprogress" }
+        }
+    ]
+}

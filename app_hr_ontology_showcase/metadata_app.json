@@ -1,0 +1,611 @@
+{
+    "_comment": "=== HR ONTOLOGY SHOWCASE -- Human Social Relationships ===",
+    "_description": "Demonstrates relator inheritance: Person-level social relators inherited by Employee specialization. Tests find_relators() with include_inherited and is_specialization_of() for cross-level participation.",
+
+    "organizations": [
+        {
+            "id": "model1-testing-org",
+            "label": { "en": "Model1 Testing Org" },
+            "use_seed": true
+        }
+    ],
+
+    "tenants": [
+        {
+            "id": "model1-testing-tenant",
+            "organization_id": "model1-testing-org",
+            "label": { "en": "Model1 Testing Tenant" },
+            "use_seed": true
+        }
+    ],
+
+    "apps": [
+        {
+            "id": "hr-ontology-showcase-app",
+            "tenant_id": "model1-testing-tenant",
+            "label": { "en": "HR Ontology Showcase" },
+            "use_seed": true,
+            "modules": [
+                {
+                    "id": "hr-ontology-showcase-module",
+                    "label": { "en": "HR Ontology Module" },
+                    "use_seed": true,
+                    "subscribed_events": [],
+                    "publishable_events": []
+                }
+            ]
+        }
+    ],
+
+    "universals": [
+        {
+            "_comment": "=== ROOT: LivingBeing ===",
+            "id": "hr-living-being",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Living Being" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 60,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== LEVEL 2: Human (specializes LivingBeing) ===",
+            "id": "hr-human",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "generalizes": "hr-living-being",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "hr-living-being" }
+            ],
+            "label": { "en": "Human" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 60,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== LEVEL 3: Person (specializes Human) -- social relators defined at this level ===",
+            "id": "hr-person",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "generalizes": "hr-human",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "hr-human" }
+            ],
+            "label": { "en": "Person" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 60,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== LEVEL 4: Employee (specializes Person) -- inherits Person social relators ===",
+            "id": "hr-employee",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "generalizes": "hr-person",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "hr-person" }
+            ],
+            "label": { "en": "Employee" },
+            "label_schema": {
+                "separator": " | ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Organization (standalone Kind) ===",
+            "id": "hr-organization",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Organization" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ENUM: Gender Type ===",
+            "id": "hr-gender-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Gender Type" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUM: Industry Type ===",
+            "id": "hr-industry-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Industry Type" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUM: Relationship Type (for family bonds) ===",
+            "id": "hr-relationship-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Relationship Type" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUM: Biological Kingdom ===",
+            "id": "hr-kingdom-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Kingdom" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== RELATOR: Friendship (Person <-> Person) -- inherited by Employee ===",
+            "id": "hr-friendship-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "roles": [
+                { "name": "friend_a", "universal_id": "hr-person" },
+                { "name": "friend_b", "universal_id": "hr-person" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "label": { "en": "Friendship" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Family Bond (Person <-> Person) -- inherited by Employee ===",
+            "id": "hr-family-bond-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "roles": [
+                { "name": "family_member_a", "universal_id": "hr-person" },
+                { "name": "family_member_b", "universal_id": "hr-person" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "label": { "en": "Family Bond" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Work Colleague (Person <-> Person) -- inherited by Employee ===",
+            "id": "hr-work-colleague-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "roles": [
+                { "name": "colleague_a", "universal_id": "hr-person" },
+                { "name": "colleague_b", "universal_id": "hr-person" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "label": { "en": "Work Colleague" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Acquaintance (Person <-> Person) -- inherited by Employee ===",
+            "id": "hr-acquaintance-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "roles": [
+                { "name": "person_a", "universal_id": "hr-person" },
+                { "name": "person_b", "universal_id": "hr-person" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "label": { "en": "Acquaintance" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Employment Contract (Employee -> Organization) -- Employee-specific ===",
+            "id": "hr-employment-contract-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "roles": [
+                { "name": "employee", "universal_id": "hr-employee" },
+                { "name": "employer", "universal_id": "hr-organization" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "label": { "en": "Employment Contract" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Mentorship (Employee -> Employee) -- Employee-specific ===",
+            "id": "hr-mentorship-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "roles": [
+                { "name": "mentor", "universal_id": "hr-employee" },
+                { "name": "mentee", "universal_id": "hr-employee" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "label": { "en": "Mentorship" },
+            "use_seed": true
+        }
+    ],
+
+    "property_definitions": [
+        {
+            "_comment": "=== LivingBeing properties (biological classification, not naming) ===",
+            "id": "hr-kingdom-prop",
+            "universal_id": "hr-living-being",
+            "label": { "en": "Kingdom" },
+            "description": { "en": "Biological kingdom classification (Animalia, Plantae, Fungi)" },
+            "property_schema": {
+                "predicates": ["classification", "kingdom"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-species-prop",
+            "universal_id": "hr-living-being",
+            "label": { "en": "Species" },
+            "description": { "en": "Species or breed designation" },
+            "property_schema": {
+                "predicates": ["classification", "species"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-birth-date-prop",
+            "universal_id": "hr-living-being",
+            "label": { "en": "Birth Date" },
+            "property_schema": {
+                "predicates": ["date", "birth"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Date" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-death-date-prop",
+            "universal_id": "hr-living-being",
+            "label": { "en": "Death Date" },
+            "property_schema": {
+                "predicates": ["date", "death"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Date" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Human properties ===",
+            "id": "hr-full-name-prop",
+            "universal_id": "hr-human",
+            "label": { "en": "Full Name" },
+            "property_schema": {
+                "predicates": ["name", "full"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-gender-prop",
+            "universal_id": "hr-human",
+            "label": { "en": "Gender" },
+            "property_schema": {
+                "predicates": ["gender"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Person properties ===",
+            "id": "hr-email-prop",
+            "universal_id": "hr-person",
+            "label": { "en": "Email" },
+            "property_schema": {
+                "predicates": ["email", "contact"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-phone-prop",
+            "universal_id": "hr-person",
+            "label": { "en": "Phone" },
+            "property_schema": {
+                "predicates": ["phone", "contact"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Employee properties ===",
+            "id": "hr-employee-id-prop",
+            "universal_id": "hr-employee",
+            "label": { "en": "Employee ID" },
+            "property_schema": {
+                "predicates": ["identifier", "employee"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "EMP-"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-hire-date-prop",
+            "universal_id": "hr-employee",
+            "label": { "en": "Hire Date" },
+            "property_schema": {
+                "predicates": ["date", "hire"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Date" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-department-prop",
+            "universal_id": "hr-employee",
+            "label": { "en": "Department" },
+            "property_schema": {
+                "predicates": ["department", "unit"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Organization properties ===",
+            "id": "hr-org-name-prop",
+            "universal_id": "hr-organization",
+            "label": { "en": "Organization Name" },
+            "property_schema": {
+                "predicates": ["name", "organization"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-org-industry-prop",
+            "universal_id": "hr-organization",
+            "label": { "en": "Industry" },
+            "property_schema": {
+                "predicates": ["industry", "sector"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Enum property definitions ===",
+            "id": "hr-gender-type-name-prop",
+            "universal_id": "hr-gender-type",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-industry-type-name-prop",
+            "universal_id": "hr-industry-type",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-relationship-type-name-prop",
+            "universal_id": "hr-relationship-type",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "hr-kingdom-type-name-prop",
+            "universal_id": "hr-kingdom-type",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        }
+    ],
+
+    "users": [
+        {
+            "id": "hr-showcase-admin",
+            "tenant_id": "model1-testing-tenant",
+            "email": "hr-showcase-admin@test.model1.ai",
+            "display_name": "HR Showcase Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppAdmin", "AppDeveloper"],
+            "use_seed": true
+        }
+    ],
+
+    "foundation_role_assignments": [
+        {
+            "id": "fra-hr-admin-app-admin",
+            "user_id": "hr-showcase-admin",
+            "role": "AppAdmin",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "hr-ontology-showcase-app"
+            },
+            "assigned_by": "hr-showcase-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-hr-admin-app-dev",
+            "user_id": "hr-showcase-admin",
+            "role": "AppDeveloper",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "hr-ontology-showcase-app"
+            },
+            "assigned_by": "hr-showcase-admin",
+            "use_seed": true
+        }
+    ],
+
+    "event_definitions": [],
+    "computations": [],
+    "timers": [],
+    "correlation_rules": [],
+    "data_schemas": [],
+    "artifact_definitions": [],
+    "topic_policies": []
+}

@@ -1,0 +1,131 @@
+{
+    "_comment": "=== ONTOLOGY SHOWCASE — Instance Data ===",
+    "_description": "Instances and relator instances for the scientific instruments ontology showcase.",
+
+    "instances": [
+        {
+            "_comment": "=== MANUFACTURERS ===",
+            "id": "sci-acme-instruments",
+            "universal_id": "sci-manufacturer",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "sci-org-name-prop": { "en": "Acme Instruments" },
+                "sci-org-registration-prop": "ACME-2024-001",
+                "sci-mfg-type-prop": "Precision Electronics"
+            }
+        },
+        {
+            "id": "sci-precision-corp",
+            "universal_id": "sci-manufacturer",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "sci-org-name-prop": { "en": "Precision Corp" },
+                "sci-org-registration-prop": "PREC-2024-002",
+                "sci-mfg-type-prop": "Optical Instruments"
+            }
+        },
+
+        {
+            "_comment": "=== DISTRIBUTORS ===",
+            "id": "sci-global-dist",
+            "universal_id": "sci-distributor",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "sci-org-name-prop": { "en": "Global Distribution" },
+                "sci-org-registration-prop": "GDIST-2024-003",
+                "sci-dist-region-prop": "WORLDWIDE"
+            }
+        },
+        {
+            "id": "sci-regional-supply",
+            "universal_id": "sci-distributor",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "sci-org-name-prop": { "en": "Regional Supply Co" },
+                "sci-org-registration-prop": "RSUP-2024-004",
+                "sci-dist-region-prop": "NORTH_AMERICA"
+            }
+        },
+
+        {
+            "_comment": "=== CERTIFIED DISTRIBUTOR (specialization of Distributor) ===",
+            "id": "sci-elite-certified",
+            "universal_id": "sci-certified-distributor",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "sci-org-name-prop": { "en": "Elite Certified Inc" },
+                "sci-org-registration-prop": "ELITE-2024-005",
+                "sci-dist-region-prop": "EUROPE",
+                "sci-cert-level-prop": "ISO-9001"
+            }
+        },
+
+        {
+            "_comment": "=== WEATHER STATION (triggers 3 component auto-instantiations) ===",
+            "id": "sci-ws-001",
+            "universal_id": "sci-weather-station",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "sci-ws-station-code-prop": "WS-001",
+                "sci-ws-location-prop": { "en": "Mount Rainier Base Camp" }
+            }
+        },
+
+        {
+            "_comment": "=== ADVANCED WEATHER STATION (triggers 4 component auto-instantiations: 3 inherited + 1 own) ===",
+            "id": "sci-aws-001",
+            "universal_id": "sci-advanced-weather-station",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "sci-ws-station-code-prop": "AWS-001",
+                "sci-ws-location-prop": { "en": "Arctic Research Platform" },
+                "sci-aws-data-link-prop": "SATELLITE"
+            }
+        },
+
+        {
+            "_comment": "=== MONITORING NETWORK (aggregation — does NOT auto-create stations) ===",
+            "id": "sci-net-alpha",
+            "universal_id": "sci-monitoring-network",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "properties": {
+                "sci-network-name-prop": { "en": "Net-Alpha" },
+                "sci-network-region-prop": "PACIFIC_NORTHWEST"
+            }
+        }
+    ],
+
+    "relator_instances": [
+        {
+            "_comment": "=== SUPPLY CONTRACT: Acme (Manufacturer) <-> Elite Certified (CertifiedDistributor as buyer) ===",
+            "_note": "Tests specialization-aware role typing: CertifiedDistributor is accepted for Distributor role",
+            "id": "sci-acme-elite-contract",
+            "relator_id": "sci-supply-contract",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "supplier": "sci-acme-instruments",
+                "buyer": "sci-elite-certified"
+            }
+        },
+        {
+            "_comment": "=== AGGREGATION: Net-Alpha aggregates WS-001 (no auto-instantiation) ===",
+            "id": "sci-net-alpha-ws-001",
+            "relator_id": "sci-network-has-station",
+            "tenant_id": "model1-testing-tenant",
+            "use_seed": true,
+            "participants": {
+                "aggregate": "sci-net-alpha",
+                "part": "sci-ws-001"
+            }
+        }
+    ]
+}

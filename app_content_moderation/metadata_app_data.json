@@ -1,0 +1,82 @@
+{
+  "_comment": "Content Moderation — Sample instances (Tier 1 process with stages)",
+
+  "instances": [
+    {
+      "_comment": "=== CONTENT ITEMS ===",
+      "id": "content-user-post-1",
+      "universal_id": "content-item",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "content-title-prop": { "en": "User Review: Product XYZ" },
+        "content-type-prop": "UserReview",
+        "content-status-prop": "UnderReview",
+        "content-author-prop": { "en": "user42" },
+        "content-risk-score-prop": { "value": 65, "unit": "points" }
+      },
+      "use_seed": true
+    },
+    {
+      "id": "content-forum-post-1",
+      "universal_id": "content-item",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "content-title-prop": { "en": "Discussion: Platform Features" },
+        "content-type-prop": "ForumPost",
+        "content-status-prop": "Flagged",
+        "content-author-prop": { "en": "moderator_test" },
+        "content-risk-score-prop": { "value": 82, "unit": "points" }
+      },
+      "use_seed": true
+    },
+    {
+      "id": "content-image-upload-1",
+      "universal_id": "content-item",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "content-title-prop": { "en": "Profile Photo Upload" },
+        "content-type-prop": "ImageUpload",
+        "content-status-prop": "Queued",
+        "content-author-prop": { "en": "newuser_99" },
+        "content-risk-score-prop": { "value": 30, "unit": "points" }
+      },
+      "use_seed": true
+    },
+
+    {
+      "_comment": "=== MODERATION PROCESS INSTANCES (stages auto-created via composition) ===",
+      "id": "mod-process-review-1",
+      "universal_id": "content-moderation",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "base-process-status-prop": "Active",
+        "base-process-current-stage-prop": { "value": 1, "unit": "count" },
+        "moderation-priority-prop": "High"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "mod-process-forum-1",
+      "universal_id": "content-moderation",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "base-process-status-prop": "Active",
+        "base-process-current-stage-prop": { "value": 2, "unit": "count" },
+        "moderation-priority-prop": "Critical"
+      },
+      "use_seed": true
+    },
+    {
+      "id": "mod-process-image-1",
+      "universal_id": "content-moderation",
+      "tenant_id": "model1-testing-tenant",
+      "properties": {
+        "base-process-status-prop": "Pending",
+        "moderation-priority-prop": "Low"
+      },
+      "use_seed": true
+    }
+  ],
+
+  "relator_instances": []
+}

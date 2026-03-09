@@ -1,0 +1,1514 @@
+{
+    "_comment": "=== APP INVOICE REACTIVE EXAMPLE ===",
+    "_description": "Adapts the invoice_complex domain model to the reactive pattern with proper app structure, modules, users, roles, and authorization context. Demonstrates reactive computation cascades, event bindings, data schemas, and artifact definitions.",
+
+    "organizations": [
+        {
+            "id": "model1-testing-org",
+            "label": { "en": "Model1 Testing Org" },
+            "use_seed": true
+        }
+    ],
+
+    "tenants": [
+        {
+            "id": "model1-testing-tenant",
+            "organization_id": "model1-testing-org",
+            "label": { "en": "Model1 Testing Tenant" },
+            "use_seed": true
+        }
+    ],
+
+    "measurement_frames": [
+        {
+            "id": "ai-payment-terms-frame",
+            "universal_id": "duration-universal",
+            "label": { "en": "Payment Terms" },
+            "base_unit": "days",
+            "units": {
+                "days": {
+                    "factor": 1.0,
+                    "description": { "en": "Days until due" }
+                }
+            },
+            "use_seed": true
+        }
+    ],
+
+    "universals": [
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Invoice Status ===",
+            "id": "ai-invoice-status",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Invoice Status" },
+            "description": { "en": "Enumeration of invoice lifecycle statuses" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Vendor ===",
+            "id": "ai-vendor",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Vendor" },
+            "description": { "en": "A company that provides goods or services" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Invoice ===",
+            "id": "ai-invoice",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Invoice" },
+            "description": { "en": "A commercial document issued by a vendor for goods or services rendered" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Invoice Item ===",
+            "id": "ai-invoice-item",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Invoice Item" },
+            "description": { "en": "A line item on an invoice representing a specific service or product" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Sales Summary (artifact target) ===",
+            "id": "ai-sales-summary",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Sales Summary" },
+            "description": { "en": "Aggregated sales data across dimensions like service category, vendor, and year" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Invoice -> Vendor (association) ===",
+            "id": "ai-invoice-vendor-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Invoice Vendor" },
+            "description": { "en": "Relationship between an invoice and its vendor" },
+            "roles": [
+                { "name": "invoice", "universal_id": "ai-invoice" },
+                { "name": "vendor", "universal_id": "ai-vendor" }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Invoice -> Item (composition) ===",
+            "id": "ai-invoice-item-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Invoice Contains Item" },
+            "description": { "en": "Composition relationship between an invoice and its line items" },
+            "roles": [
+                { "name": "invoice", "universal_id": "ai-invoice" },
+                { "name": "item", "universal_id": "ai-invoice-item" }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
+            ],
+            "use_seed": true
+        }
+    ],
+
+    "property_definitions": [
+        {
+            "_comment": "=== Invoice Status Properties ===",
+            "id": "ai-status-name-prop",
+            "universal_id": "ai-invoice-status",
+            "label": { "en": "Status Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Vendor Properties ===",
+            "id": "ai-vendor-code",
+            "universal_id": "ai-vendor",
+            "label": { "en": "Vendor Code" },
+            "property_schema": {
+                "predicates": ["code", "identifier"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-vendor-name",
+            "universal_id": "ai-vendor",
+            "label": { "en": "Vendor Name" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-vendor-contact-email",
+            "universal_id": "ai-vendor",
+            "label": { "en": "Contact Email" },
+            "property_schema": {
+                "predicates": ["email", "contact"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Invoice Properties ===",
+            "id": "ai-invoice-number",
+            "universal_id": "ai-invoice",
+            "label": { "en": "Invoice Number" },
+            "property_schema": {
+                "predicates": ["number", "identifier"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "#"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-date",
+            "universal_id": "ai-invoice",
+            "label": { "en": "Invoice Date" },
+            "description": { "en": "Date the invoice was issued (ISO 8601)" },
+            "property_schema": {
+                "predicates": ["date", "issued"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": true
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-due-date",
+            "universal_id": "ai-invoice",
+            "label": { "en": "Due Date" },
+            "description": { "en": "Date payment is due" },
+            "property_schema": {
+                "predicates": ["date", "due"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": true
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-status-prop",
+            "universal_id": "ai-invoice",
+            "label": { "en": "Invoice Status" },
+            "description": { "en": "Current status: DRAFT, SUBMITTED, UNDER_REVIEW, APPROVED, REJECTED, PAID" },
+            "property_schema": {
+                "predicates": ["status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "ai-invoice-status",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-payment-terms",
+            "universal_id": "ai-invoice",
+            "label": { "en": "Payment Terms" },
+            "description": { "en": "Payment terms: Net15, Net30, Net60, Net90, DueOnReceipt" },
+            "property_schema": {
+                "predicates": ["payment", "terms"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "allowed_values": ["Net15", "Net30", "Net60", "Net90", "DueOnReceipt"],
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-currency",
+            "universal_id": "ai-invoice",
+            "label": { "en": "Currency" },
+            "description": { "en": "Invoice currency code" },
+            "property_schema": {
+                "predicates": ["currency"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "allowed_values": ["USD", "EUR", "GBP"],
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-year",
+            "universal_id": "ai-invoice",
+            "label": { "en": "Invoice Year" },
+            "description": { "en": "Year the invoice was issued (for temporal aggregation)" },
+            "property_schema": {
+                "predicates": ["year"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": true
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-subtotal",
+            "universal_id": "ai-invoice",
+            "label": { "en": "Subtotal" },
+            "description": { "en": "Sum of all line items before tax (computed)" },
+            "property_schema": {
+                "predicates": ["subtotal", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-tax-amount",
+            "universal_id": "ai-invoice",
+            "label": { "en": "Tax Amount" },
+            "description": { "en": "Total tax on the invoice (computed as 8.5% of subtotal)" },
+            "property_schema": {
+                "predicates": ["tax", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-total",
+            "universal_id": "ai-invoice",
+            "label": { "en": "Total Amount" },
+            "description": { "en": "Total amount including tax (computed)" },
+            "property_schema": {
+                "predicates": ["total", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-is-valid",
+            "universal_id": "ai-invoice",
+            "label": { "en": "Is Valid" },
+            "description": { "en": "Validation flag computed from schema-based data extraction (1=valid, 0=invalid)" },
+            "property_schema": {
+                "predicates": ["valid", "status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-notes",
+            "universal_id": "ai-invoice",
+            "label": { "en": "Notes" },
+            "description": { "en": "Additional notes or comments" },
+            "property_schema": {
+                "predicates": ["notes", "comment"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Invoice Item Properties ===",
+            "id": "ai-item-description",
+            "universal_id": "ai-invoice-item",
+            "label": { "en": "Description" },
+            "property_schema": {
+                "predicates": ["description"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-service-category",
+            "universal_id": "ai-invoice-item",
+            "label": { "en": "Service Category" },
+            "description": { "en": "Category of the service or product" },
+            "property_schema": {
+                "predicates": ["category", "service"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-quantity",
+            "universal_id": "ai-invoice-item",
+            "label": { "en": "Quantity" },
+            "property_schema": {
+                "predicates": ["quantity"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-unit-price",
+            "universal_id": "ai-invoice-item",
+            "label": { "en": "Unit Price" },
+            "property_schema": {
+                "predicates": ["price", "unit"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-line-total",
+            "universal_id": "ai-invoice-item",
+            "label": { "en": "Line Total" },
+            "description": { "en": "Computed: quantity * unit_price" },
+            "property_schema": {
+                "predicates": ["total", "line"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-tax-rate",
+            "universal_id": "ai-invoice-item",
+            "label": { "en": "Tax Rate" },
+            "description": { "en": "Tax rate percentage for this item" },
+            "property_schema": {
+                "predicates": ["tax", "rate"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-ratio"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-item-tax-amount",
+            "universal_id": "ai-invoice-item",
+            "label": { "en": "Tax Amount" },
+            "description": { "en": "Computed: line_total * (tax_rate / 100)" },
+            "property_schema": {
+                "predicates": ["tax", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Sales Summary Properties ===",
+            "id": "ai-summary-service-category",
+            "universal_id": "ai-sales-summary",
+            "label": { "en": "Service Category" },
+            "description": { "en": "Service category dimension for sales aggregation" },
+            "property_schema": {
+                "predicates": ["category", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-summary-vendor",
+            "universal_id": "ai-sales-summary",
+            "label": { "en": "Vendor" },
+            "description": { "en": "Vendor dimension for sales aggregation" },
+            "property_schema": {
+                "predicates": ["vendor", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-summary-total-sales",
+            "universal_id": "ai-sales-summary",
+            "label": { "en": "Total Sales" },
+            "description": { "en": "Sum of line totals for aggregated items" },
+            "property_schema": {
+                "predicates": ["sales", "total", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-summary-total-tax",
+            "universal_id": "ai-sales-summary",
+            "label": { "en": "Total Tax" },
+            "description": { "en": "Sum of tax amounts for aggregated items" },
+            "property_schema": {
+                "predicates": ["tax", "total", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-summary-item-count",
+            "universal_id": "ai-sales-summary",
+            "label": { "en": "Item Count" },
+            "description": { "en": "Count of items in this aggregation" },
+            "property_schema": {
+                "predicates": ["count", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-summary-avg-price",
+            "universal_id": "ai-sales-summary",
+            "label": { "en": "Average Unit Price" },
+            "description": { "en": "Average unit price of aggregated items" },
+            "property_schema": {
+                "predicates": ["price", "average", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-summary-threshold-state",
+            "universal_id": "ai-sales-summary",
+            "label": { "en": "Threshold State" },
+            "description": { "en": "Tracks whether high-sales threshold has been crossed" },
+            "property_schema": {
+                "predicates": ["threshold", "state"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "allowed_values": ["not_crossed", "crossed"],
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "ai-summary-year",
+            "universal_id": "ai-sales-summary",
+            "label": { "en": "Year" },
+            "description": { "en": "Year dimension for temporal sales aggregation" },
+            "property_schema": {
+                "predicates": ["year", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": true
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        }
+    ],
+
+    "event_definitions": [
+        {
+            "id": "ai-invoice-created",
+            "app_id": "ai-invoice-app",
+            "scope": "tenant",
+            "label": { "en": "Invoice Created" },
+            "description": { "en": "Event emitted when a new invoice is created" },
+            "payload_schema": [
+                { "name": "invoice_id", "field_type": "uuid" },
+                { "name": "invoice_number", "field_type": "string" },
+                { "name": "vendor_id", "field_type": "uuid" },
+                { "name": "total_amount", "field_type": "measurement", "measurement_frame": "Currency" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-approved",
+            "app_id": "ai-invoice-app",
+            "scope": "tenant",
+            "label": { "en": "Invoice Approved" },
+            "description": { "en": "Event emitted when an invoice is approved for payment" },
+            "payload_schema": [
+                { "name": "invoice_id", "field_type": "uuid" },
+                { "name": "invoice_number", "field_type": "string" },
+                { "name": "approved_by", "field_type": "string" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-paid",
+            "app_id": "ai-invoice-app",
+            "scope": "tenant",
+            "label": { "en": "Invoice Paid" },
+            "description": { "en": "Event emitted when an invoice is paid" },
+            "payload_schema": [
+                { "name": "invoice_id", "field_type": "uuid" },
+                { "name": "invoice_number", "field_type": "string" },
+                { "name": "payment_date", "field_type": "string" },
+                { "name": "payment_amount", "field_type": "measurement", "measurement_frame": "Currency" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-overdue",
+            "app_id": "ai-invoice-app",
+            "scope": "tenant",
+            "label": { "en": "Invoice Overdue" },
+            "description": { "en": "Event emitted when an invoice becomes overdue" },
+            "payload_schema": [
+                { "name": "invoice_id", "field_type": "uuid" },
+                { "name": "invoice_number", "field_type": "string" },
+                { "name": "days_overdue", "field_type": "integer" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "ai-invoice-total-computed",
+            "app_id": "ai-invoice-app",
+            "scope": "tenant",
+            "label": { "en": "Invoice Total Computed" },
+            "description": { "en": "Event emitted when an invoice total has been computed via reactive cascade" },
+            "payload_schema": [
+                { "name": "invoice_id", "field_type": "uuid" },
+                { "name": "total_amount", "field_type": "measurement", "measurement_frame": "Currency" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "ai-high-sales-threshold-event",
+            "app_id": "ai-invoice-app",
+            "scope": "tenant",
+            "label": { "en": "High Sales Threshold Crossed" },
+            "description": { "en": "Event emitted when category sales exceed $50K threshold" },
+            "payload_schema": [
+                { "name": "artifact_instance_id", "field_type": "uuid" },
+                { "name": "measure_value", "field_type": "measurement", "measurement_frame": "Currency" }
+            ],
+            "use_seed": true
+        }
+    ],
+
+    "apps": [
+        {
+            "id": "ai-invoice-app",
+            "tenant_id": "model1-testing-tenant",
+            "label": { "en": "Invoice Management Application" },
+            "description": { "en": "Application for managing vendor invoices with reactive computations, event-driven workflows, and role-based authorization" },
+            "use_seed": true,
+            "modules": [
+                {
+                    "id": "ai-invoicing-module",
+                    "use_seed": true,
+                    "label": { "en": "Invoicing Module" },
+                    "description": { "en": "Core invoicing operations: CRUD on invoices, items, and vendors. Publishes creation and computation events." },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": ["ai-invoice-created", "ai-invoice-total-computed"]
+                    }
+                },
+                {
+                    "id": "ai-review-module",
+                    "use_seed": true,
+                    "label": { "en": "Review Module" },
+                    "description": { "en": "Invoice review and approval workflow. Subscribes to computation events and publishes approval decisions." },
+                    "context": {
+                        "subscribed_events": ["ai-invoice-total-computed"],
+                        "publishable_events": ["ai-invoice-approved"]
+                    }
+                }
+            ]
+        }
+    ],
+
+    "computations": [
+        {
+            "_comment": "=== COMPUTATION 1: Item Line Total = quantity * unit_price ===",
+            "id": "ai-item-line-total-calc",
+            "code": "ai_item_line_total",
+            "app_id": "ai-invoice-app",
+            "label": { "en": "Line Total Calculation" },
+            "description": { "en": "Computes line_total = quantity * unit_price for each invoice item" },
+            "inputs": [
+                { "source": "property", "variable_name": "quantity", "property_id": "ai-item-quantity" },
+                { "source": "property", "variable_name": "unit_price", "property_id": "ai-item-unit-price" }
+            ],
+            "formula": "let qty = quantity.value; let price = unit_price.value; qty * price",
+            "output": { "target_property_id": "ai-item-line-total" },
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "ai-item-quantity" },
+                { "type": "PropertyChange", "property_id": "ai-item-unit-price" }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 2: Invoice Subtotal = Sum(items.line_total) via role_aggregate ===",
+            "id": "ai-invoice-subtotal-calc",
+            "code": "ai_invoice_subtotal",
+            "app_id": "ai-invoice-app",
+            "label": { "en": "Invoice Subtotal Calculation" },
+            "description": { "en": "Aggregates line_total from all items linked via ai-invoice-item-rel" },
+            "inputs": [
+                {
+                    "source": "role_aggregate",
+                    "variable_name": "items_total",
+                    "role_id": "ai-invoice-item-rel",
+                    "role_name": "item",
+                    "property_id": "ai-item-line-total",
+                    "function": "Sum"
+                }
+            ],
+            "formula": "items_total.value",
+            "output": { "target_property_id": "ai-invoice-subtotal" },
+            "trigger_conditions": [],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 3: Invoice Tax = subtotal * 0.085 ===",
+            "id": "ai-invoice-tax-calc",
+            "code": "ai_invoice_tax",
+            "app_id": "ai-invoice-app",
+            "label": { "en": "Invoice Tax Calculation" },
+            "description": { "en": "Computes tax as 8.5% of subtotal" },
+            "inputs": [
+                { "source": "property", "variable_name": "subtotal", "property_id": "ai-invoice-subtotal" }
+            ],
+            "formula": "let sub = subtotal.value; sub * 0.085",
+            "output": { "target_property_id": "ai-invoice-tax-amount" },
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "ai-invoice-subtotal" }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 4: Invoice Total = subtotal + tax ===",
+            "id": "ai-invoice-total-calc",
+            "code": "ai_invoice_total",
+            "app_id": "ai-invoice-app",
+            "label": { "en": "Invoice Total Calculation" },
+            "description": { "en": "Computes total = subtotal + tax_amount" },
+            "inputs": [
+                { "source": "property", "variable_name": "subtotal", "property_id": "ai-invoice-subtotal" },
+                { "source": "property", "variable_name": "tax", "property_id": "ai-invoice-tax-amount" }
+            ],
+            "formula": "let sub = subtotal.value; let t = tax.value; sub + t",
+            "output": { "target_property_id": "ai-invoice-total" },
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "ai-invoice-subtotal" },
+                { "type": "PropertyChange", "property_id": "ai-invoice-tax-amount" }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 5: Item Tax Amount = line_total * (tax_rate / 100) ===",
+            "id": "ai-item-tax-amount-calc",
+            "code": "ai_item_tax_amount",
+            "app_id": "ai-invoice-app",
+            "label": { "en": "Item Tax Amount Calculation" },
+            "description": { "en": "Computes tax_amount = line_total * (tax_rate / 100)" },
+            "inputs": [
+                { "source": "property", "variable_name": "line_total", "property_id": "ai-item-line-total" },
+                { "source": "property", "variable_name": "tax_rate", "property_id": "ai-item-tax-rate" }
+            ],
+            "formula": "let lt = line_total.value; let rate = if tax_rate.value > 0.0 { tax_rate.value } else { 8.5 }; lt * rate / 100.0",
+            "output": { "target_property_id": "ai-item-tax-amount" },
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "ai-item-line-total" },
+                { "type": "PropertyChange", "property_id": "ai-item-tax-rate" }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 6: Invoice Validation (SchemaBased) ===",
+            "id": "ai-invoice-validation-check",
+            "code": "ai_invoice_validation",
+            "app_id": "ai-invoice-app",
+            "label": { "en": "Invoice Validation Check" },
+            "description": { "en": "Validates invoice data using schema-based extraction: checks item_count > 0 and total > 0" },
+            "inputs": [
+                {
+                    "source": "SchemaBased",
+                    "variable_name": "invoice_data",
+                    "data_schema_id": "ai-invoice-validation-schema"
+                }
+            ],
+            "formula": "let data = invoice_data; let item_count = data.line_items.len(); let is_valid = item_count > 0 && data.total > 0.0; if is_valid { 1.0 } else { 0.0 }",
+            "output": { "target_property_id": "ai-invoice-is-valid" },
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "ai-invoice-total" }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 7: Emit Invoice Total Event ===",
+            "id": "ai-emit-invoice-total-event",
+            "code": "ai_emit_invoice_total_event",
+            "app_id": "ai-invoice-app",
+            "label": { "en": "Emit Invoice Total Event" },
+            "description": { "en": "Publishes ai-invoice-total-computed event when invoice total changes" },
+            "inputs": [
+                { "source": "property", "variable_name": "total", "property_id": "ai-invoice-total" }
+            ],
+            "formula": "print(`[EVENT EMIT] Invoice total computed: $${total.value}`); total.value",
+            "output": {},
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "ai-invoice-total" }
+            ],
+            "event_bindings": [
+                {
+                    "event": "events.ai-invoice-total-computed",
+                    "direction": "publish",
+                    "trigger": "always"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 8: Log Invoice Total Subscriber ===",
+            "id": "ai-log-invoice-total-subscriber",
+            "code": "ai_log_invoice_total",
+            "app_id": "ai-invoice-app",
+            "label": { "en": "Log Invoice Total Subscriber" },
+            "description": { "en": "Subscribes to ai-invoice-total-computed events via TopicMessage trigger and logs receipt" },
+            "inputs": [],
+            "formula": "print(`[EVENT RECEIVED] Invoice total event received - Invoice ID: ${event.invoice_id}, Total: $${event.total_amount}`); 0.0",
+            "output": {},
+            "trigger_conditions": [
+                { "type": "TopicMessage", "topic": "events.ai-invoice-total-computed" }
+            ],
+            "event_bindings": [
+                {
+                    "event": "events.ai-invoice-total-computed",
+                    "direction": "subscribe"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        }
+    ],
+
+    "data_schemas": [
+        {
+            "_comment": "=== DATA SCHEMA 1: Complete Invoice Detail ===",
+            "id": "ai-invoice-detail-schema",
+            "tenant_id": "model1-testing-tenant",
+            "root_universal_id": "ai-invoice",
+            "label": { "en": "Invoice Detail" },
+            "description": { "en": "Complete invoice with nested vendor and line items" },
+            "structure": {
+                "type": "Object",
+                "fields": [
+                    { "name": "invoice_id", "source": { "type": "Context", "context_field": "InstanceId" } },
+                    { "name": "invoice_number", "source": { "type": "Property", "property_id": "ai-invoice-number" } },
+                    { "name": "invoice_date", "source": { "type": "Property", "property_id": "ai-invoice-date" } },
+                    { "name": "due_date", "source": { "type": "Property", "property_id": "ai-invoice-due-date" } },
+                    { "name": "status", "source": { "type": "Property", "property_id": "ai-invoice-status-prop" } },
+                    { "name": "payment_terms", "source": { "type": "Property", "property_id": "ai-invoice-payment-terms" } },
+                    { "name": "currency", "source": { "type": "Property", "property_id": "ai-invoice-currency" } },
+                    { "name": "subtotal", "source": { "type": "Property", "property_id": "ai-invoice-subtotal" } },
+                    { "name": "tax_amount", "source": { "type": "Property", "property_id": "ai-invoice-tax-amount" } },
+                    { "name": "total", "source": { "type": "Property", "property_id": "ai-invoice-total" } },
+                    { "name": "notes", "source": { "type": "Property", "property_id": "ai-invoice-notes" } },
+                    {
+                        "name": "vendor",
+                        "source": {
+                            "type": "Relation",
+                            "relator_id": "ai-invoice-vendor-rel",
+                            "role_name": "vendor",
+                            "nested": {
+                                "type": "Object",
+                                "fields": [
+                                    { "name": "vendor_id", "source": { "type": "Context", "context_field": "InstanceId" } },
+                                    { "name": "code", "source": { "type": "Property", "property_id": "ai-vendor-code" } },
+                                    { "name": "name", "source": { "type": "Property", "property_id": "ai-vendor-name" } }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "line_items",
+                        "source": {
+                            "type": "Relation",
+                            "relator_id": "ai-invoice-item-rel",
+                            "role_name": "item",
+                            "nested": {
+                                "type": "Object",
+                                "fields": [
+                                    { "name": "item_id", "source": { "type": "Context", "context_field": "InstanceId" } },
+                                    { "name": "description", "source": { "type": "Property", "property_id": "ai-item-description" } },
+                                    { "name": "category", "source": { "type": "Property", "property_id": "ai-item-service-category" } },
+                                    { "name": "quantity", "source": { "type": "Property", "property_id": "ai-item-quantity" } },
+                                    { "name": "unit_price", "source": { "type": "Property", "property_id": "ai-item-unit-price" } },
+                                    { "name": "line_total", "source": { "type": "Property", "property_id": "ai-item-line-total" } }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "item_count",
+                        "source": {
+                            "type": "Aggregate",
+                            "relator_id": "ai-invoice-item-rel",
+                            "role_name": "item",
+                            "function": "Count"
+                        }
+                    }
+                ]
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DATA SCHEMA 2: Invoice Validation Schema ===",
+            "id": "ai-invoice-validation-schema",
+            "tenant_id": "model1-testing-tenant",
+            "root_universal_id": "ai-invoice",
+            "label": { "en": "Invoice Validation Schema" },
+            "description": { "en": "Simplified schema for invoice validation - total and line items only" },
+            "structure": {
+                "type": "Object",
+                "fields": [
+                    { "name": "total", "source": { "type": "Property", "property_id": "ai-invoice-total" } },
+                    {
+                        "name": "line_items",
+                        "source": {
+                            "type": "Relation",
+                            "relator_id": "ai-invoice-item-rel",
+                            "role_name": "item",
+                            "nested": {
+                                "type": "Object",
+                                "fields": [
+                                    { "name": "item_id", "source": { "type": "Context", "context_field": "InstanceId" } },
+                                    { "name": "line_total", "source": { "type": "Property", "property_id": "ai-item-line-total" } }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "use_seed": true
+        }
+    ],
+
+    "artifact_definitions": [
+        {
+            "_comment": "=== ARTIFACT 1: Sales by Service Category (with threshold) ===",
+            "id": "ai-sales-by-service-category",
+            "name": "Sales by Service Category",
+            "description": { "en": "Aggregates invoice item sales by service category with $50K high-sales threshold" },
+            "source": { "universal_id": "ai-invoice-item" },
+            "artifact_universal_id": "ai-sales-summary",
+            "app_id": "ai-invoice-app",
+            "dimensions": [
+                {
+                    "id": "ai-service-category-dim",
+                    "code": "service_category",
+                    "source": { "type": "Property", "property_id": "ai-item-service-category" },
+                    "artifact_property_id": "ai-summary-service-category",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "ai-category-total-sales",
+                    "code": "total_sales",
+                    "property_id": "ai-item-line-total",
+                    "function": "Sum",
+                    "artifact_property_id": "ai-summary-total-sales",
+                    "use_seed": true
+                },
+                {
+                    "id": "ai-category-item-count",
+                    "code": "item_count",
+                    "function": "Count",
+                    "artifact_property_id": "ai-summary-item-count",
+                    "use_seed": true
+                },
+                {
+                    "id": "ai-category-avg-price",
+                    "code": "avg_price",
+                    "property_id": "ai-item-unit-price",
+                    "function": "Avg",
+                    "artifact_property_id": "ai-summary-avg-price",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [
+                {
+                    "id": "ai-high-category-sales",
+                    "code": "high_sales",
+                    "measure_id": "ai-category-total-sales",
+                    "condition": { "operator": "GreaterThan", "value": 50000.0 },
+                    "event_type_id": "ai-high-sales-threshold-event",
+                    "state_property_id": "ai-summary-threshold-state",
+                    "reset_on": "OnDimensionChange",
+                    "use_seed": true
+                }
+            ],
+            "materialization": { "strategy": "Eager" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 2: Sales by Vendor (via RelatorPath) ===",
+            "id": "ai-sales-by-vendor",
+            "name": "Sales by Vendor",
+            "description": { "en": "Aggregates item sales by vendor, navigating item -> invoice -> vendor via RelatorPath" },
+            "source": { "universal_id": "ai-invoice-item" },
+            "artifact_universal_id": "ai-sales-summary",
+            "app_id": "ai-invoice-app",
+            "dimensions": [
+                {
+                    "id": "ai-vendor-dim",
+                    "code": "vendor",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            { "relator_universal_id": "ai-invoice-item-rel", "role_name": "invoice" },
+                            { "relator_universal_id": "ai-invoice-vendor-rel", "role_name": "vendor" }
+                        ],
+                        "property_id": "ai-vendor-name"
+                    },
+                    "artifact_property_id": "ai-summary-vendor",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "ai-vendor-total-sales",
+                    "code": "total_sales",
+                    "property_id": "ai-item-line-total",
+                    "function": "Sum",
+                    "artifact_property_id": "ai-summary-total-sales",
+                    "use_seed": true
+                },
+                {
+                    "id": "ai-vendor-item-count",
+                    "code": "item_count",
+                    "function": "Count",
+                    "artifact_property_id": "ai-summary-item-count",
+                    "use_seed": true
+                },
+                {
+                    "id": "ai-vendor-avg-price",
+                    "code": "avg_price",
+                    "property_id": "ai-item-unit-price",
+                    "function": "Avg",
+                    "artifact_property_id": "ai-summary-avg-price",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": { "strategy": "Eager" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 3: Sales by Year (via RelatorPath) ===",
+            "id": "ai-sales-by-year",
+            "name": "Sales by Year",
+            "description": { "en": "Annual sales aggregation - navigates item -> invoice via RelatorPath to get year" },
+            "source": { "universal_id": "ai-invoice-item" },
+            "artifact_universal_id": "ai-sales-summary",
+            "app_id": "ai-invoice-app",
+            "dimensions": [
+                {
+                    "id": "ai-year-dim",
+                    "code": "year",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            { "relator_universal_id": "ai-invoice-item-rel", "role_name": "invoice" }
+                        ],
+                        "property_id": "ai-invoice-year"
+                    },
+                    "artifact_property_id": "ai-summary-year",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "ai-year-total-sales",
+                    "code": "total_sales",
+                    "property_id": "ai-item-line-total",
+                    "function": "Sum",
+                    "artifact_property_id": "ai-summary-total-sales",
+                    "use_seed": true
+                },
+                {
+                    "id": "ai-year-item-count",
+                    "code": "item_count",
+                    "function": "Count",
+                    "artifact_property_id": "ai-summary-item-count",
+                    "use_seed": true
+                },
+                {
+                    "id": "ai-year-total-tax",
+                    "code": "total_tax",
+                    "property_id": "ai-item-tax-amount",
+                    "function": "Sum",
+                    "artifact_property_id": "ai-summary-total-tax",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": { "strategy": "Eager" },
+            "use_seed": true
+        }
+    ],
+
+    "users": [
+        {
+            "_comment": "=== ACCOUNT ADMINISTRATORS (AppAdmin) ===",
+            "id": "ai-admin-alice",
+            "tenant_id": "model1-testing-tenant",
+            "email": "admin-alice@test.model1.ai",
+            "display_name": "Alice Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppAdmin"],
+            "use_seed": true
+        },
+        {
+            "id": "ai-admin-bob",
+            "tenant_id": "model1-testing-tenant",
+            "email": "admin-bob@test.model1.ai",
+            "display_name": "Bob Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppAdmin"],
+            "use_seed": true
+        },
+        {
+            "id": "ai-admin-carol",
+            "tenant_id": "model1-testing-tenant",
+            "email": "admin-carol@test.model1.ai",
+            "display_name": "Carol Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppAdmin"],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ACCOUNT REVIEWERS (AppUser) ===",
+            "id": "ai-reviewer-dave",
+            "tenant_id": "model1-testing-tenant",
+            "email": "reviewer-dave@test.model1.ai",
+            "display_name": "Dave Reviewer",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppUser"],
+            "use_seed": true
+        },
+        {
+            "id": "ai-reviewer-emma",
+            "tenant_id": "model1-testing-tenant",
+            "email": "reviewer-emma@test.model1.ai",
+            "display_name": "Emma Reviewer",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppUser"],
+            "use_seed": true
+        },
+        {
+            "id": "ai-reviewer-frank",
+            "tenant_id": "model1-testing-tenant",
+            "email": "reviewer-frank@test.model1.ai",
+            "display_name": "Frank Reviewer",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppUser"],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ACCOUNT SPECIALISTS (AppDeveloper) ===",
+            "id": "ai-specialist-grace",
+            "tenant_id": "model1-testing-tenant",
+            "email": "specialist-grace@test.model1.ai",
+            "display_name": "Grace Specialist",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppDeveloper"],
+            "use_seed": true
+        },
+        {
+            "id": "ai-specialist-henry",
+            "tenant_id": "model1-testing-tenant",
+            "email": "specialist-henry@test.model1.ai",
+            "display_name": "Henry Specialist",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppDeveloper"],
+            "use_seed": true
+        },
+        {
+            "id": "ai-specialist-iris",
+            "tenant_id": "model1-testing-tenant",
+            "email": "specialist-iris@test.model1.ai",
+            "display_name": "Iris Specialist",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppDeveloper"],
+            "use_seed": true
+        }
+    ],
+
+    "foundation_role_assignments": [
+        {
+            "_comment": "=== AppAdmin assignments (account-administrator role) ===",
+            "id": "fra-ai-admin-alice",
+            "user_id": "ai-admin-alice",
+            "role": "AppAdmin",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "ai-invoice-app" },
+            "assigned_by": "ai-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-ai-admin-bob",
+            "user_id": "ai-admin-bob",
+            "role": "AppAdmin",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "ai-invoice-app" },
+            "assigned_by": "ai-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-ai-admin-carol",
+            "user_id": "ai-admin-carol",
+            "role": "AppAdmin",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "ai-invoice-app" },
+            "assigned_by": "ai-admin-alice",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== AppUser assignments (account-reviewer role) ===",
+            "id": "fra-ai-reviewer-dave",
+            "user_id": "ai-reviewer-dave",
+            "role": "AppUser",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "ai-invoice-app" },
+            "assigned_by": "ai-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-ai-reviewer-emma",
+            "user_id": "ai-reviewer-emma",
+            "role": "AppUser",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "ai-invoice-app" },
+            "assigned_by": "ai-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-ai-reviewer-frank",
+            "user_id": "ai-reviewer-frank",
+            "role": "AppUser",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "ai-invoice-app" },
+            "assigned_by": "ai-admin-alice",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== AppDeveloper assignments (account-specialist role) ===",
+            "id": "fra-ai-specialist-grace",
+            "user_id": "ai-specialist-grace",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "ai-invoice-app" },
+            "assigned_by": "ai-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-ai-specialist-henry",
+            "user_id": "ai-specialist-henry",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "ai-invoice-app" },
+            "assigned_by": "ai-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-ai-specialist-iris",
+            "user_id": "ai-specialist-iris",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "ai-invoice-app" },
+            "assigned_by": "ai-admin-alice",
+            "use_seed": true
+        }
+    ],
+
+    "_future_app_roles_comment": {
+        "_note": "These AppRoleDefinition objects document the intended fine-grained app roles for when the metadata loader supports app_role_definitions. Currently mapped to foundation roles: account-administrator=AppAdmin, account-reviewer=AppUser, account-specialist=AppDeveloper.",
+        "intended_app_role_definitions": [
+            {
+                "id": "ai-role-account-administrator",
+                "app_id": "ai-invoice-app",
+                "code": "account-administrator",
+                "label": { "en": "Account Administrator" },
+                "description": { "en": "Full app management: configuration, user roles, and all CRUD operations" },
+                "permissions": ["ManageAppConfig", "ManageAppRoles", "AssignAppRoles", "ReadInstance", "WriteInstance", "DeleteInstance", "ReadProperty", "WriteProperty"]
+            },
+            {
+                "id": "ai-role-account-reviewer",
+                "app_id": "ai-invoice-app",
+                "code": "account-reviewer",
+                "label": { "en": "Account Reviewer" },
+                "description": { "en": "Read-only access to invoices with approve/reject workflow capability" },
+                "permissions": ["ReadInstance", "ReadProperty"]
+            },
+            {
+                "id": "ai-role-account-specialist",
+                "app_id": "ai-invoice-app",
+                "code": "account-specialist",
+                "label": { "en": "Account Specialist" },
+                "description": { "en": "Full CRUD on invoices, items, and vendors" },
+                "permissions": ["ReadInstance", "WriteInstance", "DeleteInstance", "ReadProperty", "WriteProperty"]
+            }
+        ]
+    }
+}

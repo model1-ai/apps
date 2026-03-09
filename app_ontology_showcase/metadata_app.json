@@ -1,0 +1,744 @@
+{
+    "_comment": "=== ONTOLOGY SHOWCASE — Scientific Instruments ===",
+    "_description": "Demonstrates ontological inheritance, composition, aggregation, and role-typed relators. Exercises Phases 0-8 of the inheritance implementation plan.",
+    "organizations": [
+        {
+            "id": "model1-testing-org",
+            "label": { "en": "Model1 Testing Org" },
+            "use_seed": true
+        }
+    ],
+    "tenants": [
+        {
+            "id": "model1-testing-tenant",
+            "organization_id": "model1-testing-org",
+            "label": { "en": "Model1 Testing Tenant" },
+            "use_seed": true
+        }
+    ],
+    "apps": [
+        {
+            "id": "ontology-showcase-app",
+            "tenant_id": "model1-testing-tenant",
+            "label": { "en": "Ontology Showcase" },
+            "description": { "en": "Scientific instruments domain demonstrating ontological inheritance, composition, aggregation, and specialization-aware role typing." },
+            "use_seed": true,
+            "modules": [
+                {
+                    "id": "ontology-showcase-module",
+                    "use_seed": true,
+                    "label": { "en": "Instruments Module" },
+                    "description": { "en": "Core instruments and relationships" },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": []
+                    }
+                }
+            ]
+        }
+    ],
+    "universals": [
+        {
+            "_comment": "=== EQUIPMENT HIERARCHY (4 levels) ===",
+            "id": "sci-equipment",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Equipment" },
+            "description": { "en": "Base universal for all scientific equipment" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "sci-instrument",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Instrument" },
+            "description": { "en": "Measurement instrument (specializes Equipment)" },
+            "generalizes": "sci-equipment",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "sci-equipment" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "sci-thermometer",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Thermometer" },
+            "description": { "en": "Temperature measurement instrument (specializes Instrument)" },
+            "generalizes": "sci-instrument",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "sci-instrument" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "sci-barometer",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Barometer" },
+            "description": { "en": "Atmospheric pressure measurement instrument (specializes Instrument)" },
+            "generalizes": "sci-instrument",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "sci-instrument" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "sci-wind-sensor",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Wind Sensor" },
+            "description": { "en": "Wind speed and direction sensor (specializes Instrument)" },
+            "generalizes": "sci-instrument",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "sci-instrument" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "sci-power-supply",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Power Supply" },
+            "description": { "en": "Electrical power unit (specializes Equipment)" },
+            "generalizes": "sci-equipment",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "sci-equipment" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== WEATHER STATION HIERARCHY (composition host) ===",
+            "id": "sci-weather-station",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Weather Station" },
+            "description": { "en": "Composite weather monitoring station" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "sci-advanced-weather-station",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Advanced Weather Station" },
+            "description": { "en": "Weather station with extended sensors (specializes Weather Station)" },
+            "generalizes": "sci-weather-station",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "sci-weather-station" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== MONITORING NETWORK (aggregation host) ===",
+            "id": "sci-monitoring-network",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Monitoring Network" },
+            "description": { "en": "Aggregation of weather stations (weak containment)" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ORGANIZATION HIERARCHY (role-typing target) ===",
+            "id": "sci-organization",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Organization" },
+            "description": { "en": "Base organizational entity" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "sci-manufacturer",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Manufacturer" },
+            "description": { "en": "Equipment manufacturer (specializes Organization)" },
+            "generalizes": "sci-organization",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "sci-organization" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "sci-distributor",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Distributor" },
+            "description": { "en": "Equipment distributor (specializes Organization)" },
+            "generalizes": "sci-organization",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "sci-organization" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "sci-certified-distributor",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Certified Distributor" },
+            "description": { "en": "ISO-certified distributor (specializes Distributor)" },
+            "generalizes": "sci-distributor",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "sci-distributor" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== RELATOR: Supply Contract (role-typed) ===",
+            "id": "sci-supply-contract",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Supply Contract" },
+            "description": { "en": "Contract between a Manufacturer (supplier) and a Distributor (buyer). Tests specialization-aware role typing." },
+            "roles": [
+                { "name": "supplier", "universal_id": "sci-manufacturer" },
+                { "name": "buyer", "universal_id": "sci-distributor" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== COMPOSITION RELATORS (auto-instantiation targets) ===",
+            "id": "sci-ws-has-thermometer",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "WS Has Thermometer" },
+            "description": { "en": "Weather station composition: contains a thermometer" },
+            "roles": [
+                { "name": "composite", "universal_id": "sci-weather-station" },
+                { "name": "component", "universal_id": "sci-thermometer" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "sci-ws-has-barometer",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "WS Has Barometer" },
+            "description": { "en": "Weather station composition: contains a barometer" },
+            "roles": [
+                { "name": "composite", "universal_id": "sci-weather-station" },
+                { "name": "component", "universal_id": "sci-barometer" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "sci-ws-has-power-supply",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "WS Has Power Supply" },
+            "description": { "en": "Weather station composition: contains a power supply" },
+            "roles": [
+                { "name": "composite", "universal_id": "sci-weather-station" },
+                { "name": "component", "universal_id": "sci-power-supply" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "sci-aws-has-wind-sensor",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "AWS Has Wind Sensor" },
+            "description": { "en": "Advanced weather station composition: contains a wind sensor (own composition, not inherited)" },
+            "roles": [
+                { "name": "composite", "universal_id": "sci-advanced-weather-station" },
+                { "name": "component", "universal_id": "sci-wind-sensor" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== AGGREGATION RELATOR (NO auto-instantiation) ===",
+            "id": "sci-network-has-station",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Network Has Station" },
+            "description": { "en": "Monitoring network aggregates weather stations (weak containment, no auto-instantiation)" },
+            "roles": [
+                { "name": "aggregate", "universal_id": "sci-monitoring-network" },
+                { "name": "part", "universal_id": "sci-weather-station" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "aggregation-relator" }
+            ],
+            "use_seed": true
+        }
+    ],
+    "property_definitions": [
+        {
+            "_comment": "=== EQUIPMENT PROPERTIES (inherited by all specializations) ===",
+            "id": "sci-equipment-name-prop",
+            "universal_id": "sci-equipment",
+            "label": { "en": "Name" },
+            "description": { "en": "Equipment name or model designation" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "sci-equipment-serial-prop",
+            "universal_id": "sci-equipment",
+            "label": { "en": "Serial Number" },
+            "description": { "en": "Unique equipment serial number" },
+            "property_schema": {
+                "predicates": ["identifier", "serial"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2, "prefix": "S/N " },
+            "use_seed": true
+        },
+        {
+            "id": "sci-equipment-weight-prop",
+            "universal_id": "sci-equipment",
+            "label": { "en": "Weight" },
+            "description": { "en": "Equipment weight in kilograms" },
+            "property_schema": {
+                "predicates": ["weight", "mass"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-weight" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== INSTRUMENT PROPERTIES (inherited by Thermometer, Barometer, WindSensor) ===",
+            "id": "sci-instrument-accuracy-prop",
+            "universal_id": "sci-instrument",
+            "label": { "en": "Accuracy Class" },
+            "description": { "en": "Instrument measurement accuracy classification" },
+            "property_schema": {
+                "predicates": ["accuracy", "class"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "sci-instrument-calibration-prop",
+            "universal_id": "sci-instrument",
+            "label": { "en": "Calibration Interval" },
+            "description": { "en": "Days between required calibrations" },
+            "property_schema": {
+                "predicates": ["calibration", "interval"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== THERMOMETER-SPECIFIC PROPERTIES ===",
+            "id": "sci-thermometer-min-temp-prop",
+            "universal_id": "sci-thermometer",
+            "label": { "en": "Min Temperature" },
+            "description": { "en": "Minimum measurable temperature in Celsius" },
+            "property_schema": {
+                "predicates": ["minimum", "temperature"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-temperature" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "sci-thermometer-max-temp-prop",
+            "universal_id": "sci-thermometer",
+            "label": { "en": "Max Temperature" },
+            "description": { "en": "Maximum measurable temperature in Celsius" },
+            "property_schema": {
+                "predicates": ["maximum", "temperature"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-temperature" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== BAROMETER-SPECIFIC PROPERTY ===",
+            "id": "sci-barometer-pressure-range-prop",
+            "universal_id": "sci-barometer",
+            "label": { "en": "Pressure Range" },
+            "description": { "en": "Measurable atmospheric pressure range classification" },
+            "property_schema": {
+                "predicates": ["range", "pressure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== WIND SENSOR-SPECIFIC PROPERTY ===",
+            "id": "sci-wind-sensor-max-speed-prop",
+            "universal_id": "sci-wind-sensor",
+            "label": { "en": "Max Wind Speed" },
+            "description": { "en": "Maximum measurable wind speed in m/s" },
+            "property_schema": {
+                "predicates": ["maximum", "speed"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-velocity" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== POWER SUPPLY-SPECIFIC PROPERTIES ===",
+            "id": "sci-power-supply-voltage-prop",
+            "universal_id": "sci-power-supply",
+            "label": { "en": "Voltage" },
+            "description": { "en": "Output voltage" },
+            "property_schema": {
+                "predicates": ["voltage", "electrical"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-voltage" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "sci-power-supply-capacity-prop",
+            "universal_id": "sci-power-supply",
+            "label": { "en": "Capacity (Wh)" },
+            "description": { "en": "Energy capacity in watt-hours" },
+            "property_schema": {
+                "predicates": ["capacity", "energy"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-energy" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== WEATHER STATION PROPERTIES ===",
+            "id": "sci-ws-station-code-prop",
+            "universal_id": "sci-weather-station",
+            "label": { "en": "Station Code" },
+            "description": { "en": "Unique station identifier code" },
+            "property_schema": {
+                "predicates": ["identifier", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "sci-ws-location-prop",
+            "universal_id": "sci-weather-station",
+            "label": { "en": "Location" },
+            "description": { "en": "Station deployment location" },
+            "property_schema": {
+                "predicates": ["location", "place"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2 },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ADVANCED WEATHER STATION PROPERTY ===",
+            "id": "sci-aws-data-link-prop",
+            "universal_id": "sci-advanced-weather-station",
+            "label": { "en": "Data Link Type" },
+            "description": { "en": "Telemetry data link type" },
+            "property_schema": {
+                "predicates": ["communication", "link"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== MONITORING NETWORK PROPERTIES ===",
+            "id": "sci-network-name-prop",
+            "universal_id": "sci-monitoring-network",
+            "label": { "en": "Network Name" },
+            "description": { "en": "Name of the monitoring network" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "sci-network-region-prop",
+            "universal_id": "sci-monitoring-network",
+            "label": { "en": "Region" },
+            "description": { "en": "Geographic region covered" },
+            "property_schema": {
+                "predicates": ["region", "area"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2 },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ORGANIZATION PROPERTIES ===",
+            "id": "sci-org-name-prop",
+            "universal_id": "sci-organization",
+            "label": { "en": "Organization Name" },
+            "description": { "en": "Legal name of the organization" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "sci-org-registration-prop",
+            "universal_id": "sci-organization",
+            "label": { "en": "Registration ID" },
+            "description": { "en": "Business registration identifier" },
+            "property_schema": {
+                "predicates": ["identifier", "registration"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2, "prefix": "#" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== MANUFACTURER-SPECIFIC PROPERTY ===",
+            "id": "sci-mfg-type-prop",
+            "universal_id": "sci-manufacturer",
+            "label": { "en": "Manufacturing Type" },
+            "description": { "en": "Type of manufacturing operations" },
+            "property_schema": {
+                "predicates": ["type", "manufacturing"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== DISTRIBUTOR-SPECIFIC PROPERTY ===",
+            "id": "sci-dist-region-prop",
+            "universal_id": "sci-distributor",
+            "label": { "en": "Distribution Region" },
+            "description": { "en": "Primary distribution territory" },
+            "property_schema": {
+                "predicates": ["region", "distribution"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== CERTIFIED DISTRIBUTOR-SPECIFIC PROPERTY ===",
+            "id": "sci-cert-level-prop",
+            "universal_id": "sci-certified-distributor",
+            "label": { "en": "Certification Level" },
+            "description": { "en": "ISO certification level" },
+            "property_schema": {
+                "predicates": ["certification", "level"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        }
+    ],
+    "users": [
+        {
+            "id": "sci-admin",
+            "tenant_id": "model1-testing-tenant",
+            "email": "sci-admin@test.model1.ai",
+            "display_name": "Sci Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppAdmin","AppDeveloper"],
+            "use_seed": true
+        }
+    ],
+    "foundation_role_assignments": [
+        {
+            "id": "fra-sci-admin-app-admin",
+            "user_id": "sci-admin",
+            "role": "AppAdmin",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "ontology-showcase-app"
+            },
+            "assigned_by": "sci-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-sci-admin-app-dev",
+            "user_id": "sci-admin",
+            "role": "AppDeveloper",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "ontology-showcase-app"
+            },
+            "assigned_by": "sci-admin",
+            "use_seed": true
+        }
+    ],
+    "event_definitions": [],
+    "computations": [],
+    "timers": [],
+    "correlation_rules": [],
+    "data_schemas": [],
+    "artifact_definitions": [],
+    "topic_policies": []
+}

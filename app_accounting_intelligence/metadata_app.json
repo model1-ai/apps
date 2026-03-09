@@ -1,0 +1,3682 @@
+{
+    "_comment": "=== APP ACCOUNTING INTELLIGENCE REACTIVE EXAMPLE ===",
+    "_description": "Comprehensive accounting/invoicing system demonstrating entity modeling, relators, computations, events, intelligence artifacts, and normative process-based invoice approval. Tracks invoices, vendors, customers, payments, GL accounts, budgets, and departments with full approval workflows.",
+    "organizations": [
+        {
+            "id": "model1-testing-org",
+            "label": {
+                "en": "Model1 Testing Org"
+            },
+            "use_seed": true
+        }
+    ],
+    "tenants": [
+        {
+            "id": "model1-testing-tenant",
+            "organization_id": "model1-testing-org",
+            "label": {
+                "en": "Model1 Testing Tenant"
+            },
+            "use_seed": true
+        }
+    ],
+    "universals": [
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Invoice Status ===",
+            "id": "acct-invoice-status",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Invoice Status"
+            },
+            "description": {
+                "en": "Invoice lifecycle status enumeration"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Payment Method ===",
+            "id": "acct-payment-method",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Payment Method"
+            },
+            "description": {
+                "en": "Payment method type enumeration"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Tax Category ===",
+            "id": "acct-tax-category",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Tax Category"
+            },
+            "description": {
+                "en": "Tax classification category enumeration"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Expense Category ===",
+            "id": "acct-expense-category",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Expense Category"
+            },
+            "description": {
+                "en": "Expense classification category enumeration"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: GL Account Type ===",
+            "id": "acct-gl-account-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "GL Account Type"
+            },
+            "description": {
+                "en": "General ledger account classification enumeration"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Invoice ===",
+            "id": "acct-invoice",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Invoice"
+            },
+            "description": {
+                "en": "Accounts payable or receivable invoice"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Line Item ===",
+            "id": "acct-line-item",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Line Item"
+            },
+            "description": {
+                "en": "Invoice line item detail"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Vendor ===",
+            "id": "acct-vendor",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Vendor"
+            },
+            "description": {
+                "en": "Supplier or vendor entity"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Customer ===",
+            "id": "acct-customer",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Customer"
+            },
+            "description": {
+                "en": "Customer or client entity"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Payment ===",
+            "id": "acct-payment",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Payment"
+            },
+            "description": {
+                "en": "Payment transaction record"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Department ===",
+            "id": "acct-department",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Department"
+            },
+            "description": {
+                "en": "Organizational department or cost center"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: GL Account ===",
+            "id": "acct-gl-account",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "GL Account"
+            },
+            "description": {
+                "en": "General ledger account"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Tax Rate ===",
+            "id": "acct-tax-rate",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Tax Rate"
+            },
+            "description": {
+                "en": "Tax rate definition"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Budget ===",
+            "id": "acct-budget",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Budget"
+            },
+            "description": {
+                "en": "Department budget allocation"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT TARGET: Analytics Summary ===",
+            "id": "acct-analytics-summary",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Accounting Analytics Summary"
+            },
+            "description": {
+                "en": "Analytics artifact target for accounting intelligence"
+            },
+            "label_schema": {
+                "separator": " ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== FUNCTIONAL ROLE UNIVERSALS (NP AUTHORIZATION) ===",
+            "id": "acct-fr-ap-clerk",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": {
+                "en": "AP Clerk"
+            },
+            "description": {
+                "en": "Accounts payable clerk handling initial invoice review."
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-fr-department-manager",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": {
+                "en": "Department Manager"
+            },
+            "description": {
+                "en": "Department manager approval authority for invoices."
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-fr-finance-director",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": {
+                "en": "Finance Director"
+            },
+            "description": {
+                "en": "Finance director approval authority for escalated invoices."
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-fr-cfo",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": {
+                "en": "CFO"
+            },
+            "description": {
+                "en": "Chief Financial Officer final approval authority."
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== INVOICE APPROVAL PROCESS (specializes base-process) ===",
+            "id": "acct-invoice-approval",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Invoice Approval" },
+            "description": { "en": "4-stage invoice approval process: Initial Review (AP Clerk), Manager Review (Dept Manager), Director Review (Finance Director), CFO Review (CFO)" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-process" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-initial-review-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-manager-review-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-director-review-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-cfo-review-stage" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "acct-invoice" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== STAGE UNIVERSALS (specialize base-stage) ===",
+            "id": "acct-initial-review-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Initial Review" },
+            "description": { "en": "AP Clerk performs initial review and three-way match verification" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-initial-review-obligation" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-manager-review-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Manager Review" },
+            "description": { "en": "Department Manager reviews invoices exceeding $5,000" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-manager-review-obligation" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-director-review-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Director Review" },
+            "description": { "en": "Finance Director reviews invoices exceeding $25,000" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-director-review-obligation" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-cfo-review-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "CFO Review" },
+            "description": { "en": "CFO performs final review for invoices exceeding $100,000" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-cfo-review-obligation" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== OBLIGATION UNIVERSALS (specialize base-obligation) ===",
+            "id": "acct-initial-review-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Initial Review Obligation" },
+            "description": { "en": "Obligation for the AP Clerk to review invoice data and verify three-way match" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "acct-fr-ap-clerk" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-manager-review-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Manager Review Obligation" },
+            "description": { "en": "Obligation for the Department Manager to approve budget allocation" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "acct-fr-department-manager" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-director-review-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Director Review Obligation" },
+            "description": { "en": "Obligation for the Finance Director to verify vendor history and budget impact" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "acct-fr-finance-director" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-cfo-review-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "CFO Review Obligation" },
+            "description": { "en": "Obligation for the CFO to perform final approval with full authority" },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "acct-fr-cfo" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== COMPOSITION RELATORS (process -> stages) ===",
+            "id": "acct-approval-has-initial-review",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Approval Has Initial Review" },
+            "roles": [
+                { "name": "process", "universal_id": "acct-invoice-approval" },
+                { "name": "stage", "universal_id": "acct-initial-review-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-approval-has-manager-review",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Approval Has Manager Review" },
+            "roles": [
+                { "name": "process", "universal_id": "acct-invoice-approval" },
+                { "name": "stage", "universal_id": "acct-manager-review-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-approval-has-director-review",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Approval Has Director Review" },
+            "roles": [
+                { "name": "process", "universal_id": "acct-invoice-approval" },
+                { "name": "stage", "universal_id": "acct-director-review-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-approval-has-cfo-review",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Approval Has CFO Review" },
+            "roles": [
+                { "name": "process", "universal_id": "acct-invoice-approval" },
+                { "name": "stage", "universal_id": "acct-cfo-review-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== COMPOSITION RELATORS (stages -> obligations) ===",
+            "id": "acct-initial-review-has-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Initial Review Has Obligation" },
+            "roles": [
+                { "name": "stage", "universal_id": "acct-initial-review-stage" },
+                { "name": "obligation", "universal_id": "acct-initial-review-obligation" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-manager-review-has-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Manager Review Has Obligation" },
+            "roles": [
+                { "name": "stage", "universal_id": "acct-manager-review-stage" },
+                { "name": "obligation", "universal_id": "acct-manager-review-obligation" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-director-review-has-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Director Review Has Obligation" },
+            "roles": [
+                { "name": "stage", "universal_id": "acct-director-review-stage" },
+                { "name": "obligation", "universal_id": "acct-director-review-obligation" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-cfo-review-has-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "CFO Review Has Obligation" },
+            "roles": [
+                { "name": "stage", "universal_id": "acct-cfo-review-stage" },
+                { "name": "obligation", "universal_id": "acct-cfo-review-obligation" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== RELATOR: Invoice Vendor ===",
+            "id": "acct-inv-vendor-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Invoice Vendor"
+            },
+            "description": {
+                "en": "Invoice received from vendor"
+            },
+            "roles": [
+                {
+                    "name": "invoice",
+                    "universal_id": "acct-invoice"
+                },
+                {
+                    "name": "vendor",
+                    "universal_id": "acct-vendor"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Invoice Customer ===",
+            "id": "acct-inv-customer-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Invoice Customer"
+            },
+            "description": {
+                "en": "Invoice issued to customer"
+            },
+            "roles": [
+                {
+                    "name": "invoice",
+                    "universal_id": "acct-invoice"
+                },
+                {
+                    "name": "customer",
+                    "universal_id": "acct-customer"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Invoice Line Item ===",
+            "id": "acct-inv-lineitem-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Invoice Line Item"
+            },
+            "description": {
+                "en": "Invoice contains line item"
+            },
+            "roles": [
+                {
+                    "name": "invoice",
+                    "universal_id": "acct-invoice"
+                },
+                {
+                    "name": "line_item",
+                    "universal_id": "acct-line-item"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Invoice Department ===",
+            "id": "acct-inv-dept-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Invoice Department"
+            },
+            "description": {
+                "en": "Invoice charged to department"
+            },
+            "roles": [
+                {
+                    "name": "invoice",
+                    "universal_id": "acct-invoice"
+                },
+                {
+                    "name": "department",
+                    "universal_id": "acct-department"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Invoice Payment ===",
+            "id": "acct-inv-payment-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Invoice Payment"
+            },
+            "description": {
+                "en": "Payment applied to invoice"
+            },
+            "roles": [
+                {
+                    "name": "invoice",
+                    "universal_id": "acct-invoice"
+                },
+                {
+                    "name": "payment",
+                    "universal_id": "acct-payment"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Line Item GL Account ===",
+            "id": "acct-lineitem-gl-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Line Item GL Account"
+            },
+            "description": {
+                "en": "Line item posted to GL account"
+            },
+            "roles": [
+                {
+                    "name": "line_item",
+                    "universal_id": "acct-line-item"
+                },
+                {
+                    "name": "gl_account",
+                    "universal_id": "acct-gl-account"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Line Item Tax Rate ===",
+            "id": "acct-lineitem-tax-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Line Item Tax Rate"
+            },
+            "description": {
+                "en": "Tax rate applied to line item"
+            },
+            "roles": [
+                {
+                    "name": "line_item",
+                    "universal_id": "acct-line-item"
+                },
+                {
+                    "name": "tax_rate",
+                    "universal_id": "acct-tax-rate"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Payment Method ===",
+            "id": "acct-pay-method-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Payment Method"
+            },
+            "description": {
+                "en": "Payment method used for a payment"
+            },
+            "roles": [
+                {
+                    "name": "payment",
+                    "universal_id": "acct-payment"
+                },
+                {
+                    "name": "method",
+                    "universal_id": "acct-payment-method"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Budget Department ===",
+            "id": "acct-budget-dept-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Budget Department"
+            },
+            "description": {
+                "en": "Budget allocated to department"
+            },
+            "roles": [
+                {
+                    "name": "budget",
+                    "universal_id": "acct-budget"
+                },
+                {
+                    "name": "department",
+                    "universal_id": "acct-department"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        }
+    ],
+    "property_definitions": [
+        {
+            "_comment": "--- Enumeration Properties ---",
+            "id": "acct-invoice-status-name-prop",
+            "universal_id": "acct-invoice-status",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-payment-method-name-prop",
+            "universal_id": "acct-payment-method",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-tax-category-name-prop",
+            "universal_id": "acct-tax-category",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-expense-category-name-prop",
+            "universal_id": "acct-expense-category",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-gl-account-type-name-prop",
+            "universal_id": "acct-gl-account-type",
+            "label": {
+                "en": "Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Invoice Properties ---",
+            "id": "acct-inv-number",
+            "universal_id": "acct-invoice",
+            "label": {
+                "en": "Invoice Number"
+            },
+            "property_schema": {
+                "predicates": [
+                    "identifier",
+                    "number"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "#"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-date",
+            "universal_id": "acct-invoice",
+            "label": {
+                "en": "Invoice Date"
+            },
+            "property_schema": {
+                "predicates": [
+                    "date",
+                    "issued"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": true
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-due-date",
+            "universal_id": "acct-invoice",
+            "label": {
+                "en": "Due Date"
+            },
+            "property_schema": {
+                "predicates": [
+                    "date",
+                    "due"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": true
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-status-prop",
+            "universal_id": "acct-invoice",
+            "label": {
+                "en": "Status"
+            },
+            "property_schema": {
+                "predicates": [
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "acct-invoice-status",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-total-amount",
+            "universal_id": "acct-invoice",
+            "label": {
+                "en": "Total Amount"
+            },
+            "property_schema": {
+                "predicates": [
+                    "amount",
+                    "total"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-tax-amount",
+            "universal_id": "acct-invoice",
+            "label": {
+                "en": "Tax Amount"
+            },
+            "property_schema": {
+                "predicates": [
+                    "amount",
+                    "tax"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-description",
+            "universal_id": "acct-invoice",
+            "label": {
+                "en": "Description"
+            },
+            "property_schema": {
+                "predicates": [
+                    "description"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-inv-currency",
+            "universal_id": "acct-invoice",
+            "label": {
+                "en": "Currency"
+            },
+            "property_schema": {
+                "predicates": [
+                    "currency",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Line Item Properties ---",
+            "id": "acct-li-description",
+            "universal_id": "acct-line-item",
+            "label": {
+                "en": "Description"
+            },
+            "property_schema": {
+                "predicates": [
+                    "description",
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-quantity",
+            "universal_id": "acct-line-item",
+            "label": {
+                "en": "Quantity"
+            },
+            "property_schema": {
+                "predicates": [
+                    "quantity"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-unit-price",
+            "universal_id": "acct-line-item",
+            "label": {
+                "en": "Unit Price"
+            },
+            "property_schema": {
+                "predicates": [
+                    "price",
+                    "unit"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-line-total",
+            "universal_id": "acct-line-item",
+            "label": {
+                "en": "Line Total"
+            },
+            "description": {
+                "en": "Computed: quantity * unit_price"
+            },
+            "property_schema": {
+                "predicates": [
+                    "amount",
+                    "total",
+                    "computed"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-tax-amount",
+            "universal_id": "acct-line-item",
+            "label": {
+                "en": "Tax Amount"
+            },
+            "description": {
+                "en": "Computed: line_total * tax_rate"
+            },
+            "property_schema": {
+                "predicates": [
+                    "amount",
+                    "tax",
+                    "computed"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-li-expense-cat-prop",
+            "universal_id": "acct-line-item",
+            "label": {
+                "en": "Expense Category"
+            },
+            "property_schema": {
+                "predicates": [
+                    "category",
+                    "expense"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "acct-expense-category",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Vendor Properties ---",
+            "id": "acct-vendor-code",
+            "universal_id": "acct-vendor",
+            "label": {
+                "en": "Vendor Code"
+            },
+            "property_schema": {
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-vendor-name",
+            "universal_id": "acct-vendor",
+            "label": {
+                "en": "Vendor Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-vendor-tax-id",
+            "universal_id": "acct-vendor",
+            "label": {
+                "en": "Tax ID"
+            },
+            "property_schema": {
+                "predicates": [
+                    "tax_id",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-vendor-payment-terms",
+            "universal_id": "acct-vendor",
+            "label": {
+                "en": "Payment Terms"
+            },
+            "property_schema": {
+                "predicates": [
+                    "payment",
+                    "terms"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Customer Properties ---",
+            "id": "acct-cust-code",
+            "universal_id": "acct-customer",
+            "label": {
+                "en": "Customer Code"
+            },
+            "property_schema": {
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-cust-name",
+            "universal_id": "acct-customer",
+            "label": {
+                "en": "Customer Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-cust-email",
+            "universal_id": "acct-customer",
+            "label": {
+                "en": "Email"
+            },
+            "property_schema": {
+                "predicates": [
+                    "email",
+                    "contact"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Payment Properties ---",
+            "id": "acct-pay-reference",
+            "universal_id": "acct-payment",
+            "label": {
+                "en": "Payment Reference"
+            },
+            "property_schema": {
+                "predicates": [
+                    "identifier",
+                    "reference"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-pay-amount",
+            "universal_id": "acct-payment",
+            "label": {
+                "en": "Amount"
+            },
+            "property_schema": {
+                "predicates": [
+                    "amount"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-pay-date",
+            "universal_id": "acct-payment",
+            "label": {
+                "en": "Payment Date"
+            },
+            "property_schema": {
+                "predicates": [
+                    "date",
+                    "payment"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": true
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-pay-method-prop",
+            "universal_id": "acct-payment",
+            "label": {
+                "en": "Payment Method"
+            },
+            "property_schema": {
+                "predicates": [
+                    "method"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "acct-payment-method",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Department Properties ---",
+            "id": "acct-dept-code",
+            "universal_id": "acct-department",
+            "label": {
+                "en": "Department Code"
+            },
+            "property_schema": {
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-dept-name",
+            "universal_id": "acct-department",
+            "label": {
+                "en": "Department Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-dept-cost-center",
+            "universal_id": "acct-department",
+            "label": {
+                "en": "Cost Center"
+            },
+            "property_schema": {
+                "predicates": [
+                    "cost_center",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- GL Account Properties ---",
+            "id": "acct-gl-code",
+            "universal_id": "acct-gl-account",
+            "label": {
+                "en": "Account Code"
+            },
+            "property_schema": {
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-gl-name",
+            "universal_id": "acct-gl-account",
+            "label": {
+                "en": "Account Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-gl-type-prop",
+            "universal_id": "acct-gl-account",
+            "label": {
+                "en": "Account Type"
+            },
+            "property_schema": {
+                "predicates": [
+                    "type",
+                    "classification"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "acct-gl-account-type",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Tax Rate Properties ---",
+            "id": "acct-taxrate-code",
+            "universal_id": "acct-tax-rate",
+            "label": {
+                "en": "Tax Code"
+            },
+            "property_schema": {
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-taxrate-name",
+            "universal_id": "acct-tax-rate",
+            "label": {
+                "en": "Tax Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-taxrate-percentage",
+            "universal_id": "acct-tax-rate",
+            "label": {
+                "en": "Rate Percentage"
+            },
+            "property_schema": {
+                "predicates": [
+                    "rate",
+                    "percentage"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-ratio"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-taxrate-category-prop",
+            "universal_id": "acct-tax-rate",
+            "label": {
+                "en": "Tax Category"
+            },
+            "property_schema": {
+                "predicates": [
+                    "category"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "acct-tax-category",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Budget Properties ---",
+            "id": "acct-budget-name",
+            "universal_id": "acct-budget",
+            "label": {
+                "en": "Budget Name"
+            },
+            "property_schema": {
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-budget-period",
+            "universal_id": "acct-budget",
+            "label": {
+                "en": "Budget Period"
+            },
+            "property_schema": {
+                "predicates": [
+                    "period",
+                    "fiscal"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-budget-allocated",
+            "universal_id": "acct-budget",
+            "label": {
+                "en": "Allocated Amount"
+            },
+            "property_schema": {
+                "predicates": [
+                    "amount",
+                    "allocated",
+                    "normative"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-budget-spent",
+            "universal_id": "acct-budget",
+            "label": {
+                "en": "Spent Amount"
+            },
+            "property_schema": {
+                "predicates": [
+                    "amount",
+                    "spent",
+                    "descriptive"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-budget-remaining",
+            "universal_id": "acct-budget",
+            "label": {
+                "en": "Remaining Amount"
+            },
+            "description": {
+                "en": "Computed: allocated - spent"
+            },
+            "property_schema": {
+                "predicates": [
+                    "amount",
+                    "remaining",
+                    "computed",
+                    "variance"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Analytics Summary Properties ---",
+            "id": "acct-summary-department",
+            "universal_id": "acct-analytics-summary",
+            "label": {
+                "en": "Department"
+            },
+            "property_schema": {
+                "predicates": [
+                    "department",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-summary-vendor",
+            "universal_id": "acct-analytics-summary",
+            "label": {
+                "en": "Vendor"
+            },
+            "property_schema": {
+                "predicates": [
+                    "vendor",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-summary-gl-account",
+            "universal_id": "acct-analytics-summary",
+            "label": {
+                "en": "GL Account"
+            },
+            "property_schema": {
+                "predicates": [
+                    "gl_account",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-summary-total-amount",
+            "universal_id": "acct-analytics-summary",
+            "label": {
+                "en": "Total Amount"
+            },
+            "property_schema": {
+                "predicates": [
+                    "amount",
+                    "total",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-summary-avg-amount",
+            "universal_id": "acct-analytics-summary",
+            "label": {
+                "en": "Average Amount"
+            },
+            "property_schema": {
+                "predicates": [
+                    "amount",
+                    "average",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-summary-count",
+            "universal_id": "acct-analytics-summary",
+            "label": {
+                "en": "Count"
+            },
+            "property_schema": {
+                "predicates": [
+                    "count",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-summary-tax-total",
+            "universal_id": "acct-analytics-summary",
+            "label": {
+                "en": "Tax Total"
+            },
+            "property_schema": {
+                "predicates": [
+                    "tax",
+                    "total",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-summary-budget-allocated",
+            "universal_id": "acct-analytics-summary",
+            "label": {
+                "en": "Budget Allocated"
+            },
+            "property_schema": {
+                "predicates": [
+                    "budget",
+                    "allocated",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-summary-budget-spent",
+            "universal_id": "acct-analytics-summary",
+            "label": {
+                "en": "Budget Spent"
+            },
+            "property_schema": {
+                "predicates": [
+                    "budget",
+                    "spent",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-summary-overdue-count",
+            "universal_id": "acct-analytics-summary",
+            "label": {
+                "en": "Overdue Count"
+            },
+            "property_schema": {
+                "predicates": [
+                    "overdue",
+                    "count",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-summary-threshold-state",
+            "universal_id": "acct-analytics-summary",
+            "label": {
+                "en": "Threshold State"
+            },
+            "property_schema": {
+                "predicates": [
+                    "threshold",
+                    "state"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false,
+                        "allowed_values": [
+                            "not_crossed",
+                            "crossed"
+                        ]
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "acct-summary-payment-method",
+            "universal_id": "acct-analytics-summary",
+            "label": {
+                "en": "Payment Method"
+            },
+            "property_schema": {
+                "predicates": [
+                    "payment_method",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Invoice Approval Process Properties (base-process-subject-ref-prop inherited from base-process) ---",
+            "id": "acct-approval-urgency-prop",
+            "universal_id": "acct-invoice-approval",
+            "label": { "en": "Urgency" },
+            "property_schema": {
+                "predicates": ["urgency", "priority"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        }
+    ],
+    "event_definitions": [
+        {
+            "id": "acct-invoice-created",
+            "app_id": "acct-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Invoice Created"
+            },
+            "description": {
+                "en": "Event emitted when a new invoice is created"
+            },
+            "payload_schema": [
+                {
+                    "name": "invoice_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "invoice_number",
+                    "field_type": "string"
+                },
+                {
+                    "name": "vendor",
+                    "field_type": "string"
+                },
+                {
+                    "name": "amount",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-invoice-submitted",
+            "app_id": "acct-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Invoice Submitted for Approval"
+            },
+            "description": {
+                "en": "Event emitted when an invoice is submitted for approval"
+            },
+            "payload_schema": [
+                {
+                    "name": "invoice_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "invoice_number",
+                    "field_type": "string"
+                },
+                {
+                    "name": "amount",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-invoice-approved",
+            "app_id": "acct-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Invoice Approved"
+            },
+            "description": {
+                "en": "Event emitted when an invoice is approved"
+            },
+            "payload_schema": [
+                {
+                    "name": "invoice_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "invoice_number",
+                    "field_type": "string"
+                },
+                {
+                    "name": "approved_by",
+                    "field_type": "string"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-invoice-rejected",
+            "app_id": "acct-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Invoice Rejected"
+            },
+            "description": {
+                "en": "Event emitted when an invoice is rejected"
+            },
+            "payload_schema": [
+                {
+                    "name": "invoice_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "invoice_number",
+                    "field_type": "string"
+                },
+                {
+                    "name": "reason",
+                    "field_type": "string"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-invoice-paid",
+            "app_id": "acct-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Invoice Paid"
+            },
+            "description": {
+                "en": "Event emitted when an invoice is fully paid"
+            },
+            "payload_schema": [
+                {
+                    "name": "invoice_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "payment_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "amount",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-payment-overdue-threshold-event",
+            "app_id": "acct-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Payment Overdue Threshold Crossed"
+            },
+            "description": {
+                "en": "Event emitted when overdue invoice count exceeds threshold"
+            },
+            "payload_schema": [
+                {
+                    "name": "artifact_instance_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "measure_value",
+                    "field_type": "measurement",
+                    "measurement_frame": "Quantity"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-budget-exceeded-threshold-event",
+            "app_id": "acct-intelligence-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Budget Exceeded Threshold Crossed"
+            },
+            "description": {
+                "en": "Event emitted when department spending exceeds budget allocation"
+            },
+            "payload_schema": [
+                {
+                    "name": "artifact_instance_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "measure_value",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                }
+            ],
+            "use_seed": true
+        }
+    ],
+    "computations": [
+        {
+            "_comment": "=== COMPUTATION 1: Line Item Total = quantity * unit_price ===",
+            "id": "acct-line-total-calc",
+            "code": "acct_line_total",
+            "app_id": "acct-intelligence-app",
+            "label": {
+                "en": "Line Item Total Calculation"
+            },
+            "description": {
+                "en": "Computes line_total = quantity * unit_price on line items"
+            },
+            "inputs": [
+                {
+                    "source": "property",
+                    "variable_name": "quantity",
+                    "property_id": "acct-li-quantity"
+                },
+                {
+                    "source": "property",
+                    "variable_name": "unit_price",
+                    "property_id": "acct-li-unit-price"
+                }
+            ],
+            "formula": "let q = quantity.value; let p = unit_price.value; q * p",
+            "output": {
+                "target_property_id": "acct-li-line-total"
+            },
+            "trigger_conditions": [
+                {
+                    "type": "PropertyChange",
+                    "property_id": "acct-li-quantity"
+                },
+                {
+                    "type": "PropertyChange",
+                    "property_id": "acct-li-unit-price"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 2: Budget Remaining = allocated - spent ===",
+            "id": "acct-budget-remaining-calc",
+            "code": "acct_budget_remaining",
+            "app_id": "acct-intelligence-app",
+            "label": {
+                "en": "Budget Remaining Calculation"
+            },
+            "description": {
+                "en": "Computes remaining = allocated - spent on budget records"
+            },
+            "inputs": [
+                {
+                    "source": "property",
+                    "variable_name": "allocated",
+                    "property_id": "acct-budget-allocated"
+                },
+                {
+                    "source": "property",
+                    "variable_name": "spent",
+                    "property_id": "acct-budget-spent"
+                }
+            ],
+            "formula": "let a = allocated.value; let s = spent.value; a - s",
+            "output": {
+                "target_property_id": "acct-budget-remaining"
+            },
+            "trigger_conditions": [
+                {
+                    "type": "PropertyChange",
+                    "property_id": "acct-budget-allocated"
+                },
+                {
+                    "type": "PropertyChange",
+                    "property_id": "acct-budget-spent"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 3: Emit Invoice Status Event ===",
+            "id": "acct-emit-invoice-status-event",
+            "code": "acct_emit_invoice_status",
+            "app_id": "acct-intelligence-app",
+            "label": {
+                "en": "Emit Invoice Status Change Event"
+            },
+            "description": {
+                "en": "Publishes notification when invoice status changes"
+            },
+            "inputs": [
+                {
+                    "source": "property",
+                    "variable_name": "status",
+                    "property_id": "acct-inv-status-prop"
+                }
+            ],
+            "formula": "print(`[EVENT EMIT] Invoice status changed`); 0.0",
+            "output": {},
+            "trigger_conditions": [
+                {
+                    "type": "PropertyChange",
+                    "property_id": "acct-inv-status-prop"
+                }
+            ],
+            "event_bindings": [
+                {
+                    "event": "events.acct-invoice-approved",
+                    "direction": "publish",
+                    "trigger": "always"
+                }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        }
+    ],
+    "data_schemas": [],
+    "artifact_definitions": [
+        {
+            "_comment": "=== ARTIFACT 1: Spending by Department and Vendor ===",
+            "id": "acct-spending-by-dept-vendor",
+            "name": "Spending by Department and Vendor",
+            "description": {
+                "en": "Invoice spending aggregated by department and vendor"
+            },
+            "source": {
+                "universal_id": "acct-invoice"
+            },
+            "artifact_universal_id": "acct-analytics-summary",
+            "app_id": "acct-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "acct-sp-dept-dim",
+                    "code": "department",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "acct-inv-dept-rel",
+                                "role_name": "department"
+                            }
+                        ],
+                        "property_id": "acct-dept-name"
+                    },
+                    "artifact_property_id": "acct-summary-department",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-sp-vendor-dim",
+                    "code": "vendor",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "acct-inv-vendor-rel",
+                                "role_name": "vendor"
+                            }
+                        ],
+                        "property_id": "acct-vendor-name"
+                    },
+                    "artifact_property_id": "acct-summary-vendor",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "acct-sp-total",
+                    "code": "total_spending",
+                    "property_id": "acct-inv-total-amount",
+                    "function": "Sum",
+                    "artifact_property_id": "acct-summary-total-amount",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-sp-avg",
+                    "code": "avg_invoice",
+                    "property_id": "acct-inv-total-amount",
+                    "function": "Avg",
+                    "artifact_property_id": "acct-summary-avg-amount",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-sp-count",
+                    "code": "invoice_count",
+                    "function": "Count",
+                    "artifact_property_id": "acct-summary-count",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 2: Spending by GL Account ===",
+            "id": "acct-spending-by-gl",
+            "name": "Spending by GL Account",
+            "description": {
+                "en": "Line item spending aggregated by GL account, navigating through line item to GL account"
+            },
+            "source": {
+                "universal_id": "acct-line-item"
+            },
+            "artifact_universal_id": "acct-analytics-summary",
+            "app_id": "acct-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "acct-gl-dim",
+                    "code": "gl_account",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "acct-lineitem-gl-rel",
+                                "role_name": "gl_account"
+                            }
+                        ],
+                        "property_id": "acct-gl-name"
+                    },
+                    "artifact_property_id": "acct-summary-gl-account",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "acct-gl-total",
+                    "code": "total_amount",
+                    "property_id": "acct-li-line-total",
+                    "function": "Sum",
+                    "artifact_property_id": "acct-summary-total-amount",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-gl-count",
+                    "code": "line_count",
+                    "function": "Count",
+                    "artifact_property_id": "acct-summary-count",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 3: Overdue Invoices by Department (with threshold) ===",
+            "id": "acct-overdue-by-dept",
+            "name": "Overdue Invoices by Department",
+            "description": {
+                "en": "Overdue invoice count by department with payment overdue threshold"
+            },
+            "source": {
+                "universal_id": "acct-invoice"
+            },
+            "artifact_universal_id": "acct-analytics-summary",
+            "app_id": "acct-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "acct-od-dept-dim",
+                    "code": "department",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "acct-inv-dept-rel",
+                                "role_name": "department"
+                            }
+                        ],
+                        "property_id": "acct-dept-name"
+                    },
+                    "artifact_property_id": "acct-summary-department",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "acct-od-count",
+                    "code": "overdue_count",
+                    "function": "Count",
+                    "artifact_property_id": "acct-summary-overdue-count",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-od-total",
+                    "code": "overdue_amount",
+                    "property_id": "acct-inv-total-amount",
+                    "function": "Sum",
+                    "artifact_property_id": "acct-summary-total-amount",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [
+                {
+                    "id": "acct-overdue-threshold",
+                    "code": "high_overdue",
+                    "measure_id": "acct-od-count",
+                    "condition": {
+                        "operator": "GreaterThan",
+                        "value": 5
+                    },
+                    "event_type_id": "acct-payment-overdue-threshold-event",
+                    "state_property_id": "acct-summary-threshold-state",
+                    "reset_on": "OnDimensionChange",
+                    "use_seed": true
+                }
+            ],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 4: Budget Utilization by Department (with threshold) ===",
+            "id": "acct-budget-utilization",
+            "name": "Budget Utilization by Department",
+            "description": {
+                "en": "Budget allocation vs spending by department with over-budget threshold"
+            },
+            "source": {
+                "universal_id": "acct-budget"
+            },
+            "artifact_universal_id": "acct-analytics-summary",
+            "app_id": "acct-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "acct-bu-dept-dim",
+                    "code": "department",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "acct-budget-dept-rel",
+                                "role_name": "department"
+                            }
+                        ],
+                        "property_id": "acct-dept-name"
+                    },
+                    "artifact_property_id": "acct-summary-department",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "acct-bu-allocated",
+                    "code": "total_allocated",
+                    "property_id": "acct-budget-allocated",
+                    "function": "Sum",
+                    "artifact_property_id": "acct-summary-budget-allocated",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-bu-spent",
+                    "code": "total_spent",
+                    "property_id": "acct-budget-spent",
+                    "function": "Sum",
+                    "artifact_property_id": "acct-summary-budget-spent",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-bu-count",
+                    "code": "count",
+                    "function": "Count",
+                    "artifact_property_id": "acct-summary-count",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [
+                {
+                    "id": "acct-budget-exceeded-threshold",
+                    "code": "budget_exceeded",
+                    "measure_id": "acct-bu-spent",
+                    "condition": {
+                        "operator": "GreaterThan",
+                        "value": 100000
+                    },
+                    "event_type_id": "acct-budget-exceeded-threshold-event",
+                    "state_property_id": "acct-summary-threshold-state",
+                    "reset_on": "OnDimensionChange",
+                    "use_seed": true
+                }
+            ],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 5: Tax Summary by Department ===",
+            "id": "acct-tax-by-dept",
+            "name": "Tax Summary by Department",
+            "description": {
+                "en": "Tax amounts aggregated by department from invoices"
+            },
+            "source": {
+                "universal_id": "acct-invoice"
+            },
+            "artifact_universal_id": "acct-analytics-summary",
+            "app_id": "acct-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "acct-tx-dept-dim",
+                    "code": "department",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "acct-inv-dept-rel",
+                                "role_name": "department"
+                            }
+                        ],
+                        "property_id": "acct-dept-name"
+                    },
+                    "artifact_property_id": "acct-summary-department",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "acct-tx-total",
+                    "code": "total_tax",
+                    "property_id": "acct-inv-tax-amount",
+                    "function": "Sum",
+                    "artifact_property_id": "acct-summary-tax-total",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-tx-count",
+                    "code": "invoice_count",
+                    "function": "Count",
+                    "artifact_property_id": "acct-summary-count",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 6: Spending by Department and GL Account ===",
+            "id": "acct-spending-by-dept-gl",
+            "name": "Spending by Department and GL Account",
+            "description": {
+                "en": "Line item spending by department (via invoice) and GL account"
+            },
+            "source": {
+                "universal_id": "acct-line-item"
+            },
+            "artifact_universal_id": "acct-analytics-summary",
+            "app_id": "acct-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "acct-dg-dept-dim",
+                    "code": "department",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "acct-inv-lineitem-rel",
+                                "role_name": "invoice"
+                            },
+                            {
+                                "relator_universal_id": "acct-inv-dept-rel",
+                                "role_name": "department"
+                            }
+                        ],
+                        "property_id": "acct-dept-name"
+                    },
+                    "artifact_property_id": "acct-summary-department",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-dg-gl-dim",
+                    "code": "gl_account",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "acct-lineitem-gl-rel",
+                                "role_name": "gl_account"
+                            }
+                        ],
+                        "property_id": "acct-gl-name"
+                    },
+                    "artifact_property_id": "acct-summary-gl-account",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "acct-dg-total",
+                    "code": "total_amount",
+                    "property_id": "acct-li-line-total",
+                    "function": "Sum",
+                    "artifact_property_id": "acct-summary-total-amount",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-dg-count",
+                    "code": "line_count",
+                    "function": "Count",
+                    "artifact_property_id": "acct-summary-count",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 7: Spending by Vendor ===",
+            "id": "acct-spending-by-vendor",
+            "name": "Spending by Vendor",
+            "description": {
+                "en": "Invoice spending and tax aggregated by vendor, with count and average invoice size"
+            },
+            "source": {
+                "universal_id": "acct-invoice"
+            },
+            "artifact_universal_id": "acct-analytics-summary",
+            "app_id": "acct-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "acct-sv-vendor-dim",
+                    "code": "vendor",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "acct-inv-vendor-rel",
+                                "role_name": "vendor"
+                            }
+                        ],
+                        "property_id": "acct-vendor-name"
+                    },
+                    "artifact_property_id": "acct-summary-vendor",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "acct-sv-total",
+                    "code": "total_spending",
+                    "property_id": "acct-inv-total-amount",
+                    "function": "Sum",
+                    "artifact_property_id": "acct-summary-total-amount",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-sv-avg",
+                    "code": "avg_invoice",
+                    "property_id": "acct-inv-total-amount",
+                    "function": "Avg",
+                    "artifact_property_id": "acct-summary-avg-amount",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-sv-count",
+                    "code": "invoice_count",
+                    "function": "Count",
+                    "artifact_property_id": "acct-summary-count",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-sv-tax",
+                    "code": "tax_total",
+                    "property_id": "acct-inv-tax-amount",
+                    "function": "Sum",
+                    "artifact_property_id": "acct-summary-tax-total",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 8: Payments by Method ===",
+            "id": "acct-payments-by-method",
+            "name": "Payments by Method",
+            "description": {
+                "en": "Payment volumes and amounts aggregated by payment method (wire, check, ACH, etc.)"
+            },
+            "source": {
+                "universal_id": "acct-payment"
+            },
+            "artifact_universal_id": "acct-analytics-summary",
+            "app_id": "acct-intelligence-app",
+            "dimensions": [
+                {
+                    "id": "acct-pm-method-dim",
+                    "code": "payment_method",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            {
+                                "relator_universal_id": "acct-pay-method-rel",
+                                "role_name": "method"
+                            }
+                        ],
+                        "property_id": "acct-payment-method-name-prop"
+                    },
+                    "artifact_property_id": "acct-summary-payment-method",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "acct-pm-total",
+                    "code": "total_amount",
+                    "property_id": "acct-pay-amount",
+                    "function": "Sum",
+                    "artifact_property_id": "acct-summary-total-amount",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-pm-avg",
+                    "code": "avg_payment",
+                    "property_id": "acct-pay-amount",
+                    "function": "Avg",
+                    "artifact_property_id": "acct-summary-avg-amount",
+                    "use_seed": true
+                },
+                {
+                    "id": "acct-pm-count",
+                    "code": "payment_count",
+                    "function": "Count",
+                    "artifact_property_id": "acct-summary-count",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        }
+    ],
+    "apps": [
+        {
+            "id": "acct-intelligence-app",
+            "tenant_id": "model1-testing-tenant",
+            "label": {
+                "en": "Accounting Intelligence Application"
+            },
+            "description": {
+                "en": "Comprehensive accounting analytics application with invoice management, vendor tracking, GL account posting, budget monitoring, tax analysis, and normative process-based invoice approval workflows"
+            },
+            "use_seed": true,
+            "modules": [
+                {
+                    "id": "acct-core-module",
+                    "use_seed": true,
+                    "label": {
+                        "en": "Accounting Core Module"
+                    },
+                    "description": {
+                        "en": "Core accounting operations: invoices, vendors, customers, payments, GL accounts"
+                    },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": [
+                            "acct-invoice-created",
+                            "acct-invoice-paid"
+                        ]
+                    }
+                },
+                {
+                    "id": "acct-approval-module",
+                    "use_seed": true,
+                    "label": {
+                        "en": "Invoice Approval Module"
+                    },
+                    "description": {
+                        "en": "Normative process-based invoice approval workflows, authority management, and compliance tracking"
+                    },
+                    "context": {
+                        "subscribed_events": [
+                            "acct-invoice-created",
+                            "acct-invoice-submitted"
+                        ],
+                        "publishable_events": [
+                            "acct-invoice-approved",
+                            "acct-invoice-rejected"
+                        ]
+                    }
+                },
+                {
+                    "id": "acct-analytics-module",
+                    "use_seed": true,
+                    "label": {
+                        "en": "Accounting Analytics Module"
+                    },
+                    "description": {
+                        "en": "Intelligence artifacts, budget monitoring, spending analytics, and tax reporting"
+                    },
+                    "context": {
+                        "subscribed_events": [
+                            "acct-invoice-approved",
+                            "acct-invoice-paid"
+                        ],
+                        "publishable_events": []
+                    }
+                }
+            ]
+        }
+    ],
+    "users": [
+        {
+            "id": "acct-admin-alice",
+            "tenant_id": "model1-testing-tenant",
+            "email": "acct-admin-alice@test.model1.ai",
+            "display_name": "Alice Accounting Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppAdmin", "AppDeveloper", "AppUser"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-admin-bob",
+            "tenant_id": "model1-testing-tenant",
+            "email": "acct-admin-bob@test.model1.ai",
+            "display_name": "Bob Accounting Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppAdmin"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-admin-carol",
+            "tenant_id": "model1-testing-tenant",
+            "email": "acct-admin-carol@test.model1.ai",
+            "display_name": "Carol Accounting Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppAdmin"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-clerk-dave",
+            "tenant_id": "model1-testing-tenant",
+            "email": "acct-clerk-dave@test.model1.ai",
+            "display_name": "Dave AP Clerk",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppUser"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-clerk-emma",
+            "tenant_id": "model1-testing-tenant",
+            "email": "acct-clerk-emma@test.model1.ai",
+            "display_name": "Emma AR Clerk",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppUser"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-analyst-frank",
+            "tenant_id": "model1-testing-tenant",
+            "email": "acct-analyst-frank@test.model1.ai",
+            "display_name": "Frank Financial Analyst",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppUser"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-dev-grace",
+            "tenant_id": "model1-testing-tenant",
+            "email": "acct-dev-grace@test.model1.ai",
+            "display_name": "Grace Accounting Developer",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppDeveloper"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-dev-henry",
+            "tenant_id": "model1-testing-tenant",
+            "email": "acct-dev-henry@test.model1.ai",
+            "display_name": "Henry Accounting Developer",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppDeveloper"
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "acct-dev-iris",
+            "tenant_id": "model1-testing-tenant",
+            "email": "acct-dev-iris@test.model1.ai",
+            "display_name": "Iris Accounting Developer",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": [
+                "AppDeveloper"
+            ],
+            "use_seed": true
+        }
+    ],
+    "foundation_role_assignments": [
+        {
+            "id": "fra-acct-admin-alice",
+            "user_id": "acct-admin-alice",
+            "role": "AppAdmin",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "acct-intelligence-app"
+            },
+            "assigned_by": "acct-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-acct-admin-bob",
+            "user_id": "acct-admin-bob",
+            "role": "AppAdmin",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "acct-intelligence-app"
+            },
+            "assigned_by": "acct-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-acct-admin-carol",
+            "user_id": "acct-admin-carol",
+            "role": "AppAdmin",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "acct-intelligence-app"
+            },
+            "assigned_by": "acct-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-acct-clerk-dave",
+            "user_id": "acct-clerk-dave",
+            "role": "AppUser",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "acct-intelligence-app"
+            },
+            "assigned_by": "acct-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-acct-clerk-emma",
+            "user_id": "acct-clerk-emma",
+            "role": "AppUser",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "acct-intelligence-app"
+            },
+            "assigned_by": "acct-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-acct-analyst-frank",
+            "user_id": "acct-analyst-frank",
+            "role": "AppUser",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "acct-intelligence-app"
+            },
+            "assigned_by": "acct-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-acct-dev-grace",
+            "user_id": "acct-dev-grace",
+            "role": "AppDeveloper",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "acct-intelligence-app"
+            },
+            "assigned_by": "acct-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-acct-dev-henry",
+            "user_id": "acct-dev-henry",
+            "role": "AppDeveloper",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "acct-intelligence-app"
+            },
+            "assigned_by": "acct-admin-alice",
+            "use_seed": true
+        },
+        {
+            "id": "fra-acct-dev-iris",
+            "user_id": "acct-dev-iris",
+            "role": "AppDeveloper",
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "acct-intelligence-app"
+            },
+            "assigned_by": "acct-admin-alice",
+            "use_seed": true
+        }
+    ]
+}
