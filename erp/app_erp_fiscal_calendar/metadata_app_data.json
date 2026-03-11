@@ -1,0 +1,944 @@
+{
+    "_comment": "=== ERP FISCAL CALENDAR - INSTANCE DATA ===",
+    "_description": "4 status enums, 2 fiscal years (FY2025, FY2026), 8 quarters, 26 periods (13 per year including P13 adjustment), plus all composition relator instances.",
+
+    "instances": [
+        {
+            "_comment": "=== FISCAL STATUS ENUM INSTANCES ===",
+            "id": "erp-status-open",
+            "universal_id": "erp-fiscal-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-fiscal-status-name-prop": "Open" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-status-closed",
+            "universal_id": "erp-fiscal-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-fiscal-status-name-prop": "Closed" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-status-adjustment",
+            "universal_id": "erp-fiscal-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-fiscal-status-name-prop": "Adjustment" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-status-locked",
+            "universal_id": "erp-fiscal-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-fiscal-status-name-prop": "Locked" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FISCAL YEAR: FY2025 (Jan 2025 - Dec 2025, fully closed) ===",
+            "id": "erp-fy2025",
+            "universal_id": "erp-fiscal-year",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-fiscal-year-code-prop": "FY2025",
+                "erp-fiscal-year-name-prop": { "en": "Fiscal Year 2025" },
+                "erp-fiscal-year-start-date-prop": { "value": 1735689600, "unit": "seconds" },
+                "erp-fiscal-year-end-date-prop": { "value": 1767225599, "unit": "seconds" },
+                "erp-fiscal-year-status-prop": "Closed"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2025 QUARTERS ===",
+            "id": "erp-fy2025-q1",
+            "universal_id": "erp-fiscal-quarter",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-fiscal-quarter-code-prop": "Q1",
+                "erp-fiscal-quarter-sequence-prop": { "value": 1, "unit": "count" },
+                "erp-fiscal-quarter-start-date-prop": { "value": 1735689600, "unit": "seconds" },
+                "erp-fiscal-quarter-end-date-prop": { "value": 1743465599, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2025-q2",
+            "universal_id": "erp-fiscal-quarter",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-fiscal-quarter-code-prop": "Q2",
+                "erp-fiscal-quarter-sequence-prop": { "value": 2, "unit": "count" },
+                "erp-fiscal-quarter-start-date-prop": { "value": 1743465600, "unit": "seconds" },
+                "erp-fiscal-quarter-end-date-prop": { "value": 1751327999, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2025-q3",
+            "universal_id": "erp-fiscal-quarter",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-fiscal-quarter-code-prop": "Q3",
+                "erp-fiscal-quarter-sequence-prop": { "value": 3, "unit": "count" },
+                "erp-fiscal-quarter-start-date-prop": { "value": 1751328000, "unit": "seconds" },
+                "erp-fiscal-quarter-end-date-prop": { "value": 1759276799, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2025-q4",
+            "universal_id": "erp-fiscal-quarter",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-fiscal-quarter-code-prop": "Q4",
+                "erp-fiscal-quarter-sequence-prop": { "value": 4, "unit": "count" },
+                "erp-fiscal-quarter-start-date-prop": { "value": 1759276800, "unit": "seconds" },
+                "erp-fiscal-quarter-end-date-prop": { "value": 1767225599, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2025 PERIODS (Q1: P01-P03) ===",
+            "id": "erp-fy2025-p01",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P01",
+                "erp-fiscal-period-name-prop": { "en": "January" },
+                "erp-fiscal-period-sequence-prop": { "value": 1, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1735689600, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1738367999, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Locked",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2025-p02",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P02",
+                "erp-fiscal-period-name-prop": { "en": "February" },
+                "erp-fiscal-period-sequence-prop": { "value": 2, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1738368000, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1740787199, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Locked",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2025-p03",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P03",
+                "erp-fiscal-period-name-prop": { "en": "March" },
+                "erp-fiscal-period-sequence-prop": { "value": 3, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1740787200, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1743465599, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Locked",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2025 PERIODS (Q2: P04-P06) ===",
+            "id": "erp-fy2025-p04",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P04",
+                "erp-fiscal-period-name-prop": { "en": "April" },
+                "erp-fiscal-period-sequence-prop": { "value": 4, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1743465600, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1746057599, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Locked",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2025-p05",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P05",
+                "erp-fiscal-period-name-prop": { "en": "May" },
+                "erp-fiscal-period-sequence-prop": { "value": 5, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1746057600, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1748735999, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Locked",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2025-p06",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P06",
+                "erp-fiscal-period-name-prop": { "en": "June" },
+                "erp-fiscal-period-sequence-prop": { "value": 6, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1748736000, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1751327999, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Locked",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2025 PERIODS (Q3: P07-P09) ===",
+            "id": "erp-fy2025-p07",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P07",
+                "erp-fiscal-period-name-prop": { "en": "July" },
+                "erp-fiscal-period-sequence-prop": { "value": 7, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1751328000, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1754006399, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Locked",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2025-p08",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P08",
+                "erp-fiscal-period-name-prop": { "en": "August" },
+                "erp-fiscal-period-sequence-prop": { "value": 8, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1754006400, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1756684799, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Locked",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2025-p09",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P09",
+                "erp-fiscal-period-name-prop": { "en": "September" },
+                "erp-fiscal-period-sequence-prop": { "value": 9, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1756684800, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1759276799, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Locked",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2025 PERIODS (Q4: P10-P12, P13 adjustment) ===",
+            "id": "erp-fy2025-p10",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P10",
+                "erp-fiscal-period-name-prop": { "en": "October" },
+                "erp-fiscal-period-sequence-prop": { "value": 10, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1759276800, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1761955199, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Locked",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2025-p11",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P11",
+                "erp-fiscal-period-name-prop": { "en": "November" },
+                "erp-fiscal-period-sequence-prop": { "value": 11, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1761955200, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1764547199, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Locked",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2025-p12",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P12",
+                "erp-fiscal-period-name-prop": { "en": "December" },
+                "erp-fiscal-period-sequence-prop": { "value": 12, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1764547200, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1767225599, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Locked",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2025-p13",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P13",
+                "erp-fiscal-period-name-prop": { "en": "Adjustment" },
+                "erp-fiscal-period-sequence-prop": { "value": 13, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1764547200, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1767225599, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Locked",
+                "erp-fiscal-period-is-adjustment-prop": true
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FISCAL YEAR: FY2026 (Jan 2026 - Dec 2026, currently active) ===",
+            "id": "erp-fy2026",
+            "universal_id": "erp-fiscal-year",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-fiscal-year-code-prop": "FY2026",
+                "erp-fiscal-year-name-prop": { "en": "Fiscal Year 2026" },
+                "erp-fiscal-year-start-date-prop": { "value": 1767225600, "unit": "seconds" },
+                "erp-fiscal-year-end-date-prop": { "value": 1798761599, "unit": "seconds" },
+                "erp-fiscal-year-status-prop": "Open"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2026 QUARTERS ===",
+            "id": "erp-fy2026-q1",
+            "universal_id": "erp-fiscal-quarter",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-fiscal-quarter-code-prop": "Q1",
+                "erp-fiscal-quarter-sequence-prop": { "value": 1, "unit": "count" },
+                "erp-fiscal-quarter-start-date-prop": { "value": 1767225600, "unit": "seconds" },
+                "erp-fiscal-quarter-end-date-prop": { "value": 1775001599, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2026-q2",
+            "universal_id": "erp-fiscal-quarter",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-fiscal-quarter-code-prop": "Q2",
+                "erp-fiscal-quarter-sequence-prop": { "value": 2, "unit": "count" },
+                "erp-fiscal-quarter-start-date-prop": { "value": 1775001600, "unit": "seconds" },
+                "erp-fiscal-quarter-end-date-prop": { "value": 1782864000, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2026-q3",
+            "universal_id": "erp-fiscal-quarter",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-fiscal-quarter-code-prop": "Q3",
+                "erp-fiscal-quarter-sequence-prop": { "value": 3, "unit": "count" },
+                "erp-fiscal-quarter-start-date-prop": { "value": 1782864001, "unit": "seconds" },
+                "erp-fiscal-quarter-end-date-prop": { "value": 1790812799, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2026-q4",
+            "universal_id": "erp-fiscal-quarter",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-fiscal-quarter-code-prop": "Q4",
+                "erp-fiscal-quarter-sequence-prop": { "value": 4, "unit": "count" },
+                "erp-fiscal-quarter-start-date-prop": { "value": 1790812800, "unit": "seconds" },
+                "erp-fiscal-quarter-end-date-prop": { "value": 1798761599, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2026 PERIODS (Q1: P01-P03) — Closed (past months) ===",
+            "id": "erp-fy2026-p01",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P01",
+                "erp-fiscal-period-name-prop": { "en": "January" },
+                "erp-fiscal-period-sequence-prop": { "value": 1, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1767225600, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1769903999, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Closed",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2026-p02",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P02",
+                "erp-fiscal-period-name-prop": { "en": "February" },
+                "erp-fiscal-period-sequence-prop": { "value": 2, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1769904000, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1772323199, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Closed",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2026-p03",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P03",
+                "erp-fiscal-period-name-prop": { "en": "March" },
+                "erp-fiscal-period-sequence-prop": { "value": 3, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1772323200, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1775001599, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Open",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2026 PERIODS (Q2: P04-P06) — Open (current/future) ===",
+            "id": "erp-fy2026-p04",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P04",
+                "erp-fiscal-period-name-prop": { "en": "April" },
+                "erp-fiscal-period-sequence-prop": { "value": 4, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1775001600, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1777593599, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Open",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2026-p05",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P05",
+                "erp-fiscal-period-name-prop": { "en": "May" },
+                "erp-fiscal-period-sequence-prop": { "value": 5, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1777593600, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1780271999, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Open",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2026-p06",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P06",
+                "erp-fiscal-period-name-prop": { "en": "June" },
+                "erp-fiscal-period-sequence-prop": { "value": 6, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1780272000, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1782863999, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Open",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2026 PERIODS (Q3: P07-P09) — Open (future) ===",
+            "id": "erp-fy2026-p07",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P07",
+                "erp-fiscal-period-name-prop": { "en": "July" },
+                "erp-fiscal-period-sequence-prop": { "value": 7, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1782864000, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1785542399, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Open",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2026-p08",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P08",
+                "erp-fiscal-period-name-prop": { "en": "August" },
+                "erp-fiscal-period-sequence-prop": { "value": 8, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1785542400, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1788220799, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Open",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2026-p09",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P09",
+                "erp-fiscal-period-name-prop": { "en": "September" },
+                "erp-fiscal-period-sequence-prop": { "value": 9, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1788220800, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1790812799, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Open",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2026 PERIODS (Q4: P10-P12, P13 adjustment) — Open (future) ===",
+            "id": "erp-fy2026-p10",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P10",
+                "erp-fiscal-period-name-prop": { "en": "October" },
+                "erp-fiscal-period-sequence-prop": { "value": 10, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1790812800, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1793491199, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Open",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2026-p11",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P11",
+                "erp-fiscal-period-name-prop": { "en": "November" },
+                "erp-fiscal-period-sequence-prop": { "value": 11, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1793491200, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1796083199, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Open",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2026-p12",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P12",
+                "erp-fiscal-period-name-prop": { "en": "December" },
+                "erp-fiscal-period-sequence-prop": { "value": 12, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1796083200, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1798761599, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Open",
+                "erp-fiscal-period-is-adjustment-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fy2026-p13",
+            "universal_id": "erp-fiscal-period",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-fiscal-period-code-prop": "P13",
+                "erp-fiscal-period-name-prop": { "en": "Adjustment" },
+                "erp-fiscal-period-sequence-prop": { "value": 13, "unit": "count" },
+                "erp-fiscal-period-start-date-prop": { "value": 1796083200, "unit": "seconds" },
+                "erp-fiscal-period-end-date-prop": { "value": 1798761599, "unit": "seconds" },
+                "erp-fiscal-period-status-prop": "Open",
+                "erp-fiscal-period-is-adjustment-prop": true
+            },
+            "use_seed": true
+        }
+    ],
+
+    "relator_instances": [
+        {
+            "_comment": "=== FY2025: Year -> Quarter composition relators ===",
+            "id": "rel-fy2025-q1",
+            "relator_id": "erp-year-has-quarter-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025",
+                "component": "erp-fy2025-q1"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2025-q2",
+            "relator_id": "erp-year-has-quarter-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025",
+                "component": "erp-fy2025-q2"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2025-q3",
+            "relator_id": "erp-year-has-quarter-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025",
+                "component": "erp-fy2025-q3"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2025-q4",
+            "relator_id": "erp-year-has-quarter-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025",
+                "component": "erp-fy2025-q4"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2025 Q1: Quarter -> Period composition relators ===",
+            "id": "rel-fy2025-q1-p01",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025-q1",
+                "component": "erp-fy2025-p01"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2025-q1-p02",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025-q1",
+                "component": "erp-fy2025-p02"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2025-q1-p03",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025-q1",
+                "component": "erp-fy2025-p03"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2025 Q2: Quarter -> Period ===",
+            "id": "rel-fy2025-q2-p04",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025-q2",
+                "component": "erp-fy2025-p04"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2025-q2-p05",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025-q2",
+                "component": "erp-fy2025-p05"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2025-q2-p06",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025-q2",
+                "component": "erp-fy2025-p06"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2025 Q3: Quarter -> Period ===",
+            "id": "rel-fy2025-q3-p07",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025-q3",
+                "component": "erp-fy2025-p07"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2025-q3-p08",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025-q3",
+                "component": "erp-fy2025-p08"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2025-q3-p09",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025-q3",
+                "component": "erp-fy2025-p09"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2025 Q4: Quarter -> Period (P10-P12 + P13 adjustment) ===",
+            "id": "rel-fy2025-q4-p10",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025-q4",
+                "component": "erp-fy2025-p10"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2025-q4-p11",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025-q4",
+                "component": "erp-fy2025-p11"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2025-q4-p12",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025-q4",
+                "component": "erp-fy2025-p12"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2025-q4-p13",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2025-q4",
+                "component": "erp-fy2025-p13"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2026: Year -> Quarter composition relators ===",
+            "id": "rel-fy2026-q1",
+            "relator_id": "erp-year-has-quarter-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026",
+                "component": "erp-fy2026-q1"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2026-q2",
+            "relator_id": "erp-year-has-quarter-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026",
+                "component": "erp-fy2026-q2"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2026-q3",
+            "relator_id": "erp-year-has-quarter-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026",
+                "component": "erp-fy2026-q3"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2026-q4",
+            "relator_id": "erp-year-has-quarter-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026",
+                "component": "erp-fy2026-q4"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2026 Q1: Quarter -> Period ===",
+            "id": "rel-fy2026-q1-p01",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026-q1",
+                "component": "erp-fy2026-p01"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2026-q1-p02",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026-q1",
+                "component": "erp-fy2026-p02"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2026-q1-p03",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026-q1",
+                "component": "erp-fy2026-p03"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2026 Q2: Quarter -> Period ===",
+            "id": "rel-fy2026-q2-p04",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026-q2",
+                "component": "erp-fy2026-p04"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2026-q2-p05",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026-q2",
+                "component": "erp-fy2026-p05"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2026-q2-p06",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026-q2",
+                "component": "erp-fy2026-p06"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2026 Q3: Quarter -> Period ===",
+            "id": "rel-fy2026-q3-p07",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026-q3",
+                "component": "erp-fy2026-p07"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2026-q3-p08",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026-q3",
+                "component": "erp-fy2026-p08"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2026-q3-p09",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026-q3",
+                "component": "erp-fy2026-p09"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FY2026 Q4: Quarter -> Period (P10-P12 + P13 adjustment) ===",
+            "id": "rel-fy2026-q4-p10",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026-q4",
+                "component": "erp-fy2026-p10"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2026-q4-p11",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026-q4",
+                "component": "erp-fy2026-p11"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2026-q4-p12",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026-q4",
+                "component": "erp-fy2026-p12"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "rel-fy2026-q4-p13",
+            "relator_id": "erp-quarter-has-period-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "composite": "erp-fy2026-q4",
+                "component": "erp-fy2026-p13"
+            },
+            "use_seed": true
+        }
+    ]
+}

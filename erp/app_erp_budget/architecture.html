@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Budgeting — Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 2rem; color: #1a1a2e; background: #f8f9fa; line-height: 1.6; }
+        h1 { color: #16213e; border-bottom: 3px solid #0f3460; padding-bottom: 0.5rem; }
+        h2 { color: #0f3460; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.3rem; margin-top: 2rem; }
+        h3 { color: #533483; }
+        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #0f3460; color: white; }
+        tr:nth-child(even) { background: #f2f2f2; }
+        .mermaid { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 1rem 0; }
+        .decision-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .layer-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
+        .layer-0 { background: #d4edda; color: #155724; }
+        .layer-1 { background: #cce5ff; color: #004085; }
+        .layer-2 { background: #f8d7da; color: #721c24; }
+        code { background: #e9ecef; padding: 2px 6px; border-radius: 3px; font-size: 0.9rem; }
+        .info-box { background: #e8f4fd; border-left: 4px solid #2196F3; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .warn-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .toc { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 1rem 0; }
+        .toc ul { list-style: none; padding-left: 1rem; }
+        .toc > ul { padding-left: 0; }
+        .toc a { text-decoration: none; color: #0f3460; }
+        .toc a:hover { text-decoration: underline; }
+        .formula { background: #f0f0f0; padding: 0.5rem 1rem; border-radius: 4px; font-family: monospace; margin: 0.5rem 0; display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <h1>ERP Budgeting <span class="layer-badge layer-1">Layer 1</span></h1>
+
+    <p>Budget allocation, tracking, and approval workflow. Manages budgets with line-level financial tracking (allocated / committed / spent), reactive computations (remaining / variance / utilization), version snapshots, and inter-line transfers. Includes a 3-stage approval process using the Process as Universal pattern.</p>
+
+    <div class="toc">
+        <strong>Contents</strong>
+        <ul>
+            <li><a href="#overview">1. Overview</a></li>
+            <li><a href="#dependencies">2. Layer Dependencies</a></li>
+            <li><a href="#universal-map">3. Universal Map</a></li>
+            <li><a href="#process">4. Process Architecture</a></li>
+            <li><a href="#composition">5. Composition Structure</a></li>
+            <li><a href="#relators">6. Relator Map</a></li>
+            <li><a href="#computations">7. Computation Flow</a></li>
+            <li><a href="#instances">8. Instance Diagram</a></li>
+            <li><a href="#properties">9. Property Catalog</a></li>
+            <li><a href="#events">10. Events</a></li>
+            <li><a href="#artifacts">11. Artifacts</a></li>
+            <li><a href="#decisions">12. Design Decisions</a></li>
+            <li><a href="#layer-info">13. Layer Information</a></li>
+        </ul>
+    </div>
+
+    <!-- ================================================================== -->
+    <h2 id="overview">1. Overview</h2>
+
+    <p>Budgeting is a <strong>Layer 1 composite domain</strong> that allocates measurable value to organizational scopes for fiscal periods. A budget is ontologically an <em>allocation of resources under authority for a defined scope and period</em>. It is a <strong>planning artifact</strong> -- it describes intended resource allocation, not actual resource consumption.</p>
+
+    <p>The analytical backbone consists of six measures. The first three are user-supplied inputs; the latter three are reactive computations that fire automatically when inputs change:</p>
+
+    <table>
+        <tr><th>Measure</th><th>Kind</th><th>Formula</th></tr>
+        <tr><td>Allocated</td><td>Input</td><td>User-entered planned amount</td></tr>
+        <tr><td>Committed</td><td>Input</td><td>POs and contracts (fed from Layer 2)</td></tr>
+        <tr><td>Spent</td><td>Input</td><td>Actual expenditure (fed from Layer 2)</td></tr>
+        <tr><td>Remaining</td><td>Computed</td><td><span class="formula">allocated - committed - spent</span></td></tr>
+        <tr><td>Variance</td><td>Computed</td><td><span class="formula">allocated - spent</span></td></tr>
+        <tr><td>Utilization %</td><td>Computed</td><td><span class="formula">(spent / allocated) * 100</span></td></tr>
+    </table>
+
+    <div class="info-box">
+        <strong>Temporal Nature:</strong> Budget headers, lines, and versions are <strong>Endurant</strong> -- institutional objects that persist through time. The perdurants are the <strong>processes and events</strong> acting on budgets: the approval workflow (<code>erp-budget-approval</code>), budget transfers (<code>erp-budget-transfer</code>), and events like <code>erp-budget-approved-event</code>.
+    </div>
+
+    <!-- ================================================================== -->
+    <h2 id="dependencies">2. Layer Dependencies</h2>
+
+    <p>Budgeting sits at Layer 1 and depends on three independent Layer 0 blocks. All three must exist for a budget to be complete: an allocation without a scope is unattributable, without a classification is unclassifiable, and without a period is unbounded.</p>
+
+    <div class="mermaid">
+graph TB
+    subgraph Layer0["Layer 0 — Foundational Blocks"]
+        ORG["Org Structure<br/><i>erp-org-unit</i><br/>(department, BU, cost center)"]
+        GL["Chart of Accounts<br/><i>erp-gl-account</i><br/>(financial classification)"]
+        FC["Fiscal Calendar<br/><i>erp-fiscal-period</i><br/>(temporal binding)"]
+        PM["Party Master<br/><i>erp-party</i><br/>(budget owner)"]
+    end
+
+    subgraph Layer1["Layer 1 — Budgeting"]
+        BU["Budget<br/><i>erp-budget</i>"]
+        BL["Budget Line<br/><i>erp-budget-line</i>"]
+    end
+
+    subgraph Layer2["Layer 2 — Consuming Domains (Future)"]
+        AP["AP / Procurement<br/>(commitment tracking)"]
+        AC["Accounting Core<br/>(actuals / journal entries)"]
+        OKR["OKR / Goals<br/>(KR progress)"]
+    end
+
+    ORG -- "scope<br/><i>erp-budget-scope-rel</i>" --> BU
+    GL -- "classification<br/><i>erp-budgetline-account-rel</i>" --> BL
+    FC -- "period<br/><i>erp-budget-period-rel</i>" --> BU
+    PM -- "owner<br/><i>erp-budget-owner-rel</i>" --> BU
+
+    BL -- "committed updates" -.-> AP
+    BL -- "spent updates" -.-> AC
+    BU -- "utilization metrics" -.-> OKR
+
+    style Layer0 fill:#d4edda,stroke:#155724
+    style Layer1 fill:#cce5ff,stroke:#004085
+    style Layer2 fill:#f8d7da,stroke:#721c24
+    </div>
+
+    <table>
+        <tr><th>Layer 0 Block</th><th>What Budget References</th><th>Relator</th></tr>
+        <tr><td>Org Structure</td><td><code>erp-org-unit</code> (department, BU, cost center)</td><td><code>erp-budget-scope-rel</code> (attribution)</td></tr>
+        <tr><td>Chart of Accounts</td><td><code>erp-gl-account</code></td><td><code>erp-budgetline-account-rel</code> (attribution)</td></tr>
+        <tr><td>Fiscal Calendar</td><td><code>erp-fiscal-period</code></td><td><code>erp-budget-period-rel</code> (attribution)</td></tr>
+        <tr><td>Party Master</td><td><code>erp-party</code></td><td><code>erp-budget-owner-rel</code> (role-assignment)</td></tr>
+    </table>
+
+    <div class="warn-box">
+        <strong>Cross-layer relators</strong> to <code>erp-org-unit</code>, <code>erp-gl-account</code>, <code>erp-fiscal-period</code>, and <code>erp-party</code> are <strong>NOT</strong> included in the metadata files because those universals are defined in separate Layer 0 apps. They would be established at deployment time when all blocks coexist.
+    </div>
+
+    <!-- ================================================================== -->
+    <h2 id="universal-map">3. Universal Map</h2>
+
+    <p>The complete set of universals in the Budgeting domain, organized by category.</p>
+
+    <div class="mermaid">
+classDiagram
+    class `erp-budget` {
+        &lt;&lt;Kind / Endurant&gt;&gt;
+        Budget Name : Textual
+        Total Amount : Measurement (computed)
+        Status : Categorical
+        Approved Date : Measurement
+        Notes : Textual
+    }
+
+    class `erp-budget-line` {
+        &lt;&lt;Kind / Endurant&gt;&gt;
+        Description : Textual
+        Allocated : Measurement (input)
+        Committed : Measurement (input)
+        Spent : Measurement (input)
+        Remaining : Measurement (computed)
+        Variance : Measurement (computed)
+        Utilization : Measurement (computed)
+    }
+
+    class `erp-budget-version` {
+        &lt;&lt;Kind / Endurant&gt;&gt;
+        Version Code : Categorical
+        Version Date : Measurement
+        Is Active : Boolean
+    }
+
+    class `erp-budget-version-line` {
+        &lt;&lt;Kind / Endurant&gt;&gt;
+        Description : Textual
+        Allocated : Measurement (immutable)
+        Committed : Measurement (immutable)
+        Spent : Measurement (immutable)
+        GL Account : Categorical
+    }
+
+    class `erp-budget-transfer` {
+        &lt;&lt;Kind / Perdurant&gt;&gt;
+        Transfer Amount : Measurement
+        Transfer Date : Measurement
+        Reason : Textual
+        Transfer Status : Categorical
+    }
+
+    class `erp-budget-status` {
+        &lt;&lt;Enum / Kind&gt;&gt;
+        Draft
+        Submitted
+        Approved
+        Frozen
+        Closed
+        Rejected
+    }
+
+    class `erp-budget-type` {
+        &lt;&lt;Enum / Kind&gt;&gt;
+        Operating
+        Capital
+        Project
+        Department
+    }
+
+    class `erp-budget-approval` {
+        &lt;&lt;Process / Perdurant&gt;&gt;
+        specializes base-process
+    }
+
+    class `erp-budget-dept-review-stage` {
+        &lt;&lt;Stage / Perdurant&gt;&gt;
+    }
+    class `erp-budget-finance-review-stage` {
+        &lt;&lt;Stage / Perdurant&gt;&gt;
+    }
+    class `erp-budget-exec-approval-stage` {
+        &lt;&lt;Stage / Perdurant&gt;&gt;
+    }
+
+    class `erp-fr-budget-dept-manager` {
+        &lt;&lt;FunctionalRole&gt;&gt;
+    }
+    class `erp-fr-budget-finance-director` {
+        &lt;&lt;FunctionalRole&gt;&gt;
+    }
+    class `erp-fr-budget-cfo` {
+        &lt;&lt;FunctionalRole&gt;&gt;
+    }
+
+    `erp-budget` *-- `erp-budget-line` : composition
+    `erp-budget` o-- `erp-budget-version` : aggregation
+    `erp-budget-version` *-- `erp-budget-version-line` : composition
+    `erp-budget` -- `erp-budget-status` : attribution
+    `erp-budget` -- `erp-budget-type` : attribution
+    `erp-budget-transfer` -- `erp-budget-line` : association
+
+    `erp-budget-approval` *-- `erp-budget-dept-review-stage` : stage 1
+    `erp-budget-approval` *-- `erp-budget-finance-review-stage` : stage 2
+    `erp-budget-approval` *-- `erp-budget-exec-approval-stage` : stage 3
+    `erp-budget-approval` -- `erp-budget` : subject
+    </div>
+
+    <table>
+        <tr><th>Universal</th><th>Temporal</th><th>Category</th><th>Purpose</th></tr>
+        <tr><td><code>erp-budget</code></td><td>Endurant</td><td>Kind</td><td>Budget allocation header for a scope and period</td></tr>
+        <tr><td><code>erp-budget-line</code></td><td>Endurant</td><td>Kind</td><td>Atomic allocation unit with financial tracking</td></tr>
+        <tr><td><code>erp-budget-version</code></td><td>Endurant</td><td>Kind</td><td>Immutable snapshot of budget line-state</td></tr>
+        <tr><td><code>erp-budget-version-line</code></td><td>Endurant</td><td>Kind</td><td>Frozen record of a single line's financial state</td></tr>
+        <tr><td><code>erp-budget-transfer</code></td><td>Perdurant</td><td>Kind</td><td>Reallocation of funds between budget lines</td></tr>
+        <tr><td><code>erp-budget-status</code></td><td>Endurant</td><td>Kind (Enum)</td><td>Draft, Submitted, Approved, Frozen, Closed, Rejected</td></tr>
+        <tr><td><code>erp-budget-type</code></td><td>Endurant</td><td>Kind (Enum)</td><td>Operating, Capital, Project, Department</td></tr>
+        <tr><td><code>erp-budget-analytics-summary</code></td><td>Endurant</td><td>Kind</td><td>Materialized artifact output universal</td></tr>
+        <tr><td><code>erp-budget-approval</code></td><td>Perdurant</td><td>Kind</td><td>3-stage budget approval process</td></tr>
+        <tr><td><code>erp-budget-dept-review-stage</code></td><td>Perdurant</td><td>Kind</td><td>Stage 1: department manager review</td></tr>
+        <tr><td><code>erp-budget-finance-review-stage</code></td><td>Perdurant</td><td>Kind</td><td>Stage 2: finance director compliance review</td></tr>
+        <tr><td><code>erp-budget-exec-approval-stage</code></td><td>Perdurant</td><td>Kind</td><td>Stage 3: CFO final approval</td></tr>
+        <tr><td><code>erp-fr-budget-dept-manager</code></td><td>Endurant</td><td>FunctionalRole</td><td>Department manager authority</td></tr>
+        <tr><td><code>erp-fr-budget-finance-director</code></td><td>Endurant</td><td>FunctionalRole</td><td>Finance director authority</td></tr>
+        <tr><td><code>erp-fr-budget-cfo</code></td><td>Endurant</td><td>FunctionalRole</td><td>CFO final approval authority</td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <h2 id="process">4. Process Architecture</h2>
+
+    <p>The budget approval workflow follows the <strong>Process as Universal</strong> pattern (Tier 2 -- stages with obligations assigned to FunctionalRoles). The ProcessEngine derives capabilities from composition depth.</p>
+
+    <h3>4.1 Process Composition Hierarchy</h3>
+
+    <div class="mermaid">
+graph TB
+    PROC["erp-budget-approval<br/><i>specializes base-process</i><br/>3-Stage Budget Approval"]
+
+    S1["erp-budget-dept-review-stage<br/><i>specializes base-stage</i><br/>Stage 1: Department Review"]
+    S2["erp-budget-finance-review-stage<br/><i>specializes base-stage</i><br/>Stage 2: Finance Review"]
+    S3["erp-budget-exec-approval-stage<br/><i>specializes base-stage</i><br/>Stage 3: Executive Approval"]
+
+    O1["erp-budget-dept-review-obligation<br/><i>specializes base-obligation</i>"]
+    O2["erp-budget-finance-review-obligation<br/><i>specializes base-obligation</i>"]
+    O3["erp-budget-exec-approval-obligation<br/><i>specializes base-obligation</i>"]
+
+    FR1["erp-fr-budget-dept-manager<br/><i>FunctionalRole</i>"]
+    FR2["erp-fr-budget-finance-director<br/><i>FunctionalRole</i>"]
+    FR3["erp-fr-budget-cfo<br/><i>FunctionalRole</i>"]
+
+    PROC -- "composition" --> S1
+    PROC -- "composition" --> S2
+    PROC -- "composition" --> S3
+    PROC -. "association" .-> BU["erp-budget<br/>(subject)"]
+
+    S1 -- "composition" --> O1
+    S2 -- "composition" --> O2
+    S3 -- "composition" --> O3
+
+    O1 -. "association" .-> FR1
+    O2 -. "association" .-> FR2
+    O3 -. "association" .-> FR3
+
+    style PROC fill:#e1bee7,stroke:#8e24aa
+    style S1 fill:#bbdefb,stroke:#1565c0
+    style S2 fill:#bbdefb,stroke:#1565c0
+    style S3 fill:#bbdefb,stroke:#1565c0
+    style O1 fill:#ffe0b2,stroke:#e65100
+    style O2 fill:#ffe0b2,stroke:#e65100
+    style O3 fill:#ffe0b2,stroke:#e65100
+    style FR1 fill:#c8e6c9,stroke:#2e7d32
+    style FR2 fill:#c8e6c9,stroke:#2e7d32
+    style FR3 fill:#c8e6c9,stroke:#2e7d32
+    </div>
+
+    <h3>4.2 State Transitions</h3>
+
+    <div class="mermaid">
+stateDiagram-v2
+    [*] --> Draft : Budget created
+    Draft --> Submitted : Submit for review
+
+    state "Approval Process" as AP {
+        Submitted --> DeptReview : Stage 1 begins
+        DeptReview --> FinanceReview : Dept Manager approves
+        FinanceReview --> ExecApproval : Finance Director approves
+        ExecApproval --> Approved : CFO approves
+    }
+
+    DeptReview --> Rejected : Dept Manager rejects
+    FinanceReview --> Rejected : Finance Director rejects
+    ExecApproval --> Rejected : CFO rejects
+    Rejected --> Draft : Revise and resubmit
+
+    Approved --> Frozen : Period close or manual freeze
+    Frozen --> Closed : Fiscal period ends
+    Closed --> [*]
+    </div>
+
+    <h3>4.3 Process Lifecycle and Budget Status Mapping</h3>
+
+    <table>
+        <tr><th>Process State</th><th>Budget Status</th><th>Trigger</th></tr>
+        <tr><td>Not started</td><td>Draft</td><td>Budget created, lines being defined</td></tr>
+        <tr><td>Stage 1 in progress</td><td>Submitted</td><td>Budget submitted for review</td></tr>
+        <tr><td>Stage 2 in progress</td><td>Submitted</td><td>Passed department review</td></tr>
+        <tr><td>Stage 3 in progress</td><td>Submitted</td><td>Passed finance review</td></tr>
+        <tr><td>Completed (all approved)</td><td>Approved</td><td>Final approval granted</td></tr>
+        <tr><td>Rejected at any stage</td><td>Rejected</td><td>Any reviewer rejects</td></tr>
+        <tr><td>Post-approval</td><td>Frozen</td><td>Period close or manual freeze</td></tr>
+        <tr><td>Period ended</td><td>Closed</td><td>Fiscal period closed</td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <h2 id="composition">5. Composition Structure</h2>
+
+    <p>Structural ownership relationships within the Budgeting domain. Composition means the child does not exist independently; aggregation means the child has independent historical significance.</p>
+
+    <div class="mermaid">
+graph TB
+    B["erp-budget<br/><i>Budget Header</i>"]
+
+    BL1["erp-budget-line<br/>Line 1"]
+    BL2["erp-budget-line<br/>Line 2"]
+    BL3["erp-budget-line<br/>Line N"]
+
+    BV1["erp-budget-version<br/>V1 (inactive)"]
+    BV2["erp-budget-version<br/>V2 (active)"]
+
+    VL1["erp-budget-version-line<br/>VL 1.1"]
+    VL2["erp-budget-version-line<br/>VL 1.2"]
+
+    B == "composition<br/>erp-budget-has-line-rel" ==> BL1
+    B == "composition<br/>erp-budget-has-line-rel" ==> BL2
+    B == "composition<br/>erp-budget-has-line-rel" ==> BL3
+
+    B -- "aggregation<br/>erp-budget-version-rel" --> BV1
+    B -- "aggregation<br/>erp-budget-version-rel" --> BV2
+
+    BV1 == "composition<br/>erp-version-has-line-rel" ==> VL1
+    BV1 == "composition<br/>erp-version-has-line-rel" ==> VL2
+
+    style B fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style BL1 fill:#e8f5e9,stroke:#2e7d32
+    style BL2 fill:#e8f5e9,stroke:#2e7d32
+    style BL3 fill:#e8f5e9,stroke:#2e7d32
+    style BV1 fill:#fff3e0,stroke:#e65100
+    style BV2 fill:#fff3e0,stroke:#e65100
+    style VL1 fill:#fce4ec,stroke:#c62828
+    style VL2 fill:#fce4ec,stroke:#c62828
+    </div>
+
+    <div class="info-box">
+        <strong>Why aggregation for versions?</strong> Budget versions are historical records. If a budget is restructured or replaced, its version history should survive for audit purposes. A version "belongs to" a budget but has independent historical significance. Version-lines under a version, however, are composition -- they are meaningless without their parent version.
+    </div>
+
+    <!-- ================================================================== -->
+    <h2 id="relators">6. Relator Map</h2>
+
+    <p>All relator universals in the Budgeting domain, showing taxonomy type (which foundational relator they specialize) and the roles they connect.</p>
+
+    <div class="mermaid">
+graph LR
+    subgraph Internal["Internal Relators (Within Budgeting)"]
+        R1["erp-budget-has-line-rel<br/><i>composition</i>"]
+        R2["erp-budget-type-rel<br/><i>attribution</i>"]
+        R3["erp-budget-version-rel<br/><i>aggregation</i>"]
+        R4["erp-version-has-line-rel<br/><i>composition</i>"]
+        R5["erp-transfer-from-rel<br/><i>association</i>"]
+        R6["erp-transfer-to-rel<br/><i>association</i>"]
+    end
+
+    subgraph CrossLayer["Cross-Layer Relators (to Layer 0)"]
+        R7["erp-budget-scope-rel<br/><i>attribution</i>"]
+        R8["erp-budget-period-rel<br/><i>attribution</i>"]
+        R9["erp-budgetline-account-rel<br/><i>attribution</i>"]
+        R10["erp-budget-owner-rel<br/><i>role-assignment</i>"]
+    end
+
+    B["Budget"] --- R1 --- BL["Budget Line"]
+    B --- R2 --- BT["Budget Type"]
+    B --- R3 --- BV["Budget Version"]
+    BV --- R4 --- VL["Version Line"]
+    TX["Transfer"] --- R5 --- BL
+    TX --- R6 --- BL
+
+    B --- R7 --- OU["Org Unit<br/>(Layer 0)"]
+    B --- R8 --- FP["Fiscal Period<br/>(Layer 0)"]
+    BL --- R9 --- GA["GL Account<br/>(Layer 0)"]
+    B --- R10 --- PA["Party<br/>(Layer 0)"]
+
+    style Internal fill:#e8f5e9,stroke:#2e7d32
+    style CrossLayer fill:#fff3e0,stroke:#e65100
+    </div>
+
+    <table>
+        <tr><th>Relator ID</th><th>Taxonomy Type</th><th>Role 1</th><th>Role 2</th><th>Purpose</th></tr>
+        <tr><td><code>erp-budget-has-line-rel</code></td><td>composition-relator</td><td>composite: erp-budget</td><td>component: erp-budget-line</td><td>Budget contains budget lines; lines cannot exist independently</td></tr>
+        <tr><td><code>erp-budget-type-rel</code></td><td>attribution-relator</td><td>budget: erp-budget</td><td>type: erp-budget-type</td><td>Classifies budget as Operating, Capital, Project, or Department</td></tr>
+        <tr><td><code>erp-budget-version-rel</code></td><td>aggregation-relator</td><td>budget: erp-budget</td><td>version: erp-budget-version</td><td>Budget has historical version snapshots</td></tr>
+        <tr><td><code>erp-version-has-line-rel</code></td><td>composition-relator</td><td>composite: erp-budget-version</td><td>component: erp-budget-version-line</td><td>Version contains immutable version-line snapshots</td></tr>
+        <tr><td><code>erp-transfer-from-rel</code></td><td>association-relator</td><td>transfer: erp-budget-transfer</td><td>source_line: erp-budget-line</td><td>Transfer draws funds from this line</td></tr>
+        <tr><td><code>erp-transfer-to-rel</code></td><td>association-relator</td><td>transfer: erp-budget-transfer</td><td>target_line: erp-budget-line</td><td>Transfer deposits funds to this line</td></tr>
+    </table>
+
+    <h3>Process Composition Relators</h3>
+
+    <table>
+        <tr><th>Relator ID</th><th>Taxonomy Type</th><th>Role 1</th><th>Role 2</th></tr>
+        <tr><td><code>erp-budget-approval-has-dept-review</code></td><td>composition-relator</td><td>process: erp-budget-approval</td><td>stage: erp-budget-dept-review-stage</td></tr>
+        <tr><td><code>erp-budget-approval-has-finance-review</code></td><td>composition-relator</td><td>process: erp-budget-approval</td><td>stage: erp-budget-finance-review-stage</td></tr>
+        <tr><td><code>erp-budget-approval-has-exec-approval</code></td><td>composition-relator</td><td>process: erp-budget-approval</td><td>stage: erp-budget-exec-approval-stage</td></tr>
+        <tr><td><code>erp-budget-dept-review-has-obligation</code></td><td>composition-relator</td><td>stage: erp-budget-dept-review-stage</td><td>obligation: erp-budget-dept-review-obligation</td></tr>
+        <tr><td><code>erp-budget-finance-review-has-obligation</code></td><td>composition-relator</td><td>stage: erp-budget-finance-review-stage</td><td>obligation: erp-budget-finance-review-obligation</td></tr>
+        <tr><td><code>erp-budget-exec-approval-has-obligation</code></td><td>composition-relator</td><td>stage: erp-budget-exec-approval-stage</td><td>obligation: erp-budget-exec-approval-obligation</td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <h2 id="computations">7. Computation Flow</h2>
+
+    <p>All four computations are reactive and metadata-driven. They fire automatically when input properties change, cascading through the dependency graph.</p>
+
+    <h3>7.1 Computation Definitions</h3>
+
+    <table>
+        <tr><th>Computation</th><th>Inputs</th><th>Formula</th><th>Output</th><th>Triggers</th></tr>
+        <tr>
+            <td><code>erp-budgetline-remaining-calc</code></td>
+            <td>allocated, committed, spent</td>
+            <td><span class="formula">a - c - s</span></td>
+            <td><code>erp-budgetline-remaining-prop</code></td>
+            <td>PropertyChange on any of the 3 inputs</td>
+        </tr>
+        <tr>
+            <td><code>erp-budgetline-variance-calc</code></td>
+            <td>allocated, spent</td>
+            <td><span class="formula">a - s</span></td>
+            <td><code>erp-budgetline-variance-prop</code></td>
+            <td>PropertyChange on allocated or spent</td>
+        </tr>
+        <tr>
+            <td><code>erp-budgetline-utilization-calc</code></td>
+            <td>allocated, spent</td>
+            <td><span class="formula">if a &gt; 0 { (s/a)*100 } else { 0 }</span></td>
+            <td><code>erp-budgetline-utilization-prop</code></td>
+            <td>PropertyChange on allocated or spent</td>
+        </tr>
+        <tr>
+            <td><code>erp-budget-total-calc</code></td>
+            <td>role_aggregate: Sum of line allocations</td>
+            <td><span class="formula">lines_allocated</span></td>
+            <td><code>erp-budget-total-amount-prop</code></td>
+            <td>PropertyChange on any line allocated, RelatorLifecycle (Created/Deleted) on <code>erp-budget-has-line-rel</code></td>
+        </tr>
+    </table>
+
+    <h3>7.2 Cascade Sequence</h3>
+
+    <div class="mermaid">
+sequenceDiagram
+    participant User
+    participant BudgetLine as Budget Line
+    participant RemainingCalc as Remaining Calc
+    participant VarianceCalc as Variance Calc
+    participant UtilCalc as Utilization Calc
+    participant TotalCalc as Budget Total Calc
+    participant Budget as Budget Header
+
+    User->>BudgetLine: Update spent = $62,000
+
+    Note over BudgetLine: PropertyChange on spent-prop fires 3 triggers
+
+    par Line-level computations
+        BudgetLine->>RemainingCalc: allocated=$150k, committed=$45k, spent=$62k
+        RemainingCalc->>BudgetLine: remaining = $43,000
+    and
+        BudgetLine->>VarianceCalc: allocated=$150k, spent=$62k
+        VarianceCalc->>BudgetLine: variance = $88,000
+    and
+        BudgetLine->>UtilCalc: allocated=$150k, spent=$62k
+        UtilCalc->>BudgetLine: utilization = 41.33%
+    end
+
+    Note over BudgetLine: PropertyChange on allocated-prop triggers parent aggregation
+
+    BudgetLine->>TotalCalc: Sum all line allocations via erp-budget-has-line-rel
+    TotalCalc->>Budget: total_amount = sum(all lines)
+    </div>
+
+    <h3>7.3 Transfer Cascade</h3>
+
+    <p>When a budget transfer is approved, the system updates the source line's allocated amount (decrease) and the target line's allocated amount (increase). This triggers the full computation cascade on both lines and their parent budget:</p>
+
+    <div class="mermaid">
+sequenceDiagram
+    participant Transfer as Budget Transfer
+    participant SourceLine as Source Line (Software)
+    participant TargetLine as Target Line (Cloud)
+    participant Cascade as Computation Cascade
+    participant Budget as Budget Header
+
+    Transfer->>Transfer: Status = Approved
+
+    Transfer->>SourceLine: Decrease allocated by $20,000
+    Transfer->>TargetLine: Increase allocated by $20,000
+
+    par Source line cascade
+        SourceLine->>Cascade: remaining, variance, utilization recalculated
+    and Target line cascade
+        TargetLine->>Cascade: remaining, variance, utilization recalculated
+    end
+
+    Cascade->>Budget: Budget total recomputed (sum unchanged for intra-budget transfers)
+    </div>
+
+    <!-- ================================================================== -->
+    <h2 id="instances">8. Instance Diagram</h2>
+
+    <p>Sample data from <code>metadata_app_data.json</code> showing two budgets, their lines, versions, and a transfer.</p>
+
+    <div class="mermaid">
+graph TB
+    subgraph EngBudget["Engineering Q3 2026 Operating (Approved)"]
+        EB["erp-budget-eng-q3-2026<br/><b>Engineering Q3 2026 Operating</b><br/>Status: Approved"]
+
+        EL1["erp-budgetline-eng-cloud<br/>Cloud Infrastructure<br/>A: $150k / C: $45k / S: $62k"]
+        EL2["erp-budgetline-eng-software<br/>Software Licensing<br/>A: $80k / C: $25k / S: $55k"]
+        EL3["erp-budgetline-eng-contractors<br/>Contractor Staffing<br/>A: $200k / C: $120k / S: $95k"]
+        EL4["erp-budgetline-eng-training<br/>Training &amp; Development<br/>A: $30k / C: $5k / S: $12k"]
+
+        EB -- "has-line" --> EL1
+        EB -- "has-line" --> EL2
+        EB -- "has-line" --> EL3
+        EB -- "has-line" --> EL4
+    end
+
+    subgraph Versions["Version History"]
+        V1["erp-version-eng-q3-v1<br/>V1 (inactive)<br/>Date: 2024-06-01"]
+        V2["erp-version-eng-q3-v2<br/>V2 (active)<br/>Date: 2024-06-30"]
+
+        VL1["Cloud Infra snapshot<br/>A: $130k / C: $20k / S: $30k"]
+        VL2["Software Lic snapshot<br/>A: $70k / C: $10k / S: $25k"]
+
+        V1 -- "has-vline" --> VL1
+        V1 -- "has-vline" --> VL2
+    end
+
+    EB -- "version" --> V1
+    EB -- "version" --> V2
+
+    subgraph MktBudget["Marketing Q3 2026 Operating (Draft)"]
+        MB["erp-budget-mkt-q3-2026<br/><b>Marketing Q3 2026 Operating</b><br/>Status: Draft"]
+
+        ML1["erp-budgetline-mkt-digital<br/>Digital Advertising<br/>A: $120k / C: $0 / S: $0"]
+        ML2["erp-budgetline-mkt-events<br/>Events &amp; Conferences<br/>A: $75k / C: $0 / S: $0"]
+        ML3["erp-budgetline-mkt-content<br/>Content Production<br/>A: $45k / C: $0 / S: $0"]
+
+        MB -- "has-line" --> ML1
+        MB -- "has-line" --> ML2
+        MB -- "has-line" --> ML3
+    end
+
+    subgraph Transfer["Transfer"]
+        TX["erp-transfer-eng-sw-to-cloud<br/><b>$20,000 Transfer</b><br/>Status: Approved<br/>Reason: Cloud scaling"]
+    end
+
+    TX -- "from" --> EL2
+    TX -- "to" --> EL1
+
+    subgraph Enums["Enumerations"]
+        OP["Operating"]
+    end
+
+    EB -- "type" --> OP
+    MB -- "type" --> OP
+
+    style EB fill:#c8e6c9,stroke:#2e7d32
+    style MB fill:#fff9c4,stroke:#f9a825
+    style TX fill:#ffccbc,stroke:#d84315
+    </div>
+
+    <!-- ================================================================== -->
+    <h2 id="properties">9. Property Catalog</h2>
+
+    <h3>erp-budget (Budget Header)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Label Participation</th><th>Notes</th></tr>
+        <tr><td><code>erp-budget-name-prop</code></td><td>Budget Name</td><td>Textual</td><td>--</td><td>seq 1</td><td>Human-readable name</td></tr>
+        <tr><td><code>erp-budget-total-amount-prop</code></td><td>Total Amount</td><td>Measurement</td><td>std-currency</td><td>--</td><td>Computed: sum of line allocations</td></tr>
+        <tr><td><code>erp-budget-approved-date-prop</code></td><td>Approved Date</td><td>Measurement</td><td>std-timestamp</td><td>--</td><td>Null until approval</td></tr>
+        <tr><td><code>erp-budget-status-prop</code></td><td>Status</td><td>Categorical</td><td>ref: erp-budget-status</td><td>seq 2</td><td>Lifecycle state</td></tr>
+        <tr><td><code>erp-budget-notes-prop</code></td><td>Notes</td><td>Textual</td><td>--</td><td>--</td><td>Free-text commentary</td></tr>
+    </table>
+
+    <h3>erp-budget-line (Budget Line)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Label Participation</th><th>Notes</th></tr>
+        <tr><td><code>erp-budgetline-description-prop</code></td><td>Description</td><td>Textual</td><td>--</td><td>seq 1</td><td>Human-readable description</td></tr>
+        <tr><td><code>erp-budgetline-allocated-prop</code></td><td>Allocated</td><td>Measurement</td><td>std-currency</td><td>--</td><td>Planned allocation (input)</td></tr>
+        <tr><td><code>erp-budgetline-committed-prop</code></td><td>Committed</td><td>Measurement</td><td>std-currency</td><td>--</td><td>PO/contract amount (input)</td></tr>
+        <tr><td><code>erp-budgetline-spent-prop</code></td><td>Spent</td><td>Measurement</td><td>std-currency</td><td>--</td><td>Actual expenditure (input)</td></tr>
+        <tr><td><code>erp-budgetline-remaining-prop</code></td><td>Remaining</td><td>Measurement</td><td>std-currency</td><td>--</td><td>Computed: allocated - committed - spent</td></tr>
+        <tr><td><code>erp-budgetline-variance-prop</code></td><td>Variance</td><td>Measurement</td><td>std-currency</td><td>--</td><td>Computed: allocated - spent</td></tr>
+        <tr><td><code>erp-budgetline-utilization-prop</code></td><td>Utilization %</td><td>Measurement</td><td>std-ratio</td><td>--</td><td>Computed: (spent / allocated) * 100</td></tr>
+    </table>
+
+    <h3>erp-budget-version (Budget Version)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Label Participation</th><th>Notes</th></tr>
+        <tr><td><code>erp-version-code-prop</code></td><td>Version Code</td><td>Categorical</td><td>--</td><td>seq 1</td><td>V1, V2, ORIGINAL, REVISED, etc.</td></tr>
+        <tr><td><code>erp-version-date-prop</code></td><td>Version Date</td><td>Measurement</td><td>std-timestamp</td><td>--</td><td>When version was created</td></tr>
+        <tr><td><code>erp-version-is-active-prop</code></td><td>Is Active</td><td>Boolean</td><td>--</td><td>--</td><td>Only one active version per budget</td></tr>
+    </table>
+
+    <h3>erp-budget-version-line (Version Line -- Immutable Snapshot)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Label Participation</th><th>Notes</th></tr>
+        <tr><td><code>erp-versionline-description-prop</code></td><td>Description</td><td>Textual</td><td>--</td><td>seq 1</td><td>Copied from source line at snapshot time</td></tr>
+        <tr><td><code>erp-versionline-allocated-prop</code></td><td>Allocated</td><td>Measurement</td><td>std-currency</td><td>--</td><td>Frozen allocated amount</td></tr>
+        <tr><td><code>erp-versionline-committed-prop</code></td><td>Committed</td><td>Measurement</td><td>std-currency</td><td>--</td><td>Frozen committed amount</td></tr>
+        <tr><td><code>erp-versionline-spent-prop</code></td><td>Spent</td><td>Measurement</td><td>std-currency</td><td>--</td><td>Frozen spent amount</td></tr>
+        <tr><td><code>erp-versionline-gl-account-ref-prop</code></td><td>GL Account</td><td>Categorical</td><td>--</td><td>--</td><td>Denormalized GL account reference</td></tr>
+    </table>
+
+    <h3>erp-budget-transfer (Budget Transfer)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Label Participation</th><th>Notes</th></tr>
+        <tr><td><code>erp-transfer-amount-prop</code></td><td>Transfer Amount</td><td>Measurement</td><td>std-currency</td><td>seq 1 (prefix: $)</td><td>Amount being reallocated</td></tr>
+        <tr><td><code>erp-transfer-date-prop</code></td><td>Transfer Date</td><td>Measurement</td><td>std-timestamp</td><td>--</td><td>Execution/request date</td></tr>
+        <tr><td><code>erp-transfer-reason-prop</code></td><td>Reason</td><td>Textual</td><td>--</td><td>seq 2</td><td>Justification for reallocation</td></tr>
+        <tr><td><code>erp-transfer-status-prop</code></td><td>Transfer Status</td><td>Categorical</td><td>--</td><td>--</td><td>Pending, Approved, Rejected</td></tr>
+    </table>
+
+    <h3>erp-budget-analytics-summary (Artifact Output)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Role</th></tr>
+        <tr><td><code>erp-bu-artifact-dept-prop</code></td><td>Department</td><td>Categorical</td><td>--</td><td>Dimension (label seq 1)</td></tr>
+        <tr><td><code>erp-bu-artifact-acct-type-prop</code></td><td>Account Type</td><td>Categorical</td><td>--</td><td>Dimension</td></tr>
+        <tr><td><code>erp-bv-artifact-period-prop</code></td><td>Fiscal Period</td><td>Categorical</td><td>--</td><td>Dimension</td></tr>
+        <tr><td><code>erp-bu-artifact-allocated-prop</code></td><td>Total Allocated</td><td>Measurement</td><td>std-currency</td><td>Measure</td></tr>
+        <tr><td><code>erp-bu-artifact-spent-prop</code></td><td>Total Spent</td><td>Measurement</td><td>std-currency</td><td>Measure</td></tr>
+        <tr><td><code>erp-bu-artifact-remaining-prop</code></td><td>Total Remaining</td><td>Measurement</td><td>std-currency</td><td>Measure</td></tr>
+        <tr><td><code>erp-bu-artifact-utilization-prop</code></td><td>Avg Utilization %</td><td>Measurement</td><td>std-ratio</td><td>Measure</td></tr>
+        <tr><td><code>erp-bv-artifact-variance-prop</code></td><td>Total Variance</td><td>Measurement</td><td>std-currency</td><td>Measure</td></tr>
+        <tr><td><code>erp-bu-artifact-alert-state-prop</code></td><td>Alert State</td><td>Categorical</td><td>--</td><td>Threshold state</td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <h2 id="events">10. Events</h2>
+
+    <table>
+        <tr><th>Event ID</th><th>Label</th><th>Scope</th><th>Trigger</th><th>Payload Fields</th></tr>
+        <tr>
+            <td><code>erp-budget-approved-event</code></td>
+            <td>Budget Approved</td>
+            <td>tenant</td>
+            <td>Process completion (all stages approved)</td>
+            <td>budget_id (uuid), budget_name (string), total_amount (measurement), approved_by (uuid), approved_date (measurement)</td>
+        </tr>
+        <tr>
+            <td><code>erp-budget-overspend-event</code></td>
+            <td>Budget Overspend Alert</td>
+            <td>tenant</td>
+            <td>Artifact threshold breach (utilization &gt; 90%)</td>
+            <td>artifact_instance_id (uuid), measure_value (measurement)</td>
+        </tr>
+        <tr>
+            <td><code>erp-budget-transfer-event</code></td>
+            <td>Budget Transfer Approved</td>
+            <td>tenant</td>
+            <td>Transfer status transitions to Approved</td>
+            <td>transfer_id (uuid), source_line_id (uuid), target_line_id (uuid), amount (measurement), reason (string)</td>
+        </tr>
+    </table>
+
+    <h3>Event Flow</h3>
+
+    <div class="mermaid">
+sequenceDiagram
+    participant PE as ProcessEngine
+    participant Budget as Budget Instance
+    participant EB as EventBus
+    participant EF as EventForwarder
+    participant Broker as Broker Topics
+    participant Analytics as Analytics Module
+
+    PE->>Budget: Final stage approved, set status=Approved
+    Budget->>EB: PropertyChange (status-prop)
+    EB->>EF: Forward event
+    EF->>Broker: Publish erp-budget-approved-event
+
+    Note over Analytics: Analytics module subscribes to erp-budget-approved-event
+
+    Broker->>Analytics: Deliver event
+    Analytics->>Analytics: Refresh artifact aggregation
+
+    Note over Analytics: If utilization > 90%
+    Analytics->>Broker: Publish erp-budget-overspend-event
+    </div>
+
+    <!-- ================================================================== -->
+    <h2 id="artifacts">11. Artifacts</h2>
+
+    <h3>Artifact 1: Budget Utilization by Department</h3>
+
+    <table>
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>ID</td><td><code>erp-budget-utilization-by-dept-artifact</code></td></tr>
+        <tr><td>Source Universal</td><td><code>erp-budget-line</code></td></tr>
+        <tr><td>Output Universal</td><td><code>erp-budget-analytics-summary</code></td></tr>
+        <tr><td>Materialization</td><td>Eager</td></tr>
+    </table>
+
+    <table>
+        <tr><th>Type</th><th>Code</th><th>Source Property</th><th>Function</th><th>Artifact Property</th></tr>
+        <tr><td>Dimension</td><td>department</td><td><code>erp-budgetline-description-prop</code></td><td>--</td><td><code>erp-bu-artifact-dept-prop</code></td></tr>
+        <tr><td>Measure</td><td>total_allocated</td><td><code>erp-budgetline-allocated-prop</code></td><td>Sum</td><td><code>erp-bu-artifact-allocated-prop</code></td></tr>
+        <tr><td>Measure</td><td>total_spent</td><td><code>erp-budgetline-spent-prop</code></td><td>Sum</td><td><code>erp-bu-artifact-spent-prop</code></td></tr>
+        <tr><td>Measure</td><td>total_remaining</td><td><code>erp-budgetline-remaining-prop</code></td><td>Sum</td><td><code>erp-bu-artifact-remaining-prop</code></td></tr>
+        <tr><td>Measure</td><td>avg_utilization</td><td><code>erp-budgetline-utilization-prop</code></td><td>Avg</td><td><code>erp-bu-artifact-utilization-prop</code></td></tr>
+        <tr><td>Threshold</td><td>overspend_alert</td><td>avg_utilization &gt; 90.0</td><td>--</td><td>Emits <code>erp-budget-overspend-event</code></td></tr>
+    </table>
+
+    <p><strong>Analytical questions:</strong> Which departments are overspending? Which GL account types consume the most budget? Where are transfers needed?</p>
+
+    <h3>Artifact 2: Budget Variance by Fiscal Period</h3>
+
+    <table>
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>ID</td><td><code>erp-budget-variance-by-period-artifact</code></td></tr>
+        <tr><td>Source Universal</td><td><code>erp-budget-line</code></td></tr>
+        <tr><td>Output Universal</td><td><code>erp-budget-analytics-summary</code></td></tr>
+        <tr><td>Materialization</td><td>Eager</td></tr>
+    </table>
+
+    <table>
+        <tr><th>Type</th><th>Code</th><th>Source Property</th><th>Function</th><th>Artifact Property</th></tr>
+        <tr><td>Dimension</td><td>fiscal_period</td><td><code>erp-budgetline-description-prop</code></td><td>--</td><td><code>erp-bv-artifact-period-prop</code></td></tr>
+        <tr><td>Measure</td><td>total_allocated</td><td><code>erp-budgetline-allocated-prop</code></td><td>Sum</td><td><code>erp-bu-artifact-allocated-prop</code></td></tr>
+        <tr><td>Measure</td><td>total_spent</td><td><code>erp-budgetline-spent-prop</code></td><td>Sum</td><td><code>erp-bu-artifact-spent-prop</code></td></tr>
+        <tr><td>Measure</td><td>total_variance</td><td><code>erp-budgetline-variance-prop</code></td><td>Sum</td><td><code>erp-bv-artifact-variance-prop</code></td></tr>
+    </table>
+
+    <p><strong>Analytical questions:</strong> How does allocation change across periods? Which periods show the largest variance? Is there a seasonal pattern? Are estimates improving over time?</p>
+
+    <!-- ================================================================== -->
+    <h2 id="decisions">12. Design Decisions</h2>
+
+    <div class="decision-box">
+        <h3>Budget scope limited to existing org-unit specializations</h3>
+        <p>Budget scope is limited to organizational units that exist in the Org Structure hierarchy (department, business unit, team, cost center). <strong>Project and program budgets</strong> would require either defining <code>erp-project</code> as an additional <code>erp-org-unit</code> specialization, or adding a separate scope relator from a future Project Management block. The current ontology supports organizational budgets only.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Budget as Layer 1 (depends on Org, GL, Fiscal Calendar)</h3>
+        <p>Budgeting is a composite domain that cannot exist without all three Layer 0 blocks. An allocation without a scope is unattributable, without a classification is unclassifiable, and without a period is unbounded. The cross-layer relators are declared conceptually but <strong>not included in metadata files</strong> since the target universals live in separate apps.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Process-as-Universal pattern for budget approval</h3>
+        <p>The 3-stage approval workflow (<code>erp-budget-approval</code>) uses the Process as Universal pattern at <strong>Tier 2</strong> (stages with obligations assigned to FunctionalRoles). The ProcessEngine derives capabilities from composition depth -- no hardcoded workflow logic. Each stage specializes <code>base-stage</code>, each obligation specializes <code>base-obligation</code>, and the process itself specializes <code>base-process</code>.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>FunctionalRole universals for role-based authority</h3>
+        <p>Three FunctionalRole universals (<code>erp-fr-budget-dept-manager</code>, <code>erp-fr-budget-finance-director</code>, <code>erp-fr-budget-cfo</code>) define the authority boundaries. These are universals with <code>meta_category: "FunctionalRole"</code>, not instances. They are referenced by obligations via association taxonomy entries.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Budget versioning (draft, submitted, approved)</h3>
+        <p>Budget versions use <strong>aggregation</strong> (not composition) because versions have independent historical significance and must survive budget restructuring. Only one version is active at a time (<code>erp-version-is-active-prop</code>). Version-lines are immutable snapshots created at version time, preserving the exact financial state for audit purposes.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Budget transfer as separate process</h3>
+        <p>Transfers are tracked as first-class <code>erp-budget-transfer</code> entities (Perdurant) with their own status lifecycle (Pending, Approved, Rejected). This enables audit trails, authorization rules, and downstream event notification. For organizations requiring formal approval, a separate Tier 1 process universal can be defined.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Composition vs attribution for relators</h3>
+        <ul>
+            <li><strong>Composition</strong> for budget lines: lines have no independent identity without their budget.</li>
+            <li><strong>Attribution</strong> for scope and period: org units and fiscal periods exist independently of any budget.</li>
+            <li><strong>Aggregation</strong> for versions: historical records survive budget restructuring.</li>
+            <li><strong>Association</strong> for transfers: peer-to-peer transaction relationship, not classification.</li>
+        </ul>
+    </div>
+
+    <!-- ================================================================== -->
+    <h2 id="layer-info">13. Layer Information</h2>
+
+    <table>
+        <tr><th>Attribute</th><th>Value</th></tr>
+        <tr><td>Layer</td><td><span class="layer-badge layer-1">Layer 1</span></td></tr>
+        <tr><td>App ID</td><td><code>erp-budget-app</code></td></tr>
+        <tr><td>Dependencies</td><td>3 Layer 0 blocks</td></tr>
+        <tr><td>Dependency 1</td><td><span class="layer-badge layer-0">Layer 0</span> Org Structure (<code>erp-org-unit</code>)</td></tr>
+        <tr><td>Dependency 2</td><td><span class="layer-badge layer-0">Layer 0</span> Chart of Accounts (<code>erp-gl-account</code>)</td></tr>
+        <tr><td>Dependency 3</td><td><span class="layer-badge layer-0">Layer 0</span> Fiscal Calendar (<code>erp-fiscal-period</code>)</td></tr>
+        <tr><td>Cross-block ref</td><td><span class="layer-badge layer-0">Layer 0</span> Party Master (<code>erp-party</code>)</td></tr>
+        <tr><td>Consumed by</td><td><span class="layer-badge layer-2">Layer 2</span> AP/Procurement, Accounting Core, OKR/Goals</td></tr>
+        <tr><td>Domain Universals</td><td>7 (Budget, Budget Line, Version, Version Line, Transfer, Status enum, Type enum)</td></tr>
+        <tr><td>Process Universals</td><td>7 (1 process + 3 stages + 3 obligations)</td></tr>
+        <tr><td>FunctionalRoles</td><td>3 (Dept Manager, Finance Director, CFO)</td></tr>
+        <tr><td>Relators</td><td>6 internal + 6 process composition</td></tr>
+        <tr><td>Computations</td><td>4 reactive (remaining, variance, utilization, total)</td></tr>
+        <tr><td>Events</td><td>3 (approved, overspend alert, transfer approved)</td></tr>
+        <tr><td>Artifacts</td><td>2 (utilization by dept, variance by period)</td></tr>
+        <tr><td>Modules</td><td>3 (Core, Analytics, Process)</td></tr>
+    </table>
+
+    <h3>App Module Event Contracts</h3>
+
+    <table>
+        <tr><th>Module</th><th>Subscribes To</th><th>Publishes</th></tr>
+        <tr><td><code>erp-budget-core-module</code></td><td>(none)</td><td><code>erp-budget-transfer-event</code></td></tr>
+        <tr><td><code>erp-budget-analytics-module</code></td><td><code>erp-budget-approved-event</code></td><td><code>erp-budget-overspend-event</code></td></tr>
+        <tr><td><code>erp-budget-process-module</code></td><td>(none)</td><td><code>erp-budget-approved-event</code></td></tr>
+    </table>
+
+    <h3>File Structure</h3>
+    <pre>
+apps/erp/app_erp_budget/
+    metadata_app.json           # Schema: universals, properties, computations, events, artifacts, app/modules
+    metadata_app_data.json      # Instances: enum values, sample budgets, lines, versions, transfers, relator instances
+    architecture.html           # This document
+    </pre>
+
+    <h3>Analysis Document</h3>
+    <p><code>concepts/analysis/20260309_erp_foundations/analysis_app_budget.md</code></p>
+
+    <script>mermaid.initialize({startOnLoad: true, theme: 'default', securityLevel: 'loose'});</script>
+</body>
+</html>

@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Location Master — Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 2rem; color: #1a1a2e; background: #f8f9fa; line-height: 1.6; }
+        h1 { color: #16213e; border-bottom: 3px solid #0f3460; padding-bottom: 0.5rem; }
+        h2 { color: #0f3460; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.3rem; margin-top: 2rem; }
+        h3 { color: #533483; }
+        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #0f3460; color: white; }
+        tr:nth-child(even) { background: #f2f2f2; }
+        .mermaid { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 1rem 0; }
+        .decision-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .layer-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
+        .layer-0 { background: #d4edda; color: #155724; }
+        code { background: #e9ecef; padding: 2px 6px; border-radius: 3px; font-size: 0.9rem; }
+        .info-box { background: #e8f4fd; border-left: 4px solid #2196F3; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .cross-layer-box { background: #f3e8fd; border-left: 4px solid #9c27b0; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .stat-card { background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+        .stat-card .number { font-size: 2rem; font-weight: bold; color: #0f3460; }
+        .stat-card .label { font-size: 0.85rem; color: #666; }
+    </style>
+</head>
+<body>
+
+    <h1>ERP Location Master <span class="layer-badge layer-0">Layer 0</span></h1>
+
+    <!-- ============================================================ -->
+    <!-- 1. OVERVIEW                                                   -->
+    <!-- ============================================================ -->
+
+    <h2>1. Overview</h2>
+
+    <p>
+        The Location Master defines the physical and logical geography of the enterprise and provides reusable address
+        infrastructure for the entire ERP ontology. It is the single source of truth for all "where" concepts -- from
+        the geographic hierarchy (countries, regions) to operational facilities (sites) to structured postal addresses
+        used by any entity in the system.
+    </p>
+
+    <div class="info-box">
+        <strong>Layer 0 -- Independently Deployable.</strong> The Location Master has no dependencies on other ERP blocks.
+        It can be loaded, validated, and populated before any operational block exists. HR, Supply Chain, Finance, Sales,
+        and Operations all reference Location Master entities.
+    </div>
+
+    <p>The block answers four fundamental questions:</p>
+    <table>
+        <tr><th>Question</th><th>Answered By</th></tr>
+        <tr><td>Where does the organization operate?</td><td>Countries and Regions -- regulatory, tax, and compliance scoping</td></tr>
+        <tr><td>What physical facilities exist?</td><td>Sites -- offices, warehouses, plants, data centers, virtual locations</td></tr>
+        <tr><td>What kind of facility is it?</td><td>Site Type enum -- capacity planning and operational routing</td></tr>
+        <tr><td>Where is a specific entity located?</td><td>Addresses -- structured postal addresses reusable by any entity</td></tr>
+    </table>
+
+    <div class="stat-grid">
+        <div class="stat-card"><div class="number">6</div><div class="label">Universals</div></div>
+        <div class="stat-card"><div class="number">6</div><div class="label">Relators</div></div>
+        <div class="stat-card"><div class="number">24</div><div class="label">Property Definitions</div></div>
+        <div class="stat-card"><div class="number">3</div><div class="label">Artifact Definitions</div></div>
+        <div class="stat-card"><div class="number">3</div><div class="label">Event Definitions</div></div>
+        <div class="stat-card"><div class="number">3</div><div class="label">App Modules</div></div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 2. UNIVERSAL MAP                                              -->
+    <!-- ============================================================ -->
+
+    <h2>2. Universal Map</h2>
+
+    <p>
+        The Location Master defines six universals organized into three groups: geographic hierarchy, operational
+        facilities, and address infrastructure. Three additional universals serve as artifact output targets.
+    </p>
+
+    <div class="mermaid">
+classDiagram
+    class Country {
+        &lt;&lt;Kind / Endurant&gt;&gt;
+        erp-country-iso-code-prop : Categorical
+        erp-country-name-prop : Textual
+        erp-country-currency-code-prop : Categorical
+    }
+
+    class Region {
+        &lt;&lt;Kind / Endurant&gt;&gt;
+        erp-region-code-prop : Categorical
+        erp-region-name-prop : Textual
+        erp-region-is-active-prop : Boolean
+    }
+
+    class Site {
+        &lt;&lt;Kind / Endurant&gt;&gt;
+        erp-site-code-prop : Categorical
+        erp-site-name-prop : Textual
+        erp-site-is-active-prop : Boolean
+        erp-site-capacity-prop : Measurement
+    }
+
+    class SiteType {
+        &lt;&lt;Kind / Enum&gt;&gt;
+        erp-site-type-name-prop : Categorical
+    }
+
+    class Address {
+        &lt;&lt;Kind / Endurant&gt;&gt;
+        erp-addr-line1-prop : Textual
+        erp-addr-line2-prop : Textual
+        erp-addr-city-prop : Textual
+        erp-addr-state-prop : Categorical
+        erp-addr-postal-code-prop : Categorical
+        erp-addr-country-code-prop : Categorical
+        erp-addr-latitude-prop : Measurement
+        erp-addr-longitude-prop : Measurement
+        erp-addr-is-primary-prop : Boolean
+        erp-addr-is-active-prop : Boolean
+        erp-addr-effective-date-prop : Measurement
+    }
+
+    class AddressType {
+        &lt;&lt;Kind / Enum&gt;&gt;
+        erp-address-type-name-prop : Categorical
+    }
+
+    Country "1" o-- "*" Region : aggregation
+    Site "*" --> "1" Region : attribution
+    Site "1" o-- "*" Address : aggregation
+    Site "*" --> "1" SiteType : attribution
+    Address "*" --> "1" AddressType : attribution
+    Address "*" --> "0..1" Region : attribution
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 3. RELATOR MAP                                                -->
+    <!-- ============================================================ -->
+
+    <h2>3. Relator Map</h2>
+
+    <p>
+        Six relators connect the universals. Two use <strong>aggregation</strong> (open diamond) for whole-part
+        relationships where auto-instantiation is inappropriate; four use <strong>attribution</strong> (arrow) for
+        classification and location reference. All relator universals generalize from foundation-level relator types.
+    </p>
+
+    <div class="mermaid">
+graph LR
+    subgraph Geographic Hierarchy
+        C[erp-country]
+        R[erp-region]
+    end
+
+    subgraph Operational Facilities
+        S[erp-site]
+        ST[erp-site-type]
+    end
+
+    subgraph Address Infrastructure
+        A[erp-address]
+        AT[erp-address-type]
+    end
+
+    C -- "erp-country-has-region-rel\n(aggregation-relator)\naggregate / part" --> R
+    S -- "erp-site-has-address-rel\n(aggregation-relator)\naggregate / part" --> A
+    S -. "erp-site-region-rel\n(attribution-relator)\nsite / region" .-> R
+    S -. "erp-site-type-rel\n(attribution-relator)\nsite / type" .-> ST
+    A -. "erp-address-type-rel\n(attribution-relator)\naddress / address_type" .-> AT
+    A -. "erp-address-region-rel\n(attribution-relator, optional)\naddress / region" .-> R
+
+    style C fill:#d4edda,stroke:#155724,color:#155724
+    style R fill:#d4edda,stroke:#155724,color:#155724
+    style S fill:#cce5ff,stroke:#004085,color:#004085
+    style ST fill:#fff3cd,stroke:#856404,color:#856404
+    style A fill:#e2d5f1,stroke:#533483,color:#533483
+    style AT fill:#fff3cd,stroke:#856404,color:#856404
+    </div>
+
+    <table>
+        <tr><th>Relator ID</th><th>Taxonomy</th><th>Role 1</th><th>Role 2</th><th>Cardinality</th><th>Notes</th></tr>
+        <tr>
+            <td><code>erp-country-has-region-rel</code></td>
+            <td>aggregation-relator</td>
+            <td>aggregate: erp-country</td>
+            <td>part: erp-region</td>
+            <td>1:N</td>
+            <td>Regions are reference data that vary by deployment. No auto-instantiation.</td>
+        </tr>
+        <tr>
+            <td><code>erp-site-has-address-rel</code></td>
+            <td>aggregation-relator</td>
+            <td>aggregate: erp-site</td>
+            <td>part: erp-address</td>
+            <td>1:N</td>
+            <td>Addresses require authored content. Created explicitly, not auto-instantiated.</td>
+        </tr>
+        <tr>
+            <td><code>erp-site-region-rel</code></td>
+            <td>attribution-relator</td>
+            <td>site: erp-site</td>
+            <td>region: erp-region</td>
+            <td>N:1</td>
+            <td>Site located in a region. Independent lifecycles.</td>
+        </tr>
+        <tr>
+            <td><code>erp-site-type-rel</code></td>
+            <td>attribution-relator</td>
+            <td>site: erp-site</td>
+            <td>type: erp-site-type</td>
+            <td>N:1</td>
+            <td>Every site has exactly one type classification.</td>
+        </tr>
+        <tr>
+            <td><code>erp-address-type-rel</code></td>
+            <td>attribution-relator</td>
+            <td>address: erp-address</td>
+            <td>address_type: erp-address-type</td>
+            <td>N:1</td>
+            <td>Every address has exactly one purpose type.</td>
+        </tr>
+        <tr>
+            <td><code>erp-address-region-rel</code></td>
+            <td>attribution-relator</td>
+            <td>address: erp-address</td>
+            <td>region: erp-region</td>
+            <td>N:0..1</td>
+            <td>Optional. Not all addresses map to the enterprise region hierarchy.</td>
+        </tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- 4. INSTANCE DIAGRAM                                           -->
+    <!-- ============================================================ -->
+
+    <h2>4. Instance Diagram (Sample Data)</h2>
+
+    <p>
+        The sample dataset contains 5 countries, 15 regions (3 per country), 10 sites, 10 addresses,
+        7 site type enums, and 8 address type enums -- connected by approximately 55 relator instances.
+    </p>
+
+    <h3>4a. Countries and Regions</h3>
+
+    <div class="mermaid">
+graph TD
+    subgraph United States
+        US["US - United States\nCurrency: USD"]
+        US_CA["US-CA - California"]
+        US_TX["US-TX - Texas"]
+        US_NY["US-NY - New York"]
+        US -->|aggregation| US_CA
+        US -->|aggregation| US_TX
+        US -->|aggregation| US_NY
+    end
+
+    subgraph United Kingdom
+        GB["GB - United Kingdom\nCurrency: GBP"]
+        GB_ENG["GB-ENG - England"]
+        GB_SCT["GB-SCT - Scotland"]
+        GB_WLS["GB-WLS - Wales\n(inactive)"]
+        GB -->|aggregation| GB_ENG
+        GB -->|aggregation| GB_SCT
+        GB -->|aggregation| GB_WLS
+    end
+
+    subgraph Germany
+        DE["DE - Germany\nCurrency: EUR"]
+        DE_BY["DE-BY - Bavaria"]
+        DE_BE["DE-BE - Berlin"]
+        DE_NW["DE-NW - North Rhine-Westphalia"]
+        DE -->|aggregation| DE_BY
+        DE -->|aggregation| DE_BE
+        DE -->|aggregation| DE_NW
+    end
+
+    subgraph Japan
+        JP["JP - Japan\nCurrency: JPY"]
+        JP_13["JP-13 - Tokyo"]
+        JP_27["JP-27 - Osaka"]
+        JP_23["JP-23 - Aichi\n(inactive)"]
+        JP -->|aggregation| JP_13
+        JP -->|aggregation| JP_27
+        JP -->|aggregation| JP_23
+    end
+
+    subgraph Brazil
+        BR["BR - Brazil\nCurrency: BRL"]
+        BR_SP["BR-SP - Sao Paulo"]
+        BR_RJ["BR-RJ - Rio de Janeiro"]
+        BR_MG["BR-MG - Minas Gerais"]
+        BR -->|aggregation| BR_SP
+        BR -->|aggregation| BR_RJ
+        BR -->|aggregation| BR_MG
+    end
+
+    style US fill:#dbeafe,stroke:#2563eb
+    style GB fill:#dbeafe,stroke:#2563eb
+    style DE fill:#dbeafe,stroke:#2563eb
+    style JP fill:#dbeafe,stroke:#2563eb
+    style BR fill:#dbeafe,stroke:#2563eb
+    style GB_WLS fill:#fecaca,stroke:#dc2626
+    style JP_23 fill:#fecaca,stroke:#dc2626
+    </div>
+
+    <h3>4b. Sites with Regions, Types, and Addresses</h3>
+
+    <div class="mermaid">
+graph LR
+    subgraph Sites
+        S1["SF-HQ-001\nSan Francisco HQ\ncap: 500"]
+        S2["ATX-WH-001\nAustin Warehouse\ncap: 25000"]
+        S3["NYC-OF-001\nNew York Sales\ncap: 120"]
+        S4["LDN-OF-001\nLondon Regional\ncap: 200"]
+        S5["MUC-PL-001\nMunich Plant\ncap: 1500"]
+        S6["TYO-OF-001\nTokyo Office\ncap: 80"]
+        S7["GRU-DC-001\nSao Paulo DC\ncap: 8000"]
+        S8["BER-DC-001\nBerlin Data Center\ncap: 5000"]
+        S9["VRT-001\nGlobal Remote\ncap: 350"]
+        S10["EDI-OF-001\nEdinburgh (Closed)\ncap: 50"]
+    end
+
+    subgraph Types
+        T_OFF[Office]
+        T_WH[Warehouse]
+        T_PL[Plant]
+        T_DC[Distribution Center]
+        T_DAT[Data Center]
+        T_VRT[Virtual]
+    end
+
+    S1 -.->|type| T_OFF
+    S2 -.->|type| T_WH
+    S3 -.->|type| T_OFF
+    S4 -.->|type| T_OFF
+    S5 -.->|type| T_PL
+    S6 -.->|type| T_OFF
+    S7 -.->|type| T_DC
+    S8 -.->|type| T_DAT
+    S9 -.->|type| T_VRT
+    S10 -.->|type| T_OFF
+
+    subgraph Regions
+        R_CA[US-CA]
+        R_TX[US-TX]
+        R_NY[US-NY]
+        R_ENG[GB-ENG]
+        R_BY[DE-BY]
+        R_BE[DE-BE]
+        R_13[JP-13]
+        R_SP[BR-SP]
+        R_SCT[GB-SCT]
+    end
+
+    S1 -->|region| R_CA
+    S2 -->|region| R_TX
+    S3 -->|region| R_NY
+    S4 -->|region| R_ENG
+    S5 -->|region| R_BY
+    S6 -->|region| R_13
+    S7 -->|region| R_SP
+    S8 -->|region| R_BE
+    S9 -->|region| R_CA
+    S10 -->|region| R_SCT
+
+    style S10 fill:#fecaca,stroke:#dc2626
+    style T_OFF fill:#fff3cd,stroke:#856404
+    style T_WH fill:#fff3cd,stroke:#856404
+    style T_PL fill:#fff3cd,stroke:#856404
+    style T_DC fill:#fff3cd,stroke:#856404
+    style T_DAT fill:#fff3cd,stroke:#856404
+    style T_VRT fill:#fff3cd,stroke:#856404
+    </div>
+
+    <h3>4c. Sites to Addresses (Aggregation)</h3>
+
+    <div class="mermaid">
+graph LR
+    S1["SF HQ"] -->|aggregation| A1["101 Market St, SF\nType: Work"]
+    S1 -->|aggregation| A10["PO Box 77234, SF\nType: Mailing"]
+    S2["Austin WH"] -->|aggregation| A2["4500 E Ben White, Austin\nType: Shipping"]
+    S3["NYC Office"] -->|aggregation| A3["350 Fifth Ave, NYC\nType: Work"]
+    S4["London Office"] -->|aggregation| A4["30 St Mary Axe, London\nType: Work"]
+    S5["Munich Plant"] -->|aggregation| A5["Industriestrasse 42, Munich\nType: Work"]
+    S6["Tokyo Office"] -->|aggregation| A6["1-7-1 Nishi-Shinjuku, Tokyo\nType: Work"]
+    S7["Sao Paulo DC"] -->|aggregation| A7["Rod. Pres. Dutra, Guarulhos\nType: Shipping"]
+    S8["Berlin DC"] -->|aggregation| A8["Am Borsigturm 40, Berlin\nType: Work"]
+    S10["Edinburgh Old"] -->|aggregation| A9["1 Princes St, Edinburgh\nType: Work"]
+
+    style S1 fill:#cce5ff,stroke:#004085
+    style S2 fill:#cce5ff,stroke:#004085
+    style S3 fill:#cce5ff,stroke:#004085
+    style S4 fill:#cce5ff,stroke:#004085
+    style S5 fill:#cce5ff,stroke:#004085
+    style S6 fill:#cce5ff,stroke:#004085
+    style S7 fill:#cce5ff,stroke:#004085
+    style S8 fill:#cce5ff,stroke:#004085
+    style S10 fill:#fecaca,stroke:#dc2626
+    style A9 fill:#fecaca,stroke:#dc2626
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 5. PROPERTY CATALOG                                           -->
+    <!-- ============================================================ -->
+
+    <h2>5. Property Catalog</h2>
+
+    <h3>erp-country (3 properties)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Card.</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-country-iso-code-prop</code></td><td>ISO Code</td><td>Categorical</td><td>--</td><td>1..1</td><td>participates, seq 1</td></tr>
+        <tr><td><code>erp-country-name-prop</code></td><td>Country Name</td><td>Textual</td><td>--</td><td>1..1</td><td>participates, seq 2</td></tr>
+        <tr><td><code>erp-country-currency-code-prop</code></td><td>Currency Code</td><td>Categorical</td><td>--</td><td>1..1</td><td>--</td></tr>
+    </table>
+    <p><em>Label example: </em><code>US - United States</code></p>
+
+    <h3>erp-region (3 properties)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Card.</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-region-code-prop</code></td><td>Region Code</td><td>Categorical</td><td>--</td><td>1..1</td><td>participates, seq 1</td></tr>
+        <tr><td><code>erp-region-name-prop</code></td><td>Region Name</td><td>Textual</td><td>--</td><td>1..1</td><td>participates, seq 2</td></tr>
+        <tr><td><code>erp-region-is-active-prop</code></td><td>Is Active</td><td>Boolean</td><td>--</td><td>1..1</td><td>--</td></tr>
+    </table>
+    <p><em>Label example: </em><code>US-CA - California</code></p>
+
+    <h3>erp-site (4 properties)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Card.</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-site-code-prop</code></td><td>Site Code</td><td>Categorical</td><td>--</td><td>1..1</td><td>participates, seq 1</td></tr>
+        <tr><td><code>erp-site-name-prop</code></td><td>Site Name</td><td>Textual</td><td>--</td><td>1..1</td><td>participates, seq 2</td></tr>
+        <tr><td><code>erp-site-is-active-prop</code></td><td>Is Active</td><td>Boolean</td><td>--</td><td>1..1</td><td>--</td></tr>
+        <tr><td><code>erp-site-capacity-prop</code></td><td>Capacity</td><td>Measurement</td><td>std-integer</td><td>0..1</td><td>--</td></tr>
+    </table>
+    <p><em>Label example: </em><code>SF-HQ-001 - San Francisco Headquarters</code></p>
+
+    <h3>erp-address (11 properties)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Card.</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-addr-line1-prop</code></td><td>Address Line 1</td><td>Textual</td><td>--</td><td>1..1</td><td>participates, seq 1</td></tr>
+        <tr><td><code>erp-addr-line2-prop</code></td><td>Address Line 2</td><td>Textual</td><td>--</td><td>0..1</td><td>--</td></tr>
+        <tr><td><code>erp-addr-city-prop</code></td><td>City</td><td>Textual</td><td>--</td><td>1..1</td><td>participates, seq 2</td></tr>
+        <tr><td><code>erp-addr-state-prop</code></td><td>State/Province</td><td>Categorical</td><td>--</td><td>0..1</td><td>--</td></tr>
+        <tr><td><code>erp-addr-postal-code-prop</code></td><td>Postal Code</td><td>Categorical</td><td>--</td><td>0..1</td><td>--</td></tr>
+        <tr><td><code>erp-addr-country-code-prop</code></td><td>Country Code</td><td>Categorical</td><td>--</td><td>0..1</td><td>--</td></tr>
+        <tr><td><code>erp-addr-latitude-prop</code></td><td>Latitude</td><td>Measurement</td><td>std-float</td><td>0..1</td><td>--</td></tr>
+        <tr><td><code>erp-addr-longitude-prop</code></td><td>Longitude</td><td>Measurement</td><td>std-float</td><td>0..1</td><td>--</td></tr>
+        <tr><td><code>erp-addr-is-primary-prop</code></td><td>Is Primary</td><td>Boolean</td><td>--</td><td>0..1</td><td>--</td></tr>
+        <tr><td><code>erp-addr-is-active-prop</code></td><td>Is Active</td><td>Boolean</td><td>--</td><td>0..1</td><td>--</td></tr>
+        <tr><td><code>erp-addr-effective-date-prop</code></td><td>Effective Date</td><td>Measurement</td><td>std-timestamp</td><td>0..1</td><td>--</td></tr>
+    </table>
+    <p><em>Label example: </em><code>101 Market Street, San Francisco</code></p>
+
+    <h3>erp-site-type (Enum -- 1 property)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Card.</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-site-type-name-prop</code></td><td>Site Type Name</td><td>Categorical</td><td>1..1</td><td>participates, seq 1</td></tr>
+    </table>
+    <p><strong>Enum values (7):</strong> Office, Warehouse, Plant, Retail, Distribution Center, Data Center, Virtual</p>
+
+    <table>
+        <tr><th>Type</th><th>Purpose</th><th>Typical Capacity Unit</th></tr>
+        <tr><td>Office</td><td>Administrative and knowledge work</td><td>Headcount (desks/seats)</td></tr>
+        <tr><td>Warehouse</td><td>Storage and inventory management</td><td>Pallet positions or sqm</td></tr>
+        <tr><td>Plant</td><td>Manufacturing and production</td><td>Units per day/shift</td></tr>
+        <tr><td>Retail</td><td>Customer-facing retail locations</td><td>Square footage</td></tr>
+        <tr><td>Distribution Center</td><td>Order fulfillment and shipping</td><td>Orders per day</td></tr>
+        <tr><td>Data Center</td><td>IT infrastructure and compute</td><td>Rack units or kW</td></tr>
+        <tr><td>Virtual</td><td>Remote/distributed operations, no physical facility</td><td>Headcount</td></tr>
+    </table>
+
+    <h3>erp-address-type (Enum -- 1 property)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Card.</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-address-type-name-prop</code></td><td>Address Type Name</td><td>Categorical</td><td>1..1</td><td>participates, seq 1</td></tr>
+    </table>
+    <p><strong>Enum values (8):</strong> Home, Work, Billing, Shipping, Legal, Mailing, Registered, Delivery</p>
+
+    <table>
+        <tr><th>Type</th><th>Use Case</th><th>Typical Owner</th></tr>
+        <tr><td>Home</td><td>Personal residential address</td><td>Person, Employee</td></tr>
+        <tr><td>Work</td><td>Office or workplace address</td><td>Person, Employee</td></tr>
+        <tr><td>Billing</td><td>Invoice and payment correspondence</td><td>Party (customer, vendor), Order</td></tr>
+        <tr><td>Shipping</td><td>Physical goods delivery</td><td>Order, Shipment, Customer</td></tr>
+        <tr><td>Legal</td><td>Official registered or legal domicile</td><td>Legal Entity, Organization</td></tr>
+        <tr><td>Mailing</td><td>Postal correspondence</td><td>Party, Person</td></tr>
+        <tr><td>Registered</td><td>Official company registration address</td><td>Corporation, Legal Entity</td></tr>
+        <tr><td>Delivery</td><td>Last-mile delivery point</td><td>Order, Shipment</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- 6. CROSS-LAYER REFERENCES                                     -->
+    <!-- ============================================================ -->
+
+    <h2>6. Cross-Layer References</h2>
+
+    <p>
+        The Location Master is consumed by many blocks across all layers. The connections below are
+        <strong>not implemented in Layer 0</strong> but are documented so higher-layer blocks know how to connect.
+    </p>
+
+    <div class="mermaid">
+graph TB
+    subgraph "Layer 0 -- Location Master"
+        SITE[erp-site]
+        ADDR[erp-address]
+        COUNTRY[erp-country]
+        REGION[erp-region]
+    end
+
+    subgraph "Layer 0 -- Cross-Block"
+        PARTY["Party Master\nerp-party"]
+        ORGUNIT["Org Structure\nOrg Unit"]
+    end
+
+    subgraph "Layer 1"
+        EMP[Employee]
+        TAX["Tax Jurisdiction"]
+        CURRENCY[Currency]
+    end
+
+    subgraph "Layer 2"
+        ORDER[Order]
+        SHIPMENT[Shipment]
+        INV_LOC["Inventory Location"]
+    end
+
+    PARTY -->|"composition\nerp-party-has-address-rel"| ADDR
+    ORGUNIT -->|"association\nlocated at"| SITE
+
+    EMP -->|"attribution\nworks at"| SITE
+    EMP -->|"composition\nhome address"| ADDR
+    TAX -->|"attribution\ngoverned by"| COUNTRY
+    TAX -->|"attribution\nsubject to"| REGION
+    COUNTRY -.->|"scalar lookup\ncurrency_code prop"| CURRENCY
+
+    ORDER -->|"composition\nship to / bill to\n(snapshot)"| ADDR
+    SHIPMENT -->|"composition\ndeliver to\n(snapshot)"| ADDR
+    SITE -->|"composition\ncontains"| INV_LOC
+
+    style SITE fill:#cce5ff,stroke:#004085
+    style ADDR fill:#e2d5f1,stroke:#533483
+    style COUNTRY fill:#d4edda,stroke:#155724
+    style REGION fill:#d4edda,stroke:#155724
+    </div>
+
+    <div class="cross-layer-box">
+        <strong>Cross-Block: Party Master to Address.</strong> The Party Master (also Layer 0) defines
+        <code>erp-party-has-address-rel</code> as a composition relator targeting Location Master's <code>erp-address</code>
+        universal. The relator definition lives in Party Master; the Address universal and its properties are owned
+        by Location Master.
+    </div>
+
+    <div class="cross-layer-box">
+        <strong>Layer 1: Employee to Site.</strong> An employee's primary work location is an attribution relator
+        (<code>works at</code>) to <code>erp-site</code>. Used for tax withholding jurisdiction, travel expense
+        calculations, and facilities planning.
+    </div>
+
+    <div class="cross-layer-box">
+        <strong>Layer 2: Transactional Address Snapshots.</strong> Orders and Shipments compose billing/shipping
+        addresses as <strong>point-in-time snapshots</strong>, not live references. The order's address is immutable
+        after creation -- it records "where was this shipped" regardless of later address changes on the party.
+    </div>
+
+    <h3>Layer 0 Cross-Block</h3>
+    <table>
+        <tr><th>Source</th><th>Target Block</th><th>Relator Type</th><th>Purpose</th></tr>
+        <tr><td>erp-site</td><td>OrgUnit (Org Structure)</td><td>association-relator</td><td>An org unit operates from a site. Multiple org units can share a site.</td></tr>
+        <tr><td>erp-address</td><td>Party (Party Master)</td><td>composition-relator</td><td>A party composes one or more addresses. Defined in Party Master.</td></tr>
+    </table>
+
+    <h3>Layer 1</h3>
+    <table>
+        <tr><th>Source</th><th>Target Block</th><th>Relator Type</th><th>Purpose</th></tr>
+        <tr><td>erp-site</td><td>Employee</td><td>attribution-relator</td><td>"Works at." Primary work location for tax, travel, facilities.</td></tr>
+        <tr><td>erp-address</td><td>Employee</td><td>composition-relator</td><td>"Home address." For payroll tax, benefits, emergency contact.</td></tr>
+        <tr><td>erp-country</td><td>Tax Jurisdiction</td><td>attribution-relator</td><td>Country determines applicable tax regimes (VAT, GST, Sales Tax).</td></tr>
+        <tr><td>erp-region</td><td>Tax Jurisdiction</td><td>attribution-relator</td><td>Region-level tax rules (state income tax, provincial sales tax).</td></tr>
+        <tr><td>erp-country</td><td>Currency</td><td>-- (scalar lookup)</td><td>Country's <code>currency_code</code> property resolves to Currency entity. No relator needed.</td></tr>
+    </table>
+
+    <h3>Layer 2</h3>
+    <table>
+        <tr><th>Source</th><th>Target Block</th><th>Relator Type</th><th>Purpose</th></tr>
+        <tr><td>erp-address</td><td>Order</td><td>composition-relator</td><td>"Ship to / Bill to." Snapshot at order creation time.</td></tr>
+        <tr><td>erp-address</td><td>Shipment</td><td>composition-relator</td><td>"Deliver to." Origin/destination snapshot.</td></tr>
+        <tr><td>erp-site</td><td>Warehouse / Inventory Location</td><td>composition-relator</td><td>"Contains." Inventory locations (bins, zones) inside warehouse sites.</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- 7. DECISION POINTS                                            -->
+    <!-- ============================================================ -->
+
+    <h2>7. Design Decision Points</h2>
+
+    <div class="decision-box">
+        <h3>Aggregation for Country to Region</h3>
+        <p>
+            Regions are subdivisions of a country, but they are <strong>reference data</strong> -- the set of regions
+            for a country varies by deployment, regulatory context, and operational scope. A US-focused deployment may
+            define all 50 states; a global logistics deployment may define only major trading regions. Auto-instantiation
+            would require the ontology to know in advance which regions to create for each country, which is not
+            deterministic. Regions are loaded as reference data alongside their country, linked via aggregation.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Aggregation for Site to Address</h3>
+        <p>
+            Addresses require <strong>authored content</strong> (street, city, postal code) that cannot be meaningfully
+            auto-instantiated. Creating an empty address shell when a site is created adds no value and must be
+            immediately populated or deleted. Addresses are created explicitly with their content and then linked to
+            their owner. Despite using aggregation, address instances are semantically dependent on their owner -- the
+            aggregation choice prioritizes ontological accuracy (addresses are authored, not deterministic) over
+            convenience (no auto-instantiation).
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Country Currency as Scalar Property, Not Relator</h3>
+        <p>
+            <code>erp-country-currency-code-prop</code> stores the country's primary legal tender as an ISO 4217 code
+            string (e.g., <code>USD</code>, <code>EUR</code>). This is intentionally a scalar property rather than a
+            relator to a Currency entity because:
+        </p>
+        <ol>
+            <li><strong>No Currency universal exists at Layer 0.</strong> Currency as a first-class entity (with exchange
+                rates, decimal precision, symbol formatting) is a Layer 1 concept.</li>
+            <li><strong>Avoiding two sources of truth.</strong> If both a scalar property and a cross-layer relator
+                existed for the same fact, they could diverge.</li>
+            <li><strong>Layer 1 lookup is trivial.</strong> When a Currency entity is introduced, it can be looked up by
+                matching the ISO code -- no formal relator is needed.</li>
+        </ol>
+    </div>
+
+    <div class="decision-box">
+        <h3>Site Type as Enum Universal</h3>
+        <p>
+            Site types (Office, Warehouse, Plant, Distribution Center, Data Center, Retail, Virtual) are modeled as
+            instances of the <code>erp-site-type</code> enum universal. This allows the set of types to be extended via
+            metadata (adding new site types does not require code changes) and enables artifact aggregation by type.
+            Each site has exactly one type via the <code>erp-site-type-rel</code> attribution relator.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Address as Reusable Cross-Block Universal</h3>
+        <p>
+            <code>erp-address</code> is a standalone universal in the Location Master rather than embedded in Party Master
+            or duplicated across entities. This enables:
+        </p>
+        <ul>
+            <li><strong>Consistent address structure</strong> across the entire ERP (parties, sites, orders, shipments).</li>
+            <li><strong>Address-level analytics</strong> via artifacts -- geographic distribution of customers, shipping
+                destination heat maps, tax jurisdiction mapping.</li>
+            <li><strong>Address type flexibility</strong> -- the enum covers common ERP use cases without hard-coding
+                address semantics into owning entities.</li>
+            <li><strong>Temporal tracking</strong> -- <code>effective_date</code> and <code>is_active</code> enable
+                address history without complex versioning infrastructure.</li>
+        </ul>
+    </div>
+
+    <div class="decision-box">
+        <h3>No Auto-Instantiation for Regions or Addresses</h3>
+        <p>
+            Neither <code>erp-country-has-region-rel</code> nor <code>erp-site-has-address-rel</code> uses composition,
+            so auto-instantiation does not apply. Regions are reference data loaded per deployment; addresses are authored
+            content created explicitly. The <code>skip_composition</code> flag is therefore not needed for this block.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Coordinates on Address, Not Site</h3>
+        <p>
+            Latitude and longitude are properties of <code>erp-address</code>, not <code>erp-site</code>. A site is a
+            business concept (a facility); an address is a physical location. Sites with multiple addresses (main office
+            entrance vs loading dock) may have different coordinates per address. This also gives party addresses
+            (customer billing, employee home) automatic geolocation without adding coordinates to the Party schema.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Attribution (Not Composition) for Site to Region</h3>
+        <p>
+            Sites have independent business lifecycles -- they can be relocated between regions, exist conceptually before
+            a physical location is determined, or be shared across organizational boundaries. Attribution correctly models
+            this: the site references its region, but the site's existence is not dependent on the region.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>No City Universal</h3>
+        <p>
+            Cities are intentionally omitted as a separate universal. Tax jurisdictions are typically at the region or
+            specific address level, not the city level. A city universal would create a massive reference dataset
+            (millions globally) that adds complexity without proportional value. City information is captured in the
+            address's <code>erp-addr-city-prop</code> property.
+        </p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 8. ARTIFACT DEFINITIONS                                       -->
+    <!-- ============================================================ -->
+
+    <h2>8. Artifact Definitions</h2>
+
+    <p>
+        Three intelligence artifacts aggregate site and address data for geographic footprint analysis,
+        facility lifecycle tracking, and market coverage assessment.
+    </p>
+
+    <h3>8a. Site Distribution by Country</h3>
+    <table>
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>ID</td><td><code>erp-site-distribution-artifact</code></td></tr>
+        <tr><td>Source</td><td><code>erp-site</code></td></tr>
+        <tr><td>Output Universal</td><td><code>erp-site-distribution-summary</code></td></tr>
+        <tr><td>Materialization</td><td>Eager</td></tr>
+        <tr><td>Purpose</td><td>Geographic footprint: site count and total capacity by country and site type. Identifies concentration risk and coverage gaps.</td></tr>
+    </table>
+
+    <table>
+        <tr><th>Dimension</th><th>Source</th><th>Output Property</th></tr>
+        <tr><td>Country</td><td>RelatorPath: erp-site-region-rel (region) &rarr; erp-country-has-region-rel (aggregate) &rarr; erp-country-name-prop</td><td><code>erp-sd-country-dim-prop</code></td></tr>
+        <tr><td>Site Type</td><td>RelatorPath: erp-site-type-rel (type) &rarr; erp-site-type-name-prop</td><td><code>erp-sd-site-type-dim-prop</code></td></tr>
+    </table>
+    <table>
+        <tr><th>Measure</th><th>Function</th><th>Source Property</th><th>Output Property</th></tr>
+        <tr><td>Site Count</td><td>Count</td><td>--</td><td><code>erp-sd-site-count-prop</code></td></tr>
+        <tr><td>Total Capacity</td><td>Sum</td><td><code>erp-site-capacity-prop</code></td><td><code>erp-sd-total-capacity-prop</code></td></tr>
+    </table>
+
+    <div class="mermaid">
+graph LR
+    SRC[erp-site instances] --> D1["Dim 1: Country\n(via region relator path)"]
+    SRC --> D2["Dim 2: Site Type\n(via type relator)"]
+    D1 --> AGG["Aggregation Engine"]
+    D2 --> AGG
+    AGG --> M1["Measure: Count"]
+    AGG --> M2["Measure: Sum(capacity)"]
+    M1 --> OUT[erp-site-distribution-summary instances]
+    M2 --> OUT
+
+    style SRC fill:#cce5ff,stroke:#004085
+    style OUT fill:#d4edda,stroke:#155724
+    </div>
+
+    <h3>8b. Active vs Inactive Sites</h3>
+    <table>
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>ID</td><td><code>erp-site-status-artifact</code></td></tr>
+        <tr><td>Source</td><td><code>erp-site</code></td></tr>
+        <tr><td>Output Universal</td><td><code>erp-site-status-summary</code></td></tr>
+        <tr><td>Materialization</td><td>Eager</td></tr>
+        <tr><td>Purpose</td><td>Facility lifecycle: count of sites by active/inactive status and type. Useful for facilities planning and real estate portfolio management.</td></tr>
+    </table>
+
+    <table>
+        <tr><th>Dimension</th><th>Source</th><th>Output Property</th></tr>
+        <tr><td>Active Status</td><td>Direct property: <code>erp-site-is-active-prop</code> (boolean pivot)</td><td><code>erp-ss-active-status-dim-prop</code></td></tr>
+        <tr><td>Site Type</td><td>RelatorPath: erp-site-type-rel (type) &rarr; erp-site-type-name-prop</td><td><code>erp-ss-site-type-dim-prop</code></td></tr>
+    </table>
+    <table>
+        <tr><th>Measure</th><th>Function</th><th>Output Property</th></tr>
+        <tr><td>Site Count</td><td>Count</td><td><code>erp-ss-site-count-prop</code></td></tr>
+    </table>
+
+    <h3>8c. Address Distribution by Country</h3>
+    <table>
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>ID</td><td><code>erp-address-distribution-artifact</code></td></tr>
+        <tr><td>Source</td><td><code>erp-address</code></td></tr>
+        <tr><td>Output Universal</td><td><code>erp-address-distribution-summary</code></td></tr>
+        <tr><td>Materialization</td><td>Eager</td></tr>
+        <tr><td>Purpose</td><td>Geographic spread of all addressable entities by country and address type. Identifies operational reach and market coverage.</td></tr>
+    </table>
+
+    <table>
+        <tr><th>Dimension</th><th>Source</th><th>Output Property</th></tr>
+        <tr><td>Country Code</td><td>Direct property: <code>erp-addr-country-code-prop</code></td><td><code>erp-ad-country-dim-prop</code></td></tr>
+        <tr><td>Address Type</td><td>RelatorPath: erp-address-type-rel (address_type) &rarr; erp-address-type-name-prop</td><td><code>erp-ad-address-type-dim-prop</code></td></tr>
+    </table>
+    <table>
+        <tr><th>Measure</th><th>Function</th><th>Output Property</th></tr>
+        <tr><td>Address Count</td><td>Count</td><td><code>erp-ad-address-count-prop</code></td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- 9. EVENT DEFINITIONS                                          -->
+    <!-- ============================================================ -->
+
+    <h2>9. Event Definitions</h2>
+
+    <table>
+        <tr><th>Event ID</th><th>Label</th><th>Scope</th><th>Payload</th><th>Published By</th></tr>
+        <tr>
+            <td><code>erp-site-created-event</code></td>
+            <td>Site Created</td>
+            <td>tenant</td>
+            <td>site_id (uuid), site_code (string), site_type (string)</td>
+            <td>Sites Module</td>
+        </tr>
+        <tr>
+            <td><code>erp-site-deactivated-event</code></td>
+            <td>Site Deactivated</td>
+            <td>tenant</td>
+            <td>site_id (uuid), site_code (string)</td>
+            <td>Sites Module</td>
+        </tr>
+        <tr>
+            <td><code>erp-address-created-event</code></td>
+            <td>Address Created</td>
+            <td>tenant</td>
+            <td>address_id (uuid), country_code (string), address_type (string)</td>
+            <td>Addresses Module</td>
+        </tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- 10. APP MODULE STRUCTURE                                      -->
+    <!-- ============================================================ -->
+
+    <h2>10. App Module Structure</h2>
+
+    <div class="mermaid">
+graph TD
+    APP["erp-location-master-app\nERP Location Master"]
+    M1["Geography Module\nerp-location-geography-module"]
+    M2["Sites Module\nerp-location-sites-module"]
+    M3["Addresses Module\nerp-location-addresses-module"]
+
+    APP --> M1
+    APP --> M2
+    APP --> M3
+
+    M2 -->|publishes| E1[erp-site-created-event]
+    M2 -->|publishes| E2[erp-site-deactivated-event]
+    M3 -->|publishes| E3[erp-address-created-event]
+
+    style APP fill:#0f3460,color:white
+    style M1 fill:#cce5ff,stroke:#004085
+    style M2 fill:#cce5ff,stroke:#004085
+    style M3 fill:#cce5ff,stroke:#004085
+    style E1 fill:#fff3cd,stroke:#856404
+    style E2 fill:#fff3cd,stroke:#856404
+    style E3 fill:#fff3cd,stroke:#856404
+    </div>
+
+    <table>
+        <tr><th>Module</th><th>Manages</th><th>Subscribes To</th><th>Publishes</th></tr>
+        <tr><td>Geography Module</td><td>Countries, Regions, geographic hierarchy</td><td>--</td><td>--</td></tr>
+        <tr><td>Sites Module</td><td>Sites, type classification, region attribution</td><td>--</td><td>erp-site-created-event, erp-site-deactivated-event</td></tr>
+        <tr><td>Addresses Module</td><td>Addresses, type classification, geographic linking</td><td>--</td><td>erp-address-created-event</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- 11. LAYER INFORMATION                                         -->
+    <!-- ============================================================ -->
+
+    <h2>11. Layer Information</h2>
+
+    <div class="info-box">
+        <p>
+            <strong>Layer 0 -- Foundation Block.</strong> The Location Master is independently deployable with
+            zero dependencies on other ERP blocks. It provides geographic reference data and reusable address
+            infrastructure consumed by every other layer.
+        </p>
+    </div>
+
+    <div class="mermaid">
+graph BT
+    subgraph "Layer 0 (Foundation)"
+        LOC["Location Master\n(this block)"]
+        PARTY["Party Master"]
+        ORG["Org Structure"]
+    end
+
+    subgraph "Layer 1 (Operational)"
+        HR[HR / Employee]
+        FIN[Finance / Tax]
+    end
+
+    subgraph "Layer 2 (Transactional)"
+        SALES[Sales / Orders]
+        SC[Supply Chain / Shipments]
+    end
+
+    HR -->|"site, address"| LOC
+    FIN -->|"country, region"| LOC
+    SALES -->|"address snapshots"| LOC
+    SC -->|"site, address snapshots"| LOC
+    PARTY -->|"address"| LOC
+    ORG -->|"site"| LOC
+
+    style LOC fill:#d4edda,stroke:#155724,stroke-width:3px
+    style PARTY fill:#d4edda,stroke:#155724
+    style ORG fill:#d4edda,stroke:#155724
+    style HR fill:#cce5ff,stroke:#004085
+    style FIN fill:#cce5ff,stroke:#004085
+    style SALES fill:#e2d5f1,stroke:#533483
+    style SC fill:#e2d5f1,stroke:#533483
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 12. SAMPLE DATA SUMMARY                                       -->
+    <!-- ============================================================ -->
+
+    <h2>12. Sample Data Summary</h2>
+
+    <div class="stat-grid">
+        <div class="stat-card"><div class="number">5</div><div class="label">Countries</div></div>
+        <div class="stat-card"><div class="number">15</div><div class="label">Regions (3/country)</div></div>
+        <div class="stat-card"><div class="number">10</div><div class="label">Sites</div></div>
+        <div class="stat-card"><div class="number">10</div><div class="label">Addresses</div></div>
+        <div class="stat-card"><div class="number">7</div><div class="label">Site Types</div></div>
+        <div class="stat-card"><div class="number">8</div><div class="label">Address Types</div></div>
+    </div>
+
+    <h3>Sites by Country and Type</h3>
+    <table>
+        <tr><th>Site</th><th>Code</th><th>Country</th><th>Region</th><th>Type</th><th>Capacity</th><th>Active</th></tr>
+        <tr><td>San Francisco Headquarters</td><td>SF-HQ-001</td><td>US</td><td>US-CA</td><td>Office</td><td>500</td><td>Yes</td></tr>
+        <tr><td>Austin Distribution Warehouse</td><td>ATX-WH-001</td><td>US</td><td>US-TX</td><td>Warehouse</td><td>25,000</td><td>Yes</td></tr>
+        <tr><td>New York Sales Office</td><td>NYC-OF-001</td><td>US</td><td>US-NY</td><td>Office</td><td>120</td><td>Yes</td></tr>
+        <tr><td>London Regional Office</td><td>LDN-OF-001</td><td>GB</td><td>GB-ENG</td><td>Office</td><td>200</td><td>Yes</td></tr>
+        <tr><td>Munich Manufacturing Plant</td><td>MUC-PL-001</td><td>DE</td><td>DE-BY</td><td>Plant</td><td>1,500</td><td>Yes</td></tr>
+        <tr><td>Tokyo Office</td><td>TYO-OF-001</td><td>JP</td><td>JP-13</td><td>Office</td><td>80</td><td>Yes</td></tr>
+        <tr><td>Sao Paulo Distribution Center</td><td>GRU-DC-001</td><td>BR</td><td>BR-SP</td><td>Distribution Center</td><td>8,000</td><td>Yes</td></tr>
+        <tr><td>Berlin Data Center</td><td>BER-DC-001</td><td>DE</td><td>DE-BE</td><td>Data Center</td><td>5,000</td><td>Yes</td></tr>
+        <tr><td>Global Remote Operations</td><td>VRT-001</td><td>US</td><td>US-CA</td><td>Virtual</td><td>350</td><td>Yes</td></tr>
+        <tr style="background:#fecaca"><td>Edinburgh Office (Closed)</td><td>EDI-OF-001</td><td>GB</td><td>GB-SCT</td><td>Office</td><td>50</td><td>No</td></tr>
+    </table>
+
+    <h3>Relator Instance Counts</h3>
+    <table>
+        <tr><th>Relator</th><th>Count</th><th>Notes</th></tr>
+        <tr><td>erp-country-has-region-rel</td><td>15</td><td>3 regions per country, 5 countries</td></tr>
+        <tr><td>erp-site-has-address-rel</td><td>10</td><td>SF HQ has 2 addresses (work + mailing), others have 1 each</td></tr>
+        <tr><td>erp-site-region-rel</td><td>10</td><td>Every site assigned to a region</td></tr>
+        <tr><td>erp-site-type-rel</td><td>10</td><td>Every site classified by type</td></tr>
+        <tr><td>erp-address-type-rel</td><td>10</td><td>Every address classified by purpose type</td></tr>
+        <tr><td>erp-address-region-rel</td><td>9</td><td>Optional -- Edinburgh old address excluded</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- 13. FILE STRUCTURE                                            -->
+    <!-- ============================================================ -->
+
+    <h2>13. File Structure</h2>
+
+    <pre><code>apps/erp/app_erp_location/
+    metadata_app.json           Schema: universals, properties, relators, events, artifacts, app, modules, role assignments (no users -- see app_erp_base)
+    metadata_app_data.json      Instances: enum values, countries, regions, sites, addresses, relator instances
+    architecture.html           This documentation file</code></pre>
+
+    <script>mermaid.initialize({startOnLoad: true, theme: 'default', securityLevel: 'loose'});</script>
+</body>
+</html>

@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Party Master — Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 2rem; color: #1a1a2e; background: #f8f9fa; line-height: 1.6; }
+        h1 { color: #16213e; border-bottom: 3px solid #0f3460; padding-bottom: 0.5rem; }
+        h2 { color: #0f3460; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.3rem; margin-top: 2rem; }
+        h3 { color: #533483; }
+        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #0f3460; color: white; }
+        tr:nth-child(even) { background: #f2f2f2; }
+        .mermaid { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 1rem 0; }
+        .decision-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .layer-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
+        .layer-0 { background: #d4edda; color: #155724; }
+        code { background: #e9ecef; padding: 2px 6px; border-radius: 3px; font-size: 0.9rem; }
+        .info-box { background: #e8f4fd; border-left: 4px solid #2196F3; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .warn-box { background: #fff8e1; border-left: 4px solid #ff9800; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .file-tree { background: #272822; color: #f8f8f2; padding: 1rem; border-radius: 8px; font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.9rem; margin: 1rem 0; }
+        .file-tree .dir { color: #66d9ef; }
+        .file-tree .file { color: #a6e22e; }
+        .file-tree .comment { color: #75715e; }
+    </style>
+</head>
+<body>
+
+    <h1>ERP Party Master <span class="layer-badge layer-0">Layer 0</span></h1>
+
+    <div class="info-box">
+        <strong>Block:</strong> Party Master &mdash; the universal "who" of the enterprise.<br>
+        <strong>Layer:</strong> 0 (independently deployable, no hard structural dependencies).<br>
+        <strong>App ID:</strong> <code>erp-party-master-app</code><br>
+        <strong>Optional cross-block reference:</strong> Location Master's <code>erp-address</code> via <code>erp-party-has-address-rel</code> (aggregation).
+    </div>
+
+    <p>
+        Party Master provides the shared identity foundation that every other ERP domain references when it needs to answer
+        "who is involved?" Every actor that can enter agreements, hold accounts, or participate in transactions is a <strong>Party</strong>.
+        A party may be a <strong>Natural Person</strong> (a human being with legal capacity) or a <strong>Legal Entity</strong>
+        (a corporation, partnership, government body, or non-profit organization).
+    </p>
+    <p>
+        The block has two distinctive features:
+    </p>
+    <ol>
+        <li><strong>Deep generalization chains</strong> with a dual ancestry pattern for Natural Person, providing analytical power across biological, demographic, social, and legal domains.</li>
+        <li><strong>Strict party-role separation</strong> &mdash; Employee, Vendor, and Customer are roles assigned via <code>role-assignment-relator</code> at Layer 1, not generalization specializations of Party.</li>
+    </ol>
+
+    <!-- ============================================================ -->
+    <h2>1. File Structure</h2>
+    <!-- ============================================================ -->
+
+    <div class="file-tree">
+        <span class="dir">apps/erp/app_erp_party/</span><br>
+        &nbsp;&nbsp;<span class="file">metadata_app.json</span> <span class="comment">&mdash; schema: universals, properties, relators, app, role assignments (no users &mdash; see app_erp_base)</span><br>
+        &nbsp;&nbsp;<span class="file">metadata_app_data.json</span> <span class="comment">&mdash; instances: enum values, parties, contacts, relator instances</span><br>
+        &nbsp;&nbsp;<span class="file">architecture.html</span> <span class="comment">&mdash; this document</span>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>2. Dual Generalization Hierarchy</h2>
+    <!-- ============================================================ -->
+
+    <p>
+        Party Master contains two parallel generalization chains that converge at <code>erp-natural-person</code>.
+        <strong>Chain A</strong> (the Person chain) models biological-to-social identity.
+        <strong>Chain B</strong> (the Party chain) models legal capacity and organizational form.
+        Natural Person inherits from <em>both</em> chains simultaneously &mdash; this is the <strong>dual ancestry pattern</strong>.
+    </p>
+
+    <div class="mermaid">
+classDiagram
+    direction TB
+
+    class erpLivingBeing {
+        &lt;&lt;Kind&gt;&gt;
+        kingdom : Categorical
+        species : Textual
+        birth_date : Measurement
+        death_date : Measurement
+    }
+
+    class erpHuman {
+        &lt;&lt;Kind&gt;&gt;
+        full_name : Textual
+        gender : Categorical
+        nationality : Categorical
+    }
+
+    class erpPerson {
+        &lt;&lt;Kind&gt;&gt;
+        email : Categorical
+        phone : Categorical
+        government_id : Categorical
+        preferred_language : Categorical
+    }
+
+    class erpParty {
+        &lt;&lt;Kind&gt;&gt;
+        party_code : Categorical
+        display_name : Textual
+        tax_id : Categorical
+        is_active : Boolean
+        notes : Textual
+    }
+
+    class erpNaturalPerson {
+        &lt;&lt;Kind&gt;&gt;
+        (no own properties)
+    }
+
+    class erpLegalEntity {
+        &lt;&lt;Kind&gt;&gt;
+        legal_name : Textual
+        registration_number : Categorical
+        incorporation_date : Measurement
+        jurisdiction : Categorical
+    }
+
+    class erpCorporation {
+        &lt;&lt;Kind&gt;&gt;
+        stock_ticker : Categorical
+        is_public : Boolean
+    }
+
+    class erpPartnership {
+        &lt;&lt;Kind&gt;&gt;
+        (no own properties)
+    }
+
+    class erpGovernmentBody {
+        &lt;&lt;Kind&gt;&gt;
+        (no own properties)
+    }
+
+    class erpNonProfit {
+        &lt;&lt;Kind&gt;&gt;
+        (no own properties)
+    }
+
+    erpLivingBeing <|-- erpHuman : Chain A
+    erpHuman <|-- erpPerson : Chain A
+    erpPerson <|-- erpNaturalPerson : Chain A
+    erpParty <|-- erpNaturalPerson : Chain B
+    erpParty <|-- erpLegalEntity : Chain B
+    erpLegalEntity <|-- erpCorporation
+    erpLegalEntity <|-- erpPartnership
+    erpLegalEntity <|-- erpGovernmentBody
+    erpLegalEntity <|-- erpNonProfit
+    </div>
+
+    <div class="info-box">
+        <strong>Key insight:</strong> <code>erp-natural-person</code> has two <code>generalization-relator</code> entries in its taxonomy &mdash;
+        one pointing to <code>erp-party</code> and one pointing to <code>erp-person</code>. This means every NaturalPerson instance
+        carries properties from both the Person chain (biological/demographic/social) and the Party chain (legal/commercial identity).
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>3. Property Inheritance Diagram</h2>
+    <!-- ============================================================ -->
+
+    <p>
+        The following diagram traces which properties a <code>NaturalPerson</code> instance inherits from each level of each chain,
+        and how a <code>Corporation</code> instance inherits through Chain B only.
+    </p>
+
+    <div class="mermaid">
+graph TB
+    subgraph ChainA["Chain A: Biological &rarr; Social"]
+        LB["erp-living-being<br/><b>kingdom</b>, <b>species</b><br/>birth_date, death_date"]
+        HU["erp-human<br/><b>full_name</b><br/>gender, nationality"]
+        PE["erp-person<br/><b>email</b><br/>phone, government_id<br/>preferred_language"]
+    end
+
+    subgraph ChainB["Chain B: Party &rarr; Legal"]
+        PA["erp-party<br/><b>party_code</b>, <b>display_name</b><br/>tax_id, is_active, notes"]
+        LE["erp-legal-entity<br/><b>legal_name</b><br/>registration_number<br/>incorporation_date, jurisdiction"]
+        CO["erp-corporation<br/>stock_ticker, is_public"]
+    end
+
+    NP["erp-natural-person<br/><i>(no own properties)</i><br/>Inherits all from both chains"]
+
+    LB --> HU
+    HU --> PE
+    PE --> NP
+
+    PA --> NP
+    PA --> LE
+    LE --> CO
+
+    style NP fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style ChainA fill:#e3f2fd,stroke:#1565c0
+    style ChainB fill:#fce4ec,stroke:#c62828
+    </div>
+
+    <h3>Property Conflict Resolution</h3>
+
+    <p>
+        The two chains contribute <strong>disjoint property sets</strong> &mdash; there are no property ID collisions.
+        Property IDs are globally unique (e.g., <code>erp-party-code-prop</code> vs <code>erp-human-full-name-prop</code>),
+        so every property resolves to exactly one definition without ambiguity.
+    </p>
+
+    <table>
+        <tr><th>Chain</th><th>Properties</th><th>Domain</th></tr>
+        <tr><td>A (Person chain)</td><td>kingdom, species, birth_date, death_date, full_name, gender, nationality, email, phone, government_id, preferred_language</td><td>Biological and social identity</td></tr>
+        <tr><td>B (Party chain)</td><td>party_code, display_name, tax_id, is_active, notes</td><td>Legal/commercial identity</td></tr>
+    </table>
+
+    <div class="warn-box">
+        <strong>Convention:</strong> For overlapping <em>semantic</em> concerns (not ID collisions), Chain A wins for biological/demographic attributes and Chain B wins for legal/transactional attributes.
+        In practice no conflicts exist because the property sets are disjoint by design.
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>4. Relator Map</h2>
+    <!-- ============================================================ -->
+
+    <p>
+        All relators defined in Party Master, showing their taxonomy type (which foundational relator they generalize)
+        and the universals they connect.
+    </p>
+
+    <div class="mermaid">
+graph LR
+    subgraph Aggregation["Aggregation Relators"]
+        R1["erp-party-has-contact-rel"]
+    end
+
+    subgraph Attribution["Attribution Relators"]
+        R2["erp-contact-method-rel"]
+    end
+
+    subgraph Association["Association Relators"]
+        R3["erp-person-social-rel"]
+    end
+
+    PARTY["erp-party"]
+    CI["erp-contact-info"]
+    CM["erp-contact-method"]
+    PERSON["erp-person"]
+
+    PARTY -- "aggregate" --> R1
+    R1 -- "part" --> CI
+
+    CI -- "contact" --> R2
+    R2 -- "method" --> CM
+
+    PERSON -- "person_a" --> R3
+    R3 -- "person_b" --> PERSON
+
+    style Aggregation fill:#e8f5e9,stroke:#388e3c
+    style Attribution fill:#fff3e0,stroke:#f57c00
+    style Association fill:#e3f2fd,stroke:#1976d2
+    </div>
+
+    <table>
+        <tr><th>Relator</th><th>Taxonomy Target</th><th>Role 1</th><th>Role 2</th><th>Purpose</th></tr>
+        <tr>
+            <td><code>erp-party-has-contact-rel</code></td>
+            <td><code>aggregation-relator</code></td>
+            <td>aggregate: <code>erp-party</code></td>
+            <td>part: <code>erp-contact-info</code></td>
+            <td>A party has one or more contact channels. Contacts require authored content &mdash; not auto-instantiated.</td>
+        </tr>
+        <tr>
+            <td><code>erp-contact-method-rel</code></td>
+            <td><code>attribution-relator</code></td>
+            <td>contact: <code>erp-contact-info</code></td>
+            <td>method: <code>erp-contact-method</code></td>
+            <td>Classifies a contact channel by method (Email, Phone, Fax, Mail, Website).</td>
+        </tr>
+        <tr>
+            <td><code>erp-person-social-rel</code></td>
+            <td><code>association-relator</code></td>
+            <td>person_a: <code>erp-person</code></td>
+            <td>person_b: <code>erp-person</code></td>
+            <td>General social relationship between two persons. Inherited by NaturalPerson.</td>
+        </tr>
+    </table>
+
+    <div class="info-box">
+        <strong>Cross-block relator (not defined here):</strong> <code>erp-party-has-address-rel</code> (aggregation)
+        links parties to <code>erp-address</code> instances defined in the <strong>Location Master</strong> block.
+        If Location Master is not deployed, parties function without addresses.
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>5. Instance Diagram &mdash; Sample Data</h2>
+    <!-- ============================================================ -->
+
+    <p>
+        The sample data in <code>metadata_app_data.json</code> includes 3 corporations, 1 partnership,
+        1 government body, 1 non-profit, and 3 natural persons, along with contact info instances
+        and relator instances linking them.
+    </p>
+
+    <div class="mermaid">
+graph TB
+    subgraph Corporations["Corporations"]
+        ACME["P-001<br/><b>ACME Corporation</b><br/>ACME Inc. | US-DE<br/>Ticker: ACME | Public"]
+        GLOBEX["P-002<br/><b>Globex Corporation</b><br/>US-CA | Ticker: GLBX | Public"]
+        INITECH["P-003<br/><b>Initech</b><br/>Initech LLC | US-TX | Private"]
+    end
+
+    subgraph Partnership["Partnership"]
+        BAKER["P-004<br/><b>Baker &amp; Associates</b><br/>LLP | US-NY"]
+    end
+
+    subgraph Government["Government Body"]
+        SPRING["P-005<br/><b>City of Springfield</b><br/>Municipality | US-IL"]
+    end
+
+    subgraph NonProfit["Non-Profit"]
+        OPEN["P-006<br/><b>Open Future Foundation</b><br/>Inc. | US-DC"]
+    end
+
+    subgraph NaturalPersons["Natural Persons"]
+        MARIA["P-101<br/><b>Maria Garcia</b>"]
+        JAMES["P-102<br/><b>James Chen</b>"]
+        ANNA["P-103<br/><b>Anna Kowalski</b>"]
+    end
+
+    subgraph Contacts["Contact Info"]
+        CI1["+1-800-ACME-001<br/>Phone | Primary"]
+        CI2["info@acme.com<br/>Email | Primary"]
+        CI3["+1-800-ACME-FAX<br/>Fax"]
+        CI4["www.globex.com<br/>Website | Primary"]
+        CI5["maria...@gmail.com<br/>Email"]
+        CI6["+1-217-555-0100<br/>Phone | Primary"]
+    end
+
+    ACME --- CI1
+    ACME --- CI2
+    ACME --- CI3
+    GLOBEX --- CI4
+    MARIA --- CI5
+    SPRING --- CI6
+
+    subgraph SocialRels["Social Relationships"]
+        SR1["Maria &harr; James"]
+        SR2["Anna &harr; Maria"]
+    end
+
+    style Corporations fill:#e3f2fd,stroke:#1565c0
+    style Partnership fill:#f3e5f5,stroke:#7b1fa2
+    style Government fill:#fce4ec,stroke:#c62828
+    style NonProfit fill:#e8f5e9,stroke:#2e7d32
+    style NaturalPersons fill:#fff8e1,stroke:#f9a825
+    style Contacts fill:#f5f5f5,stroke:#757575
+    style SocialRels fill:#efebe9,stroke:#5d4037
+    </div>
+
+    <h3>Instance Summary</h3>
+
+    <table>
+        <tr><th>Universal</th><th>Count</th><th>Instances</th></tr>
+        <tr><td><code>erp-corporation</code></td><td>3</td><td>ACME Corporation (P-001), Globex Corporation (P-002), Initech (P-003)</td></tr>
+        <tr><td><code>erp-partnership</code></td><td>1</td><td>Baker &amp; Associates LLP (P-004)</td></tr>
+        <tr><td><code>erp-government-body</code></td><td>1</td><td>City of Springfield (P-005)</td></tr>
+        <tr><td><code>erp-non-profit</code></td><td>1</td><td>Open Future Foundation (P-006)</td></tr>
+        <tr><td><code>erp-natural-person</code></td><td>3</td><td>Maria Garcia (P-101), James Chen (P-102), Anna Kowalski (P-103)</td></tr>
+        <tr><td><code>erp-person</code></td><td>3</td><td>Person-chain property instances for Maria, James, Anna</td></tr>
+        <tr><td><code>erp-contact-info</code></td><td>6</td><td>Phone, email, fax, website entries</td></tr>
+        <tr><td><code>erp-contact-method</code></td><td>5</td><td>Email, Phone, Fax, Mail, Website (enum values)</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>6. Property Catalog</h2>
+    <!-- ============================================================ -->
+
+    <h3>erp-living-being</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Cardinality</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-lb-kingdom-prop</code></td><td>Kingdom</td><td>Categorical</td><td>&mdash;</td><td>1..1</td><td>seq: 1</td></tr>
+        <tr><td><code>erp-lb-species-prop</code></td><td>Species</td><td>Textual</td><td>&mdash;</td><td>1..1</td><td>seq: 2</td></tr>
+        <tr><td><code>erp-lb-birth-date-prop</code></td><td>Birth Date</td><td>Measurement</td><td>std-timestamp</td><td>0..1</td><td>&mdash;</td></tr>
+        <tr><td><code>erp-lb-death-date-prop</code></td><td>Death Date</td><td>Measurement</td><td>std-timestamp</td><td>0..1</td><td>&mdash;</td></tr>
+    </table>
+
+    <h3>erp-human <span style="font-size:0.8rem;color:#888">(inherits erp-living-being)</span></h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Cardinality</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-human-full-name-prop</code></td><td>Full Name</td><td>Textual</td><td>&mdash;</td><td>1..1</td><td>seq: 1</td></tr>
+        <tr><td><code>erp-human-gender-prop</code></td><td>Gender</td><td>Categorical</td><td>&mdash;</td><td>0..1</td><td>&mdash;</td></tr>
+        <tr><td><code>erp-human-nationality-prop</code></td><td>Nationality</td><td>Categorical</td><td>&mdash;</td><td>0..1</td><td>&mdash;</td></tr>
+    </table>
+
+    <h3>erp-person <span style="font-size:0.8rem;color:#888">(inherits erp-human)</span></h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Cardinality</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-person-email-prop</code></td><td>Email</td><td>Categorical</td><td>&mdash;</td><td>0..1</td><td>seq: 2</td></tr>
+        <tr><td><code>erp-person-phone-prop</code></td><td>Phone</td><td>Categorical</td><td>&mdash;</td><td>0..1</td><td>&mdash;</td></tr>
+        <tr><td><code>erp-person-government-id-prop</code></td><td>Government ID</td><td>Categorical</td><td>&mdash;</td><td>0..1</td><td>&mdash;</td></tr>
+        <tr><td><code>erp-person-preferred-language-prop</code></td><td>Preferred Language</td><td>Categorical</td><td>&mdash;</td><td>0..1</td><td>&mdash;</td></tr>
+    </table>
+
+    <h3>erp-natural-person <span style="font-size:0.8rem;color:#888">(inherits erp-party + erp-person)</span></h3>
+    <p><em>No own properties.</em> Inherits all properties from both chains. Exists solely to bridge the Person chain into the Party hierarchy.</p>
+
+    <h3>erp-party</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Cardinality</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-party-code-prop</code></td><td>Party Code</td><td>Categorical</td><td>&mdash;</td><td>1..1</td><td>seq: 1</td></tr>
+        <tr><td><code>erp-party-display-name-prop</code></td><td>Display Name</td><td>Textual</td><td>&mdash;</td><td>1..1</td><td>seq: 2</td></tr>
+        <tr><td><code>erp-party-tax-id-prop</code></td><td>Tax ID</td><td>Categorical</td><td>&mdash;</td><td>0..1</td><td>&mdash;</td></tr>
+        <tr><td><code>erp-party-is-active-prop</code></td><td>Is Active</td><td>Boolean</td><td>&mdash;</td><td>1..1</td><td>&mdash;</td></tr>
+        <tr><td><code>erp-party-notes-prop</code></td><td>Notes</td><td>Textual</td><td>&mdash;</td><td>0..1</td><td>&mdash;</td></tr>
+    </table>
+
+    <h3>erp-legal-entity <span style="font-size:0.8rem;color:#888">(inherits erp-party)</span></h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Cardinality</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-le-legal-name-prop</code></td><td>Legal Name</td><td>Textual</td><td>&mdash;</td><td>1..1</td><td>seq: 1</td></tr>
+        <tr><td><code>erp-le-registration-number-prop</code></td><td>Registration Number</td><td>Categorical</td><td>&mdash;</td><td>0..1</td><td>&mdash;</td></tr>
+        <tr><td><code>erp-le-incorporation-date-prop</code></td><td>Incorporation Date</td><td>Measurement</td><td>std-timestamp</td><td>0..1</td><td>&mdash;</td></tr>
+        <tr><td><code>erp-le-jurisdiction-prop</code></td><td>Jurisdiction</td><td>Categorical</td><td>&mdash;</td><td>0..1</td><td>&mdash;</td></tr>
+    </table>
+
+    <h3>erp-corporation <span style="font-size:0.8rem;color:#888">(inherits erp-legal-entity)</span></h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Cardinality</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-corp-stock-ticker-prop</code></td><td>Stock Ticker</td><td>Categorical</td><td>&mdash;</td><td>0..1</td><td>&mdash;</td></tr>
+        <tr><td><code>erp-corp-is-public-prop</code></td><td>Is Publicly Traded</td><td>Boolean</td><td>&mdash;</td><td>1..1</td><td>&mdash;</td></tr>
+    </table>
+
+    <h3>erp-partnership, erp-government-body, erp-non-profit</h3>
+    <p><em>No own properties at Layer 0.</em> All inherit from <code>erp-legal-entity</code>. Type-specific attributes (e.g., tax-exempt status for non-profits, agency level for government bodies) are modeled at Layer 1.</p>
+
+    <h3>erp-contact-info</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Cardinality</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-ci-contact-value-prop</code></td><td>Contact Value</td><td>Categorical</td><td>&mdash;</td><td>1..1</td><td>seq: 1</td></tr>
+        <tr><td><code>erp-ci-is-primary-prop</code></td><td>Is Primary</td><td>Boolean</td><td>&mdash;</td><td>1..1</td><td>&mdash;</td></tr>
+    </table>
+
+    <h3>erp-contact-method <span style="font-size:0.8rem;color:#888">(enumeration)</span></h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Cardinality</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-contact-method-name-prop</code></td><td>Name</td><td>Categorical</td><td>1..1</td><td>seq: 1</td></tr>
+    </table>
+    <p>Enum values: <strong>Email</strong>, <strong>Phone</strong>, <strong>Fax</strong>, <strong>Mail</strong>, <strong>Website</strong>.</p>
+
+    <!-- ============================================================ -->
+    <h2>7. Cross-Layer References</h2>
+    <!-- ============================================================ -->
+
+    <p>
+        These connections are <strong>not implemented in Layer 0</strong>. They are documented so higher-layer blocks
+        know how to connect to Party Master via <code>role-assignment-relator</code> and <code>participation-relator</code>.
+    </p>
+
+    <div class="mermaid">
+graph LR
+    subgraph Layer0["Layer 0 -- Party Master"]
+        PARTY["erp-party"]
+        NP["erp-natural-person"]
+        LE["erp-legal-entity"]
+    end
+
+    subgraph Layer1["Layer 1 -- Role Blocks"]
+        EMP["Employee<br/>(employee_id, hire_date,<br/>department)"]
+        VEN["Vendor<br/>(vendor_code, payment_terms,<br/>rating)"]
+        CUST["Customer<br/>(customer_code, credit_limit,<br/>tier)"]
+        AGR["Agreement<br/>(contracts, leases)"]
+        ORG["Org Structure<br/>(legal entity link)"]
+    end
+
+    subgraph Layer2["Layer 2 -- Transactional"]
+        OKR["OKR / Goals"]
+        PROC["Procurement"]
+        AR["Accounts Receivable"]
+    end
+
+    PARTY -- "role-assignment" --> EMP
+    PARTY -- "role-assignment" --> VEN
+    PARTY -- "role-assignment" --> CUST
+    NP -- "participation" --> AGR
+    LE -- "participation" --> AGR
+    LE -- "attribution" --> ORG
+
+    EMP -. "via Employee role" .-> OKR
+    VEN -. "via Vendor role" .-> PROC
+    CUST -. "via Customer role" .-> AR
+
+    style Layer0 fill:#d4edda,stroke:#155724
+    style Layer1 fill:#e3f2fd,stroke:#1565c0
+    style Layer2 fill:#fff3e0,stroke:#f57c00
+    </div>
+
+    <table>
+        <tr><th>Source (Layer 0)</th><th>Target Block</th><th>Layer</th><th>Relator Type</th><th>Purpose</th></tr>
+        <tr><td><code>erp-party</code></td><td>Employee Mgmt</td><td>1</td><td><code>role-assignment-relator</code></td><td>Person assigned the Employee role. Role entity carries employee_id, hire_date, department.</td></tr>
+        <tr><td><code>erp-party</code></td><td>Vendor Mgmt</td><td>1</td><td><code>role-assignment-relator</code></td><td>Party assigned the Vendor role. Role entity carries vendor_code, payment_terms, rating.</td></tr>
+        <tr><td><code>erp-party</code></td><td>Customer Mgmt</td><td>1</td><td><code>role-assignment-relator</code></td><td>Party assigned the Customer role. Role entity carries customer_code, credit_limit, tier.</td></tr>
+        <tr><td><code>erp-legal-entity</code> / <code>erp-natural-person</code></td><td>Agreement</td><td>1</td><td><code>participation-relator</code></td><td>Parties participate in employment contracts, purchase agreements, sales contracts, leases.</td></tr>
+        <tr><td><code>erp-legal-entity</code></td><td>Org Structure</td><td>1</td><td><code>attribution-relator</code></td><td>Links Org Structure's organization to a legal entity record.</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>8. Design Decisions</h2>
+    <!-- ============================================================ -->
+
+    <div class="decision-box">
+        <h3>Decision 1: Dual Ancestry for NaturalPerson</h3>
+        <p>
+            <code>erp-natural-person</code> has two <code>generalization-relator</code> entries: one to <code>erp-party</code>
+            and one to <code>erp-person</code>. This is a <strong>fixed, structural join point</strong> between two orthogonal
+            classification axes (biological identity vs legal capacity) &mdash; not a dynamic assignment.
+        </p>
+        <p>
+            <strong>Why this is not multiple inheritance:</strong> A natural person is <em>always</em> both a person and a party.
+            You cannot be one without the other. Compare with party roles (Employee, Vendor, Customer) which are dynamic and overlapping &mdash;
+            a person can be an Employee without being a Vendor. That distinction makes roles a multiple-inheritance hazard; dual ancestry
+            for NaturalPerson is a structural identity statement.
+        </p>
+        <p>
+            <strong>Conflict resolution:</strong> The two chains contribute disjoint property sets. Chain A owns biological/demographic
+            properties; Chain B owns legal/transactional properties. No property ID collisions exist by design.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Decision 2: Party-Role Separation</h3>
+        <p>
+            Employee, Vendor, and Customer are <strong>not</strong> generalization specializations of Party. They are <strong>roles</strong>
+            assigned via <code>role-assignment-relator</code> at Layer 1.
+        </p>
+        <p>
+            <strong>Rationale:</strong> A single party can simultaneously be an Employee, a Vendor, and a Customer.
+            Modeling these as generalizations would require multiple inheritance with conflicting properties
+            (billing terms from Vendor vs payroll frequency from Employee). The role pattern avoids the diamond problem entirely:
+            one party, multiple role instances, each carrying role-specific properties without polluting the party entity.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Decision 3: No erp-party-type Enum</h3>
+        <p>
+            Legal form (individual, corporation, partnership, government body, non-profit) is expressed through the
+            <strong>specialization hierarchy itself</strong>. An instance's universal <em>is</em> its type:
+            creating an <code>erp-corporation</code> instance means the party is a corporation.
+        </p>
+        <p>
+            A redundant <code>erp-party-type</code> enum would create two competing sources of truth for the same fact
+            (the hierarchy says "corporation" but the type attribute could say "partnership").
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Decision 4: Aggregation for Party &rarr; Address</h3>
+        <p>
+            Addresses are linked via <strong>aggregation</strong> (not composition) because they require authored content
+            (street, city, postal code). Auto-instantiating empty address shells when a party is created adds no ontological value.
+            Addresses are created with their content and then linked to the party. Application-layer cleanup handles orphaned addresses.
+        </p>
+        <p>
+            <code>erp-address</code> itself is defined in <strong>Location Master</strong>. Party Master only defines the
+            linking relator <code>erp-party-has-address-rel</code>.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Decision 5: Aggregation for Party &rarr; Contact</h3>
+        <p>
+            Contact channels are linked via <strong>aggregation</strong> for the same reason as addresses: they require authored content
+            (a phone number, an email address). Auto-instantiating empty contact records serves no purpose.
+            While contacts are semantically dependent on their owner, the relator type reflects the authored nature of the content.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Decision 6: NaturalPerson is Terminal Specialization</h3>
+        <p>
+            <code>erp-natural-person</code> has no own properties and no further specializations at Layer 0.
+            It exists solely as the structural bridge between the Person chain and the Party hierarchy.
+            Any further specialization of natural persons (e.g., minor, estate) would be modeled at higher layers if needed.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Decision 7: LegalEntity Specializations Cover Major Forms</h3>
+        <p>
+            The four specializations &mdash; <code>erp-corporation</code>, <code>erp-partnership</code>,
+            <code>erp-government-body</code>, <code>erp-non-profit</code> &mdash; cover the major organizational forms
+            encountered in enterprise systems. Each can carry type-specific properties (e.g., stock ticker for corporations)
+            while inheriting the shared legal entity properties (legal name, registration number, jurisdiction).
+        </p>
+        <p>
+            At Layer 0, <code>erp-partnership</code>, <code>erp-government-body</code>, and <code>erp-non-profit</code>
+            have no additional properties. Type-specific attributes are deferred to Layer 1 where they connect to
+            domain-specific blocks (compliance, budgeting, grant management).
+        </p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>9. Analytical Value of the Person Chain</h2>
+    <!-- ============================================================ -->
+
+    <p>
+        The deep generalization chain from LivingBeing to NaturalPerson is not academic overhead.
+        Each level enables concrete analytical capabilities.
+    </p>
+
+    <div class="mermaid">
+graph TB
+    subgraph Level1["Level 1: erp-living-being"]
+        A1["Biology &amp; Lifecycle"]
+        A1a["Insurance actuarials<br/>ESG biodiversity<br/>Agriculture / Veterinary"]
+    end
+
+    subgraph Level2["Level 2: erp-human"]
+        A2["Demographics"]
+        A2a["Diversity reporting<br/>Gender pay gap analysis<br/>Nationality distribution"]
+    end
+
+    subgraph Level3["Level 3: erp-person"]
+        A3["Social Identity"]
+        A3a["Cross-domain unification<br/>KYC/AML compliance<br/>Communication preferences"]
+    end
+
+    subgraph Level4["Level 4: erp-party (via NaturalPerson)"]
+        A4["Legal/Transactional"]
+        A4a["Agreement capacity<br/>Tax reporting<br/>Transaction aggregation<br/>across all roles"]
+    end
+
+    Level1 --> Level2 --> Level3 --> Level4
+
+    style Level1 fill:#e8f5e9,stroke:#2e7d32
+    style Level2 fill:#e3f2fd,stroke:#1565c0
+    style Level3 fill:#fff8e1,stroke:#f9a825
+    style Level4 fill:#fce4ec,stroke:#c62828
+    </div>
+
+    <table>
+        <tr><th>Level</th><th>Universal</th><th>Properties</th><th>Analytical Value</th></tr>
+        <tr>
+            <td>1</td>
+            <td><code>erp-living-being</code></td>
+            <td>kingdom, species, birth_date, death_date</td>
+            <td>Biological classification. Insurance actuarials, agriculture, ESG/biodiversity, healthcare.</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td><code>erp-human</code></td>
+            <td>full_name, gender, nationality</td>
+            <td>Demographics. Diversity reporting, gender pay gap, nationality distribution, name-based search.</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td><code>erp-person</code></td>
+            <td>email, phone, government_id, preferred_language</td>
+            <td>Social identity. Cross-domain unification (same person as employee, customer, board member). KYC/AML compliance.</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td><code>erp-party</code> (via NaturalPerson)</td>
+            <td>party_code, display_name, tax_id, is_active</td>
+            <td>Legal/financial interactions. Transaction aggregation across all roles ("total spend by party").</td>
+        </tr>
+    </table>
+
+    <div class="info-box">
+        <strong>Artifacts can aggregate along either ancestry axis without ambiguity:</strong>
+        "parties by tax jurisdiction" traverses Chain B; "persons by nationality" traverses Chain A.
+        Both work because dimension RelatorPaths specify which chain to follow &mdash; the artifact framework
+        never needs to "choose" between chains.
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>10. Layer &amp; Deployment Information</h2>
+    <!-- ============================================================ -->
+
+    <table>
+        <tr><th>Attribute</th><th>Value</th></tr>
+        <tr><td>Layer</td><td><span class="layer-badge layer-0">Layer 0</span></td></tr>
+        <tr><td>Independently Deployable</td><td>Yes &mdash; no hard structural dependencies</td></tr>
+        <tr><td>Optional Cross-Block Reference</td><td>Location Master's <code>erp-address</code> via <code>erp-party-has-address-rel</code></td></tr>
+        <tr><td>Organization</td><td><code>model1-testing-org</code> (standard for examples)</td></tr>
+        <tr><td>Tenant</td><td><code>model1-testing-tenant</code></td></tr>
+        <tr><td>App</td><td><code>erp-party-master-app</code></td></tr>
+        <tr><td>Module</td><td><code>erp-party-core-module</code> &mdash; core CRUD on parties, contacts, address linkages</td></tr>
+        <tr><td>Measurement Frames Used</td><td><code>std-timestamp</code> only (for date properties)</td></tr>
+    </table>
+
+    <h3>Loading the App</h3>
+
+    <pre style="background:#272822;color:#f8f8f2;padding:1rem;border-radius:8px;overflow-x:auto;">
+<span style="color:#75715e"># Offline validation (no broker needed)</span>
+cd model1-admin-cli
+cargo run -- validate --path ../apps/erp/app_erp_party
+
+<span style="color:#75715e"># Load to broker (requires broker on localhost:8443)</span>
+cargo run -- --cert-path ../broker/certs/cert.pem load --dir ../apps/erp/app_erp_party --progress
+    </pre>
+
+    <!-- ============================================================ -->
+    <h2>11. Complete Universal Catalog</h2>
+    <!-- ============================================================ -->
+
+    <table>
+        <tr><th>ID</th><th>Nature</th><th>Category</th><th>Generalizes</th><th>Purpose</th></tr>
+        <tr><td><code>erp-living-being</code></td><td>Endurant</td><td>Kind</td><td>&mdash;</td><td>Biological root. Any living organism.</td></tr>
+        <tr><td><code>erp-human</code></td><td>Endurant</td><td>Kind</td><td>erp-living-being</td><td>Homo sapiens with demographics.</td></tr>
+        <tr><td><code>erp-person</code></td><td>Endurant</td><td>Kind</td><td>erp-human</td><td>Social agent. Cross-domain unification point.</td></tr>
+        <tr><td><code>erp-party</code></td><td>Endurant</td><td>Kind</td><td>&mdash;</td><td>Abstract root for all parties.</td></tr>
+        <tr><td><code>erp-natural-person</code></td><td>Endurant</td><td>Kind</td><td>erp-party, erp-person</td><td>Human with legal capacity. Dual ancestry bridge.</td></tr>
+        <tr><td><code>erp-legal-entity</code></td><td>Endurant</td><td>Kind</td><td>erp-party</td><td>Juridical person (corporation, partnership, etc.).</td></tr>
+        <tr><td><code>erp-corporation</code></td><td>Endurant</td><td>Kind</td><td>erp-legal-entity</td><td>Publicly or privately held corporation.</td></tr>
+        <tr><td><code>erp-partnership</code></td><td>Endurant</td><td>Kind</td><td>erp-legal-entity</td><td>General, limited, or LLP partnership.</td></tr>
+        <tr><td><code>erp-government-body</code></td><td>Endurant</td><td>Kind</td><td>erp-legal-entity</td><td>Government agency, municipality.</td></tr>
+        <tr><td><code>erp-non-profit</code></td><td>Endurant</td><td>Kind</td><td>erp-legal-entity</td><td>NGO, charity, foundation.</td></tr>
+        <tr><td><code>erp-contact-info</code></td><td>Endurant</td><td>Kind</td><td>&mdash;</td><td>A contact channel (email, phone, etc.).</td></tr>
+        <tr><td><code>erp-contact-method</code></td><td>Endurant</td><td>Kind</td><td>&mdash;</td><td>Enumeration: Email, Phone, Fax, Mail, Website.</td></tr>
+        <tr><td><code>erp-party-has-contact-rel</code></td><td>Perdurant</td><td>Relator</td><td>aggregation-relator</td><td>Party has contact channels.</td></tr>
+        <tr><td><code>erp-contact-method-rel</code></td><td>Perdurant</td><td>Relator</td><td>attribution-relator</td><td>Contact classified by method.</td></tr>
+        <tr><td><code>erp-person-social-rel</code></td><td>Perdurant</td><td>Relator</td><td>association-relator</td><td>Social relationship between persons.</td></tr>
+    </table>
+
+    <script>mermaid.initialize({startOnLoad: true, theme: 'default', securityLevel: 'loose'});</script>
+</body>
+</html>

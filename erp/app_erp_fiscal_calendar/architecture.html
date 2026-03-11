@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Fiscal Calendar — Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 2rem; color: #1a1a2e; background: #f8f9fa; line-height: 1.6; }
+        h1 { color: #16213e; border-bottom: 3px solid #0f3460; padding-bottom: 0.5rem; }
+        h2 { color: #0f3460; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.3rem; margin-top: 2rem; }
+        h3 { color: #533483; }
+        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #0f3460; color: white; }
+        tr:nth-child(even) { background: #f2f2f2; }
+        .mermaid { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 1rem 0; }
+        .decision-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .layer-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
+        .layer-0 { background: #d4edda; color: #155724; }
+        code { background: #e9ecef; padding: 2px 6px; border-radius: 3px; font-size: 0.9rem; }
+        .info-box { background: #e8f4fd; border-left: 4px solid #2196F3; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .warn-box { background: #fff3e0; border-left: 4px solid #ff9800; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .file-tree { background: #2d2d2d; color: #f8f8f2; padding: 1rem 1.5rem; border-radius: 8px; font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.9rem; margin: 1rem 0; }
+        .file-tree .dir { color: #66d9ef; }
+        .file-tree .file { color: #a6e22e; }
+        .file-tree .comment { color: #75715e; }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .stat-card { background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+        .stat-card .value { font-size: 1.8rem; font-weight: bold; color: #0f3460; }
+        .stat-card .label { font-size: 0.85rem; color: #666; margin-top: 0.25rem; }
+    </style>
+</head>
+<body>
+    <h1>ERP Fiscal Calendar <span class="layer-badge layer-0">Layer 0</span></h1>
+
+    <!-- ================================================================== -->
+    <!-- 1. OVERVIEW -->
+    <!-- ================================================================== -->
+    <h2>1. Overview</h2>
+
+    <p>
+        The Fiscal Calendar defines the <strong>time structure for financial reporting</strong>, budget periods, and compliance deadlines.
+        It is a <strong>Layer 0</strong> block -- independently deployable, with zero external dependencies.
+        Every time-bounded financial concept (budgets, journal entries, reporting periods, agreement validity)
+        references the fiscal calendar, but the fiscal calendar references nothing outside itself.
+    </p>
+
+    <p>The block answers three fundamental questions:</p>
+    <ul>
+        <li><strong>When does the accounting year start and end?</strong> Fiscal years may differ from calendar years (April-March, July-June, October-September).</li>
+        <li><strong>What are the reporting periods?</strong> Quarters and periods (typically months) within the fiscal year that define when financial statements are produced.</li>
+        <li><strong>Which periods accept postings?</strong> Period status controls whether transactions can be recorded, preventing inadvertent posting to closed periods.</li>
+    </ul>
+
+    <div class="info-box">
+        <strong>Composition-heavy design:</strong> The calendar hierarchy uses composition relators throughout.
+        Creating a single fiscal year via <code>create_instance_with_composition</code> auto-instantiates all 4 quarters
+        and their 12-13 periods, producing the full calendar structure in a single operation.
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="value">4</div>
+            <div class="label">Universals</div>
+        </div>
+        <div class="stat-card">
+            <div class="value">18</div>
+            <div class="label">Property Definitions</div>
+        </div>
+        <div class="stat-card">
+            <div class="value">2</div>
+            <div class="label">Composition Relators</div>
+        </div>
+        <div class="stat-card">
+            <div class="value">2</div>
+            <div class="label">Event Definitions</div>
+        </div>
+        <div class="stat-card">
+            <div class="value">1</div>
+            <div class="label">Artifact Definition</div>
+        </div>
+        <div class="stat-card">
+            <div class="value">13</div>
+            <div class="label">Periods per Year (incl. P13)</div>
+        </div>
+    </div>
+
+    <h3>File Structure</h3>
+    <div class="file-tree">
+        <span class="dir">apps/erp/app_erp_fiscal_calendar/</span><br>
+        &nbsp;&nbsp;<span class="file">metadata_app.json</span> <span class="comment">-- Schema: universals, properties, relators, events, artifact, app</span><br>
+        &nbsp;&nbsp;<span class="file">metadata_app_data.json</span> <span class="comment">-- Instances: FY2025 (closed), FY2026 (active), all quarters + periods + relators</span><br>
+        &nbsp;&nbsp;<span class="file">architecture.html</span> <span class="comment">-- This document</span>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- 2. COMPOSITION HIERARCHY -->
+    <!-- ================================================================== -->
+    <h2>2. Composition Hierarchy</h2>
+
+    <p>
+        The fiscal calendar is built on a strict two-level composition tree. Each level uses a
+        <strong>composition relator</strong> (taxonomy target: <code>composition-relator</code>),
+        meaning child entities cannot exist independently of their parent. Deletion cascades downward.
+    </p>
+
+    <div class="mermaid">
+classDiagram
+    class FiscalYear {
+        &lt;&lt;Kind / Perdurant&gt;&gt;
+        code : Categorical
+        name : Textual
+        start_date : Measurement
+        end_date : Measurement
+        status : Categorical ref FiscalStatus
+    }
+
+    class FiscalQuarter {
+        &lt;&lt;Kind / Perdurant&gt;&gt;
+        code : Categorical
+        sequence : Measurement int
+        start_date : Measurement
+        end_date : Measurement
+    }
+
+    class FiscalPeriod {
+        &lt;&lt;Kind / Perdurant&gt;&gt;
+        code : Categorical
+        name : Textual
+        sequence : Measurement int
+        start_date : Measurement
+        end_date : Measurement
+        status : Categorical ref FiscalStatus
+        is_adjustment : Boolean
+    }
+
+    class FiscalStatus {
+        &lt;&lt;Kind / Endurant / Enum&gt;&gt;
+        name : Categorical
+    }
+
+    class CalendarCoverageSummary {
+        &lt;&lt;Kind / Endurant / Artifact Target&gt;&gt;
+        fiscal_year : Categorical
+        period_status : Categorical
+        period_count : Measurement int
+    }
+
+    FiscalYear "1" *-- "4" FiscalQuarter : composition
+    FiscalQuarter "1" *-- "3..4" FiscalPeriod : composition
+    FiscalYear ..> FiscalStatus : status ref
+    FiscalPeriod ..> FiscalStatus : status ref
+    FiscalPeriod <.. CalendarCoverageSummary : artifact source
+    </div>
+
+    <h3>Auto-Instantiation Behavior</h3>
+
+    <p>
+        When a <code>Fiscal Year</code> instance is created via <code>create_instance_with_composition</code>,
+        the MemDB composition auto-instantiation system recursively creates:
+    </p>
+
+    <ol>
+        <li><strong>4 Fiscal Quarter</strong> instances (Q1 through Q4), each linked to the year by an <code>erp-year-has-quarter-rel</code> composition relator instance.</li>
+        <li>For each quarter, <strong>3 Fiscal Period</strong> instances (regular months), each linked to its quarter by an <code>erp-quarter-has-period-rel</code> composition relator instance.</li>
+        <li>Q4 receives an additional <strong>P13 adjustment period</strong> (4 periods total in Q4).</li>
+    </ol>
+
+    <div class="info-box">
+        <strong>Total entities per fiscal year:</strong> 1 Year + 4 Quarters + 13 Periods + 4 Year-Quarter relator instances + 13 Quarter-Period relator instances = <strong>35 entities</strong> created from a single operation.
+    </div>
+
+    <div class="warn-box">
+        <strong>Sample data uses <code>skip_composition: true</code></strong> on fiscal year and quarter instances
+        in <code>metadata_app_data.json</code> because all composed instances are explicitly defined in the file.
+        This prevents the loader from auto-instantiating duplicates.
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- 3. TEMPORAL NATURE -->
+    <!-- ================================================================== -->
+    <h2>3. Temporal Nature</h2>
+
+    <p>
+        Fiscal years, quarters, and periods are modeled as <strong>Perdurant</strong> (event-like, time-bounded)
+        because they represent stretches of time with definite start and end dates. They come into existence,
+        persist for a defined duration, and then end. This distinguishes them from Endurant entities
+        (like GL accounts or the fiscal status enum) that exist continuously without temporal boundaries.
+    </p>
+
+    <table>
+        <tr>
+            <th>Universal</th>
+            <th>Temporal Nature</th>
+            <th>Rationale</th>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-year</code></td>
+            <td>Perdurant</td>
+            <td>A 12-month window with definite start/end. FY2025 began on Jan 1, 2025 and ended Dec 31, 2025.</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-quarter</code></td>
+            <td>Perdurant</td>
+            <td>A 3-month window within a fiscal year. Q1 of FY2026 spans Jan-Mar 2026.</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-period</code></td>
+            <td>Perdurant</td>
+            <td>Typically a calendar month. The atomic time unit for financial transactions.</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-status</code></td>
+            <td>Endurant</td>
+            <td>Enumeration of status values (Open, Closed, Adjustment, Locked). These labels exist continuously and are referenced, not time-bounded.</td>
+        </tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <!-- 4. RELATOR MAP -->
+    <!-- ================================================================== -->
+    <h2>4. Relator Map</h2>
+
+    <p>
+        Both relators use <strong>composition</strong> (not aggregation). This is deliberate:
+        a fiscal quarter has no meaning outside its fiscal year, and a fiscal period has no meaning
+        outside its quarter. Deletion cascades downward through the composition tree.
+    </p>
+
+    <div class="mermaid">
+graph LR
+    subgraph Foundation Relators
+        CR["composition-relator<br/>(foundation)"]
+    end
+
+    subgraph App Relators
+        YQ["erp-year-has-quarter-rel<br/>composite: erp-fiscal-year<br/>component: erp-fiscal-quarter"]
+        QP["erp-quarter-has-period-rel<br/>composite: erp-fiscal-quarter<br/>component: erp-fiscal-period"]
+    end
+
+    YQ -->|generalizes| CR
+    QP -->|generalizes| CR
+
+    subgraph Cascade Behavior
+        direction TB
+        D1["Delete Fiscal Year"]
+        D2["Cascades to 4 Quarters"]
+        D3["Cascades to 12-13 Periods"]
+        D1 --> D2 --> D3
+    end
+
+    style CR fill:#e8f5e9,stroke:#2e7d32
+    style YQ fill:#e3f2fd,stroke:#1565c0
+    style QP fill:#e3f2fd,stroke:#1565c0
+    style D1 fill:#ffebee,stroke:#c62828
+    style D2 fill:#ffebee,stroke:#c62828
+    style D3 fill:#ffebee,stroke:#c62828
+    </div>
+
+    <table>
+        <tr>
+            <th>Relator ID</th>
+            <th>Role 1 (composite)</th>
+            <th>Role 2 (component)</th>
+            <th>Taxonomy Target</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td><code>erp-year-has-quarter-rel</code></td>
+            <td><code>erp-fiscal-year</code></td>
+            <td><code>erp-fiscal-quarter</code></td>
+            <td><code>composition-relator</code></td>
+            <td>Year contains quarters. Quarters cannot exist independently of their fiscal year.</td>
+        </tr>
+        <tr>
+            <td><code>erp-quarter-has-period-rel</code></td>
+            <td><code>erp-fiscal-quarter</code></td>
+            <td><code>erp-fiscal-period</code></td>
+            <td><code>composition-relator</code></td>
+            <td>Quarter contains periods. Periods cannot exist independently of their quarter.</td>
+        </tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <!-- 5. INSTANCE DIAGRAM -->
+    <!-- ================================================================== -->
+    <h2>5. Instance Diagram (Sample Data)</h2>
+
+    <p>
+        The sample data includes two fiscal years: <strong>FY2025</strong> (fully closed/locked) and
+        <strong>FY2026</strong> (currently active with a mix of Closed and Open periods).
+        Each year has 4 quarters and 13 periods (including the P13 adjustment period under Q4).
+    </p>
+
+    <div class="mermaid">
+graph TB
+    subgraph FY2025["FY2025 — Closed"]
+        direction TB
+        Y25["erp-fy2025<br/>FY2025 - Fiscal Year 2025<br/>Status: Closed<br/>Jan 1 - Dec 31, 2025"]
+
+        subgraph Q25_1["Q1"]
+            Q25Q1["erp-fy2025-q1<br/>Q1 (seq 1)"]
+            P01_25["P01 January<br/>Locked"]
+            P02_25["P02 February<br/>Locked"]
+            P03_25["P03 March<br/>Locked"]
+        end
+
+        subgraph Q25_2["Q2"]
+            Q25Q2["erp-fy2025-q2<br/>Q2 (seq 2)"]
+            P04_25["P04 April<br/>Locked"]
+            P05_25["P05 May<br/>Locked"]
+            P06_25["P06 June<br/>Locked"]
+        end
+
+        subgraph Q25_3["Q3"]
+            Q25Q3["erp-fy2025-q3<br/>Q3 (seq 3)"]
+            P07_25["P07 July<br/>Locked"]
+            P08_25["P08 August<br/>Locked"]
+            P09_25["P09 September<br/>Locked"]
+        end
+
+        subgraph Q25_4["Q4"]
+            Q25Q4["erp-fy2025-q4<br/>Q4 (seq 4)"]
+            P10_25["P10 October<br/>Locked"]
+            P11_25["P11 November<br/>Locked"]
+            P12_25["P12 December<br/>Locked"]
+            P13_25["P13 Adjustment<br/>Locked"]
+        end
+
+        Y25 --> Q25Q1
+        Y25 --> Q25Q2
+        Y25 --> Q25Q3
+        Y25 --> Q25Q4
+        Q25Q1 --> P01_25
+        Q25Q1 --> P02_25
+        Q25Q1 --> P03_25
+        Q25Q2 --> P04_25
+        Q25Q2 --> P05_25
+        Q25Q2 --> P06_25
+        Q25Q3 --> P07_25
+        Q25Q3 --> P08_25
+        Q25Q3 --> P09_25
+        Q25Q4 --> P10_25
+        Q25Q4 --> P11_25
+        Q25Q4 --> P12_25
+        Q25Q4 --> P13_25
+    end
+
+    subgraph FY2026["FY2026 — Open (Active)"]
+        direction TB
+        Y26["erp-fy2026<br/>FY2026 - Fiscal Year 2026<br/>Status: Open<br/>Jan 1 - Dec 31, 2026"]
+
+        subgraph Q26_1["Q1"]
+            Q26Q1["erp-fy2026-q1<br/>Q1 (seq 1)"]
+            P01_26["P01 January<br/>Closed"]
+            P02_26["P02 February<br/>Closed"]
+            P03_26["P03 March<br/>Open"]
+        end
+
+        subgraph Q26_2["Q2"]
+            Q26Q2["erp-fy2026-q2<br/>Q2 (seq 2)"]
+            P04_26["P04 April<br/>Open"]
+            P05_26["P05 May<br/>Open"]
+            P06_26["P06 June<br/>Open"]
+        end
+
+        subgraph Q26_3["Q3"]
+            Q26Q3["erp-fy2026-q3<br/>Q3 (seq 3)"]
+            P07_26["P07 July<br/>Open"]
+            P08_26["P08 August<br/>Open"]
+            P09_26["P09 September<br/>Open"]
+        end
+
+        subgraph Q26_4["Q4"]
+            Q26Q4["erp-fy2026-q4<br/>Q4 (seq 4)"]
+            P10_26["P10 October<br/>Open"]
+            P11_26["P11 November<br/>Open"]
+            P12_26["P12 December<br/>Open"]
+            P13_26["P13 Adjustment<br/>Open"]
+        end
+
+        Y26 --> Q26Q1
+        Y26 --> Q26Q2
+        Y26 --> Q26Q3
+        Y26 --> Q26Q4
+        Q26Q1 --> P01_26
+        Q26Q1 --> P02_26
+        Q26Q1 --> P03_26
+        Q26Q2 --> P04_26
+        Q26Q2 --> P05_26
+        Q26Q2 --> P06_26
+        Q26Q3 --> P07_26
+        Q26Q3 --> P08_26
+        Q26Q3 --> P09_26
+        Q26Q4 --> P10_26
+        Q26Q4 --> P11_26
+        Q26Q4 --> P12_26
+        Q26Q4 --> P13_26
+    end
+
+    style Y25 fill:#ffcdd2,stroke:#c62828
+    style Y26 fill:#c8e6c9,stroke:#2e7d32
+    style P13_25 fill:#fff9c4,stroke:#f9a825
+    style P13_26 fill:#fff9c4,stroke:#f9a825
+    </div>
+
+    <h3>Instance Count Summary</h3>
+    <table>
+        <tr>
+            <th>Entity Type</th>
+            <th>FY2025</th>
+            <th>FY2026</th>
+            <th>Total</th>
+        </tr>
+        <tr><td>Fiscal Year</td><td>1</td><td>1</td><td>2</td></tr>
+        <tr><td>Fiscal Quarter</td><td>4</td><td>4</td><td>8</td></tr>
+        <tr><td>Fiscal Period</td><td>13</td><td>13</td><td>26</td></tr>
+        <tr><td>Year-Quarter Relator Instances</td><td>4</td><td>4</td><td>8</td></tr>
+        <tr><td>Quarter-Period Relator Instances</td><td>13</td><td>13</td><td>26</td></tr>
+        <tr><td>Fiscal Status Enum Instances</td><td colspan="2" style="text-align:center">4 (shared)</td><td>4</td></tr>
+        <tr><td><strong>Grand Total</strong></td><td colspan="2"></td><td><strong>74</strong></td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <!-- 6. STATE MACHINE -->
+    <!-- ================================================================== -->
+    <h2>6. State Machine — Fiscal Status Transitions</h2>
+
+    <p>
+        Period and year status controls whether financial transactions can be posted.
+        The transition rules enforce a strictly forward lifecycle. At Layer 0 we define the states
+        and semantics; enforcement logic (rejecting postings to closed periods) belongs to Layer 1
+        when journal entry processing is implemented.
+    </p>
+
+    <div class="mermaid">
+stateDiagram-v2
+    [*] --> Open : Period created
+
+    Open --> Closed : Month-end close
+    Open --> Adjustment : Year-end (P13 only)
+
+    Adjustment --> Closed : Adjustments complete
+
+    Closed --> Locked : Audit finalized
+
+    Locked --> [*] : Permanently sealed
+
+    state Open {
+        [*] --> Active
+        Active : Posting allowed
+        Active : Transactions can be created,
+        Active : modified, and deleted
+    }
+
+    state Adjustment {
+        [*] --> Restricted
+        Restricted : Posting restricted
+        Restricted : Only designated adjustment
+        Restricted : journal entries accepted
+    }
+
+    state Closed {
+        [*] --> Finalized
+        Finalized : No posting
+        Finalized : Period finalized for reporting
+        Finalized : Reopening requires authorization
+    }
+
+    state Locked {
+        [*] --> Sealed
+        Sealed : No posting
+        Sealed : Cannot be reopened
+        Sealed : Audit/compliance requirement
+    }
+    </div>
+
+    <table>
+        <tr>
+            <th>Status</th>
+            <th>Posting Allowed</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td><strong>Open</strong></td>
+            <td>Yes</td>
+            <td>Normal posting period. Transactions can be created, modified, and deleted.</td>
+        </tr>
+        <tr>
+            <td><strong>Adjustment</strong></td>
+            <td>Yes (restricted)</td>
+            <td>Year-end adjustments only. Only designated adjustment journal entries accepted. Used for P13.</td>
+        </tr>
+        <tr>
+            <td><strong>Closed</strong></td>
+            <td>No</td>
+            <td>Period finalized for reporting. Reopening requires explicit authorization.</td>
+        </tr>
+        <tr>
+            <td><strong>Locked</strong></td>
+            <td>No</td>
+            <td>Permanently sealed. Cannot be reopened. Required for audit and compliance.</td>
+        </tr>
+    </table>
+
+    <h3>Typical Year-End Lifecycle</h3>
+    <div class="mermaid">
+sequenceDiagram
+    participant Finance
+    participant P12 as P12 December
+    participant P13 as P13 Adjustment
+    participant FY as Fiscal Year
+    participant Audit
+
+    Finance->>P12: Close period (Open -> Closed)
+    Finance->>P13: Begin adjustments (Open -> Adjustment)
+    Note over P13: Accruals, deferrals,<br/>reclassifications recorded
+    Finance->>P13: Complete adjustments (Adjustment -> Closed)
+    Finance->>FY: Close year (Open -> Closed)
+    Audit->>P12: Lock period (Closed -> Locked)
+    Audit->>P13: Lock period (Closed -> Locked)
+    Note over Audit: Repeat for all periods P01-P11
+    Audit->>FY: Lock year (Closed -> Locked)
+    Note over FY: Permanently sealed
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- 7. PROPERTY CATALOG -->
+    <!-- ================================================================== -->
+    <h2>7. Property Catalog</h2>
+
+    <h3>erp-fiscal-year</h3>
+    <table>
+        <tr>
+            <th>Property ID</th>
+            <th>Label</th>
+            <th>Value Type</th>
+            <th>Frame</th>
+            <th>Label Participation</th>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-year-code-prop</code></td>
+            <td>Fiscal Year Code</td>
+            <td>Categorical</td>
+            <td>--</td>
+            <td>Yes, seq 1</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-year-name-prop</code></td>
+            <td>Fiscal Year Name</td>
+            <td>Textual</td>
+            <td>--</td>
+            <td>Yes, seq 2</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-year-start-date-prop</code></td>
+            <td>Start Date</td>
+            <td>Measurement</td>
+            <td><code>std-timestamp</code></td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-year-end-date-prop</code></td>
+            <td>End Date</td>
+            <td>Measurement</td>
+            <td><code>std-timestamp</code></td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-year-status-prop</code></td>
+            <td>Status</td>
+            <td>Categorical</td>
+            <td>-- (ref: <code>erp-fiscal-status</code>)</td>
+            <td>No</td>
+        </tr>
+    </table>
+    <p><strong>Instance label example:</strong> <code>FY2026 - Fiscal Year 2026</code></p>
+
+    <h3>erp-fiscal-quarter</h3>
+    <table>
+        <tr>
+            <th>Property ID</th>
+            <th>Label</th>
+            <th>Value Type</th>
+            <th>Frame</th>
+            <th>Label Participation</th>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-quarter-code-prop</code></td>
+            <td>Quarter Code</td>
+            <td>Categorical</td>
+            <td>--</td>
+            <td>Yes, seq 1</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-quarter-sequence-prop</code></td>
+            <td>Sequence</td>
+            <td>Measurement</td>
+            <td><code>std-integer</code></td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-quarter-start-date-prop</code></td>
+            <td>Start Date</td>
+            <td>Measurement</td>
+            <td><code>std-timestamp</code></td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-quarter-end-date-prop</code></td>
+            <td>End Date</td>
+            <td>Measurement</td>
+            <td><code>std-timestamp</code></td>
+            <td>No</td>
+        </tr>
+    </table>
+    <p><strong>Instance label example:</strong> <code>Q3</code> (separator is empty string, max_length 20)</p>
+
+    <h3>erp-fiscal-period</h3>
+    <table>
+        <tr>
+            <th>Property ID</th>
+            <th>Label</th>
+            <th>Value Type</th>
+            <th>Frame</th>
+            <th>Label Participation</th>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-period-code-prop</code></td>
+            <td>Period Code</td>
+            <td>Categorical</td>
+            <td>--</td>
+            <td>Yes, seq 1</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-period-name-prop</code></td>
+            <td>Period Name</td>
+            <td>Textual</td>
+            <td>--</td>
+            <td>Yes, seq 2</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-period-sequence-prop</code></td>
+            <td>Sequence</td>
+            <td>Measurement</td>
+            <td><code>std-integer</code></td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-period-start-date-prop</code></td>
+            <td>Start Date</td>
+            <td>Measurement</td>
+            <td><code>std-timestamp</code></td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-period-end-date-prop</code></td>
+            <td>End Date</td>
+            <td>Measurement</td>
+            <td><code>std-timestamp</code></td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-period-status-prop</code></td>
+            <td>Status</td>
+            <td>Categorical</td>
+            <td>-- (ref: <code>erp-fiscal-status</code>)</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-period-is-adjustment-prop</code></td>
+            <td>Is Adjustment Period</td>
+            <td>Boolean</td>
+            <td>--</td>
+            <td>No</td>
+        </tr>
+    </table>
+    <p><strong>Instance label example:</strong> <code>P07 - July</code> or <code>P13 - Adjustment</code></p>
+
+    <h3>erp-fiscal-status (Enum)</h3>
+    <table>
+        <tr>
+            <th>Property ID</th>
+            <th>Label</th>
+            <th>Value Type</th>
+            <th>Frame</th>
+            <th>Label Participation</th>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-status-name-prop</code></td>
+            <td>Status Name</td>
+            <td>Categorical</td>
+            <td>--</td>
+            <td>Yes, seq 1</td>
+        </tr>
+    </table>
+    <p><strong>Enum instances:</strong> <code>Open</code>, <code>Closed</code>, <code>Adjustment</code>, <code>Locked</code></p>
+
+    <h3>erp-calendar-coverage-summary (Artifact Target)</h3>
+    <table>
+        <tr>
+            <th>Property ID</th>
+            <th>Label</th>
+            <th>Value Type</th>
+            <th>Frame</th>
+            <th>Label Participation</th>
+        </tr>
+        <tr>
+            <td><code>erp-coverage-fiscal-year-prop</code></td>
+            <td>Fiscal Year</td>
+            <td>Categorical</td>
+            <td>--</td>
+            <td>Yes, seq 1</td>
+        </tr>
+        <tr>
+            <td><code>erp-coverage-status-prop</code></td>
+            <td>Period Status</td>
+            <td>Categorical</td>
+            <td>--</td>
+            <td>Yes, seq 2</td>
+        </tr>
+        <tr>
+            <td><code>erp-coverage-period-count-prop</code></td>
+            <td>Period Count</td>
+            <td>Measurement</td>
+            <td><code>std-integer</code></td>
+            <td>No</td>
+        </tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <!-- 8. CROSS-LAYER REFERENCES -->
+    <!-- ================================================================== -->
+    <h2>8. Cross-Layer References</h2>
+
+    <p>
+        These connections are <strong>not implemented in Layer 0</strong> but are documented here so that
+        higher-layer blocks know how to connect to the fiscal calendar.
+    </p>
+
+    <div class="mermaid">
+graph TB
+    subgraph Layer0["Layer 0 — Fiscal Calendar"]
+        FP["erp-fiscal-period"]
+        FQ["erp-fiscal-quarter"]
+        FY["erp-fiscal-year"]
+    end
+
+    subgraph Layer1["Layer 1 — Transactional"]
+        JE["Journal Entry"]
+        BU["Budget"]
+        AG["Agreement Validity"]
+    end
+
+    subgraph Layer2["Layer 2 — Reporting & Analytics"]
+        FS["Financial Statement"]
+        QR["Quarterly Report"]
+        OK["OKR Cycle"]
+    end
+
+    FP -->|"attribution: posted in"| JE
+    FP -->|"attribution: budgeted for"| BU
+    FP -->|"association: valid during"| AG
+    FY -->|"attribution: reported for"| FS
+    FQ -->|"attribution: reported for"| QR
+    FP -->|"association: aligned with"| OK
+
+    style Layer0 fill:#d4edda,stroke:#155724
+    style Layer1 fill:#e3f2fd,stroke:#1565c0
+    style Layer2 fill:#f3e5f5,stroke:#6a1b9a
+    </div>
+
+    <table>
+        <tr>
+            <th>Source (this block)</th>
+            <th>Target Block (Layer)</th>
+            <th>Relator Type</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-period</code></td>
+            <td>Journal Entry (L1)</td>
+            <td><code>attribution-relator</code></td>
+            <td>"Posted in." Every journal entry is attributed to exactly one fiscal period. The period status determines whether posting is allowed.</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-period</code></td>
+            <td>Budget (L1)</td>
+            <td><code>attribution-relator</code></td>
+            <td>"Budgeted for." Budget allocations are scoped to fiscal periods. Budget vs Actual reports compare within the same period.</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-period</code></td>
+            <td>Agreement Validity (L1)</td>
+            <td><code>association-relator</code></td>
+            <td>"Valid during." Contracts and agreements may reference fiscal periods for billing cycles and renewal windows.</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-year</code></td>
+            <td>Financial Statement (L2)</td>
+            <td><code>attribution-relator</code></td>
+            <td>"Reported for." Annual Balance Sheet and Income Statement are generated for a fiscal year.</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-quarter</code></td>
+            <td>Quarterly Report (L2)</td>
+            <td><code>attribution-relator</code></td>
+            <td>"Reported for." Quarterly financial reports aggregate period data within the quarter.</td>
+        </tr>
+        <tr>
+            <td><code>erp-fiscal-period</code></td>
+            <td>OKR Cycle (L2)</td>
+            <td><code>association-relator</code></td>
+            <td>"Aligned with." OKR review cycles may align with fiscal quarters or periods for integrated performance reporting.</td>
+        </tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <!-- 9. DECISION POINTS -->
+    <!-- ================================================================== -->
+    <h2>9. Decision Points</h2>
+
+    <div class="decision-box">
+        <h3>Composition for Year - Quarter - Period</h3>
+        <p><strong>Decision:</strong> Use composition relators (not aggregation) for both Year-Quarter and Quarter-Period relationships.</p>
+        <p><strong>Rationale:</strong> The lifecycle of child entities is fully dependent on the parent.
+        "Q3" only makes sense as "Q3 of FY2026." If FY2026 is deleted (e.g., created in error before any transactions),
+        its quarters must be destroyed. Similarly, "P07 - July" exists only within "Q3 of FY2026."
+        This makes auto-instantiation appropriate: creating a fiscal year deterministically produces its full
+        structural tree of quarters and periods.</p>
+        <p><strong>Alternative considered:</strong> Aggregation would allow quarters and periods to exist independently,
+        which is semantically incorrect for fiscal calendar structures.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Perdurant Temporal Nature</h3>
+        <p><strong>Decision:</strong> All calendar entities (year, quarter, period) are Perdurant.</p>
+        <p><strong>Rationale:</strong> These entities represent stretches of time with definite start and end dates.
+        FY2025 began on January 1, 2025 and ended on December 31, 2025. It came into existence, persisted for
+        12 months, and then ended. This is the hallmark of a Perdurant entity, as opposed to Endurant entities
+        like GL accounts that exist continuously without temporal boundaries.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Period 13 Support</h3>
+        <p><strong>Decision:</strong> Include a 13th adjustment period (P13) under Q4.</p>
+        <p><strong>Rationale:</strong> Many accounting standards and enterprise systems (SAP, Oracle Financials)
+        require a 13th period for year-end adjustments (accruals, deferrals, reclassifications). P13 is
+        structurally a Q4 period with <code>is_adjustment_period = true</code> and sequence 13. Its date range
+        intentionally overlaps P12 (same end date as the fiscal year). This gives clean period-over-period
+        comparisons because adjustment entries are isolated from regular period activity.</p>
+        <p><strong>Structural note:</strong> There is no direct Year-Period composition. P13 lives under Q4 via the
+        <code>erp-quarter-has-period-rel</code> relator, making Q4 the only quarter with 4 periods instead of 3.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Fiscal Year May Differ from Calendar Year</h3>
+        <p><strong>Decision:</strong> Decouple fiscal year from calendar year via explicit <code>start_date</code> and <code>end_date</code> properties.</p>
+        <p><strong>Rationale:</strong> Organizations worldwide use different fiscal year boundaries:</p>
+        <ul>
+            <li><strong>US federal government:</strong> October 1 - September 30</li>
+            <li><strong>UK tax year:</strong> April 6 - April 5</li>
+            <li><strong>Japanese fiscal year:</strong> April 1 - March 31</li>
+            <li><strong>Retail 4-5-4 calendar:</strong> Variable week-based periods</li>
+        </ul>
+        <p>The code property (<code>FY2026</code>) follows the convention of naming by the year in which the fiscal year ends,
+        which is the most common international convention.</p>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- 10. ARTIFACT DEFINITION -->
+    <!-- ================================================================== -->
+    <h2>10. Artifact Definition: Calendar Coverage Summary</h2>
+
+    <p>
+        Even at Layer 0 with no transactional data, one analytical artifact is immediately useful:
+        a summary of fiscal periods grouped by year and status.
+    </p>
+
+    <div class="info-box">
+        <strong>Purpose:</strong> At-a-glance view of which fiscal years have all periods defined,
+        and which periods are open vs closed. Identifies incomplete calendar setup (missing periods)
+        and year-end close progress (how many periods remain open).
+    </div>
+
+    <table>
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>ID</td><td><code>erp-calendar-coverage-artifact</code></td></tr>
+        <tr><td>Name</td><td>Calendar Coverage Summary</td></tr>
+        <tr><td>Source Universal</td><td><code>erp-fiscal-period</code></td></tr>
+        <tr><td>Artifact Target Universal</td><td><code>erp-calendar-coverage-summary</code></td></tr>
+        <tr><td>Materialization</td><td>Eager</td></tr>
+    </table>
+
+    <h3>Dimensions</h3>
+    <table>
+        <tr>
+            <th>Dimension</th>
+            <th>Code</th>
+            <th>Source Type</th>
+            <th>Source Details</th>
+            <th>Artifact Property</th>
+        </tr>
+        <tr>
+            <td>Fiscal Year</td>
+            <td><code>fiscal_year</code></td>
+            <td>RelatorPath</td>
+            <td>
+                Period &rarr; <code>erp-quarter-has-period-rel</code> (composite role) &rarr; Quarter
+                &rarr; <code>erp-year-has-quarter-rel</code> (composite role) &rarr; Year
+                &rarr; <code>erp-fiscal-year-code-prop</code>
+            </td>
+            <td><code>erp-coverage-fiscal-year-prop</code></td>
+        </tr>
+        <tr>
+            <td>Period Status</td>
+            <td><code>period_status</code></td>
+            <td>Property (direct)</td>
+            <td><code>erp-fiscal-period-status-prop</code></td>
+            <td><code>erp-coverage-status-prop</code></td>
+        </tr>
+    </table>
+
+    <h3>Measures</h3>
+    <table>
+        <tr>
+            <th>Measure</th>
+            <th>Code</th>
+            <th>Function</th>
+            <th>Artifact Property</th>
+        </tr>
+        <tr>
+            <td>Period Count</td>
+            <td><code>period_count</code></td>
+            <td>Count</td>
+            <td><code>erp-coverage-period-count-prop</code></td>
+        </tr>
+    </table>
+
+    <h3>Relator Path Traversal</h3>
+    <div class="mermaid">
+graph LR
+    FP["Fiscal Period<br/>(source)"] -->|"erp-quarter-has-period-rel<br/>role: composite"| FQ["Fiscal Quarter"]
+    FQ -->|"erp-year-has-quarter-rel<br/>role: composite"| FY["Fiscal Year"]
+    FY -->|"erp-fiscal-year-code-prop"| Code["FY2026"]
+
+    style FP fill:#e3f2fd,stroke:#1565c0
+    style FQ fill:#e3f2fd,stroke:#1565c0
+    style FY fill:#e3f2fd,stroke:#1565c0
+    style Code fill:#fff9c4,stroke:#f9a825
+    </div>
+
+    <h3>Expected Output (from sample data)</h3>
+    <table>
+        <tr>
+            <th>Fiscal Year</th>
+            <th>Period Status</th>
+            <th>Period Count</th>
+        </tr>
+        <tr><td>FY2025</td><td>Locked</td><td>13</td></tr>
+        <tr><td>FY2026</td><td>Closed</td><td>2</td></tr>
+        <tr><td>FY2026</td><td>Open</td><td>11</td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <!-- 11. EVENT DEFINITIONS -->
+    <!-- ================================================================== -->
+    <h2>11. Event Definitions</h2>
+
+    <p>
+        The fiscal calendar module publishes two event types when fiscal statuses change.
+        These events enable higher-layer blocks (journal entry processing, reporting) to react
+        to period opens/closes without polling.
+    </p>
+
+    <table>
+        <tr>
+            <th>Event ID</th>
+            <th>Label</th>
+            <th>Scope</th>
+            <th>Payload Fields</th>
+        </tr>
+        <tr>
+            <td><code>erp-period-status-changed-event</code></td>
+            <td>Period Status Changed</td>
+            <td>tenant</td>
+            <td>
+                <code>period_id</code> (uuid),
+                <code>period_code</code> (string),
+                <code>fiscal_year_code</code> (string),
+                <code>old_status</code> (string),
+                <code>new_status</code> (string)
+            </td>
+        </tr>
+        <tr>
+            <td><code>erp-year-status-changed-event</code></td>
+            <td>Year Status Changed</td>
+            <td>tenant</td>
+            <td>
+                <code>year_id</code> (uuid),
+                <code>year_code</code> (string),
+                <code>old_status</code> (string),
+                <code>new_status</code> (string)
+            </td>
+        </tr>
+    </table>
+
+    <div class="info-box">
+        The app module (<code>erp-fiscal-calendar-module</code>) declares these as <code>publishable_events</code>
+        but subscribes to no events -- consistent with Layer 0 having no upstream dependencies.
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- 12. LAYER INFORMATION -->
+    <!-- ================================================================== -->
+    <h2>12. Layer Information</h2>
+
+    <table>
+        <tr><th>Property</th><th>Value</th></tr>
+        <tr><td>Layer</td><td><span class="layer-badge layer-0">Layer 0</span></td></tr>
+        <tr><td>Dependencies</td><td>None (independently deployable)</td></tr>
+        <tr><td>Depends on Foundation</td><td>Yes (standard measurement frames: <code>std-timestamp</code>, <code>std-integer</code>; foundation relator: <code>composition-relator</code>)</td></tr>
+        <tr><td>Required by</td><td>Journal Entry (L1), Budget (L1), Financial Statements (L2), Quarterly Reports (L2)</td></tr>
+        <tr><td>App ID</td><td><code>erp-fiscal-calendar-app</code></td></tr>
+        <tr><td>Module</td><td><code>erp-fiscal-calendar-module</code></td></tr>
+        <tr><td>Tenant</td><td><code>model1-testing-tenant</code> (standard testing tenant)</td></tr>
+    </table>
+
+    <div class="info-box">
+        <strong>Independently deployable</strong> means this metadata app can be loaded into a broker
+        with only the foundation bootstrap in place. No other ERP blocks need to exist. This makes it
+        ideal as the first block to deploy when setting up an ERP environment.
+    </div>
+
+    <h3>Deployment Dependency Graph</h3>
+    <div class="mermaid">
+graph TB
+    FOUND["Foundation Bootstrap<br/>(measurement frames,<br/>foundation relators)"]
+    L0["Layer 0<br/>Fiscal Calendar"]
+    L1A["Layer 1<br/>Chart of Accounts"]
+    L1B["Layer 1<br/>Journal Entry"]
+    L1C["Layer 1<br/>Budget"]
+    L2A["Layer 2<br/>Financial Statements"]
+
+    FOUND --> L0
+    L0 --> L1B
+    L0 --> L1C
+    L1A --> L1B
+    L1B --> L2A
+    L1C --> L2A
+
+    style FOUND fill:#e8eaf6,stroke:#283593
+    style L0 fill:#d4edda,stroke:#155724,stroke-width:3px
+    style L1A fill:#e3f2fd,stroke:#1565c0
+    style L1B fill:#e3f2fd,stroke:#1565c0
+    style L1C fill:#e3f2fd,stroke:#1565c0
+    style L2A fill:#f3e5f5,stroke:#6a1b9a
+    </div>
+
+    <script>mermaid.initialize({startOnLoad: true, theme: 'default', securityLevel: 'loose'});</script>
+</body>
+</html>

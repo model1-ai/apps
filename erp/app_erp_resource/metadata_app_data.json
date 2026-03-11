@@ -1,0 +1,599 @@
+{
+    "_comment": "=== ERP RESOURCE CATALOG - INSTANCE DATA ===",
+    "_description": "Enum instances (status, depreciation method), resource categories, and sample resources across all subtypes.",
+
+    "instances": [
+        {
+            "_comment": "=== RESOURCE STATUS ENUM INSTANCES ===",
+            "id": "erp-resource-status-active",
+            "universal_id": "erp-resource-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-resource-status-name-prop": "ACTIVE" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-resource-status-discontinued",
+            "universal_id": "erp-resource-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-resource-status-name-prop": "DISCONTINUED" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-resource-status-pending",
+            "universal_id": "erp-resource-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-resource-status-name-prop": "PENDING" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-resource-status-blocked",
+            "universal_id": "erp-resource-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-resource-status-name-prop": "BLOCKED" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== DEPRECIATION METHOD ENUM INSTANCES ===",
+            "id": "erp-depreciation-straight-line",
+            "universal_id": "erp-depreciation-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-depreciation-method-name-prop": "STRAIGHT_LINE" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-depreciation-declining-balance",
+            "universal_id": "erp-depreciation-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-depreciation-method-name-prop": "DECLINING_BALANCE" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-depreciation-units-of-production",
+            "universal_id": "erp-depreciation-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-depreciation-method-name-prop": "UNITS_OF_PRODUCTION" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== RESOURCE CATEGORIES (top-level) ===",
+            "id": "erp-cat-electronics",
+            "universal_id": "erp-resource-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-resource-category-code-prop": "ELEC",
+                "erp-resource-category-name-prop": { "en": "Electronics" },
+                "erp-resource-category-description-prop": { "en": "Electronic components, assemblies, and equipment" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cat-services",
+            "universal_id": "erp-resource-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-resource-category-code-prop": "SVC",
+                "erp-resource-category-name-prop": { "en": "Services" },
+                "erp-resource-category-description-prop": { "en": "Professional and managed services" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cat-raw-materials",
+            "universal_id": "erp-resource-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-resource-category-code-prop": "RAW",
+                "erp-resource-category-name-prop": { "en": "Raw Materials" },
+                "erp-resource-category-description-prop": { "en": "Manufacturing inputs and production components" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cat-software",
+            "universal_id": "erp-resource-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-resource-category-code-prop": "SW",
+                "erp-resource-category-name-prop": { "en": "Software" },
+                "erp-resource-category-description-prop": { "en": "Software licenses and digital tools" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cat-equipment",
+            "universal_id": "erp-resource-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-resource-category-code-prop": "EQUIP",
+                "erp-resource-category-name-prop": { "en": "Equipment" },
+                "erp-resource-category-description-prop": { "en": "Fixed assets including machinery and infrastructure" }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RESOURCE CATEGORIES (sub-categories) ===",
+            "id": "erp-cat-elec-components",
+            "universal_id": "erp-resource-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-resource-category-code-prop": "ELEC-COMP",
+                "erp-resource-category-name-prop": { "en": "Electronic Components" },
+                "erp-resource-category-description-prop": { "en": "Resistors, capacitors, ICs, and discrete components" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cat-elec-assemblies",
+            "universal_id": "erp-resource-category",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-resource-category-code-prop": "ELEC-ASSY",
+                "erp-resource-category-name-prop": { "en": "Electronic Assemblies" },
+                "erp-resource-category-description-prop": { "en": "Circuit boards, power supplies, and assembled modules" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== PHYSICAL ITEMS ===",
+            "id": "erp-item-resistor-10k",
+            "universal_id": "erp-physical-item",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "ELEC-R10K",
+                "erp-resource-name-prop": { "en": "10K Ohm Resistor" },
+                "erp-resource-description-prop": { "en": "1/4W carbon film resistor, 10K Ohm, 5% tolerance" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "each",
+                "erp-tangible-weight-prop": { "value": 0.001, "unit": "kg" },
+                "erp-tangible-is-tracked-prop": false,
+                "erp-item-sku-prop": "SKU-R10K-CF25",
+                "erp-item-is-purchasable-prop": true,
+                "erp-item-is-sellable-prop": true,
+                "erp-item-standard-cost-prop": { "value": 0.02, "unit": "usd" },
+                "erp-item-list-price-prop": { "value": 0.05, "unit": "usd" },
+                "erp-item-is-serialized-prop": false,
+                "erp-item-is-lot-tracked-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-item-pcb-main",
+            "universal_id": "erp-physical-item",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "ELEC-PCB01",
+                "erp-resource-name-prop": { "en": "Main Controller PCB" },
+                "erp-resource-description-prop": { "en": "4-layer FR4 main controller printed circuit board" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "each",
+                "erp-tangible-weight-prop": { "value": 0.15, "unit": "kg" },
+                "erp-tangible-volume-prop": { "value": 0.0002, "unit": "liter" },
+                "erp-tangible-is-tracked-prop": true,
+                "erp-item-sku-prop": "SKU-PCB-MAIN-V3",
+                "erp-item-is-purchasable-prop": true,
+                "erp-item-is-sellable-prop": true,
+                "erp-item-standard-cost-prop": { "value": 45.00, "unit": "usd" },
+                "erp-item-list-price-prop": { "value": 89.99, "unit": "usd" },
+                "erp-item-is-serialized-prop": true,
+                "erp-item-is-lot-tracked-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-item-power-supply",
+            "universal_id": "erp-physical-item",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "ELEC-PS500",
+                "erp-resource-name-prop": { "en": "500W Power Supply" },
+                "erp-resource-description-prop": { "en": "500W ATX power supply, 80+ Gold certified" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "each",
+                "erp-tangible-weight-prop": { "value": 1.8, "unit": "kg" },
+                "erp-tangible-volume-prop": { "value": 3.5, "unit": "liter" },
+                "erp-tangible-is-tracked-prop": true,
+                "erp-item-sku-prop": "SKU-PS-500G",
+                "erp-item-is-purchasable-prop": true,
+                "erp-item-is-sellable-prop": true,
+                "erp-item-standard-cost-prop": { "value": 55.00, "unit": "usd" },
+                "erp-item-list-price-prop": { "value": 99.99, "unit": "usd" },
+                "erp-item-is-serialized-prop": true,
+                "erp-item-is-lot-tracked-prop": false
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FIXED ASSETS ===",
+            "id": "erp-asset-cnc-mill",
+            "universal_id": "erp-fixed-asset",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "EQUIP-CNC01",
+                "erp-resource-name-prop": { "en": "CNC Milling Machine" },
+                "erp-resource-description-prop": { "en": "5-axis CNC milling center for precision manufacturing" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "each",
+                "erp-tangible-weight-prop": { "value": 8500.0, "unit": "kg" },
+                "erp-tangible-is-tracked-prop": true,
+                "erp-asset-acquisition-date-prop": "2024-03-15",
+                "erp-asset-useful-life-prop": { "value": 315360000, "unit": "seconds" },
+                "erp-asset-salvage-value-prop": { "value": 25000.00, "unit": "usd" },
+                "erp-asset-depreciation-method-prop": "STRAIGHT_LINE"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-asset-forklift",
+            "universal_id": "erp-fixed-asset",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "EQUIP-FL02",
+                "erp-resource-name-prop": { "en": "Electric Forklift" },
+                "erp-resource-description-prop": { "en": "3-ton electric counterbalance forklift for warehouse operations" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "each",
+                "erp-tangible-weight-prop": { "value": 4200.0, "unit": "kg" },
+                "erp-tangible-is-tracked-prop": true,
+                "erp-asset-acquisition-date-prop": "2023-11-01",
+                "erp-asset-useful-life-prop": { "value": 252288000, "unit": "seconds" },
+                "erp-asset-salvage-value-prop": { "value": 8000.00, "unit": "usd" },
+                "erp-asset-depreciation-method-prop": "DECLINING_BALANCE"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== RAW MATERIALS ===",
+            "id": "erp-raw-copper-wire",
+            "universal_id": "erp-raw-material",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "RAW-CU-WIRE",
+                "erp-resource-name-prop": { "en": "Copper Wire 22AWG" },
+                "erp-resource-description-prop": { "en": "22AWG solid copper wire for circuit board manufacturing" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "kg",
+                "erp-tangible-weight-prop": { "value": 1.0, "unit": "kg" },
+                "erp-tangible-is-tracked-prop": true,
+                "erp-raw-min-order-qty-prop": { "value": 50, "unit": "units" },
+                "erp-raw-lead-time-days-prop": { "value": 14, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-raw-solder-paste",
+            "universal_id": "erp-raw-material",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "RAW-SLD-P",
+                "erp-resource-name-prop": { "en": "Lead-Free Solder Paste" },
+                "erp-resource-description-prop": { "en": "SAC305 lead-free solder paste for SMT assembly" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "kg",
+                "erp-tangible-weight-prop": { "value": 1.0, "unit": "kg" },
+                "erp-tangible-is-tracked-prop": true,
+                "erp-raw-min-order-qty-prop": { "value": 10, "unit": "units" },
+                "erp-raw-lead-time-days-prop": { "value": 7, "unit": "count" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== SERVICE ITEMS ===",
+            "id": "erp-svc-consulting",
+            "universal_id": "erp-service-item",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "SVC-CONSULT",
+                "erp-resource-name-prop": { "en": "Engineering Consulting" },
+                "erp-resource-description-prop": { "en": "Professional engineering consulting services" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "hour",
+                "erp-intangible-renewal-terms-prop": { "en": "Annual renewal with 30-day notice period" },
+                "erp-service-billing-unit-prop": "hourly",
+                "erp-service-default-rate-prop": { "value": 175.00, "unit": "usd" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-svc-cloud-hosting",
+            "universal_id": "erp-service-item",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "SVC-CLOUD",
+                "erp-resource-name-prop": { "en": "Cloud Hosting Service" },
+                "erp-resource-description-prop": { "en": "Managed cloud infrastructure hosting" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "month",
+                "erp-intangible-renewal-terms-prop": { "en": "Monthly auto-renewal, cancel anytime" },
+                "erp-service-billing-unit-prop": "monthly",
+                "erp-service-default-rate-prop": { "value": 2500.00, "unit": "usd" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== INFORMATION RESOURCES ===",
+            "id": "erp-info-design-specs",
+            "universal_id": "erp-information-resource",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "INFO-SPEC01",
+                "erp-resource-name-prop": { "en": "Product Design Specifications" },
+                "erp-resource-description-prop": { "en": "Complete product design specifications and engineering drawings" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "document",
+                "erp-info-format-prop": "PDF",
+                "erp-info-classification-prop": "Confidential"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FINANCIAL INSTRUMENTS ===",
+            "id": "erp-fin-corporate-bond",
+            "universal_id": "erp-financial-instrument",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "FIN-BOND01",
+                "erp-resource-name-prop": { "en": "Corporate Bond Series A" },
+                "erp-resource-description-prop": { "en": "5-year corporate bond, 4.5% coupon" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "unit",
+                "erp-fin-face-value-prop": { "value": 1000.00, "unit": "usd" },
+                "erp-fin-maturity-date-prop": "2029-06-15",
+                "erp-fin-instrument-type-prop": "Bond"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== LICENSES ===",
+            "id": "erp-lic-cad-software",
+            "universal_id": "erp-license",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "LIC-CAD01",
+                "erp-resource-name-prop": { "en": "CAD Software License" },
+                "erp-resource-description-prop": { "en": "Enterprise CAD/CAM software license for engineering department" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "license",
+                "erp-intangible-expiry-date-prop": "2027-03-31",
+                "erp-intangible-renewal-terms-prop": { "en": "Annual subscription, 60-day notice for cancellation" },
+                "erp-license-seat-count-prop": { "value": 25, "unit": "count" },
+                "erp-license-license-type-prop": "Subscription"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-lic-erp-system",
+            "universal_id": "erp-license",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "LIC-ERP01",
+                "erp-resource-name-prop": { "en": "ERP System License" },
+                "erp-resource-description-prop": { "en": "Perpetual ERP system license with annual maintenance" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "license",
+                "erp-intangible-renewal-terms-prop": { "en": "Perpetual license; annual maintenance renewal at 20% of list" },
+                "erp-license-seat-count-prop": { "value": 100, "unit": "count" },
+                "erp-license-license-type-prop": "Perpetual"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== LABOR CAPACITY ===",
+            "id": "erp-labor-engineering",
+            "universal_id": "erp-labor-capacity",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "CAP-LABOR-ENG",
+                "erp-resource-name-prop": { "en": "Engineering Team Capacity" },
+                "erp-resource-description-prop": { "en": "Monthly engineering labor capacity for product development" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "hour",
+                "erp-capacity-total-prop": { "value": 640.0, "unit": "scalar" },
+                "erp-capacity-available-prop": { "value": 160.0, "unit": "scalar" },
+                "erp-labor-period-prop": "monthly",
+                "erp-labor-fte-equivalent-prop": { "value": 4.0, "unit": "scalar" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== MACHINE CAPACITY ===",
+            "id": "erp-machine-cnc-capacity",
+            "universal_id": "erp-machine-capacity",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "CAP-MACH-CNC",
+                "erp-resource-name-prop": { "en": "CNC Machine Capacity" },
+                "erp-resource-description-prop": { "en": "Weekly CNC milling machine capacity" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "hour",
+                "erp-capacity-total-prop": { "value": 120.0, "unit": "scalar" },
+                "erp-capacity-available-prop": { "value": 45.0, "unit": "scalar" },
+                "erp-machine-hours-per-shift-prop": { "value": 8.0, "unit": "scalar" },
+                "erp-machine-shifts-per-day-prop": { "value": 3, "unit": "count" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== STORAGE CAPACITY ===",
+            "id": "erp-storage-warehouse-a",
+            "universal_id": "erp-storage-capacity",
+            "tenant_id": "model1-testing-tenant",
+            "skip_composition": true,
+            "properties": {
+                "erp-resource-code-prop": "CAP-STOR-WHA",
+                "erp-resource-name-prop": { "en": "Warehouse A Storage" },
+                "erp-resource-description-prop": { "en": "Climate-controlled warehouse A pallet storage capacity" },
+                "erp-resource-status-prop": "ACTIVE",
+                "erp-resource-unit-of-measure-prop": "pallet",
+                "erp-capacity-total-prop": { "value": 500.0, "unit": "scalar" },
+                "erp-capacity-available-prop": { "value": 125.0, "unit": "scalar" },
+                "erp-storage-unit-prop": "pallet_positions",
+                "erp-storage-is-climate-controlled-prop": true
+            },
+            "use_seed": true
+        }
+    ],
+
+    "relator_instances": [
+        {
+            "_comment": "=== Category hierarchy: Electronics -> Components ===",
+            "id": "erp-cat-hier-elec-components",
+            "relator_id": "erp-category-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "parent": "erp-cat-electronics",
+                "child": "erp-cat-elec-components"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Category hierarchy: Electronics -> Assemblies ===",
+            "id": "erp-cat-hier-elec-assemblies",
+            "relator_id": "erp-category-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "parent": "erp-cat-electronics",
+                "child": "erp-cat-elec-assemblies"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Resource -> Category classifications ===",
+            "id": "erp-class-resistor-components",
+            "relator_id": "erp-resource-category-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "resource": "erp-item-resistor-10k",
+                "category": "erp-cat-elec-components"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-class-pcb-assemblies",
+            "relator_id": "erp-resource-category-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "resource": "erp-item-pcb-main",
+                "category": "erp-cat-elec-assemblies"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-class-psu-assemblies",
+            "relator_id": "erp-resource-category-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "resource": "erp-item-power-supply",
+                "category": "erp-cat-elec-assemblies"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-class-cnc-equipment",
+            "relator_id": "erp-resource-category-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "resource": "erp-asset-cnc-mill",
+                "category": "erp-cat-equipment"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-class-forklift-equipment",
+            "relator_id": "erp-resource-category-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "resource": "erp-asset-forklift",
+                "category": "erp-cat-equipment"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-class-copper-raw",
+            "relator_id": "erp-resource-category-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "resource": "erp-raw-copper-wire",
+                "category": "erp-cat-raw-materials"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-class-solder-raw",
+            "relator_id": "erp-resource-category-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "resource": "erp-raw-solder-paste",
+                "category": "erp-cat-raw-materials"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-class-consulting-services",
+            "relator_id": "erp-resource-category-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "resource": "erp-svc-consulting",
+                "category": "erp-cat-services"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-class-cloud-services",
+            "relator_id": "erp-resource-category-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "resource": "erp-svc-cloud-hosting",
+                "category": "erp-cat-services"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-class-cad-software",
+            "relator_id": "erp-resource-category-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "resource": "erp-lic-cad-software",
+                "category": "erp-cat-software"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-class-erp-software",
+            "relator_id": "erp-resource-category-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "resource": "erp-lic-erp-system",
+                "category": "erp-cat-software"
+            },
+            "use_seed": true
+        }
+    ]
+}

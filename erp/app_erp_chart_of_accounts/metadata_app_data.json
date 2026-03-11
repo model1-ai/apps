@@ -1,0 +1,1132 @@
+{
+    "_comment": "=== ERP CHART OF ACCOUNTS - INSTANCE DATA ===",
+    "_description": "5 account types, 15 account subtypes, 8 account groups, 22 GL accounts, relator instances for all relationships",
+
+    "instances": [
+        {
+            "_comment": "=== ACCOUNT TYPE ENUM INSTANCES (5) ===",
+            "id": "erp-type-asset",
+            "universal_id": "erp-account-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-type-name-prop": "Asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-type-liability",
+            "universal_id": "erp-account-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-type-name-prop": "Liability" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-type-equity",
+            "universal_id": "erp-account-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-type-name-prop": "Equity" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-type-revenue",
+            "universal_id": "erp-account-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-type-name-prop": "Revenue" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-type-expense",
+            "universal_id": "erp-account-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-type-name-prop": "Expense" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ACCOUNT SUBTYPE ENUM INSTANCES (15) ===",
+            "id": "erp-subtype-current-asset",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "Current Asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-fixed-asset",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "Fixed Asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-intangible-asset",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "Intangible Asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-current-liability",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "Current Liability" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-long-term-liability",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "Long-term Liability" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-retained-earnings",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "Retained Earnings" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-share-capital",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "Share Capital" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-cogs",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "COGS" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-opex",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "OpEx" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-depreciation",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "Depreciation" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-amortization",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "Amortization" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-interest-income",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "Interest Income" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-other-income",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "Other Income" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-tax-expense",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "Tax Expense" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-subtype-interest-expense",
+            "universal_id": "erp-account-subtype",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-account-subtype-name-prop": "Interest Expense" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ACCOUNT GROUP INSTANCES (8) ===",
+            "id": "erp-group-current-assets",
+            "universal_id": "erp-account-group",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-account-group-code-prop": "CA",
+                "erp-account-group-name-prop": { "en": "Current Assets" },
+                "erp-account-group-sequence-prop": { "value": 1, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-group-fixed-assets",
+            "universal_id": "erp-account-group",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-account-group-code-prop": "FA",
+                "erp-account-group-name-prop": { "en": "Fixed Assets" },
+                "erp-account-group-sequence-prop": { "value": 2, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-group-current-liabilities",
+            "universal_id": "erp-account-group",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-account-group-code-prop": "CL",
+                "erp-account-group-name-prop": { "en": "Current Liabilities" },
+                "erp-account-group-sequence-prop": { "value": 3, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-group-long-term-liabilities",
+            "universal_id": "erp-account-group",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-account-group-code-prop": "LTL",
+                "erp-account-group-name-prop": { "en": "Long-term Liabilities" },
+                "erp-account-group-sequence-prop": { "value": 4, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-group-equity",
+            "universal_id": "erp-account-group",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-account-group-code-prop": "EQ",
+                "erp-account-group-name-prop": { "en": "Equity" },
+                "erp-account-group-sequence-prop": { "value": 5, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-group-revenue",
+            "universal_id": "erp-account-group",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-account-group-code-prop": "REV",
+                "erp-account-group-name-prop": { "en": "Revenue" },
+                "erp-account-group-sequence-prop": { "value": 6, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-group-cost-of-sales",
+            "universal_id": "erp-account-group",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-account-group-code-prop": "COS",
+                "erp-account-group-name-prop": { "en": "Cost of Sales" },
+                "erp-account-group-sequence-prop": { "value": 7, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-group-operating-expenses",
+            "universal_id": "erp-account-group",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-account-group-code-prop": "OPEX",
+                "erp-account-group-name-prop": { "en": "Operating Expenses" },
+                "erp-account-group-sequence-prop": { "value": 8, "unit": "count" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== GL ACCOUNT INSTANCES (22) ===",
+            "_comment2": "--- Assets: Summary accounts ---",
+            "id": "erp-acct-1000",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "1000",
+                "erp-gl-account-name-prop": { "en": "Assets" },
+                "erp-gl-account-description-prop": { "en": "Top-level asset summary account" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Debit",
+                "erp-gl-account-is-summary-prop": true,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-1100",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "1100",
+                "erp-gl-account-name-prop": { "en": "Current Assets" },
+                "erp-gl-account-description-prop": { "en": "Summary of current asset accounts" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Debit",
+                "erp-gl-account-is-summary-prop": true,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Current Asset leaf accounts ---",
+            "id": "erp-acct-1110",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "1110",
+                "erp-gl-account-name-prop": { "en": "Cash and Equivalents" },
+                "erp-gl-account-description-prop": { "en": "Cash on hand and bank balances" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Debit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-1120",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "1120",
+                "erp-gl-account-name-prop": { "en": "Accounts Receivable" },
+                "erp-gl-account-description-prop": { "en": "Amounts owed by customers" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Debit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": true,
+                "erp-gl-account-is-reconcilable-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-1130",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "1130",
+                "erp-gl-account-name-prop": { "en": "Inventory" },
+                "erp-gl-account-description-prop": { "en": "Goods held for sale" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Debit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-1140",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "1140",
+                "erp-gl-account-name-prop": { "en": "Prepaid Expenses" },
+                "erp-gl-account-description-prop": { "en": "Expenses paid in advance" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Debit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Fixed Asset accounts ---",
+            "id": "erp-acct-1200",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "1200",
+                "erp-gl-account-name-prop": { "en": "Fixed Assets" },
+                "erp-gl-account-description-prop": { "en": "Summary of fixed asset accounts" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Debit",
+                "erp-gl-account-is-summary-prop": true,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-1210",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "1210",
+                "erp-gl-account-name-prop": { "en": "Property and Equipment" },
+                "erp-gl-account-description-prop": { "en": "Tangible long-lived assets" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Debit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Contra asset: Credit normal balance ---",
+            "id": "erp-acct-1220",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "1220",
+                "erp-gl-account-name-prop": { "en": "Accumulated Depreciation" },
+                "erp-gl-account-description-prop": { "en": "Contra asset account for accumulated depreciation" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Credit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Liability accounts ---",
+            "id": "erp-acct-2000",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "2000",
+                "erp-gl-account-name-prop": { "en": "Liabilities" },
+                "erp-gl-account-description-prop": { "en": "Top-level liability summary account" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Credit",
+                "erp-gl-account-is-summary-prop": true,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-2100",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "2100",
+                "erp-gl-account-name-prop": { "en": "Accounts Payable" },
+                "erp-gl-account-description-prop": { "en": "Amounts owed to suppliers" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Credit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": true,
+                "erp-gl-account-is-reconcilable-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-2200",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "2200",
+                "erp-gl-account-name-prop": { "en": "Accrued Liabilities" },
+                "erp-gl-account-description-prop": { "en": "Expenses incurred but not yet paid" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Credit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-2300",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "2300",
+                "erp-gl-account-name-prop": { "en": "Long-term Debt" },
+                "erp-gl-account-description-prop": { "en": "Borrowings due beyond one year" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Credit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Equity accounts ---",
+            "id": "erp-acct-3000",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "3000",
+                "erp-gl-account-name-prop": { "en": "Equity" },
+                "erp-gl-account-description-prop": { "en": "Top-level equity summary account" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Credit",
+                "erp-gl-account-is-summary-prop": true,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-3100",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "3100",
+                "erp-gl-account-name-prop": { "en": "Share Capital" },
+                "erp-gl-account-description-prop": { "en": "Issued share capital" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Credit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-3200",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "3200",
+                "erp-gl-account-name-prop": { "en": "Retained Earnings" },
+                "erp-gl-account-description-prop": { "en": "Accumulated net income less dividends" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Credit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Revenue accounts ---",
+            "id": "erp-acct-4000",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "4000",
+                "erp-gl-account-name-prop": { "en": "Sales Revenue" },
+                "erp-gl-account-description-prop": { "en": "Revenue from core business operations" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Credit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-4100",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "4100",
+                "erp-gl-account-name-prop": { "en": "Interest Income" },
+                "erp-gl-account-description-prop": { "en": "Income from interest-bearing instruments" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Credit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-4200",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "4200",
+                "erp-gl-account-name-prop": { "en": "Other Income" },
+                "erp-gl-account-description-prop": { "en": "Miscellaneous non-operating income" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Credit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "--- Expense accounts ---",
+            "id": "erp-acct-5000",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "5000",
+                "erp-gl-account-name-prop": { "en": "Cost of Goods Sold" },
+                "erp-gl-account-description-prop": { "en": "Direct costs attributable to goods sold" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Debit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-6000",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "6000",
+                "erp-gl-account-name-prop": { "en": "Salaries and Wages" },
+                "erp-gl-account-description-prop": { "en": "Employee compensation expense" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Debit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-6100",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "6100",
+                "erp-gl-account-name-prop": { "en": "Depreciation Expense" },
+                "erp-gl-account-description-prop": { "en": "Periodic depreciation of fixed assets" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Debit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-acct-6200",
+            "universal_id": "erp-gl-account",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-gl-account-code-prop": "6200",
+                "erp-gl-account-name-prop": { "en": "Interest Expense" },
+                "erp-gl-account-description-prop": { "en": "Interest on borrowings" },
+                "erp-gl-account-is-active-prop": true,
+                "erp-gl-account-normal-balance-prop": "Debit",
+                "erp-gl-account-is-summary-prop": false,
+                "erp-gl-account-is-control-prop": false,
+                "erp-gl-account-is-reconcilable-prop": false
+            },
+            "use_seed": true
+        }
+    ],
+
+    "relator_instances": [
+        {
+            "_comment": "=== ACCOUNT TYPE RELATOR INSTANCES (22 accounts -> types) ===",
+            "id": "erp-rel-1000-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1000", "type": "erp-type-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-1100-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1100", "type": "erp-type-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-1110-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1110", "type": "erp-type-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-1120-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1120", "type": "erp-type-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-1130-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1130", "type": "erp-type-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-1140-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1140", "type": "erp-type-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-1200-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1200", "type": "erp-type-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-1210-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1210", "type": "erp-type-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-1220-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1220", "type": "erp-type-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-2000-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-2000", "type": "erp-type-liability" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-2100-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-2100", "type": "erp-type-liability" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-2200-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-2200", "type": "erp-type-liability" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-2300-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-2300", "type": "erp-type-liability" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-3000-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-3000", "type": "erp-type-equity" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-3100-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-3100", "type": "erp-type-equity" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-3200-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-3200", "type": "erp-type-equity" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-4000-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-4000", "type": "erp-type-revenue" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-4100-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-4100", "type": "erp-type-revenue" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-4200-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-4200", "type": "erp-type-revenue" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-5000-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-5000", "type": "erp-type-expense" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-6000-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-6000", "type": "erp-type-expense" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-6100-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-6100", "type": "erp-type-expense" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-6200-type",
+            "relator_id": "erp-account-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-6200", "type": "erp-type-expense" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ACCOUNT SUBTYPE RELATOR INSTANCES ===",
+            "id": "erp-rel-1110-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1110", "subtype": "erp-subtype-current-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-1120-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1120", "subtype": "erp-subtype-current-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-1130-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1130", "subtype": "erp-subtype-current-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-1140-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1140", "subtype": "erp-subtype-current-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-1210-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1210", "subtype": "erp-subtype-fixed-asset" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-1220-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-1220", "subtype": "erp-subtype-depreciation" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-2100-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-2100", "subtype": "erp-subtype-current-liability" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-2200-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-2200", "subtype": "erp-subtype-current-liability" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-2300-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-2300", "subtype": "erp-subtype-long-term-liability" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-3100-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-3100", "subtype": "erp-subtype-share-capital" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-3200-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-3200", "subtype": "erp-subtype-retained-earnings" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-4000-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-4000", "subtype": "erp-subtype-other-income" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-4100-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-4100", "subtype": "erp-subtype-interest-income" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-4200-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-4200", "subtype": "erp-subtype-other-income" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-5000-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-5000", "subtype": "erp-subtype-cogs" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-6000-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-6000", "subtype": "erp-subtype-opex" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-6100-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-6100", "subtype": "erp-subtype-depreciation" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-6200-subtype",
+            "relator_id": "erp-account-subtype-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "account": "erp-acct-6200", "subtype": "erp-subtype-interest-expense" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ACCOUNT GROUP MEMBERSHIP RELATOR INSTANCES ===",
+            "id": "erp-rel-grp-ca-1110",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-current-assets", "part": "erp-acct-1110" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-ca-1120",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-current-assets", "part": "erp-acct-1120" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-ca-1130",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-current-assets", "part": "erp-acct-1130" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-ca-1140",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-current-assets", "part": "erp-acct-1140" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-fa-1210",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-fixed-assets", "part": "erp-acct-1210" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-fa-1220",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-fixed-assets", "part": "erp-acct-1220" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-cl-2100",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-current-liabilities", "part": "erp-acct-2100" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-cl-2200",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-current-liabilities", "part": "erp-acct-2200" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-ltl-2300",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-long-term-liabilities", "part": "erp-acct-2300" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-eq-3100",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-equity", "part": "erp-acct-3100" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-eq-3200",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-equity", "part": "erp-acct-3200" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-rev-4000",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-revenue", "part": "erp-acct-4000" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-rev-4100",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-revenue", "part": "erp-acct-4100" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-rev-4200",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-revenue", "part": "erp-acct-4200" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-cos-5000",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-cost-of-sales", "part": "erp-acct-5000" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-opex-6000",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-operating-expenses", "part": "erp-acct-6000" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-opex-6100",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-operating-expenses", "part": "erp-acct-6100" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grp-opex-6200",
+            "relator_id": "erp-account-group-has-account-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-group-operating-expenses", "part": "erp-acct-6200" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ACCOUNT PARENT HIERARCHY RELATOR INSTANCES (recursive) ===",
+            "id": "erp-rel-parent-1000-1100",
+            "relator_id": "erp-account-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-acct-1000", "part": "erp-acct-1100" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-parent-1000-1200",
+            "relator_id": "erp-account-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-acct-1000", "part": "erp-acct-1200" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-parent-1100-1110",
+            "relator_id": "erp-account-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-acct-1100", "part": "erp-acct-1110" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-parent-1100-1120",
+            "relator_id": "erp-account-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-acct-1100", "part": "erp-acct-1120" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-parent-1100-1130",
+            "relator_id": "erp-account-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-acct-1100", "part": "erp-acct-1130" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-parent-1100-1140",
+            "relator_id": "erp-account-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-acct-1100", "part": "erp-acct-1140" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-parent-1200-1210",
+            "relator_id": "erp-account-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-acct-1200", "part": "erp-acct-1210" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-parent-1200-1220",
+            "relator_id": "erp-account-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-acct-1200", "part": "erp-acct-1220" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-parent-2000-2100",
+            "relator_id": "erp-account-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-acct-2000", "part": "erp-acct-2100" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-parent-2000-2200",
+            "relator_id": "erp-account-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-acct-2000", "part": "erp-acct-2200" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-parent-2000-2300",
+            "relator_id": "erp-account-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-acct-2000", "part": "erp-acct-2300" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-parent-3000-3100",
+            "relator_id": "erp-account-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-acct-3000", "part": "erp-acct-3100" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-parent-3000-3200",
+            "relator_id": "erp-account-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-acct-3000", "part": "erp-acct-3200" },
+            "use_seed": true
+        }
+    ]
+}

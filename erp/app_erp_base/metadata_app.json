@@ -1,0 +1,291 @@
+{
+    "_comment": "=== ERP BASE — SHARED INFRASTRUCTURE APP ===",
+    "_description": "Shared ERP infrastructure app that all domain apps depend on. Contains: organization/tenant definitions, erp-goal foundation universal with 11 properties, ERP-level users with cross-app role assignments, and the base app definition.",
+
+    "organizations": [
+        {
+            "id": "model1-testing-org",
+            "label": { "en": "Model1 Testing Org" },
+            "use_seed": true
+        }
+    ],
+
+    "tenants": [
+        {
+            "id": "model1-testing-tenant",
+            "organization_id": "model1-testing-org",
+            "label": { "en": "Model1 Testing Tenant" },
+            "use_seed": true
+        }
+    ],
+
+    "universals": [
+        {
+            "_comment": "=== FOUNDATION UNIVERSAL: erp-goal ===",
+            "id": "erp-goal",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Goal" },
+            "description": { "en": "Abstract measurable outcome base. Shared foundation universal inherited by OKR objectives, key results, budget targets, KPIs, and SLAs across domain apps. Never instantiated directly." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 60,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        }
+    ],
+
+    "property_definitions": [
+        {
+            "_comment": "=== erp-goal PROPERTIES (inherited by specializing universals across domain apps) ===",
+            "id": "erp-goal-title-prop",
+            "universal_id": "erp-goal",
+            "label": { "en": "Title" },
+            "property_schema": {
+                "predicates": ["title", "name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "erp-goal-description-prop",
+            "universal_id": "erp-goal",
+            "label": { "en": "Description" },
+            "property_schema": {
+                "predicates": ["description"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-goal-target-value-prop",
+            "universal_id": "erp-goal",
+            "label": { "en": "Target Value" },
+            "property_schema": {
+                "predicates": ["target", "value"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-goal-current-value-prop",
+            "universal_id": "erp-goal",
+            "label": { "en": "Current Value" },
+            "property_schema": {
+                "predicates": ["current", "value"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-goal-baseline-value-prop",
+            "universal_id": "erp-goal",
+            "label": { "en": "Baseline Value" },
+            "property_schema": {
+                "predicates": ["baseline", "value"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-goal-progress-prop",
+            "universal_id": "erp-goal",
+            "label": { "en": "Progress" },
+            "description": { "en": "Computed: percentage progress toward target (0-100)" },
+            "property_schema": {
+                "predicates": ["progress", "percentage"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-ratio" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-goal-status-prop",
+            "universal_id": "erp-goal",
+            "label": { "en": "Status" },
+            "description": { "en": "Goal status. Plain categorical string — domain apps may override with enum references." },
+            "property_schema": {
+                "predicates": ["status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2 },
+            "use_seed": true
+        },
+        {
+            "id": "erp-goal-start-date-prop",
+            "universal_id": "erp-goal",
+            "label": { "en": "Start Date" },
+            "property_schema": {
+                "predicates": ["date", "start"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-goal-due-date-prop",
+            "universal_id": "erp-goal",
+            "label": { "en": "Due Date" },
+            "property_schema": {
+                "predicates": ["date", "due"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-goal-weight-prop",
+            "universal_id": "erp-goal",
+            "label": { "en": "Weight" },
+            "description": { "en": "Weighting factor for rollup scoring. Default 1.0." },
+            "property_schema": {
+                "predicates": ["weight"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-goal-score-prop",
+            "universal_id": "erp-goal",
+            "label": { "en": "Score" },
+            "description": { "en": "Final computed score." },
+            "property_schema": {
+                "predicates": ["score"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-score" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        }
+    ],
+
+    "apps": [
+        {
+            "id": "erp-base-app",
+            "tenant_id": "model1-testing-tenant",
+            "label": { "en": "ERP Base" },
+            "description": { "en": "Shared ERP infrastructure: organization, tenant, foundation universals, and cross-domain users." },
+            "use_seed": true,
+            "modules": [
+                {
+                    "id": "erp-base-module",
+                    "use_seed": true,
+                    "label": { "en": "ERP Base Module" },
+                    "description": { "en": "Foundation module for shared ERP infrastructure" },
+                    "context": { "subscribed_events": [], "publishable_events": [] }
+                }
+            ]
+        }
+    ],
+
+    "users": [
+        {
+            "id": "erp-admin",
+            "tenant_id": "model1-testing-tenant",
+            "email": "erp-admin@test.model1.ai",
+            "display_name": "ERP Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppAdmin", "AppDeveloper"],
+            "use_seed": true
+        },
+        {
+            "id": "erp-developer",
+            "tenant_id": "model1-testing-tenant",
+            "email": "erp-developer@test.model1.ai",
+            "display_name": "ERP Developer",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppDeveloper"],
+            "use_seed": true
+        },
+        {
+            "id": "erp-user",
+            "tenant_id": "model1-testing-tenant",
+            "email": "erp-user@test.model1.ai",
+            "display_name": "ERP User",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "roles": ["AppUser"],
+            "use_seed": true
+        }
+    ],
+
+    "_role_assignments_note": "Domain-app-scoped role assignments are in each domain app's metadata_app.json. Only base-app-scoped assignments are here.",
+
+    "foundation_role_assignments": [
+        {
+            "id": "fra-erp-admin-admin-base",
+            "user_id": "erp-admin",
+            "role": "AppAdmin",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-base-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-admin-dev-base",
+            "user_id": "erp-admin",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-base-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-developer-dev-base",
+            "user_id": "erp-developer",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-base-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-user-user-base",
+            "user_id": "erp-user",
+            "role": "AppUser",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-base-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        }
+    ]
+}

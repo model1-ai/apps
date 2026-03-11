@@ -1,0 +1,481 @@
+{
+    "_comment": "=== ERP BUDGETING APP - INSTANCE DATA ===",
+    "_description": "Enum instances (budget status, budget type), sample budgets with lines, versions, and transfers.",
+    "instances": [
+        {
+            "_comment": "=== BUDGET STATUS ENUM VALUES ===",
+            "id": "erp-budget-status-draft",
+            "universal_id": "erp-budget-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budget-status-name-prop": "Draft"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-budget-status-submitted",
+            "universal_id": "erp-budget-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budget-status-name-prop": "Submitted"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-budget-status-approved",
+            "universal_id": "erp-budget-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budget-status-name-prop": "Approved"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-budget-status-frozen",
+            "universal_id": "erp-budget-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budget-status-name-prop": "Frozen"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-budget-status-closed",
+            "universal_id": "erp-budget-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budget-status-name-prop": "Closed"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-budget-status-rejected",
+            "universal_id": "erp-budget-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budget-status-name-prop": "Rejected"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== BUDGET TYPE ENUM VALUES ===",
+            "id": "erp-budget-type-operating",
+            "universal_id": "erp-budget-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budget-type-name-prop": "Operating"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-budget-type-capital",
+            "universal_id": "erp-budget-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budget-type-name-prop": "Capital"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-budget-type-project",
+            "universal_id": "erp-budget-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budget-type-name-prop": "Project"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-budget-type-department",
+            "universal_id": "erp-budget-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budget-type-name-prop": "Department"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== SAMPLE BUDGET 1: Engineering Q3 2026 Operating Budget (Approved) ===",
+            "id": "erp-budget-eng-q3-2026",
+            "universal_id": "erp-budget",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budget-name-prop": { "en": "Engineering Q3 2026 Operating" },
+                "erp-budget-status-prop": "Approved",
+                "erp-budget-approved-date-prop": { "value": 1719792000, "unit": "seconds" },
+                "erp-budget-notes-prop": { "en": "Approved after finance review. Covers cloud infrastructure, staffing, and software licensing." }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== Budget Line 1: Cloud Infrastructure ===",
+            "id": "erp-budgetline-eng-cloud",
+            "universal_id": "erp-budget-line",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budgetline-description-prop": { "en": "Cloud Infrastructure" },
+                "erp-budgetline-allocated-prop": { "value": 150000.00, "unit": "usd" },
+                "erp-budgetline-committed-prop": { "value": 45000.00, "unit": "usd" },
+                "erp-budgetline-spent-prop": { "value": 62000.00, "unit": "usd" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== Budget Line 2: Software Licensing ===",
+            "id": "erp-budgetline-eng-software",
+            "universal_id": "erp-budget-line",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budgetline-description-prop": { "en": "Software Licensing" },
+                "erp-budgetline-allocated-prop": { "value": 80000.00, "unit": "usd" },
+                "erp-budgetline-committed-prop": { "value": 25000.00, "unit": "usd" },
+                "erp-budgetline-spent-prop": { "value": 55000.00, "unit": "usd" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== Budget Line 3: Contractor Staffing ===",
+            "id": "erp-budgetline-eng-contractors",
+            "universal_id": "erp-budget-line",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budgetline-description-prop": { "en": "Contractor Staffing" },
+                "erp-budgetline-allocated-prop": { "value": 200000.00, "unit": "usd" },
+                "erp-budgetline-committed-prop": { "value": 120000.00, "unit": "usd" },
+                "erp-budgetline-spent-prop": { "value": 95000.00, "unit": "usd" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== Budget Line 4: Training & Development ===",
+            "id": "erp-budgetline-eng-training",
+            "universal_id": "erp-budget-line",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budgetline-description-prop": { "en": "Training & Development" },
+                "erp-budgetline-allocated-prop": { "value": 30000.00, "unit": "usd" },
+                "erp-budgetline-committed-prop": { "value": 5000.00, "unit": "usd" },
+                "erp-budgetline-spent-prop": { "value": 12000.00, "unit": "usd" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== SAMPLE BUDGET 2: Marketing Q3 2026 Operating Budget (Draft) ===",
+            "id": "erp-budget-mkt-q3-2026",
+            "universal_id": "erp-budget",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budget-name-prop": { "en": "Marketing Q3 2026 Operating" },
+                "erp-budget-status-prop": "Draft",
+                "erp-budget-notes-prop": { "en": "Initial draft. Pending department review." }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== Budget Line 5: Digital Advertising ===",
+            "id": "erp-budgetline-mkt-digital",
+            "universal_id": "erp-budget-line",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budgetline-description-prop": { "en": "Digital Advertising" },
+                "erp-budgetline-allocated-prop": { "value": 120000.00, "unit": "usd" },
+                "erp-budgetline-committed-prop": { "value": 0.00, "unit": "usd" },
+                "erp-budgetline-spent-prop": { "value": 0.00, "unit": "usd" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== Budget Line 6: Events & Conferences ===",
+            "id": "erp-budgetline-mkt-events",
+            "universal_id": "erp-budget-line",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budgetline-description-prop": { "en": "Events & Conferences" },
+                "erp-budgetline-allocated-prop": { "value": 75000.00, "unit": "usd" },
+                "erp-budgetline-committed-prop": { "value": 0.00, "unit": "usd" },
+                "erp-budgetline-spent-prop": { "value": 0.00, "unit": "usd" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== Budget Line 7: Content Production ===",
+            "id": "erp-budgetline-mkt-content",
+            "universal_id": "erp-budget-line",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-budgetline-description-prop": { "en": "Content Production" },
+                "erp-budgetline-allocated-prop": { "value": 45000.00, "unit": "usd" },
+                "erp-budgetline-committed-prop": { "value": 0.00, "unit": "usd" },
+                "erp-budgetline-spent-prop": { "value": 0.00, "unit": "usd" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== SAMPLE BUDGET VERSION: Engineering Q3 2026 V1 (Original) ===",
+            "id": "erp-version-eng-q3-v1",
+            "universal_id": "erp-budget-version",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-version-code-prop": "V1",
+                "erp-version-date-prop": { "value": 1717200000, "unit": "seconds" },
+                "erp-version-is-active-prop": false
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== Version Line 1: Cloud Infrastructure snapshot ===",
+            "id": "erp-versionline-eng-cloud-v1",
+            "universal_id": "erp-budget-version-line",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-versionline-description-prop": { "en": "Cloud Infrastructure" },
+                "erp-versionline-allocated-prop": { "value": 130000.00, "unit": "usd" },
+                "erp-versionline-committed-prop": { "value": 20000.00, "unit": "usd" },
+                "erp-versionline-spent-prop": { "value": 30000.00, "unit": "usd" },
+                "erp-versionline-gl-account-ref-prop": "6100-CLOUD-INFRA"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== Version Line 2: Software Licensing snapshot ===",
+            "id": "erp-versionline-eng-software-v1",
+            "universal_id": "erp-budget-version-line",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-versionline-description-prop": { "en": "Software Licensing" },
+                "erp-versionline-allocated-prop": { "value": 70000.00, "unit": "usd" },
+                "erp-versionline-committed-prop": { "value": 10000.00, "unit": "usd" },
+                "erp-versionline-spent-prop": { "value": 25000.00, "unit": "usd" },
+                "erp-versionline-gl-account-ref-prop": "6200-SOFTWARE-LIC"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== SAMPLE BUDGET VERSION: Engineering Q3 2026 V2 (Active/Current) ===",
+            "id": "erp-version-eng-q3-v2",
+            "universal_id": "erp-budget-version",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-version-code-prop": "V2",
+                "erp-version-date-prop": { "value": 1719792000, "unit": "seconds" },
+                "erp-version-is-active-prop": true
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== SAMPLE BUDGET TRANSFER: Reallocate from Software to Cloud ===",
+            "id": "erp-transfer-eng-sw-to-cloud",
+            "universal_id": "erp-budget-transfer",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-transfer-amount-prop": { "value": 20000.00, "unit": "usd" },
+                "erp-transfer-date-prop": { "value": 1719792000, "unit": "seconds" },
+                "erp-transfer-reason-prop": { "en": "Increased cloud capacity needs for Q3 scaling" },
+                "erp-transfer-status-prop": "Approved"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        }
+    ],
+    "relator_instances": [
+        {
+            "_comment": "=== Engineering Budget -> Operating Type ===",
+            "id": "erp-ri-eng-budget-type",
+            "relator_id": "erp-budget-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "budget": "erp-budget-eng-q3-2026",
+                "type": "erp-budget-type-operating"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Marketing Budget -> Operating Type ===",
+            "id": "erp-ri-mkt-budget-type",
+            "relator_id": "erp-budget-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "budget": "erp-budget-mkt-q3-2026",
+                "type": "erp-budget-type-operating"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Engineering Budget -> Cloud Infrastructure Line ===",
+            "id": "erp-ri-eng-has-cloud-line",
+            "relator_id": "erp-budget-has-line-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "composite": "erp-budget-eng-q3-2026",
+                "component": "erp-budgetline-eng-cloud"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Engineering Budget -> Software Licensing Line ===",
+            "id": "erp-ri-eng-has-software-line",
+            "relator_id": "erp-budget-has-line-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "composite": "erp-budget-eng-q3-2026",
+                "component": "erp-budgetline-eng-software"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Engineering Budget -> Contractor Staffing Line ===",
+            "id": "erp-ri-eng-has-contractors-line",
+            "relator_id": "erp-budget-has-line-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "composite": "erp-budget-eng-q3-2026",
+                "component": "erp-budgetline-eng-contractors"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Engineering Budget -> Training & Development Line ===",
+            "id": "erp-ri-eng-has-training-line",
+            "relator_id": "erp-budget-has-line-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "composite": "erp-budget-eng-q3-2026",
+                "component": "erp-budgetline-eng-training"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Marketing Budget -> Digital Advertising Line ===",
+            "id": "erp-ri-mkt-has-digital-line",
+            "relator_id": "erp-budget-has-line-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "composite": "erp-budget-mkt-q3-2026",
+                "component": "erp-budgetline-mkt-digital"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Marketing Budget -> Events & Conferences Line ===",
+            "id": "erp-ri-mkt-has-events-line",
+            "relator_id": "erp-budget-has-line-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "composite": "erp-budget-mkt-q3-2026",
+                "component": "erp-budgetline-mkt-events"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Marketing Budget -> Content Production Line ===",
+            "id": "erp-ri-mkt-has-content-line",
+            "relator_id": "erp-budget-has-line-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "composite": "erp-budget-mkt-q3-2026",
+                "component": "erp-budgetline-mkt-content"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Engineering Budget -> Version V1 ===",
+            "id": "erp-ri-eng-has-version-v1",
+            "relator_id": "erp-budget-version-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "budget": "erp-budget-eng-q3-2026",
+                "version": "erp-version-eng-q3-v1"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Engineering Budget -> Version V2 ===",
+            "id": "erp-ri-eng-has-version-v2",
+            "relator_id": "erp-budget-version-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "budget": "erp-budget-eng-q3-2026",
+                "version": "erp-version-eng-q3-v2"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Version V1 -> Cloud Infrastructure snapshot line ===",
+            "id": "erp-ri-v1-has-cloud-vline",
+            "relator_id": "erp-version-has-line-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "composite": "erp-version-eng-q3-v1",
+                "component": "erp-versionline-eng-cloud-v1"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Version V1 -> Software Licensing snapshot line ===",
+            "id": "erp-ri-v1-has-software-vline",
+            "relator_id": "erp-version-has-line-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "composite": "erp-version-eng-q3-v1",
+                "component": "erp-versionline-eng-software-v1"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Transfer: Software Line (source) -> Cloud Line (target) ===",
+            "id": "erp-ri-transfer-from-software",
+            "relator_id": "erp-transfer-from-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "transfer": "erp-transfer-eng-sw-to-cloud",
+                "source_line": "erp-budgetline-eng-software"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Transfer: target is Cloud Infrastructure line ===",
+            "id": "erp-ri-transfer-to-cloud",
+            "relator_id": "erp-transfer-to-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "transfer": "erp-transfer-eng-sw-to-cloud",
+                "target_line": "erp-budgetline-eng-cloud"
+            },
+            "use_seed": true
+        }
+    ]
+}

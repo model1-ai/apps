@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP OKR/Goals — Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 2rem; color: #1a1a2e; background: #f8f9fa; line-height: 1.6; }
+        h1 { color: #16213e; border-bottom: 3px solid #0f3460; padding-bottom: 0.5rem; }
+        h2 { color: #0f3460; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.3rem; margin-top: 2rem; }
+        h3 { color: #533483; }
+        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #0f3460; color: white; }
+        tr:nth-child(even) { background: #f2f2f2; }
+        .mermaid { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 1rem 0; }
+        .decision-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .layer-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
+        .layer-2 { background: #f8d7da; color: #721c24; }
+        code { background: #e9ecef; padding: 2px 6px; border-radius: 3px; font-size: 0.9rem; }
+        .info-box { background: #e8f4fd; border-left: 4px solid #2196F3; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .warning-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .toc { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 1rem 0; }
+        .toc ul { margin: 0; padding-left: 1.5rem; }
+        .toc li { margin: 0.3rem 0; }
+        .toc a { color: #0f3460; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .stat-card { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+        .stat-card .number { font-size: 2rem; font-weight: bold; color: #0f3460; }
+        .stat-card .label { font-size: 0.85rem; color: #666; }
+    </style>
+</head>
+<body>
+
+<h1>ERP OKR / Goals <span class="layer-badge layer-2">Layer 2</span></h1>
+
+<div class="stat-grid">
+    <div class="stat-card"><div class="number">44</div><div class="label">Universals</div></div>
+    <div class="stat-card"><div class="number">2</div><div class="label">Processes</div></div>
+    <div class="stat-card"><div class="number">6</div><div class="label">Computations</div></div>
+    <div class="stat-card"><div class="number">4</div><div class="label">Artifacts</div></div>
+    <div class="stat-card"><div class="number">8</div><div class="label">Events</div></div>
+    <div class="stat-card"><div class="number">14</div><div class="label">Relators</div></div>
+</div>
+
+<div class="toc">
+    <strong>Table of Contents</strong>
+    <ul>
+        <li><a href="#overview">1. Overview</a></li>
+        <li><a href="#dependencies">2. Dependency Diagram</a></li>
+        <li><a href="#generalization">3. Generalization Hierarchy</a></li>
+        <li><a href="#okr-structure">4. OKR Structure</a></li>
+        <li><a href="#processes">5. Process Architecture</a></li>
+        <li><a href="#relators">6. Relator Map</a></li>
+        <li><a href="#computations">7. Computation Flow</a></li>
+        <li><a href="#artifacts">8. Artifact Definitions</a></li>
+        <li><a href="#instances">9. Instance Diagram</a></li>
+        <li><a href="#properties">10. Property Catalog</a></li>
+        <li><a href="#decisions">11. Decision Points</a></li>
+        <li><a href="#events">12. Events</a></li>
+        <li><a href="#timers">13. Timers</a></li>
+        <li><a href="#layers">14. Layer Information</a></li>
+    </ul>
+</div>
+
+<!-- ================================================================ -->
+<h2 id="overview">1. Overview</h2>
+
+<p>
+    OKR (Objectives and Key Results) is a goal-setting and strategic alignment framework. In the Model1 ontology,
+    it is a <strong>Layer 2</strong> domain that connects organizational strategy to measurable outcomes. The OKR app
+    is the most complex app in the ERP Foundations suite, with 44 universals and 2 processes.
+</p>
+
+<p>The framework answers three fundamental questions:</p>
+<ul>
+    <li><strong>What do we want to achieve?</strong> Objectives &mdash; qualitative statements of intent.</li>
+    <li><strong>How do we know we achieved it?</strong> Key Results &mdash; quantitative, time-bounded metrics.</li>
+    <li><strong>What are we doing about it?</strong> Initiatives &mdash; concrete action plans that move the numbers.</li>
+</ul>
+
+<p>
+    The OKR app creates a cascading alignment tree from company-level strategy down to individual contributor goals,
+    enabling every person in the organization to see how their work connects to the top-level mission. It features
+    reactive computation chains that propagate check-in values all the way up to cycle-level attainment scores,
+    two formal processes (Planning and Review), and four intelligence artifacts for organizational health monitoring.
+</p>
+
+<div class="info-box">
+    <strong>Ontological treatment:</strong> The OKR domain is built on the <code>erp-goal</code> generalization root,
+    which is a shared <strong>Layer 0 foundation universal</strong>. Both <code>erp-objective</code> and
+    <code>erp-key-result</code> specialize <code>erp-goal</code>, inheriting its scoring, progress, and status
+    properties. This enables cross-domain analytics when other goal-producing apps (Budget, Operations, Agreements)
+    are deployed alongside OKR.
+</div>
+
+<h3>Universal Breakdown</h3>
+<table>
+    <tr><th>Category</th><th>Count</th><th>Examples</th></tr>
+    <tr><td>Core Domain</td><td>6</td><td>erp-goal, erp-objective, erp-key-result, erp-initiative, erp-okr-cycle, erp-check-in</td></tr>
+    <tr><td>Enumerations</td><td>7</td><td>erp-okr-status, erp-objective-level, erp-kr-type, erp-confidence-level, erp-initiative-status, erp-scoring-method, erp-cycle-status</td></tr>
+    <tr><td>Artifact Targets</td><td>4</td><td>erp-okr-attainment-artifact-type, erp-okr-alignment-artifact-type, erp-okr-compliance-artifact-type, erp-okr-initiative-effort-artifact-type</td></tr>
+    <tr><td>FunctionalRoles</td><td>3</td><td>erp-fr-objective-owner, erp-fr-kr-owner, erp-fr-okr-champion</td></tr>
+    <tr><td>Processes</td><td>2</td><td>erp-okr-planning-process, erp-okr-review-process</td></tr>
+    <tr><td>Stages</td><td>6</td><td>erp-okr-draft-stage, erp-okr-alignment-stage, erp-okr-finalization-stage, erp-okr-self-assessment-stage, erp-okr-manager-review-stage, erp-okr-scoring-stage</td></tr>
+    <tr><td>Obligations</td><td>3</td><td>erp-okr-self-assess-obligation, erp-okr-manager-review-obligation, erp-okr-scoring-obligation</td></tr>
+    <tr><td>Domain Relators</td><td>5</td><td>erp-objective-has-kr-rel, erp-kr-has-checkin-rel, erp-kr-has-initiative-rel, erp-objective-parent-rel, erp-objective-cycle-rel</td></tr>
+    <tr><td>Process Composition Relators</td><td>9</td><td>Planning stage relators (3), Review stage relators (3), Obligation relators (3)</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="dependencies">2. Dependency Diagram</h2>
+
+<p>The OKR app sits at Layer 2, depending on three required Layer 0 blocks and optionally integrating with Layer 1 and Layer 2 blocks.</p>
+
+<div class="mermaid">
+graph TB
+    subgraph "Layer 0 — Foundation (Required)"
+        ORG["erp-org-unit<br/>Org Structure"]
+        PARTY["erp-person<br/>Party Master"]
+        FISCAL["erp-fiscal-quarter<br/>Fiscal Calendar"]
+        GOAL["erp-goal<br/>Foundation Universal"]
+    end
+
+    subgraph "Layer 1 — Optional"
+        EMP["Employee Management<br/>Performance reviews, 1:1s"]
+        BUDGET["Budget<br/>Financial KR metrics"]
+    end
+
+    subgraph "Layer 2 — OKR App"
+        OBJ["erp-objective"]
+        KR["erp-key-result"]
+        CYCLE["erp-okr-cycle"]
+        INIT["erp-initiative"]
+        CHECKIN["erp-check-in"]
+    end
+
+    subgraph "Layer 2 — Optional"
+        PROJ["Project Management<br/>Formal projects"]
+        ACCT["Accounting<br/>Revenue/cost actuals"]
+    end
+
+    GOAL -->|generalizes| OBJ
+    GOAL -->|generalizes| KR
+    OBJ -->|orgunit-owner-rel| ORG
+    OBJ -->|person-owner-rel| PARTY
+    KR -->|kr-owner-rel| PARTY
+    CYCLE -->|cycle-quarter-rel| FISCAL
+    INIT -.->|initiative-project-rel| PROJ
+    KR -.->|kr-budget-rel| BUDGET
+    KR -.->|future relator| ACCT
+    OBJ -.->|via Employee| EMP
+
+    style ORG fill:#d4edda,stroke:#28a745
+    style PARTY fill:#d4edda,stroke:#28a745
+    style FISCAL fill:#d4edda,stroke:#28a745
+    style GOAL fill:#d4edda,stroke:#28a745
+    style EMP fill:#fff3cd,stroke:#ffc107
+    style BUDGET fill:#fff3cd,stroke:#ffc107
+    style PROJ fill:#fff3cd,stroke:#ffc107
+    style ACCT fill:#fff3cd,stroke:#ffc107
+    style OBJ fill:#cce5ff,stroke:#0d6efd
+    style KR fill:#cce5ff,stroke:#0d6efd
+    style CYCLE fill:#cce5ff,stroke:#0d6efd
+    style INIT fill:#cce5ff,stroke:#0d6efd
+    style CHECKIN fill:#cce5ff,stroke:#0d6efd
+</div>
+
+<table>
+    <tr><th>Layer</th><th>Block</th><th>Relationship</th><th>Required?</th></tr>
+    <tr><td>0</td><td>Org Structure</td><td>Objectives owned by org units (company, BU, department, team)</td><td>Yes</td></tr>
+    <tr><td>0</td><td>Party Master</td><td>KR and objective owners are parties (persons); not limited to employees</td><td>Yes</td></tr>
+    <tr><td>0</td><td>Fiscal Calendar</td><td>OKR cycles align to fiscal quarters</td><td>Yes</td></tr>
+    <tr><td>1</td><td>Employee Mgmt</td><td>Employee-specific OKR views (performance reviews, 1:1s)</td><td>Optional</td></tr>
+    <tr><td>1</td><td>Budget</td><td>Financial KRs reference budget utilization metrics</td><td>Optional</td></tr>
+    <tr><td>2</td><td>Project Management</td><td>Initiatives may link to formal projects</td><td>Optional</td></tr>
+    <tr><td>2</td><td>Accounting</td><td>Revenue/cost KRs reference actual financial data</td><td>Optional</td></tr>
+</table>
+
+<div class="info-box">
+    <strong>Party vs Employee:</strong> OKR ownership uses Party Master (Layer 0), not Employee Management (Layer 1).
+    This allows contractors, partner organizations, board members, and non-employees to own objectives and key results.
+    Employee-specific OKR features (linking to performance reviews, 1:1 meetings) are optional Layer 1 extensions.
+</div>
+
+<!-- ================================================================ -->
+<h2 id="generalization">3. Generalization Hierarchy</h2>
+
+<h3>3.1 Goal Generalization</h3>
+
+<p>
+    <code>erp-goal</code> is the shared foundation root for all measurable outcome types across the ERP suite.
+    The OKR app specializes it into <code>erp-objective</code> and <code>erp-key-result</code>. Other domain apps
+    define their own specializations independently.
+</p>
+
+<div class="mermaid">
+classDiagram
+    class erp_goal {
+        &lt;&lt;Foundation Layer 0&gt;&gt;
+        +title : Textual
+        +description : Textual
+        +target_value : Measurement[std-float]
+        +current_value : Measurement[std-float]
+        +baseline_value : Measurement[std-float]
+        +progress : Measurement[std-ratio]
+        +status : Categorical[erp-okr-status]
+        +start_date : Measurement[std-timestamp]
+        +due_date : Measurement[std-timestamp]
+        +weight : Measurement[std-float]
+        +score : Measurement[std-score]
+    }
+
+    class erp_objective {
+        &lt;&lt;OKR App Layer 2&gt;&gt;
+        +level : Categorical[erp-objective-level]
+        +is_aspirational : Boolean
+        +alignment_score : Measurement[std-score]
+    }
+
+    class erp_key_result {
+        &lt;&lt;OKR App Layer 2&gt;&gt;
+        +kr_type : Categorical[erp-kr-type]
+        +unit : Categorical
+        +confidence : Categorical[erp-confidence-level]
+        +last_checkin_date : Measurement[std-timestamp]
+    }
+
+    class erp_budget_target {
+        &lt;&lt;Budget App Layer 1&gt;&gt;
+        Defined elsewhere
+    }
+
+    class erp_kpi {
+        &lt;&lt;Operations App Layer 1+&gt;&gt;
+        Defined elsewhere
+    }
+
+    class erp_sla {
+        &lt;&lt;Agreement App Layer 1+&gt;&gt;
+        Defined elsewhere
+    }
+
+    erp_goal <|-- erp_objective : generalizes
+    erp_goal <|-- erp_key_result : generalizes
+    erp_goal <|-- erp_budget_target : generalizes
+    erp_goal <|-- erp_kpi : generalizes
+    erp_goal <|-- erp_sla : generalizes
+</div>
+
+<h3>3.2 Process Generalization</h3>
+
+<p>
+    Both OKR processes generalize <code>base-process</code> (foundation). Their stages generalize <code>base-stage</code>,
+    and the review obligations generalize <code>base-obligation</code>. This follows the Process-as-Universal pattern.
+</p>
+
+<div class="mermaid">
+classDiagram
+    class base_process {
+        &lt;&lt;Foundation&gt;&gt;
+    }
+    class base_stage {
+        &lt;&lt;Foundation&gt;&gt;
+    }
+    class base_obligation {
+        &lt;&lt;Foundation&gt;&gt;
+    }
+
+    class erp_okr_planning_process {
+        &lt;&lt;Tier 1: Stages only&gt;&gt;
+    }
+    class erp_okr_review_process {
+        &lt;&lt;Tier 2: Stages + Obligations&gt;&gt;
+    }
+
+    class erp_okr_draft_stage {
+        &lt;&lt;Stage 1&gt;&gt;
+    }
+    class erp_okr_alignment_stage {
+        &lt;&lt;Stage 2&gt;&gt;
+    }
+    class erp_okr_finalization_stage {
+        &lt;&lt;Stage 3&gt;&gt;
+    }
+
+    class erp_okr_self_assessment_stage {
+        &lt;&lt;Stage 1&gt;&gt;
+    }
+    class erp_okr_manager_review_stage {
+        &lt;&lt;Stage 2&gt;&gt;
+    }
+    class erp_okr_scoring_stage {
+        &lt;&lt;Stage 3&gt;&gt;
+    }
+
+    class erp_okr_self_assess_obligation {
+        &lt;&lt;FR: KR Owner&gt;&gt;
+    }
+    class erp_okr_manager_review_obligation {
+        &lt;&lt;FR: Objective Owner&gt;&gt;
+    }
+    class erp_okr_scoring_obligation {
+        &lt;&lt;FR: OKR Champion&gt;&gt;
+    }
+
+    base_process <|-- erp_okr_planning_process
+    base_process <|-- erp_okr_review_process
+    base_stage <|-- erp_okr_draft_stage
+    base_stage <|-- erp_okr_alignment_stage
+    base_stage <|-- erp_okr_finalization_stage
+    base_stage <|-- erp_okr_self_assessment_stage
+    base_stage <|-- erp_okr_manager_review_stage
+    base_stage <|-- erp_okr_scoring_stage
+    base_obligation <|-- erp_okr_self_assess_obligation
+    base_obligation <|-- erp_okr_manager_review_obligation
+    base_obligation <|-- erp_okr_scoring_obligation
+</div>
+
+<!-- ================================================================ -->
+<h2 id="okr-structure">4. OKR Structure</h2>
+
+<p>
+    The OKR domain model captures the full lifecycle of goal-setting, measurement, and review. Objectives express
+    qualitative intent; Key Results quantify measurable outcomes; Initiatives describe the actions taken;
+    Check-ins record periodic progress; and Cycles bound everything in time.
+</p>
+
+<div class="mermaid">
+graph TB
+    CYCLE["erp-okr-cycle<br/>(Perdurant Kind)<br/>Q1 2026 OKRs"]
+
+    OBJ_CO["erp-objective<br/>Company Level<br/>Become market leader"]
+    OBJ_DEPT["erp-objective<br/>Department Level<br/>Drive 40% revenue growth"]
+
+    KR1["erp-key-result<br/>Metric: $2M new ARR"]
+    KR2["erp-key-result<br/>Binary: Launch V2"]
+    KR3["erp-key-result<br/>Metric: NPS 60+"]
+
+    CI1["erp-check-in<br/>Week 1: $250K"]
+    CI2["erp-check-in<br/>Week 4: $750K"]
+
+    INIT1["erp-initiative<br/>Outbound campaign"]
+    INIT2["erp-initiative<br/>Redesign onboarding"]
+
+    CYCLE -->|attribution| OBJ_CO
+    CYCLE -->|attribution| OBJ_DEPT
+    OBJ_CO -->|"aggregation (parent-child)"| OBJ_DEPT
+    OBJ_CO -->|aggregation| KR2
+    OBJ_CO -->|aggregation| KR3
+    OBJ_DEPT -->|aggregation| KR1
+    KR1 -->|composition| CI1
+    KR1 -->|composition| CI2
+    KR1 -->|association| INIT1
+    KR3 -->|association| INIT2
+
+    style CYCLE fill:#e8f4fd,stroke:#2196F3
+    style OBJ_CO fill:#d4edda,stroke:#28a745
+    style OBJ_DEPT fill:#d4edda,stroke:#28a745
+    style KR1 fill:#cce5ff,stroke:#0d6efd
+    style KR2 fill:#cce5ff,stroke:#0d6efd
+    style KR3 fill:#cce5ff,stroke:#0d6efd
+    style CI1 fill:#fff3cd,stroke:#ffc107
+    style CI2 fill:#fff3cd,stroke:#ffc107
+    style INIT1 fill:#f8d7da,stroke:#dc3545
+    style INIT2 fill:#f8d7da,stroke:#dc3545
+</div>
+
+<div class="decision-box">
+    <strong>Key structural choice:</strong> Objectives aggregate Key Results (not compose them).
+    KRs are <em>authored semantic children</em> that require human judgment to create meaningfully &mdash;
+    a specific measurable statement, a metric type, target/baseline values, and an assigned owner.
+    Auto-instantiating empty KRs would produce hollow artifacts. Aggregation avoids composition
+    auto-instantiation while maintaining the parent-child relationship.
+</div>
+
+<h3>Relator Taxonomy Summary</h3>
+<table>
+    <tr><th>Relationship</th><th>Taxonomy</th><th>Semantics</th></tr>
+    <tr><td>Objective &rarr; Key Result</td><td>Aggregation</td><td>Authored content, not structural; 3-5 KRs typical</td></tr>
+    <tr><td>Key Result &rarr; Check-In</td><td>Composition</td><td>Check-in depends on KR; deletion cascades</td></tr>
+    <tr><td>Key Result &rarr; Initiative</td><td>Association</td><td>Independent lifecycle; many-to-many</td></tr>
+    <tr><td>Objective &rarr; Objective</td><td>Aggregation</td><td>Cascading alignment; children survive restructuring</td></tr>
+    <tr><td>Objective &rarr; Cycle</td><td>Attribution</td><td>One cycle per objective; cycle-scoped analytics</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="processes">5. Process Architecture</h2>
+
+<h3>5.1 OKR Planning Process (Tier 1 &mdash; Stages Only)</h3>
+
+<p>
+    The planning process runs at the start of each cycle. It has no formal approval gates (obligations)
+    because planning is collaborative, not hierarchical.
+</p>
+
+<div class="mermaid">
+stateDiagram-v2
+    [*] --> Draft : Cycle status = Planning
+    Draft --> Alignment : All objectives have at least 1 KR
+    Alignment --> Finalization : All non-company objectives have parent link
+    Finalization --> [*] : Cycle status = Active
+
+    state Draft {
+        [*] --> DraftWork
+        DraftWork : Objectives and KRs drafted by owners
+        DraftWork : Brainstorming, target-setting
+    }
+
+    state Alignment {
+        [*] --> AlignWork
+        AlignWork : Cascading alignment reviewed
+        AlignWork : Parent-child links validated
+        AlignWork : Cross-team dependencies identified
+    }
+
+    state Finalization {
+        [*] --> FinalWork
+        FinalWork : Final review
+        FinalWork : Objectives locked
+        FinalWork : Cycle activated
+    }
+</div>
+
+<h3>5.2 OKR Review Process (Tier 2 &mdash; Stages with Obligations)</h3>
+
+<p>
+    The review process runs at the end of each cycle. Each stage has a formal obligation requiring a specific
+    FunctionalRole to complete an action before the process can advance.
+</p>
+
+<div class="mermaid">
+stateDiagram-v2
+    [*] --> SelfAssessment : Cycle end date reached
+    SelfAssessment --> ManagerReview : KR owners complete self-scoring
+    ManagerReview --> Scoring : Managers validate all scores
+    Scoring --> [*] : Cycle status = Closed
+
+    state SelfAssessment {
+        [*] --> SA_Work
+        SA_Work : KR owners update final progress
+        SA_Work : Write retrospective notes
+        SA_Work : Self-score KRs
+        SA_Work --> SA_Obligation
+        SA_Obligation : Obligation fulfilled by erp-fr-kr-owner
+    }
+
+    state ManagerReview {
+        [*] --> MR_Work
+        MR_Work : Objective owners review team OKRs
+        MR_Work : Validate scores
+        MR_Work : Add manager commentary
+        MR_Work --> MR_Obligation
+        MR_Obligation : Obligation fulfilled by erp-fr-objective-owner
+    }
+
+    state Scoring {
+        [*] --> SC_Work
+        SC_Work : OKR champion finalizes scores
+        SC_Work : Conducts retrospective
+        SC_Work : Documents learnings
+        SC_Work --> SC_Obligation
+        SC_Obligation : Obligation fulfilled by erp-fr-okr-champion
+    }
+</div>
+
+<h3>Process Composition Tree</h3>
+
+<div class="mermaid">
+graph TB
+    PP["erp-okr-planning-process<br/>generalizes base-process<br/>(Tier 1)"]
+    PP -->|composition| DS["erp-okr-draft-stage<br/>generalizes base-stage"]
+    PP -->|composition| AS["erp-okr-alignment-stage<br/>generalizes base-stage"]
+    PP -->|composition| FS["erp-okr-finalization-stage<br/>generalizes base-stage"]
+
+    RP["erp-okr-review-process<br/>generalizes base-process<br/>(Tier 2)"]
+    RP -->|composition| SAS["erp-okr-self-assessment-stage<br/>generalizes base-stage"]
+    RP -->|composition| MRS["erp-okr-manager-review-stage<br/>generalizes base-stage"]
+    RP -->|composition| SCS["erp-okr-scoring-stage<br/>generalizes base-stage"]
+
+    SAS -->|composition| SAO["erp-okr-self-assess-obligation<br/>generalizes base-obligation"]
+    MRS -->|composition| MRO["erp-okr-manager-review-obligation<br/>generalizes base-obligation"]
+    SCS -->|composition| SCO["erp-okr-scoring-obligation<br/>generalizes base-obligation"]
+
+    SAO -->|association| FR1["erp-fr-kr-owner<br/>(FunctionalRole)"]
+    MRO -->|association| FR2["erp-fr-objective-owner<br/>(FunctionalRole)"]
+    SCO -->|association| FR3["erp-fr-okr-champion<br/>(FunctionalRole)"]
+
+    style PP fill:#d4edda,stroke:#28a745
+    style RP fill:#cce5ff,stroke:#0d6efd
+    style FR1 fill:#f8d7da,stroke:#dc3545
+    style FR2 fill:#f8d7da,stroke:#dc3545
+    style FR3 fill:#f8d7da,stroke:#dc3545
+</div>
+
+<h3>FunctionalRole Universals</h3>
+<table>
+    <tr><th>Role ID</th><th>Label</th><th>Purpose</th></tr>
+    <tr><td><code>erp-fr-okr-champion</code></td><td>OKR Champion</td><td>Drives the OKR process across the organization. Facilitates planning, reviews, retrospectives. Ensures consistency and quality.</td></tr>
+    <tr><td><code>erp-fr-objective-owner</code></td><td>Objective Owner</td><td>Accountable for an objective's outcomes. Typically a manager or team lead. Reviews KR progress, facilitates alignment, signs off on scoring.</td></tr>
+    <tr><td><code>erp-fr-kr-owner</code></td><td>Key Result Owner</td><td>Responsible for delivering a specific key result. Updates progress via check-ins, maintains confidence assessments, owns the number.</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="relators">6. Relator Map</h2>
+
+<p>
+    The OKR app defines 5 domain relators for core entity relationships and 9 composition relators for the
+    process architecture (3 per planning process, 3 per review process stages, 3 for stage-to-obligation links).
+    Additionally, 7 cross-app relators are defined in the analysis but skipped in the standalone metadata because
+    they reference universals from other apps.
+</p>
+
+<h3>6.1 Domain Relators (5)</h3>
+
+<div class="mermaid">
+graph LR
+    OBJ["erp-objective"]
+    KR["erp-key-result"]
+    CI["erp-check-in"]
+    INIT["erp-initiative"]
+    CYCLE["erp-okr-cycle"]
+    OBJ_P["erp-objective<br/>(parent)"]
+
+    OBJ -->|"erp-objective-has-kr-rel<br/>[aggregation-relator]<br/>aggregate / part"| KR
+    KR -->|"erp-kr-has-checkin-rel<br/>[composition-relator]<br/>composite / component"| CI
+    KR -->|"erp-kr-has-initiative-rel<br/>[association-relator]<br/>key_result / initiative"| INIT
+    OBJ -->|"erp-objective-cycle-rel<br/>[attribution-relator]<br/>objective / cycle"| CYCLE
+    OBJ_P -->|"erp-objective-parent-rel<br/>[aggregation-relator]<br/>parent / child"| OBJ
+
+    style OBJ fill:#d4edda,stroke:#28a745
+    style OBJ_P fill:#d4edda,stroke:#28a745
+    style KR fill:#cce5ff,stroke:#0d6efd
+    style CI fill:#fff3cd,stroke:#ffc107
+    style INIT fill:#f8d7da,stroke:#dc3545
+    style CYCLE fill:#e8f4fd,stroke:#2196F3
+</div>
+
+<h3>6.2 Cross-App Relators (Skipped in standalone metadata)</h3>
+
+<table>
+    <tr><th>Relator ID</th><th>From</th><th>To</th><th>Taxonomy</th><th>Target Block</th></tr>
+    <tr><td><code>erp-objective-orgunit-owner-rel</code></td><td>erp-objective</td><td>erp-org-unit</td><td>role-assignment-relator</td><td>Org Structure (L0)</td></tr>
+    <tr><td><code>erp-objective-person-owner-rel</code></td><td>erp-objective</td><td>erp-person</td><td>role-assignment-relator</td><td>Party Master (L0)</td></tr>
+    <tr><td><code>erp-kr-owner-rel</code></td><td>erp-key-result</td><td>erp-person</td><td>role-assignment-relator</td><td>Party Master (L0)</td></tr>
+    <tr><td><code>erp-initiative-owner-rel</code></td><td>erp-initiative</td><td>erp-person</td><td>association-relator</td><td>Party Master (L0)</td></tr>
+    <tr><td><code>erp-cycle-quarter-rel</code></td><td>erp-okr-cycle</td><td>erp-fiscal-quarter</td><td>attribution-relator</td><td>Fiscal Calendar (L0)</td></tr>
+    <tr><td><code>erp-initiative-project-rel</code></td><td>erp-initiative</td><td>erp-project</td><td>association-relator</td><td>Project Mgmt (L2)</td></tr>
+    <tr><td><code>erp-kr-budget-rel</code></td><td>erp-key-result</td><td>erp-budget</td><td>association-relator</td><td>Budget (L1)</td></tr>
+</table>
+
+<h3>6.3 Process Composition Relators (9)</h3>
+
+<table>
+    <tr><th>Relator ID</th><th>From</th><th>To</th><th>Taxonomy</th></tr>
+    <tr><td><code>erp-planning-has-draft-rel</code></td><td>erp-okr-planning-process</td><td>erp-okr-draft-stage</td><td>composition-relator</td></tr>
+    <tr><td><code>erp-planning-has-alignment-rel</code></td><td>erp-okr-planning-process</td><td>erp-okr-alignment-stage</td><td>composition-relator</td></tr>
+    <tr><td><code>erp-planning-has-finalization-rel</code></td><td>erp-okr-planning-process</td><td>erp-okr-finalization-stage</td><td>composition-relator</td></tr>
+    <tr><td><code>erp-review-has-self-assess-rel</code></td><td>erp-okr-review-process</td><td>erp-okr-self-assessment-stage</td><td>composition-relator</td></tr>
+    <tr><td><code>erp-review-has-mgr-review-rel</code></td><td>erp-okr-review-process</td><td>erp-okr-manager-review-stage</td><td>composition-relator</td></tr>
+    <tr><td><code>erp-review-has-scoring-rel</code></td><td>erp-okr-review-process</td><td>erp-okr-scoring-stage</td><td>composition-relator</td></tr>
+    <tr><td><code>erp-self-assess-has-obligation-rel</code></td><td>erp-okr-self-assessment-stage</td><td>erp-okr-self-assess-obligation</td><td>composition-relator</td></tr>
+    <tr><td><code>erp-mgr-review-has-obligation-rel</code></td><td>erp-okr-manager-review-stage</td><td>erp-okr-manager-review-obligation</td><td>composition-relator</td></tr>
+    <tr><td><code>erp-scoring-has-obligation-rel</code></td><td>erp-okr-scoring-stage</td><td>erp-okr-scoring-obligation</td><td>composition-relator</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="computations">7. Computation Flow</h2>
+
+<p>
+    The OKR app has 6 reactive computations that form a cascading chain. A single check-in creation
+    triggers a propagation chain from individual check-in all the way up to cycle-level attainment.
+</p>
+
+<h3>7.1 Cascade Chain</h3>
+
+<div class="mermaid">
+sequenceDiagram
+    participant User
+    participant CheckIn as erp-check-in
+    participant KR as erp-key-result
+    participant Obj as erp-objective
+    participant Cycle as erp-okr-cycle
+
+    User->>CheckIn: Create check-in (value, confidence, notes)
+
+    par Parallel Triggers
+        CheckIn->>CheckIn: [C4] erp-checkin-delta-calc<br/>Compute delta from previous
+        CheckIn->>KR: [C6] erp-checkin-to-kr-propagation<br/>Set KR current_value
+    end
+
+    KR->>KR: [C1] erp-kr-progress-calc<br/>Normalize to 0-100% progress
+
+    KR->>KR: [C2] erp-kr-status-calc<br/>Map progress to status category
+
+    Note over KR: Emits events:<br/>erp-kr-achieved-event (100%)<br/>erp-kr-at-risk-event (40-70%)<br/>erp-kr-behind-event (0-40%)
+
+    KR->>Obj: [C3] erp-obj-score-calc<br/>Weighted avg of child KR scores
+
+    Obj->>Cycle: [C5] erp-cycle-attainment-calc<br/>Avg objective scores in cycle
+</div>
+
+<h3>7.2 Computation Details</h3>
+
+<table>
+    <tr><th>ID</th><th>Code</th><th>Target</th><th>Trigger</th><th>Output</th><th>Priority</th></tr>
+    <tr>
+        <td><code>erp-kr-progress-calc</code></td>
+        <td>C1</td>
+        <td>erp-key-result</td>
+        <td>PropertyChange on current_value</td>
+        <td>erp-goal-progress-prop</td>
+        <td>High</td>
+    </tr>
+    <tr>
+        <td><code>erp-kr-status-calc</code></td>
+        <td>C2</td>
+        <td>erp-key-result</td>
+        <td>PropertyChange on progress</td>
+        <td>(status via event bindings)</td>
+        <td>Normal</td>
+    </tr>
+    <tr>
+        <td><code>erp-obj-score-calc</code></td>
+        <td>C3</td>
+        <td>erp-objective</td>
+        <td>Aggregate via erp-objective-has-kr-rel</td>
+        <td>erp-goal-score-prop</td>
+        <td>Normal</td>
+    </tr>
+    <tr>
+        <td><code>erp-checkin-delta-calc</code></td>
+        <td>C4</td>
+        <td>erp-check-in</td>
+        <td>PropertyChange on checkin_value</td>
+        <td>erp-checkin-delta-prop</td>
+        <td>Normal</td>
+    </tr>
+    <tr>
+        <td><code>erp-cycle-attainment-calc</code></td>
+        <td>C5</td>
+        <td>erp-okr-cycle</td>
+        <td>Aggregate via erp-objective-cycle-rel</td>
+        <td>erp-cycle-avg-attainment-prop</td>
+        <td>Low</td>
+    </tr>
+    <tr>
+        <td><code>erp-checkin-to-kr-propagation</code></td>
+        <td>C6</td>
+        <td>erp-key-result</td>
+        <td>PropertyChange on checkin_value</td>
+        <td>(propagates to KR current_value)</td>
+        <td>High</td>
+    </tr>
+</table>
+
+<h3>7.3 KR Progress Formula</h3>
+
+<p>Progress normalization handles three KR types:</p>
+<table>
+    <tr><th>KR Type</th><th>Formula</th><th>Example</th></tr>
+    <tr>
+        <td>Metric</td>
+        <td><code>clamp(((current - baseline) / (target - baseline)) * 100, 0, 100)</code></td>
+        <td>Revenue from $0 to $2M, currently at $750K = 37.5%</td>
+    </tr>
+    <tr>
+        <td>Binary</td>
+        <td><code>current >= 1.0 ? 100 : 0</code></td>
+        <td>Launch V2: not launched = 0%, launched = 100%</td>
+    </tr>
+    <tr>
+        <td>Milestone</td>
+        <td><code>clamp(current, 0, 100)</code></td>
+        <td>SOC2 cert: owner estimates 60% through audit</td>
+    </tr>
+</table>
+
+<h3>7.4 Status Thresholds</h3>
+
+<table>
+    <tr><th>Progress</th><th>Status</th><th>Numeric Code</th></tr>
+    <tr><td>= 100%</td><td>Achieved</td><td>5.0</td></tr>
+    <tr><td>&gt;= 70%</td><td>On Track</td><td>4.0</td></tr>
+    <tr><td>&gt;= 40%</td><td>At Risk</td><td>3.0</td></tr>
+    <tr><td>&gt; 0%</td><td>Behind</td><td>2.0</td></tr>
+    <tr><td>= 0%</td><td>Not Started</td><td>1.0</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="artifacts">8. Artifact Definitions</h2>
+
+<p>
+    Four intelligence artifacts provide organizational health monitoring across attainment, alignment,
+    compliance, and initiative effort. Three of the four have threshold-based alerting.
+</p>
+
+<div class="mermaid">
+graph TB
+    subgraph "Artifact 1: OKR Attainment"
+        A1_SRC["Source: erp-key-result"]
+        A1_D1["Dim: Objective Level<br/>(via KR->Obj->level)"]
+        A1_D2["Dim: Cycle<br/>(via KR->Obj->Cycle->name)"]
+        A1_M1["Measure: Avg KR Score"]
+        A1_M2["Measure: KR Count"]
+        A1_M3["Measure: Achieved Count"]
+        A1_T["Threshold: Avg < 40<br/>emits erp-okr-low-attainment-event"]
+        A1_SRC --> A1_D1
+        A1_SRC --> A1_D2
+        A1_SRC --> A1_M1
+        A1_SRC --> A1_M2
+        A1_SRC --> A1_M3
+        A1_M1 --> A1_T
+    end
+
+    subgraph "Artifact 2: Alignment Health"
+        A2_SRC["Source: erp-objective"]
+        A2_D1["Dim: Objective Level<br/>(direct property)"]
+        A2_D2["Dim: Cycle<br/>(via Obj->Cycle->name)"]
+        A2_M1["Measure: Total Objectives"]
+        A2_M2["Measure: Aligned Objectives"]
+        A2_M3["Measure: Alignment Ratio"]
+        A2_T["Threshold: Ratio < 70%<br/>emits erp-okr-poor-alignment-event"]
+        A2_SRC --> A2_D1
+        A2_SRC --> A2_D2
+        A2_SRC --> A2_M1
+        A2_SRC --> A2_M2
+        A2_SRC --> A2_M3
+        A2_M3 --> A2_T
+    end
+
+    subgraph "Artifact 3: Check-In Compliance"
+        A3_SRC["Source: erp-key-result"]
+        A3_D1["Dim: Cycle<br/>(via KR->Obj->Cycle->name)"]
+        A3_M1["Measure: Total KRs"]
+        A3_M2["Measure: Checked-In KRs"]
+        A3_M3["Measure: Compliance Rate"]
+        A3_T["Threshold: Rate < 50%<br/>emits erp-checkin-compliance-event"]
+        A3_SRC --> A3_D1
+        A3_SRC --> A3_M1
+        A3_SRC --> A3_M2
+        A3_SRC --> A3_M3
+        A3_M3 --> A3_T
+    end
+
+    subgraph "Artifact 4: Initiative Effort"
+        A4_SRC["Source: erp-initiative"]
+        A4_D1["Dim: Initiative Status<br/>(direct property)"]
+        A4_M1["Measure: Total Estimated Effort"]
+        A4_M2["Measure: Total Actual Effort"]
+        A4_M3["Measure: Initiative Count"]
+        A4_SRC --> A4_D1
+        A4_SRC --> A4_M1
+        A4_SRC --> A4_M2
+        A4_SRC --> A4_M3
+    end
+
+    style A1_T fill:#f8d7da,stroke:#dc3545
+    style A2_T fill:#f8d7da,stroke:#dc3545
+    style A3_T fill:#f8d7da,stroke:#dc3545
+</div>
+
+<table>
+    <tr><th>Artifact</th><th>Source</th><th>Dimensions</th><th>Measures</th><th>Threshold</th></tr>
+    <tr>
+        <td>OKR Attainment by Objective Level</td>
+        <td>erp-key-result</td>
+        <td>Objective Level, Cycle</td>
+        <td>Avg Score, KR Count, Achieved Count</td>
+        <td>Avg &lt; 40 &rarr; erp-okr-low-attainment-event</td>
+    </tr>
+    <tr>
+        <td>Cascading Alignment Health</td>
+        <td>erp-objective</td>
+        <td>Objective Level, Cycle</td>
+        <td>Total Objectives, Aligned Count, Alignment Ratio</td>
+        <td>Ratio &lt; 70% &rarr; erp-okr-poor-alignment-event</td>
+    </tr>
+    <tr>
+        <td>Check-In Compliance</td>
+        <td>erp-key-result</td>
+        <td>Cycle</td>
+        <td>Total KRs, Checked-In KRs, Compliance Rate</td>
+        <td>Rate &lt; 50% &rarr; erp-checkin-compliance-event</td>
+    </tr>
+    <tr>
+        <td>Initiative Effort by Status</td>
+        <td>erp-initiative</td>
+        <td>Initiative Status</td>
+        <td>Estimated Effort, Actual Effort, Initiative Count</td>
+        <td>(none &mdash; informational)</td>
+    </tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="instances">9. Instance Diagram</h2>
+
+<p>
+    The sample data demonstrates a complete OKR structure with a Q1 2026 cycle, two objectives
+    (company and department), three key results, two check-ins, and two initiatives.
+</p>
+
+<div class="mermaid">
+graph TB
+    CQ1["Q1 2026 OKRs<br/><i>erp-okr-cycle</i><br/>Status: Active"]
+
+    OBJ1["Become market leader<br/><i>erp-objective</i><br/>Level: Company<br/>Aspirational: true"]
+    OBJ2["Drive 40% revenue growth<br/><i>erp-objective</i><br/>Level: Department"]
+
+    KR_ARR["$2M new ARR<br/><i>erp-key-result</i><br/>Type: Metric<br/>Current: $750K<br/>Status: At Risk"]
+    KR_V2["Launch V2<br/><i>erp-key-result</i><br/>Type: Binary<br/>Status: Behind"]
+    KR_NPS["NPS 60+<br/><i>erp-key-result</i><br/>Type: Metric<br/>Current: 52<br/>Status: On Track"]
+
+    CI_W1["Check-In Week 1<br/>Value: $250K<br/>Confidence: High"]
+    CI_W4["Check-In Week 4<br/>Value: $750K<br/>Confidence: Medium"]
+
+    INIT_OB["Outbound Campaign<br/>Status: In Progress<br/>55% complete"]
+    INIT_RD["Redesign Onboarding<br/>Status: Planned<br/>0% complete"]
+
+    CQ1 ---|"attribution"| OBJ1
+    CQ1 ---|"attribution"| OBJ2
+    OBJ1 ---|"parent-child"| OBJ2
+    OBJ1 ---|"aggregation"| KR_V2
+    OBJ1 ---|"aggregation"| KR_NPS
+    OBJ2 ---|"aggregation"| KR_ARR
+    KR_ARR ---|"composition"| CI_W1
+    KR_ARR ---|"composition"| CI_W4
+    KR_ARR ---|"association"| INIT_OB
+    KR_NPS ---|"association"| INIT_RD
+
+    style CQ1 fill:#e8f4fd,stroke:#2196F3
+    style OBJ1 fill:#d4edda,stroke:#28a745
+    style OBJ2 fill:#d4edda,stroke:#28a745
+    style KR_ARR fill:#fff3cd,stroke:#ffc107
+    style KR_V2 fill:#f8d7da,stroke:#dc3545
+    style KR_NPS fill:#d4edda,stroke:#28a745
+    style CI_W1 fill:#e9ecef,stroke:#6c757d
+    style CI_W4 fill:#e9ecef,stroke:#6c757d
+    style INIT_OB fill:#e9ecef,stroke:#6c757d
+    style INIT_RD fill:#e9ecef,stroke:#6c757d
+</div>
+
+<h3>Enumeration Instances</h3>
+<table>
+    <tr><th>Enum Universal</th><th>Values</th></tr>
+    <tr><td>erp-okr-status</td><td>Not Started, On Track, At Risk, Behind, Achieved, Missed</td></tr>
+    <tr><td>erp-objective-level</td><td>Company, Business Unit, Department, Team, Individual</td></tr>
+    <tr><td>erp-kr-type</td><td>Metric, Milestone, Binary</td></tr>
+    <tr><td>erp-confidence-level</td><td>High, Medium, Low</td></tr>
+    <tr><td>erp-initiative-status</td><td>Planned, In Progress, Completed, Cancelled, Blocked</td></tr>
+    <tr><td>erp-scoring-method</td><td>Percentage, Binary, Milestone, Weighted</td></tr>
+    <tr><td>erp-cycle-status</td><td>Planning, Active, Review, Closed</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="properties">10. Property Catalog</h2>
+
+<h3>10.1 erp-goal (Foundation &mdash; inherited by erp-objective and erp-key-result)</h3>
+<table>
+    <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Label?</th><th>Notes</th></tr>
+    <tr><td><code>erp-goal-title-prop</code></td><td>Title</td><td>Textual</td><td>&mdash;</td><td>seq 1</td><td>The goal statement</td></tr>
+    <tr><td><code>erp-goal-description-prop</code></td><td>Description</td><td>Textual</td><td>&mdash;</td><td>&mdash;</td><td>Context and rationale</td></tr>
+    <tr><td><code>erp-goal-target-value-prop</code></td><td>Target Value</td><td>Measurement</td><td>std-float</td><td>&mdash;</td><td>The number to hit</td></tr>
+    <tr><td><code>erp-goal-current-value-prop</code></td><td>Current Value</td><td>Measurement</td><td>std-float</td><td>&mdash;</td><td>Updated via check-ins</td></tr>
+    <tr><td><code>erp-goal-baseline-value-prop</code></td><td>Baseline Value</td><td>Measurement</td><td>std-float</td><td>&mdash;</td><td>Starting value</td></tr>
+    <tr><td><code>erp-goal-progress-prop</code></td><td>Progress</td><td>Measurement</td><td>std-ratio</td><td>&mdash;</td><td>Computed: 0-100%</td></tr>
+    <tr><td><code>erp-goal-status-prop</code></td><td>Status</td><td>Categorical</td><td>&mdash;</td><td>seq 2</td><td>ref: erp-okr-status</td></tr>
+    <tr><td><code>erp-goal-start-date-prop</code></td><td>Start Date</td><td>Measurement</td><td>std-timestamp</td><td>&mdash;</td><td>Tracking start</td></tr>
+    <tr><td><code>erp-goal-due-date-prop</code></td><td>Due Date</td><td>Measurement</td><td>std-timestamp</td><td>&mdash;</td><td>Achievement deadline</td></tr>
+    <tr><td><code>erp-goal-weight-prop</code></td><td>Weight</td><td>Measurement</td><td>std-float</td><td>&mdash;</td><td>Rollup weighting (default 1.0)</td></tr>
+    <tr><td><code>erp-goal-score-prop</code></td><td>Score</td><td>Measurement</td><td>std-score</td><td>&mdash;</td><td>Computed final score</td></tr>
+</table>
+
+<h3>10.2 erp-objective (Own properties)</h3>
+<table>
+    <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Notes</th></tr>
+    <tr><td><code>erp-obj-level-prop</code></td><td>Objective Level</td><td>Categorical</td><td>&mdash;</td><td>ref: erp-objective-level</td></tr>
+    <tr><td><code>erp-obj-is-aspirational-prop</code></td><td>Is Aspirational</td><td>Boolean</td><td>&mdash;</td><td>Moonshot flag; 70% = on track</td></tr>
+    <tr><td><code>erp-obj-alignment-score-prop</code></td><td>Alignment Score</td><td>Measurement</td><td>std-score</td><td>Computed: weighted avg of KR scores</td></tr>
+</table>
+
+<h3>10.3 erp-key-result (Own properties)</h3>
+<table>
+    <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Notes</th></tr>
+    <tr><td><code>erp-kr-type-prop</code></td><td>KR Type</td><td>Categorical</td><td>&mdash;</td><td>ref: erp-kr-type (Metric/Milestone/Binary)</td></tr>
+    <tr><td><code>erp-kr-unit-prop</code></td><td>Unit</td><td>Categorical</td><td>&mdash;</td><td>Display unit (%, $, count)</td></tr>
+    <tr><td><code>erp-kr-confidence-prop</code></td><td>Confidence</td><td>Categorical</td><td>&mdash;</td><td>ref: erp-confidence-level</td></tr>
+    <tr><td><code>erp-kr-last-checkin-date-prop</code></td><td>Last Check-In Date</td><td>Measurement</td><td>std-timestamp</td><td>Used by overdue timer</td></tr>
+</table>
+
+<h3>10.4 erp-okr-cycle</h3>
+<table>
+    <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Label?</th><th>Notes</th></tr>
+    <tr><td><code>erp-cycle-name-prop</code></td><td>Cycle Name</td><td>Textual</td><td>&mdash;</td><td>seq 1</td><td>e.g., "Q1 2026 OKRs"</td></tr>
+    <tr><td><code>erp-cycle-start-date-prop</code></td><td>Start Date</td><td>Measurement</td><td>std-timestamp</td><td>&mdash;</td><td>Aligns to fiscal quarter</td></tr>
+    <tr><td><code>erp-cycle-end-date-prop</code></td><td>End Date</td><td>Measurement</td><td>std-timestamp</td><td>&mdash;</td><td></td></tr>
+    <tr><td><code>erp-cycle-status-prop</code></td><td>Status</td><td>Categorical</td><td>&mdash;</td><td>seq 2</td><td>ref: erp-cycle-status</td></tr>
+    <tr><td><code>erp-cycle-avg-attainment-prop</code></td><td>Avg Attainment</td><td>Measurement</td><td>std-ratio</td><td>&mdash;</td><td>Computed: avg objective scores</td></tr>
+</table>
+
+<h3>10.5 erp-check-in</h3>
+<table>
+    <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Label?</th><th>Notes</th></tr>
+    <tr><td><code>erp-checkin-date-prop</code></td><td>Check-In Date</td><td>Measurement</td><td>std-timestamp</td><td>seq 1</td><td></td></tr>
+    <tr><td><code>erp-checkin-value-prop</code></td><td>Value</td><td>Measurement</td><td>std-float</td><td>&mdash;</td><td>Current value at check-in time</td></tr>
+    <tr><td><code>erp-checkin-confidence-prop</code></td><td>Confidence</td><td>Categorical</td><td>&mdash;</td><td>&mdash;</td><td>ref: erp-confidence-level</td></tr>
+    <tr><td><code>erp-checkin-notes-prop</code></td><td>Notes</td><td>Textual</td><td>&mdash;</td><td>&mdash;</td><td>Progress notes, blockers</td></tr>
+    <tr><td><code>erp-checkin-delta-prop</code></td><td>Delta</td><td>Measurement</td><td>std-float</td><td>&mdash;</td><td>Computed: change from previous</td></tr>
+</table>
+
+<h3>10.6 erp-initiative</h3>
+<table>
+    <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Label?</th><th>Notes</th></tr>
+    <tr><td><code>erp-init-name-prop</code></td><td>Name</td><td>Textual</td><td>&mdash;</td><td>seq 1</td><td>Action-oriented statement</td></tr>
+    <tr><td><code>erp-init-description-prop</code></td><td>Description</td><td>Textual</td><td>&mdash;</td><td>&mdash;</td><td></td></tr>
+    <tr><td><code>erp-init-status-prop</code></td><td>Status</td><td>Categorical</td><td>&mdash;</td><td>seq 2</td><td>ref: erp-initiative-status</td></tr>
+    <tr><td><code>erp-init-start-date-prop</code></td><td>Start Date</td><td>Measurement</td><td>std-timestamp</td><td>&mdash;</td><td></td></tr>
+    <tr><td><code>erp-init-end-date-prop</code></td><td>End Date</td><td>Measurement</td><td>std-timestamp</td><td>&mdash;</td><td></td></tr>
+    <tr><td><code>erp-init-effort-estimate-prop</code></td><td>Effort Estimate</td><td>Measurement</td><td>std-float</td><td>&mdash;</td><td>Person-days planned</td></tr>
+    <tr><td><code>erp-init-effort-actual-prop</code></td><td>Actual Effort</td><td>Measurement</td><td>std-float</td><td>&mdash;</td><td>Person-days spent</td></tr>
+    <tr><td><code>erp-init-completion-prop</code></td><td>Completion %</td><td>Measurement</td><td>std-ratio</td><td>&mdash;</td><td>0-100</td></tr>
+</table>
+
+<h3>10.7 Enumeration Properties</h3>
+<p>Each enumeration universal has a single <code>name</code> property (Categorical, participates in label, sequence 1):</p>
+<table>
+    <tr><th>Property ID</th><th>Universal</th></tr>
+    <tr><td><code>erp-okr-status-name-prop</code></td><td>erp-okr-status</td></tr>
+    <tr><td><code>erp-objective-level-name-prop</code></td><td>erp-objective-level</td></tr>
+    <tr><td><code>erp-kr-type-name-prop</code></td><td>erp-kr-type</td></tr>
+    <tr><td><code>erp-confidence-level-name-prop</code></td><td>erp-confidence-level</td></tr>
+    <tr><td><code>erp-initiative-status-name-prop</code></td><td>erp-initiative-status</td></tr>
+    <tr><td><code>erp-scoring-method-name-prop</code></td><td>erp-scoring-method</td></tr>
+    <tr><td><code>erp-cycle-status-name-prop</code></td><td>erp-cycle-status</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2 id="decisions">11. Decision Points</h2>
+
+<div class="decision-box">
+    <h3>KRs Use Aggregation, Not Composition</h3>
+    <p>
+        <code>erp-objective-has-kr-rel</code> uses <strong>aggregation</strong> rather than composition.
+        Composition auto-instantiation is the right pattern for <em>deterministic structural children</em>
+        (fiscal quarters within a year, stages within a process). Key results are fundamentally different:
+        they are <em>authored semantic children</em> that require human judgment &mdash; a specific measurable
+        statement, a metric type, target/baseline values, and an assigned owner. Auto-instantiating empty KRs
+        produces hollow artifacts that add no value.
+    </p>
+    <p>
+        <strong>Trade-off:</strong> Aggregation does not cascade delete. When an objective is deleted, its KRs
+        become orphaned. This cleanup is an application-layer concern.
+    </p>
+</div>
+
+<div class="decision-box">
+    <h3>erp-goal as Shared Foundation Universal</h3>
+    <p>
+        <code>erp-goal</code> is defined as a <strong>Layer 0 foundation universal</strong>, not within the
+        OKR app. This prevents layer inversion: without it, every domain that defines a goal specialization
+        (Budget, Operations, Agreements) would take a dependency on OKR's taxonomy.
+    </p>
+    <p>
+        <strong>Analytical value:</strong> The shared root enables cross-domain analytics. A single artifact
+        can aggregate across OKR key results, budget targets, and operational KPIs through the shared
+        <code>erp-goal-progress-prop</code> and <code>erp-goal-status-prop</code> properties.
+    </p>
+</div>
+
+<div class="decision-box">
+    <h3>Objective Ownership via Party (Not Employee)</h3>
+    <p>
+        OKR ownership uses <strong>Party Master (Layer 0)</strong>, not Employee Management (Layer 1).
+        This allows contractors, partner organizations, board members, and non-employees to own objectives
+        and key results. The two ownership relators (<code>erp-objective-orgunit-owner-rel</code> and
+        <code>erp-objective-person-owner-rel</code>) exist because Model1 relator roles have a single
+        <code>universal_id</code> per role &mdash; no disjunctive type unions.
+    </p>
+</div>
+
+<div class="decision-box">
+    <h3>Dual-Ownership Objectives (Org-Owned vs Person-Owned)</h3>
+    <p>
+        An objective has exactly one ownership relator &mdash; either org-unit or person, never both.
+        Both share the same FunctionalRole (<code>erp-fr-objective-owner</code>) for authorization.
+        This split affects artifact coverage: Attainment and Initiative Effort artifacts can only dimension
+        by org unit for org-unit-owned objectives. Person-owned objectives are excluded from those dimensions.
+    </p>
+</div>
+
+<div class="decision-box">
+    <h3>FunctionalRole Universals for Process Authority</h3>
+    <p>
+        Three FunctionalRole universals (<code>erp-fr-okr-champion</code>, <code>erp-fr-objective-owner</code>,
+        <code>erp-fr-kr-owner</code>) control who can fulfill obligations in the review process. These are
+        universals with <code>meta_category: "FunctionalRole"</code>, not instances. They follow the
+        Process-as-Universal pattern where authority is derived from role assignment, not hardcoded.
+    </p>
+</div>
+
+<div class="decision-box">
+    <h3>Process-as-Universal Pattern</h3>
+    <p>
+        Both processes are universals that generalize <code>base-process</code>. Their stages are composed
+        universals. The ProcessEngine derives capabilities from composition depth:
+    </p>
+    <ul>
+        <li><strong>Planning Process (Tier 1):</strong> 3 stages, no obligations. Collaborative, not hierarchical.</li>
+        <li><strong>Review Process (Tier 2):</strong> 3 stages, each with an obligation bound to a FunctionalRole.
+        Sequential approval: KR owners must self-assess before managers review, managers before champion scores.</li>
+    </ul>
+</div>
+
+<div class="decision-box">
+    <h3>Artifact Coverage Limitation for Person-Owned Objectives</h3>
+    <p>
+        Artifacts 1 (Attainment) and 4 (Initiative Effort) resolve organizational dimensions through
+        <code>erp-objective-orgunit-owner-rel</code>. KRs and initiatives under person-owned objectives
+        are excluded from these aggregations because there is no direct relator path from a person to an
+        org unit at this layer.
+    </p>
+    <p>
+        This is intentional: org-unit-owned objectives (Company, BU, Department, Team) are the primary
+        target for organizational health dashboards. If Employee Management is deployed, a deployment-specific
+        artifact variant can resolve person &rarr; employee &rarr; department.
+    </p>
+</div>
+
+<div class="decision-box">
+    <h3>Check-In Cycles with Timer-Driven Scoring</h3>
+    <p>
+        The 14-day threshold for check-in overdue detection accommodates both weekly and biweekly cadences.
+        The weekly timer checks all active KRs; only those exceeding 14 days since last check-in trigger the
+        <code>erp-checkin-overdue-event</code>. Low compliance (the compliance artifact, threshold &lt; 50%)
+        is the strongest leading indicator of OKR program failure.
+    </p>
+</div>
+
+<div class="decision-box">
+    <h3>OKR Alignment (Parent-Child Objectives)</h3>
+    <p>
+        <code>erp-objective-parent-rel</code> uses <strong>aggregation</strong> (not composition) because child
+        objectives have independent lifecycles. When a company restructures and a BU objective is removed, the
+        department-level objectives beneath it survive &mdash; they represent real work that may simply need
+        re-alignment to a different parent. Each objective exists in exactly one cycle to avoid the
+        "forever objective" anti-pattern.
+    </p>
+</div>
+
+<!-- ================================================================ -->
+<h2 id="events">12. Events</h2>
+
+<p>
+    Eight event definitions cover the full OKR lifecycle: KR status changes (3), cycle lifecycle (1),
+    timer-driven overdue detection (1), and artifact threshold alerts (3).
+</p>
+
+<table>
+    <tr><th>Event ID</th><th>Label</th><th>Trigger</th><th>Key Payload</th></tr>
+    <tr>
+        <td><code>erp-kr-achieved-event</code></td>
+        <td>Key Result Achieved</td>
+        <td>KR progress reaches 100%</td>
+        <td>key_result_id, objective_id, final_score</td>
+    </tr>
+    <tr>
+        <td><code>erp-kr-at-risk-event</code></td>
+        <td>Key Result At Risk</td>
+        <td>KR status changes to At Risk (40-70%)</td>
+        <td>key_result_id, objective_id, current_progress</td>
+    </tr>
+    <tr>
+        <td><code>erp-kr-behind-event</code></td>
+        <td>Key Result Behind</td>
+        <td>KR status changes to Behind (&lt; 40%)</td>
+        <td>key_result_id, objective_id, current_progress</td>
+    </tr>
+    <tr>
+        <td><code>erp-okr-cycle-closed-event</code></td>
+        <td>OKR Cycle Closed</td>
+        <td>Cycle status transitions to Closed</td>
+        <td>cycle_id, avg_attainment</td>
+    </tr>
+    <tr>
+        <td><code>erp-checkin-overdue-event</code></td>
+        <td>Check-In Overdue</td>
+        <td>Timer: KR not checked in for &gt; 14 days</td>
+        <td>key_result_id, days_since_last_checkin</td>
+    </tr>
+    <tr>
+        <td><code>erp-okr-low-attainment-event</code></td>
+        <td>Low Attainment Alert</td>
+        <td>Artifact threshold: avg KR score &lt; 40</td>
+        <td>artifact_instance_id, measure_value</td>
+    </tr>
+    <tr>
+        <td><code>erp-okr-poor-alignment-event</code></td>
+        <td>Poor Alignment Alert</td>
+        <td>Artifact threshold: alignment ratio &lt; 70%</td>
+        <td>artifact_instance_id, measure_value</td>
+    </tr>
+    <tr>
+        <td><code>erp-checkin-compliance-event</code></td>
+        <td>Low Check-In Compliance</td>
+        <td>Artifact threshold: compliance rate &lt; 50%</td>
+        <td>artifact_instance_id, measure_value</td>
+    </tr>
+</table>
+
+<h3>Event Flow by Source</h3>
+
+<div class="mermaid">
+graph LR
+    subgraph "Computation-Triggered"
+        C2["erp-kr-status-calc"] -->|status=Achieved| E1["erp-kr-achieved-event"]
+        C2 -->|"status=At Risk"| E2["erp-kr-at-risk-event"]
+        C2 -->|status=Behind| E3["erp-kr-behind-event"]
+    end
+
+    subgraph "Timer-Triggered"
+        T1["erp-checkin-reminder-timer<br/>Weekly"] -->|"last_checkin > 14 days"| E5["erp-checkin-overdue-event"]
+        T2["erp-cycle-close-timer<br/>Daily"] -->|"end_date passed"| E4["erp-okr-cycle-closed-event"]
+    end
+
+    subgraph "Artifact Threshold-Triggered"
+        ART1["Attainment Artifact<br/>avg score < 40"] --> E6["erp-okr-low-attainment-event"]
+        ART2["Alignment Artifact<br/>ratio < 70%"] --> E7["erp-okr-poor-alignment-event"]
+        ART3["Compliance Artifact<br/>rate < 50%"] --> E8["erp-checkin-compliance-event"]
+    end
+
+    style E1 fill:#d4edda,stroke:#28a745
+    style E2 fill:#fff3cd,stroke:#ffc107
+    style E3 fill:#f8d7da,stroke:#dc3545
+    style E4 fill:#e8f4fd,stroke:#2196F3
+    style E5 fill:#fff3cd,stroke:#ffc107
+    style E6 fill:#f8d7da,stroke:#dc3545
+    style E7 fill:#f8d7da,stroke:#dc3545
+    style E8 fill:#f8d7da,stroke:#dc3545
+</div>
+
+<!-- ================================================================ -->
+<h2 id="timers">13. Timers</h2>
+
+<table>
+    <tr><th>Timer ID</th><th>Name</th><th>Schedule</th><th>Action</th><th>Event</th></tr>
+    <tr>
+        <td><code>erp-checkin-reminder-timer</code></td>
+        <td>Check-In Reminder</td>
+        <td>Recurring, every 7 days</td>
+        <td>For each active KR where last_checkin_date &gt; 14 days ago, emit overdue event. Only active KRs in active cycles.</td>
+        <td>erp-checkin-overdue-event</td>
+    </tr>
+    <tr>
+        <td><code>erp-cycle-close-timer</code></td>
+        <td>Cycle Close Trigger</td>
+        <td>Recurring, every 1 day</td>
+        <td>Check if any cycle has passed its end date. Transition cycle status to Review and initiate erp-okr-review-process.</td>
+        <td>erp-okr-cycle-closed-event</td>
+    </tr>
+</table>
+
+<div class="info-box">
+    <strong>Rationale:</strong> The weekly check-in timer with a 14-day threshold accommodates both weekly and biweekly
+    check-in patterns while catching true delinquency. The daily cycle close timer ensures review processes start
+    on time regardless of manual intervention &mdash; cycles move to "Review" (not directly to "Closed") because
+    the review process must complete first.
+</div>
+
+<!-- ================================================================ -->
+<h2 id="layers">14. Layer Information</h2>
+
+<h3>Layer Position</h3>
+<table>
+    <tr><th>Attribute</th><th>Value</th></tr>
+    <tr><td>Layer</td><td><span class="layer-badge layer-2">Layer 2</span></td></tr>
+    <tr><td>Foundation Universal</td><td><code>erp-goal</code> (shared Layer 0, defined here for standalone validation)</td></tr>
+    <tr><td>Required Dependencies</td><td>Org Structure (L0), Party Master (L0), Fiscal Calendar (L0)</td></tr>
+    <tr><td>Optional Dependencies</td><td>Employee Mgmt (L1), Budget (L1), Project Mgmt (L2), Accounting (L1)</td></tr>
+    <tr><td>Processes</td><td>Planning (Tier 1), Review (Tier 2)</td></tr>
+    <tr><td>Complexity Rank</td><td>Highest in ERP Foundations (44 universals, 6 computations, 2 processes, 4 artifacts)</td></tr>
+</table>
+
+<h3>App Module Structure</h3>
+<table>
+    <tr><th>Module</th><th>Purpose</th><th>Subscribes</th><th>Publishes</th></tr>
+    <tr>
+        <td>erp-okr-core-module</td>
+        <td>Core OKR operations: objectives, KRs, check-ins, initiatives, cycles</td>
+        <td>&mdash;</td>
+        <td>erp-kr-achieved-event, erp-kr-at-risk-event, erp-kr-behind-event</td>
+    </tr>
+    <tr>
+        <td>erp-okr-analytics-module</td>
+        <td>Intelligence artifacts, attainment, alignment, compliance monitoring</td>
+        <td>erp-kr-achieved-event, erp-kr-at-risk-event, erp-kr-behind-event</td>
+        <td>erp-okr-low-attainment-event, erp-okr-poor-alignment-event, erp-checkin-compliance-event</td>
+    </tr>
+    <tr>
+        <td>erp-okr-process-module</td>
+        <td>OKR planning and review processes</td>
+        <td>erp-checkin-overdue-event</td>
+        <td>erp-okr-cycle-closed-event, erp-checkin-overdue-event</td>
+    </tr>
+</table>
+
+<h3>Optional Integration Patterns</h3>
+
+<div class="warning-box">
+    <strong>Budget Integration:</strong> When the Budget block (Layer 1) is deployed, financial KRs can reference
+    budget utilization metrics via <code>erp-kr-budget-rel</code>. Example: "Reduce cloud spend to $X" links to
+    actual budget line items for automated progress updates.
+</div>
+
+<div class="warning-box">
+    <strong>Employee Integration:</strong> When Employee Management (Layer 1) is deployed, employee-specific OKR
+    features become available: linking OKRs to performance reviews, 1:1 meetings, and resolving person &rarr;
+    department for person-owned objective analytics.
+</div>
+
+<h3>File Structure</h3>
+<table>
+    <tr><th>File</th><th>Contents</th></tr>
+    <tr><td><code>metadata_app.json</code></td><td>44 universals, 50+ property definitions, 8 event definitions, 2 timers, 6 computations, 4 artifact definitions, 1 app with 3 modules, role assignments (no users &mdash; see app_erp_base)</td></tr>
+    <tr><td><code>metadata_app_data.json</code></td><td>35 enumeration instances (7 enums), 1 cycle, 2 objectives, 3 KRs, 2 check-ins, 2 initiatives, 10 relator instances</td></tr>
+    <tr><td><code>architecture.html</code></td><td>This document</td></tr>
+</table>
+
+<h3>Score Definition: OKR Health Score</h3>
+<p>A composite score combining three artifact measures into a single 0-100 health indicator per org unit per cycle:</p>
+<table>
+    <tr><th>Component</th><th>Weight</th><th>Source</th><th>Interpretation</th></tr>
+    <tr><td>Attainment</td><td>0.4</td><td>Avg KR Score (Artifact 1)</td><td>Are we hitting our numbers?</td></tr>
+    <tr><td>Alignment</td><td>0.3</td><td>Alignment Ratio (Artifact 2)</td><td>Are our goals connected to strategy?</td></tr>
+    <tr><td>Compliance</td><td>0.3</td><td>Compliance Rate (Artifact 3)</td><td>Are people engaged in the process?</td></tr>
+</table>
+<p><strong>Formula:</strong> <code>health_score = (attainment * 0.4) + (alignment * 0.3) + (compliance * 0.3)</code></p>
+
+<script>mermaid.initialize({startOnLoad: true, theme: 'default', securityLevel: 'loose'});</script>
+</body>
+</html>

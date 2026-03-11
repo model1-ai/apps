@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Foundations — Overview</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 2rem; color: #1a1a2e; background: #f8f9fa; line-height: 1.6; }
+        h1 { color: #16213e; border-bottom: 3px solid #0f3460; padding-bottom: 0.5rem; }
+        h2 { color: #0f3460; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.3rem; margin-top: 2rem; }
+        h3 { color: #533483; }
+        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #0f3460; color: white; }
+        tr:nth-child(even) { background: #f2f2f2; }
+        .mermaid { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 1rem 0; }
+        .decision-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .layer-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
+        .layer-0 { background: #d4edda; color: #155724; }
+        .layer-1 { background: #cce5ff; color: #004085; }
+        .layer-2 { background: #f8d7da; color: #721c24; }
+        code { background: #e9ecef; padding: 2px 6px; border-radius: 3px; font-size: 0.9rem; }
+        .info-box { background: #e8f4fd; border-left: 4px solid #2196F3; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .toc { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; }
+        .toc ul { list-style: none; padding-left: 0; margin: 0; }
+        .toc ul ul { padding-left: 1.5rem; }
+        .toc li { margin: 0.3rem 0; }
+        .toc a { color: #0f3460; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .principle-box { background: #f0f7ff; border-left: 4px solid #0f3460; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .summary-stat { display: inline-block; background: white; border: 1px solid #ddd; border-radius: 8px; padding: 1rem 1.5rem; margin: 0.5rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .summary-stat .number { font-size: 2rem; font-weight: bold; color: #0f3460; display: block; }
+        .summary-stat .label { font-size: 0.85rem; color: #666; }
+    </style>
+</head>
+<body>
+
+    <h1>ERP Foundations &mdash; Ontological Architecture Overview</h1>
+
+    <p>
+        The ERP Foundations suite is a collection of <strong>9 metadata apps</strong> (1 shared base + 8 domain apps)
+        built on the Model1 ontology-driven platform. They establish the structural, financial, temporal,
+        geographic, party, and resource primitives required by any enterprise resource planning system &mdash;
+        plus two higher-layer domains (Budgeting and OKR/Goals) that compose them. A shared base app
+        (<code>app_erp_base</code>) centralizes organization, tenant, users, and the cross-domain
+        <code>erp-goal</code> foundation universal with its 11 properties. Domain apps contain
+        <strong>no users, no org/tenant definitions</strong> &mdash; only their own app definition,
+        universals, properties, and app-scoped <code>foundation_role_assignments</code>.
+    </p>
+
+    <div style="text-align: center; margin: 1.5rem 0;">
+        <div class="summary-stat"><span class="number">9</span><span class="label">Metadata Apps</span></div>
+        <div class="summary-stat"><span class="number">103</span><span class="label">Kind Universals</span></div>
+        <div class="summary-stat"><span class="number">47</span><span class="label">Relator Universals</span></div>
+        <div class="summary-stat"><span class="number">269</span><span class="label">Property Definitions</span></div>
+        <div class="summary-stat"><span class="number">21</span><span class="label">Event Definitions</span></div>
+        <div class="summary-stat"><span class="number">13</span><span class="label">Artifact Definitions</span></div>
+        <div class="summary-stat"><span class="number">11</span><span class="label">Computations</span></div>
+        <div class="summary-stat"><span class="number">6</span><span class="label">FunctionalRoles</span></div>
+    </div>
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="toc">
+        <strong>Contents</strong>
+        <ul>
+            <li><a href="#overview">1. Suite Overview</a></li>
+            <li><a href="#layer-diagram">2. Layer Dependency Diagram</a></li>
+            <li><a href="#independence-matrix">3. Layer 0 Independence Matrix</a></li>
+            <li><a href="#cross-block-refs">4. Cross-Block Reference Map</a></li>
+            <li><a href="#generalization-chains">5. Generalization Chains Summary</a></li>
+            <li><a href="#build-order">6. Build Order &amp; Implementation Phases</a></li>
+            <li><a href="#decision-log">7. Decision Points Log</a></li>
+            <li><a href="#universal-counts">8. Universal Count Summary</a></li>
+            <li><a href="#measurement-frames">9. Measurement Frames Used</a></li>
+            <li><a href="#app-structure">10. App Structure &amp; Load Order</a></li>
+            <li><a href="#lessons-learned">11. Common Metadata Pitfalls &amp; Lessons Learned</a></li>
+        </ul>
+    </div>
+
+    <!-- ========================================== -->
+    <h2 id="overview">1. Suite Overview</h2>
+
+    <p>
+        The ERP Foundations suite follows a <strong>layered dependency architecture</strong> where
+        each layer depends only on layers below it. This enables parallel development of foundation
+        blocks and incremental composition into higher-level domains.
+    </p>
+
+    <h3>Layer Structure</h3>
+
+    <table>
+        <tr>
+            <th>Layer</th>
+            <th>Purpose</th>
+            <th>Apps</th>
+            <th>Dependencies</th>
+        </tr>
+        <tr>
+            <td><span class="layer-badge layer-0">Layer 0</span></td>
+            <td>Foundation Building Blocks &mdash; independently deployable primitives</td>
+            <td>
+                Org Structure, Chart of Accounts, Fiscal Calendar,
+                Party Master, Resource Catalog, Location Master
+            </td>
+            <td>None (only Model1 platform infrastructure)</td>
+        </tr>
+        <tr>
+            <td><span class="layer-badge layer-1">Layer 1</span></td>
+            <td>First Compositions &mdash; domains that compose Layer 0 blocks</td>
+            <td>Budgeting</td>
+            <td>Org Structure + Chart of Accounts + Fiscal Calendar</td>
+        </tr>
+        <tr>
+            <td><span class="layer-badge layer-2">Layer 2</span></td>
+            <td>Transactional Domains &mdash; full process workflows</td>
+            <td>OKR / Goals</td>
+            <td>Org Structure + Party Master + Fiscal Calendar (Budget optional)</td>
+        </tr>
+    </table>
+
+    <div class="info-box">
+        <strong>Key Principle:</strong> All six Layer 0 blocks can be deployed and validated independently.
+        They share no hard structural dependencies (no cross-block generalizations or required compositions).
+        Optional cross-block references (e.g., Party &rarr; Address from Location, GL Account &rarr; Cost Center
+        from Org Structure) enhance functionality when multiple blocks are co-deployed but are never required.
+    </div>
+
+    <!-- ========================================== -->
+    <h2 id="layer-diagram">2. Layer Dependency Diagram</h2>
+
+    <p>
+        All 8 apps arranged by layer, with dependency arrows showing which Layer 0 blocks are consumed
+        by higher layers.
+    </p>
+
+    <div class="mermaid">
+graph TB
+    subgraph Layer2["Layer 2 &mdash; Transactional Domains"]
+        OKR["erp-okr<br/>OKR / Goals<br/><i>28 Kind, 14 Relator, 6 Computations</i><br/><i>2 Processes, 3 FunctionalRoles</i>"]
+    end
+
+    subgraph Layer1["Layer 1 &mdash; Compositions"]
+        BUD["erp-budget<br/>Budgeting<br/><i>15 Kind, 12 Relator, 4 Computations</i><br/><i>1 Process, 3 FunctionalRoles</i>"]
+    end
+
+    subgraph Layer0["Layer 0 &mdash; Foundation Building Blocks"]
+        ORG["erp-org<br/>Org Structure<br/><i>11 Kind, 4 Relator</i>"]
+        COA["erp-chart-of-accounts<br/>Chart of Accounts<br/><i>5 Kind, 4 Relator</i>"]
+        FIS["erp-fiscal-calendar<br/>Fiscal Calendar<br/><i>5 Kind, 2 Relator</i>"]
+        PTY["erp-party<br/>Party Master<br/><i>12 Kind, 3 Relator</i>"]
+        RES["erp-resource<br/>Resource Catalog<br/><i>18 Kind, 2 Relator</i>"]
+        LOC["erp-location<br/>Location Master<br/><i>9 Kind, 6 Relator</i>"]
+    end
+
+    BUD -->|"Org Scope"| ORG
+    BUD -->|"GL Accounts"| COA
+    BUD -->|"Fiscal Periods"| FIS
+
+    OKR -->|"Org Units"| ORG
+    OKR -->|"Parties"| PTY
+    OKR -->|"Fiscal Periods"| FIS
+    OKR -.->|"Budget optional"| BUD
+
+    style Layer0 fill:#d4edda,stroke:#155724,color:#155724
+    style Layer1 fill:#cce5ff,stroke:#004085,color:#004085
+    style Layer2 fill:#f8d7da,stroke:#721c24,color:#721c24
+    style ORG fill:#e8f5e9,stroke:#2e7d32
+    style COA fill:#e8f5e9,stroke:#2e7d32
+    style FIS fill:#e8f5e9,stroke:#2e7d32
+    style PTY fill:#e8f5e9,stroke:#2e7d32
+    style RES fill:#e8f5e9,stroke:#2e7d32
+    style LOC fill:#e8f5e9,stroke:#2e7d32
+    style BUD fill:#bbdefb,stroke:#1565c0
+    style OKR fill:#ffcdd2,stroke:#c62828
+    </div>
+
+    <div class="info-box">
+        <strong>Note on cross-layer relators:</strong> The Budget and OKR apps document the cross-layer
+        relators they would need (e.g., <code>erp-budget-scope-rel</code> linking Budget &rarr; Org Unit,
+        <code>erp-budgetline-account-rel</code> linking Budget Line &rarr; GL Account) but do <em>not</em>
+        include them inline because the target universals are defined in separate apps. When deployed together,
+        these relators would be added to connect the layers.
+    </div>
+
+    <!-- ========================================== -->
+    <h2 id="independence-matrix">3. Layer 0 Independence Matrix</h2>
+
+    <p>
+        Each cell shows whether Block A has a <strong>hard structural dependency</strong> on Block B
+        (generalization, required composition). All cells are <strong>No</strong> &mdash; every Layer 0
+        block can be deployed, validated, and loaded independently.
+    </p>
+
+    <table>
+        <tr>
+            <th></th>
+            <th>Org Structure</th>
+            <th>Chart of Accounts</th>
+            <th>Fiscal Calendar</th>
+            <th>Party Master</th>
+            <th>Resource Catalog</th>
+            <th>Location</th>
+        </tr>
+        <tr>
+            <td><strong>Org Structure</strong></td>
+            <td style="background:#eee;">&mdash;</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+        </tr>
+        <tr>
+            <td><strong>Chart of Accounts</strong></td>
+            <td style="text-align:center;">No</td>
+            <td style="background:#eee;">&mdash;</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+        </tr>
+        <tr>
+            <td><strong>Fiscal Calendar</strong></td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="background:#eee;">&mdash;</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+        </tr>
+        <tr>
+            <td><strong>Party Master</strong></td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="background:#eee;">&mdash;</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+        </tr>
+        <tr>
+            <td><strong>Resource Catalog</strong></td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="background:#eee;">&mdash;</td>
+            <td style="text-align:center;">No</td>
+        </tr>
+        <tr>
+            <td><strong>Location</strong></td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="text-align:center;">No</td>
+            <td style="background:#eee;">&mdash;</td>
+        </tr>
+    </table>
+
+    <div class="principle-box">
+        <strong>Design Principle &mdash; Independent Deployment:</strong>
+        Each Layer 0 block uses only Model1 platform-provided foundation relators
+        (<code>generalization-relator</code>, <code>aggregation-relator</code>,
+        <code>composition-relator</code>, <code>attribution-relator</code>,
+        <code>association-relator</code>) and standard measurement frames. No block
+        imports universals from another block.
+    </div>
+
+    <!-- ========================================== -->
+    <h2 id="cross-block-refs">4. Cross-Block Reference Map</h2>
+
+    <p>
+        While Layer 0 blocks are structurally independent, they have <strong>optional semantic
+        connections</strong> that are activated when multiple blocks are co-deployed. These are
+        typically implemented as cross-block attribution or association relators added at deployment time.
+    </p>
+
+    <div class="mermaid">
+graph LR
+    subgraph "Layer 0 Blocks"
+        ORG["Org Structure"]
+        COA["Chart of Accounts"]
+        FIS["Fiscal Calendar"]
+        PTY["Party Master"]
+        RES["Resource Catalog"]
+        LOC["Location Master"]
+    end
+
+    PTY -. "Party &rarr; Address<br/>(from Location)" .-> LOC
+    COA -. "GL Account &rarr; Cost Center<br/>(from Org)" .-> ORG
+    ORG -. "BusinessUnit &rarr; LegalEntity<br/>(from Party)" .-> PTY
+    RES -. "Resource &rarr; Site<br/>(storage location)" .-> LOC
+    ORG -. "Dept &rarr; Site<br/>(office location)" .-> LOC
+    FIS -. "FiscalYear &rarr; LegalEntity<br/>(entity calendar)" .-> PTY
+
+    style ORG fill:#e8f5e9,stroke:#2e7d32
+    style COA fill:#e8f5e9,stroke:#2e7d32
+    style FIS fill:#e8f5e9,stroke:#2e7d32
+    style PTY fill:#e8f5e9,stroke:#2e7d32
+    style RES fill:#e8f5e9,stroke:#2e7d32
+    style LOC fill:#e8f5e9,stroke:#2e7d32
+    </div>
+
+    <table>
+        <tr>
+            <th>Cross-Block Reference</th>
+            <th>From Block</th>
+            <th>To Block</th>
+            <th>Relator Type</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>Party &rarr; Address</td>
+            <td>Party Master</td>
+            <td>Location</td>
+            <td>Attribution</td>
+            <td>Associates parties with structured addresses (billing, shipping, registered)</td>
+        </tr>
+        <tr>
+            <td>GL Account &rarr; Cost Center</td>
+            <td>Chart of Accounts</td>
+            <td>Org Structure</td>
+            <td>Attribution</td>
+            <td>Default cost center assignment for expense accounts</td>
+        </tr>
+        <tr>
+            <td>BusinessUnit &rarr; LegalEntity</td>
+            <td>Org Structure</td>
+            <td>Party Master</td>
+            <td>Attribution</td>
+            <td>Links the top-level BU to its legal entity (the corporation/partnership)</td>
+        </tr>
+        <tr>
+            <td>Resource &rarr; Site</td>
+            <td>Resource Catalog</td>
+            <td>Location</td>
+            <td>Association</td>
+            <td>Default storage or service delivery location for a resource</td>
+        </tr>
+        <tr>
+            <td>Department &rarr; Site</td>
+            <td>Org Structure</td>
+            <td>Location</td>
+            <td>Attribution</td>
+            <td>Physical office/plant location for a department</td>
+        </tr>
+        <tr>
+            <td>FiscalYear &rarr; LegalEntity</td>
+            <td>Fiscal Calendar</td>
+            <td>Party Master</td>
+            <td>Attribution</td>
+            <td>Multi-entity enterprises may have different fiscal calendars per legal entity</td>
+        </tr>
+    </table>
+
+    <!-- ========================================== -->
+    <h2 id="generalization-chains">5. Generalization Chains Summary</h2>
+
+    <p>
+        Generalization chains are the primary mechanism for cross-domain analytical power. Shared
+        ancestors enable artifacts to aggregate across specialized types. The following diagrams
+        show the key inheritance hierarchies implemented across all 8 apps.
+    </p>
+
+    <h3>5.1 Party Master &mdash; Dual Ancestry Pattern</h3>
+
+    <p>
+        The deepest chain in the suite. <code>erp-natural-person</code> has <strong>dual ancestry</strong>:
+        it inherits from both the Person chain (biological/social) and the Party chain (legal capacity).
+        This is the most complex generalization pattern in the entire ERP suite.
+    </p>
+
+    <div class="mermaid">
+classDiagram
+    class erp_living_being["erp-living-being"] {
+        kingdom
+        species
+        birth_date
+        death_date
+    }
+    class erp_human["erp-human"] {
+        full_name
+        gender
+        nationality
+    }
+    class erp_person["erp-person"] {
+        email
+        phone
+        government_id
+        preferred_language
+    }
+    class erp_party["erp-party"] {
+        party_code
+        display_name
+        tax_id
+        is_active
+    }
+    class erp_natural_person["erp-natural-person"] {
+        &lt;&lt;dual ancestry&gt;&gt;
+    }
+    class erp_legal_entity["erp-legal-entity"] {
+        legal_name
+        registration_number
+        jurisdiction
+    }
+    class erp_corporation["erp-corporation"] {
+        stock_ticker
+        is_publicly_traded
+    }
+    class erp_partnership["erp-partnership"]
+    class erp_government_body["erp-government-body"]
+    class erp_non_profit["erp-non-profit"]
+
+    erp_living_being <|-- erp_human : generalizes
+    erp_human <|-- erp_person : generalizes
+    erp_person <|-- erp_natural_person : generalizes
+    erp_party <|-- erp_natural_person : generalizes
+    erp_party <|-- erp_legal_entity : generalizes
+    erp_legal_entity <|-- erp_corporation : generalizes
+    erp_legal_entity <|-- erp_partnership : generalizes
+    erp_legal_entity <|-- erp_government_body : generalizes
+    erp_legal_entity <|-- erp_non_profit : generalizes
+    </div>
+
+    <h3>5.2 Org Structure &mdash; Org Unit Hierarchy</h3>
+
+    <div class="mermaid">
+classDiagram
+    class erp_org_unit["erp-org-unit"] {
+        code
+        name
+        effective_date
+        end_date
+        status
+    }
+    class erp_business_unit["erp-business-unit"] {
+        revenue_target
+        is_profit_center
+    }
+    class erp_department["erp-department"] {
+        function
+    }
+    class erp_team["erp-team"] {
+        purpose
+        is_permanent
+    }
+    class erp_committee["erp-committee"] {
+        charter
+        meeting_frequency
+    }
+
+    erp_org_unit <|-- erp_business_unit : generalizes
+    erp_org_unit <|-- erp_department : generalizes
+    erp_org_unit <|-- erp_team : generalizes
+    erp_org_unit <|-- erp_committee : generalizes
+    </div>
+
+    <h3>5.3 Resource Catalog &mdash; 3-Level Resource Hierarchy</h3>
+
+    <div class="mermaid">
+classDiagram
+    class erp_resource["erp-resource"] {
+        code
+        name
+        description
+        lifecycle_status
+    }
+    class erp_tangible["erp-tangible-resource"]
+    class erp_intangible["erp-intangible-resource"]
+    class erp_capacity["erp-capacity-resource"]
+    class erp_physical["erp-physical-item"]
+    class erp_fixed_asset["erp-fixed-asset"]
+    class erp_raw_material["erp-raw-material"]
+    class erp_service["erp-service-item"]
+    class erp_info["erp-information-resource"]
+    class erp_financial["erp-financial-instrument"]
+    class erp_license["erp-license"]
+    class erp_labor["erp-labor-capacity"]
+    class erp_machine["erp-machine-capacity"]
+    class erp_storage["erp-storage-capacity"]
+
+    erp_resource <|-- erp_tangible : generalizes
+    erp_resource <|-- erp_intangible : generalizes
+    erp_resource <|-- erp_capacity : generalizes
+    erp_tangible <|-- erp_physical : generalizes
+    erp_tangible <|-- erp_fixed_asset : generalizes
+    erp_tangible <|-- erp_raw_material : generalizes
+    erp_intangible <|-- erp_service : generalizes
+    erp_intangible <|-- erp_info : generalizes
+    erp_intangible <|-- erp_financial : generalizes
+    erp_intangible <|-- erp_license : generalizes
+    erp_capacity <|-- erp_labor : generalizes
+    erp_capacity <|-- erp_machine : generalizes
+    erp_capacity <|-- erp_storage : generalizes
+    </div>
+
+    <h3>5.4 OKR &mdash; Goal Generalization Chain</h3>
+
+    <div class="mermaid">
+classDiagram
+    class erp_goal["erp-goal"] {
+        &lt;&lt;abstract&gt;&gt;
+        shared foundation
+    }
+    class erp_objective["erp-objective"] {
+        title
+        level
+        weight
+    }
+    class erp_key_result["erp-key-result"] {
+        title
+        kr_type
+        target_value
+        current_value
+    }
+
+    erp_goal <|-- erp_objective : generalizes
+    erp_goal <|-- erp_key_result : generalizes
+    </div>
+
+    <h3>5.5 Fiscal Calendar &mdash; Composition Chain</h3>
+
+    <p>
+        Unlike the generalization chains above, Fiscal Calendar uses <strong>composition</strong>
+        (lifecycle-dependent parts): quarters cannot exist without their parent year, and periods
+        cannot exist without their parent quarter.
+    </p>
+
+    <div class="mermaid">
+classDiagram
+    class erp_fiscal_year["erp-fiscal-year"] {
+        code
+        start_date
+        end_date
+        status
+    }
+    class erp_fiscal_quarter["erp-fiscal-quarter"] {
+        code
+        sequence
+        start_date
+        end_date
+    }
+    class erp_fiscal_period["erp-fiscal-period"] {
+        code
+        name
+        sequence
+        status
+        is_adjustment
+    }
+
+    erp_fiscal_year *-- erp_fiscal_quarter : composition
+    erp_fiscal_quarter *-- erp_fiscal_period : composition
+    </div>
+
+    <!-- ========================================== -->
+    <h2 id="build-order">6. Build Order &amp; Implementation Phases</h2>
+
+    <h3>Phase 1: Layer 0 Foundation Blocks (parallel)</h3>
+    <p>
+        All six blocks can be developed, validated, and loaded simultaneously because they have
+        no cross-dependencies.
+    </p>
+
+    <table>
+        <tr>
+            <th>Block</th>
+            <th>App ID</th>
+            <th>Complexity</th>
+            <th>Key Feature</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td>Org Structure</td>
+            <td><code>app_erp_org</code></td>
+            <td>Medium</td>
+            <td>4-type generalization + recursive hierarchy + headcount artifact</td>
+            <td>Implemented</td>
+        </tr>
+        <tr>
+            <td>Chart of Accounts</td>
+            <td><code>app_erp_chart_of_accounts</code></td>
+            <td>Low</td>
+            <td>Account type/subtype enums, recursive account tree, structure artifact</td>
+            <td>Implemented</td>
+        </tr>
+        <tr>
+            <td>Fiscal Calendar</td>
+            <td><code>app_erp_fiscal_calendar</code></td>
+            <td>Low</td>
+            <td>Year &rarr; Quarter &rarr; Period composition chain, status control</td>
+            <td>Implemented</td>
+        </tr>
+        <tr>
+            <td>Party Master</td>
+            <td><code>app_erp_party</code></td>
+            <td>High</td>
+            <td>4-level Person chain + dual ancestry + 4 legal entity specializations</td>
+            <td>Implemented</td>
+        </tr>
+        <tr>
+            <td>Resource Catalog</td>
+            <td><code>app_erp_resource</code></td>
+            <td>High</td>
+            <td>3-level generalization (13 leaf types), valuation computation</td>
+            <td>Implemented</td>
+        </tr>
+        <tr>
+            <td>Location Master</td>
+            <td><code>app_erp_location</code></td>
+            <td>Medium</td>
+            <td>Geographic hierarchy + address infrastructure + 3 artifacts</td>
+            <td>Implemented</td>
+        </tr>
+    </table>
+
+    <h3>Phase 2: Layer 1 Compositions</h3>
+
+    <table>
+        <tr>
+            <th>Block</th>
+            <th>App ID</th>
+            <th>Dependencies</th>
+            <th>Key Feature</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td>Budgeting</td>
+            <td><code>app_erp_budget</code></td>
+            <td>Org + GL + Fiscal Calendar</td>
+            <td>Budget &rarr; Lines composition, 4 reactive computations, 3-stage approval process, transfer management</td>
+            <td>Implemented</td>
+        </tr>
+    </table>
+
+    <h3>Phase 3: Layer 2 Transactional Domains</h3>
+
+    <table>
+        <tr>
+            <th>Block</th>
+            <th>App ID</th>
+            <th>Dependencies</th>
+            <th>Key Feature</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td>OKR / Goals</td>
+            <td><code>app_erp_okr</code></td>
+            <td>Org + Party + Fiscal Calendar</td>
+            <td>Goal generalization, 6 computations, 2 processes (Tier 1 + Tier 2), 4 intelligence artifacts</td>
+            <td>Implemented</td>
+        </tr>
+    </table>
+
+    <h3>Future Phases (not yet implemented)</h3>
+
+    <table>
+        <tr>
+            <th>Phase</th>
+            <th>Blocks</th>
+            <th>Dependencies</th>
+        </tr>
+        <tr>
+            <td>Phase 2b</td>
+            <td>Employee Mgmt, Vendor Mgmt, Customer Mgmt, Accounting Core, Agreement</td>
+            <td>Various Layer 0 combinations</td>
+        </tr>
+        <tr>
+            <td>Phase 3b</td>
+            <td>AP, AR, Procurement, Project Mgmt</td>
+            <td>Layer 0 + Layer 1</td>
+        </tr>
+        <tr>
+            <td>Phase 4</td>
+            <td>Asset Mgmt, Financial Reporting, Cost Accounting, Cross-Org Initiatives</td>
+            <td>Layers 0 + 1 + 2</td>
+        </tr>
+    </table>
+
+    <!-- ========================================== -->
+    <h2 id="decision-log">7. Decision Points Log</h2>
+
+    <p>
+        Key ontological design decisions made across the suite. These decisions affect
+        generalization hierarchies, composition choices, and analytical capabilities.
+    </p>
+
+    <div class="decision-box">
+        <h3>D1: Party-Role Separation</h3>
+        <p>
+            <strong>Decision:</strong> Employee, Vendor, and Customer are <strong>roles</strong> assigned
+            via <code>role-assignment-relator</code>, not generalization specializations of Party.
+        </p>
+        <p>
+            <strong>Rationale:</strong> A single natural person can simultaneously hold multiple roles
+            (an employee who is also a customer). Generalization would require separate entity instances
+            for each role, breaking identity. Roles are lightweight assignments that can be added/removed
+            without affecting the underlying party identity.
+        </p>
+        <p><strong>Affected apps:</strong> Party Master (Layer 0), all Layer 1+ consumer apps.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>D2: Dual Ancestry for NaturalPerson</h3>
+        <p>
+            <strong>Decision:</strong> <code>erp-natural-person</code> specializes <em>both</em>
+            <code>erp-party</code> and <code>erp-person</code> (two generalization-relator entries
+            in its taxonomy).
+        </p>
+        <p>
+            <strong>Rationale:</strong> NaturalPerson must inherit legal capacity from the Party chain
+            (agreements, accounts) and social identity from the Person chain (demographics, contact info).
+            Without dual ancestry, these properties would need to be duplicated or bridged with relators.
+        </p>
+        <p><strong>Affected apps:</strong> Party Master (Layer 0).</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>D3: No erp-organization Universal</h3>
+        <p>
+            <strong>Decision:</strong> The legal entity concept lives in Party Master as
+            <code>erp-legal-entity</code>, not as a separate universal in Org Structure.
+        </p>
+        <p>
+            <strong>Rationale:</strong> Having both <code>erp-organization</code> and
+            <code>erp-legal-entity</code> would create an identity split: two first-class entities
+            for one real-world company that must stay synchronized. Instead, the top-level
+            <code>erp-business-unit</code> serves as the org hierarchy root and is optionally linked
+            to its <code>erp-legal-entity</code> via a cross-block attribution relator.
+        </p>
+        <p><strong>Affected apps:</strong> Org Structure, Party Master.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>D4: Aggregation for Org Hierarchy (not Composition)</h3>
+        <p>
+            <strong>Decision:</strong> Org unit parent-child relationships use
+            <code>aggregation-relator</code>, not <code>composition-relator</code>.
+        </p>
+        <p>
+            <strong>Rationale:</strong> Departments and teams survive organizational restructuring.
+            A department moved from one business unit to another retains its identity, history, and
+            cost center assignments. Composition would imply that children are destroyed when the
+            parent is dissolved.
+        </p>
+        <p><strong>Affected apps:</strong> Org Structure. Same pattern used for GL Account hierarchy in Chart of Accounts.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>D5: Composition for Fiscal Calendar</h3>
+        <p>
+            <strong>Decision:</strong> Fiscal Year &rarr; Quarter &rarr; Period uses
+            <code>composition-relator</code>.
+        </p>
+        <p>
+            <strong>Rationale:</strong> A fiscal quarter cannot exist independently of its fiscal year;
+            a fiscal period cannot exist independently of its quarter. Deleting a fiscal year
+            should cascade-delete its quarters and periods. This is a textbook composition relationship
+            and enables auto-instantiation via Model1's composition framework.
+        </p>
+        <p><strong>Affected apps:</strong> Fiscal Calendar.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>D6: Business Unit vs Legal Entity</h3>
+        <p>
+            <strong>Decision:</strong> Business units are organizational units in Org Structure
+            (not Party Master). They represent P&amp;L responsibility, not legal personhood.
+        </p>
+        <p>
+            <strong>Rationale:</strong> A corporation (legal entity) may contain multiple business units.
+            A business unit may span multiple legal entities in a group structure. These are fundamentally
+            different concepts: one is about legal capacity, the other about management accountability.
+            Conflating them limits modeling flexibility for multi-entity enterprises.
+        </p>
+        <p><strong>Affected apps:</strong> Org Structure, Party Master.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>D7: Resource Catalog Generalizes Beyond Items</h3>
+        <p>
+            <strong>Decision:</strong> The traditional "item master" is replaced with a 3-level
+            resource hierarchy covering tangible goods, intangible services/IP, and capacity resources.
+        </p>
+        <p>
+            <strong>Rationale:</strong> Modern ERP must track services (consulting, SaaS), information
+            resources (documents, IP), financial instruments (receivables, securities), and capacity
+            (person-hours, machine-hours) alongside physical inventory. The shared
+            <code>erp-resource</code> root enables "total resource consumption by department" artifacts
+            that span all resource types.
+        </p>
+        <p><strong>Affected apps:</strong> Resource Catalog, all consumers (Procurement, Project Mgmt, etc.).</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>D8: Location Includes Address Infrastructure</h3>
+        <p>
+            <strong>Decision:</strong> The Location Master app includes structured address universals
+            (<code>erp-address</code>, <code>erp-address-type</code>) in addition to the geographic
+            hierarchy (Country &rarr; Region &rarr; Site).
+        </p>
+        <p>
+            <strong>Rationale:</strong> Addresses are inherently geographic artifacts. Including them
+            in Location rather than Party avoids address duplication across blocks and enables
+            cross-block references (Party &rarr; Address, Site &rarr; Address) from a single source.
+        </p>
+        <p><strong>Affected apps:</strong> Location, Party (consumer via cross-block reference).</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>D9: Goal as Foundation Universal</h3>
+        <p>
+            <strong>Decision:</strong> <code>erp-goal</code> is defined as an abstract base universal
+            that can be shared across domain apps (OKR objectives/key results, budget targets, KPIs, SLAs).
+        </p>
+        <p>
+            <strong>Rationale:</strong> Goal attainment analytics must span strategic (OKR), operational
+            (KPI/SLA), and financial (budget target) domains. A shared root enables cross-domain
+            aggregation artifacts like "goal attainment by department across all goal types."
+        </p>
+        <p><strong>Affected apps:</strong> OKR (currently defines it locally; should migrate to a shared foundation).</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>D10: Process as Universal for Budget and OKR Workflows</h3>
+        <p>
+            <strong>Decision:</strong> Budget approval (3-stage) and OKR planning/review (3-stage each)
+            are defined as process universals with composed stage universals, not hardcoded workflow logic.
+        </p>
+        <p>
+            <strong>Rationale:</strong> Using the Process-as-Universal pattern allows the ProcessEngine
+            to derive capabilities from composition depth (tier model). Budget approval is Tier 2
+            (stages + obligations), OKR Planning is Tier 1 (stages only), and OKR Review is Tier 2
+            (stages + obligations). All three use FunctionalRole universals for authority assignment.
+        </p>
+        <p><strong>Affected apps:</strong> Budget (1 process, 3 FunctionalRoles), OKR (2 processes, 3 FunctionalRoles).</p>
+    </div>
+
+    <!-- ========================================== -->
+    <h2 id="universal-counts">8. Universal Count Summary</h2>
+
+    <table>
+        <tr>
+            <th>App</th>
+            <th>Layer</th>
+            <th>Kind Universals</th>
+            <th>Relator Universals</th>
+            <th>FunctionalRoles</th>
+            <th>Properties</th>
+            <th>Events</th>
+            <th>Artifacts</th>
+            <th>Computations</th>
+        </tr>
+        <tr>
+            <td><code>app_erp_org</code></td>
+            <td><span class="layer-badge layer-0">L0</span></td>
+            <td>11</td>
+            <td>4</td>
+            <td>0</td>
+            <td>27</td>
+            <td>2</td>
+            <td>1</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td><code>app_erp_chart_of_accounts</code></td>
+            <td><span class="layer-badge layer-0">L0</span></td>
+            <td>5</td>
+            <td>4</td>
+            <td>0</td>
+            <td>17</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td><code>app_erp_fiscal_calendar</code></td>
+            <td><span class="layer-badge layer-0">L0</span></td>
+            <td>5</td>
+            <td>2</td>
+            <td>0</td>
+            <td>20</td>
+            <td>2</td>
+            <td>1</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td><code>app_erp_party</code></td>
+            <td><span class="layer-badge layer-0">L0</span></td>
+            <td>12</td>
+            <td>3</td>
+            <td>0</td>
+            <td>25</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td><code>app_erp_resource</code></td>
+            <td><span class="layer-badge layer-0">L0</span></td>
+            <td>18</td>
+            <td>2</td>
+            <td>0</td>
+            <td>51</td>
+            <td>2</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td><code>app_erp_location</code></td>
+            <td><span class="layer-badge layer-0">L0</span></td>
+            <td>9</td>
+            <td>6</td>
+            <td>0</td>
+            <td>33</td>
+            <td>3</td>
+            <td>3</td>
+            <td>0</td>
+        </tr>
+        <tr style="border-top: 3px solid #0f3460;">
+            <td><code>app_erp_budget</code></td>
+            <td><span class="layer-badge layer-1">L1</span></td>
+            <td>15</td>
+            <td>12</td>
+            <td>3</td>
+            <td>35</td>
+            <td>3</td>
+            <td>2</td>
+            <td>4</td>
+        </tr>
+        <tr style="border-top: 3px solid #0f3460;">
+            <td><code>app_erp_okr</code></td>
+            <td><span class="layer-badge layer-2">L2</span></td>
+            <td>28</td>
+            <td>14</td>
+            <td>3</td>
+            <td>61</td>
+            <td>8</td>
+            <td>4</td>
+            <td>6</td>
+        </tr>
+        <tr style="font-weight:bold; background:#e8f4fd;">
+            <td>TOTAL</td>
+            <td></td>
+            <td>103</td>
+            <td>47</td>
+            <td>6</td>
+            <td>269</td>
+            <td>21</td>
+            <td>13</td>
+            <td>11</td>
+        </tr>
+    </table>
+
+    <div class="info-box">
+        <strong>Observation:</strong> The two higher-layer apps (Budget and OKR) together account for
+        roughly 42% of all Kind universals (43 of 103) and 55% of all relator universals (26 of 47).
+        This reflects the expected pattern: foundation blocks define primitives, while composed domains
+        introduce the relationships and workflows that connect them.
+    </div>
+
+    <!-- ========================================== -->
+    <h2 id="measurement-frames">9. Measurement Frames Used</h2>
+
+    <p>
+        All apps use standard measurement frames from the Model1 platform. No custom frames
+        were required for the entire ERP Foundations suite.
+    </p>
+
+    <table>
+        <tr>
+            <th>Frame</th>
+            <th>Base Unit</th>
+            <th>Used By</th>
+            <th>Typical Properties</th>
+        </tr>
+        <tr>
+            <td><code>std-timestamp</code></td>
+            <td>seconds</td>
+            <td>Org, Fiscal Calendar, Party, Location, Budget, OKR</td>
+            <td>Effective dates, start/end dates, birth date, incorporation date, check-in date</td>
+        </tr>
+        <tr>
+            <td><code>std-currency</code></td>
+            <td>usd (+180 codes)</td>
+            <td>Org, Resource, Budget</td>
+            <td>Revenue target, salary bands, unit price, allocated/committed/spent amounts</td>
+        </tr>
+        <tr>
+            <td><code>std-integer</code></td>
+            <td>count</td>
+            <td>Chart of Accounts, Fiscal Calendar, Location, Resource, OKR</td>
+            <td>Sequences, period numbers, account counts, sort orders</td>
+        </tr>
+        <tr>
+            <td><code>std-quantity</code></td>
+            <td>units</td>
+            <td>Org, Location, Resource</td>
+            <td>Headcount slots, site capacity, reorder points, safety stock</td>
+        </tr>
+        <tr>
+            <td><code>std-float</code></td>
+            <td>scalar</td>
+            <td>Location, Resource, OKR</td>
+            <td>Latitude/longitude, target values, current values</td>
+        </tr>
+        <tr>
+            <td><code>std-ratio</code></td>
+            <td>percent</td>
+            <td>Resource, Budget, OKR</td>
+            <td>Margin percentages, utilization rates, progress percentage, weight</td>
+        </tr>
+        <tr>
+            <td><code>std-score</code></td>
+            <td>points</td>
+            <td>OKR</td>
+            <td>KR score, objective score, rollup scores</td>
+        </tr>
+        <tr>
+            <td><code>std-weight</code></td>
+            <td>kg</td>
+            <td>Resource</td>
+            <td>Item weight for shipping/logistics</td>
+        </tr>
+        <tr>
+            <td><code>std-volume</code></td>
+            <td>liter</td>
+            <td>Resource</td>
+            <td>Item volume for storage/shipping</td>
+        </tr>
+        <tr>
+            <td><code>std-time-duration</code></td>
+            <td>seconds</td>
+            <td>Resource</td>
+            <td>Service duration, lead times</td>
+        </tr>
+    </table>
+
+    <div class="principle-box">
+        <strong>Zero Custom Frames:</strong> The full ERP Foundations suite (269 property definitions
+        across 8 apps) was implemented using only 10 of the 28 standard measurement frames provided
+        by the Model1 platform. This validates the platform's measurement frame coverage for
+        enterprise-grade domain modeling.
+    </div>
+
+    <!-- ================================================================== -->
+    <h2 id="app-structure">10. App Structure &amp; Load Order</h2>
+
+    <p>
+        The ERP suite uses a <strong>shared base app</strong> pattern to eliminate duplication.
+        Organization, tenant, shared users, and cross-domain foundation universals are defined once
+        in <code>app_erp_base</code>. Domain apps contain only their own schema and sample data.
+    </p>
+
+    <h3>Directory Structure</h3>
+    <pre style="background: #1a1a2e; color: #e0e0e0; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem;">
+apps/erp/
+&#9500;&#9472;&#9472; <span style="color: #00bcd4;">app_erp_base/</span>                  &larr; Shared infrastructure (load first)
+&#9474;   &#9500;&#9472;&#9472; metadata_app.json           org, tenant, 3 shared users, erp-goal universal
+&#9474;   &#9492;&#9472;&#9472; metadata_app_data.json
+&#9474;
+&#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_org/</span>                   &larr; Layer 0
+&#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_chart_of_accounts/</span>     &larr; Layer 0
+&#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_fiscal_calendar/</span>       &larr; Layer 0
+&#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_party/</span>                 &larr; Layer 0
+&#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_resource/</span>              &larr; Layer 0
+&#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_location/</span>              &larr; Layer 0
+&#9474;
+&#9500;&#9472;&#9472; <span style="color: #2196f3;">app_erp_budget/</span>                &larr; Layer 1
+&#9500;&#9472;&#9472; <span style="color: #f44336;">app_erp_okr/</span>                   &larr; Layer 2
+&#9474;
+&#9500;&#9472;&#9472; <span style="color: #ff9800;">load_erp.sh</span>                    &larr; Automated load script
+&#9492;&#9472;&#9472; erp_foundations_overview.html   (this document)
+    </pre>
+
+    <h3>What app_erp_base Contains</h3>
+    <table>
+        <tr><th>Section</th><th>Contents</th><th>Purpose</th></tr>
+        <tr><td>Organization</td><td><code>model1-testing-org</code></td><td>Single definition, loaded once</td></tr>
+        <tr><td>Tenant</td><td><code>model1-testing-tenant</code></td><td>Single definition, loaded once</td></tr>
+        <tr><td>Users</td><td><code>erp-admin</code>, <code>erp-developer</code>, <code>erp-user</code></td><td>Shared ERP-level users with cross-app role assignments</td></tr>
+        <tr><td>Role Assignments</td><td>Assignments for all 3 users scoped to all 9 apps</td><td>AppAdmin, AppDeveloper, AppUser scoped to each app</td></tr>
+        <tr><td>Foundation Universal</td><td><code>erp-goal</code> + 11 properties</td><td>Abstract measurable outcome base for OKR, Budget, KPI domains</td></tr>
+        <tr><td>Base App Definition</td><td><code>erp-base-app</code> with module</td><td>Required so the base app's entities can be loaded</td></tr>
+    </table>
+
+    <div class="info-box">
+        <strong>Loader pre-population:</strong> The <code>model1-cli load</code> command pre-populates
+        users and apps from MemDB before processing each metadata file. This means domain app files
+        can reference users defined in <code>app_erp_base</code> via <code>foundation_role_assignments</code>
+        without needing to redefine those users. The loader resolves seed-based user IDs from MemDB
+        at load time.
+    </div>
+
+    <h3>What Domain Apps Do NOT Contain</h3>
+    <div class="info-box">
+        Domain apps (<code>app_erp_org</code> through <code>app_erp_okr</code>) <strong>do not</strong> define
+        organizations, tenants, or users. These are inherited from <code>app_erp_base</code>, which must be
+        loaded first. Each domain app contains only:
+        <ul style="margin: 0.5rem 0 0 1.5rem;">
+            <li>Its own <strong>app definition</strong> (app, module, service)</li>
+            <li>Its own <strong>universals</strong>, <strong>properties</strong>, <strong>relators</strong></li>
+            <li>Its own <strong>computations</strong>, <strong>events</strong>, <strong>artifacts</strong> (if applicable)</li>
+            <li>App-scoped <strong><code>foundation_role_assignments</code></strong> that grant the shared users access to this specific app</li>
+        </ul>
+        The <code>foundation_role_assignments</code> section references user IDs defined in <code>app_erp_base</code>.
+        The loader resolves these cross-file references because it pre-populates users from MemDB before processing.
+    </div>
+
+    <h3>Load Sequence</h3>
+
+    <div class="mermaid">
+graph LR
+    subgraph "Step 1"
+        BASE["app_erp_base<br/>(org, tenant, users, erp-goal)"]
+    end
+
+    subgraph "Step 2 — Layer 0 (parallel)"
+        ORG["app_erp_org"]
+        COA["app_erp_chart_of_accounts"]
+        FISCAL["app_erp_fiscal_calendar"]
+        PARTY["app_erp_party"]
+        RESOURCE["app_erp_resource"]
+        LOCATION["app_erp_location"]
+    end
+
+    subgraph "Step 3 — Layer 1"
+        BUDGET["app_erp_budget"]
+    end
+
+    subgraph "Step 4 — Layer 2"
+        OKR["app_erp_okr"]
+    end
+
+    BASE --> ORG
+    BASE --> COA
+    BASE --> FISCAL
+    BASE --> PARTY
+    BASE --> RESOURCE
+    BASE --> LOCATION
+    ORG --> BUDGET
+    COA --> BUDGET
+    FISCAL --> BUDGET
+    BUDGET --> OKR
+
+    style BASE fill:#00bcd4,color:white
+    style ORG fill:#4caf50,color:white
+    style COA fill:#4caf50,color:white
+    style FISCAL fill:#4caf50,color:white
+    style PARTY fill:#4caf50,color:white
+    style RESOURCE fill:#4caf50,color:white
+    style LOCATION fill:#4caf50,color:white
+    style BUDGET fill:#2196f3,color:white
+    style OKR fill:#f44336,color:white
+    </div>
+
+    <h3>Loading Script: <code>load_erp.sh</code></h3>
+
+    <p>
+        The <code>load_erp.sh</code> script automates the load sequence using the
+        <code>model1-cli</code> binary. It respects the dependency graph and provides
+        colored output with pass/fail tracking.
+    </p>
+
+    <table>
+        <tr><th>Command</th><th>Effect</th></tr>
+        <tr><td><code>./load_erp.sh</code></td><td>Load all 9 apps in dependency order to a running broker</td></tr>
+        <tr><td><code>./load_erp.sh --validate-only</code></td><td>Validate all files without loading (no broker needed)</td></tr>
+        <tr><td><code>./load_erp.sh --dry-run</code></td><td>Show load order without executing</td></tr>
+        <tr><td><code>./load_erp.sh --skip-base</code></td><td>Skip app_erp_base (already loaded from a previous run)</td></tr>
+        <tr><td><code>./load_erp.sh --layer 0</code></td><td>Load base + Layer 0 apps only</td></tr>
+        <tr><td><code>./load_erp.sh --layer 1</code></td><td>Load base + Layer 1 (Budget) only</td></tr>
+    </table>
+
+    <div class="decision-box">
+        <strong>D11 &mdash; Shared Base App Pattern:</strong>
+        Rather than duplicating org/tenant/user definitions across all 8 domain apps,
+        a single <code>app_erp_base</code> is loaded first. Domain apps omit these sections
+        entirely and depend on the base being loaded. This eliminates 8x redundant definitions
+        and provides a single place to manage shared ERP-level users and foundation universals
+        like <code>erp-goal</code>.
+    </div>
+
+    <!-- ================================================================== -->
+    <h2 id="lessons-learned">11. Common Metadata Pitfalls &amp; Lessons Learned</h2>
+
+    <p>
+        During the metadata fixing process for the ERP suite, numerous validation and loading errors
+        were encountered and resolved. This section documents the specific errors and their fixes
+        to serve as a reference for future metadata app development.
+    </p>
+
+    <h3>11.1 Relator Instance Field Names</h3>
+
+    <table>
+        <tr><th>Category</th><th>Wrong</th><th>Correct</th><th>Context</th></tr>
+        <tr>
+            <td>Relator instances (data files)</td>
+            <td><code>"relator_universal_id": "..."</code></td>
+            <td><code>"relator_id": "..."</code></td>
+            <td>In <code>metadata_app_data.json</code>, relator instances use <code>relator_id</code> to reference the relator universal, not <code>relator_universal_id</code>.</td>
+        </tr>
+        <tr>
+            <td>Computation inputs (<code>role_aggregate</code> source)</td>
+            <td><code>"relator_universal_id": "..."</code></td>
+            <td><code>"role_id": "..."</code></td>
+            <td>When a computation input uses <code>source: "role_aggregate"</code>, the role reference field is <code>role_id</code>.</td>
+        </tr>
+        <tr>
+            <td>Computation inputs (aggregate function)</td>
+            <td><code>"aggregation": "Sum"</code></td>
+            <td><code>"function": "Sum"</code></td>
+            <td>The aggregate function field in computation inputs is named <code>function</code>, not <code>aggregation</code>.</td>
+        </tr>
+    </table>
+
+    <h3>11.2 Null Values &mdash; Omit, Do Not Set to Null</h3>
+
+    <table>
+        <tr><th>Wrong</th><th>Correct</th><th>Explanation</th></tr>
+        <tr>
+            <td><code>"reference_universal_id": null</code></td>
+            <td>Omit the field entirely</td>
+            <td>Setting optional fields to <code>null</code> causes deserialization errors. If a field is not applicable, remove it from the JSON object.</td>
+        </tr>
+        <tr>
+            <td><code>"state_property_id": null</code> (in thresholds)</td>
+            <td>Omit or provide a real property ID</td>
+            <td>Artifact threshold definitions require either a valid <code>state_property_id</code> or the field should be omitted. The validator rejects <code>null</code>.</td>
+        </tr>
+    </table>
+
+    <h3>11.3 Invalid Enum Values</h3>
+
+    <table>
+        <tr><th>Field</th><th>Invalid Value</th><th>Valid Values</th><th>Fix Applied</th></tr>
+        <tr>
+            <td>Artifact measure <code>function</code></td>
+            <td><code>CountWhere</code></td>
+            <td><code>Sum</code>, <code>Count</code>, <code>Avg</code>, <code>Min</code>, <code>Max</code></td>
+            <td>Changed to <code>Count</code>. Conditional counting is not a supported aggregate function.</td>
+        </tr>
+        <tr>
+            <td>Artifact dimension <code>source_type</code></td>
+            <td><code>DirectProperty</code></td>
+            <td><code>Property</code>, <code>MeasurementExtract</code>, <code>RelatorPath</code>, <code>Constant</code></td>
+            <td>Changed to <code>Property</code>.</td>
+        </tr>
+        <tr>
+            <td>Computation trigger <code>trigger_type</code></td>
+            <td><code>RelatorEstablished</code>, <code>RelatorDissolved</code></td>
+            <td><code>RelatorLifecycle</code> with <code>lifecycle</code> sub-field</td>
+            <td>Changed to <code>"trigger_type": "RelatorLifecycle"</code> with <code>"lifecycle": "Created"</code> or <code>"lifecycle": "Deleted"</code>. Valid lifecycle phases: <code>Created</code>, <code>Modified</code>, <code>Deleted</code>.</td>
+        </tr>
+    </table>
+
+    <h3>11.4 Cross-App Seed ID Collisions</h3>
+
+    <div class="decision-box">
+        <strong>Problem:</strong> When multiple domain apps use the same generic seed ID (e.g.,
+        <code>erp-summary-threshold-state-prop</code>), loading the second app fails with
+        "Record already exists" because UUID v5 generates identical UUIDs from identical seeds
+        within the same namespace.
+        <br><br>
+        <strong>Fix:</strong> Namespace all seed IDs per app. For example, use
+        <code>erp-resource-threshold-state-prop</code> instead of a generic
+        <code>erp-summary-threshold-state-prop</code>. Each property definition ID should include
+        the domain prefix to guarantee uniqueness across the suite.
+    </div>
+
+    <h3>11.5 Cross-File User References</h3>
+
+    <div class="decision-box">
+        <strong>Problem:</strong> Domain apps need to grant the shared ERP users access via
+        <code>foundation_role_assignments</code>, but those users are defined in
+        <code>app_erp_base</code>. Without the users being present in MemDB when the domain app
+        loads, the <code>user_id</code> references in role assignments cannot resolve.
+        <br><br>
+        <strong>Fix:</strong> The loader was enhanced to pre-populate users and apps from MemDB
+        before processing each metadata file. Domain apps now use <code>foundation_role_assignments</code>
+        (a top-level array in <code>metadata_app.json</code>) that references user IDs by their seed-derived UUIDs.
+        The base app must be loaded first so that users exist in MemDB when domain apps are processed.
+    </div>
+
+    <h3>11.6 Domain App Structure After Refactoring</h3>
+
+    <p>
+        After extracting shared infrastructure into <code>app_erp_base</code>, each domain app's
+        <code>metadata_app.json</code> follows this minimal structure:
+    </p>
+
+    <table>
+        <tr><th>Section</th><th>Present in Domain App?</th><th>Notes</th></tr>
+        <tr><td><code>organizations</code></td><td>No</td><td>Defined in <code>app_erp_base</code></td></tr>
+        <tr><td><code>tenants</code></td><td>No</td><td>Defined in <code>app_erp_base</code></td></tr>
+        <tr><td><code>users</code></td><td>No</td><td>Defined in <code>app_erp_base</code></td></tr>
+        <tr><td><code>apps</code></td><td>Yes</td><td>This domain's app, module, and service definitions</td></tr>
+        <tr><td><code>universals</code></td><td>Yes</td><td>Domain-specific Kind, Relator, FunctionalRole universals</td></tr>
+        <tr><td><code>property_definitions</code></td><td>Yes</td><td>Properties for this domain's universals</td></tr>
+        <tr><td><code>event_definitions</code></td><td>If applicable</td><td>Domain events</td></tr>
+        <tr><td><code>artifact_definitions</code></td><td>If applicable</td><td>Intelligence aggregations</td></tr>
+        <tr><td><code>computations</code></td><td>If applicable</td><td>Reactive computations</td></tr>
+        <tr><td><code>foundation_role_assignments</code></td><td>Yes</td><td>Grants shared users access to this app (references user IDs from base)</td></tr>
+    </table>
+
+    <h3>11.7 Quick Reference &mdash; Valid Values Cheatsheet</h3>
+
+    <table>
+        <tr><th>Field</th><th>Valid Values</th></tr>
+        <tr><td>Aggregate <code>function</code></td><td><code>Sum</code>, <code>Count</code>, <code>Avg</code>, <code>Min</code>, <code>Max</code></td></tr>
+        <tr><td>Dimension <code>source_type</code></td><td><code>Property</code>, <code>MeasurementExtract</code>, <code>RelatorPath</code>, <code>Constant</code></td></tr>
+        <tr><td>Trigger <code>trigger_type</code> (for relators)</td><td><code>RelatorLifecycle</code> (with <code>lifecycle</code>: <code>Created</code> / <code>Modified</code> / <code>Deleted</code>)</td></tr>
+        <tr><td>Relator instance key for relator type</td><td><code>relator_id</code> (not <code>relator_universal_id</code>)</td></tr>
+        <tr><td>Computation role input reference</td><td><code>role_id</code> (not <code>relator_universal_id</code>)</td></tr>
+        <tr><td>Computation aggregate function key</td><td><code>function</code> (not <code>aggregation</code>)</td></tr>
+        <tr><td>Optional fields with no value</td><td>Omit the field (do not set to <code>null</code>)</td></tr>
+    </table>
+
+    <hr style="margin-top: 3rem; border: none; border-top: 2px solid #0f3460;">
+    <p style="color: #666; font-size: 0.85rem;">
+        <strong>Source documents:</strong>
+        <code>concepts/analysis/20260309_erp_foundations/erp_foundational_ontology_claude.md</code>
+        and individual analysis files in the same directory.
+        <br>
+        <strong>Metadata apps:</strong> <code>apps/erp/app_erp_base</code> + <code>apps/erp/app_erp_*</code>
+        <br>
+        <strong>Load script:</strong> <code>apps/erp/load_erp.sh</code>
+        <br>
+        <strong>Generated:</strong> 2026-03-10 &mdash; Updated: 2026-03-11 (metadata pitfalls section, structural corrections)
+    </p>
+
+    <script>mermaid.initialize({startOnLoad: true, theme: 'default', securityLevel: 'loose'});</script>
+</body>
+</html>

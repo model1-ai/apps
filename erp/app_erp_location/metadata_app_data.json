@@ -1,0 +1,1106 @@
+{
+    "_comment": "=== ERP LOCATION MASTER - INSTANCE DATA ===",
+    "_description": "7 site type enums, 8 address type enums, 5 countries, 15 regions, 10 sites, 10 addresses, ~50 relator instances",
+
+    "instances": [
+        {
+            "_comment": "=== SITE TYPE ENUM INSTANCES (7) ===",
+            "id": "erp-site-type-office",
+            "universal_id": "erp-site-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-site-type-name-prop": "Office" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-type-warehouse",
+            "universal_id": "erp-site-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-site-type-name-prop": "Warehouse" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-type-plant",
+            "universal_id": "erp-site-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-site-type-name-prop": "Plant" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-type-retail",
+            "universal_id": "erp-site-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-site-type-name-prop": "Retail" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-type-distribution-center",
+            "universal_id": "erp-site-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-site-type-name-prop": "Distribution Center" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-type-data-center",
+            "universal_id": "erp-site-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-site-type-name-prop": "Data Center" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-type-virtual",
+            "universal_id": "erp-site-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-site-type-name-prop": "Virtual" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ADDRESS TYPE ENUM INSTANCES (8) ===",
+            "id": "erp-address-type-home",
+            "universal_id": "erp-address-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-address-type-name-prop": "Home" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-address-type-work",
+            "universal_id": "erp-address-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-address-type-name-prop": "Work" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-address-type-billing",
+            "universal_id": "erp-address-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-address-type-name-prop": "Billing" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-address-type-shipping",
+            "universal_id": "erp-address-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-address-type-name-prop": "Shipping" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-address-type-legal",
+            "universal_id": "erp-address-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-address-type-name-prop": "Legal" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-address-type-mailing",
+            "universal_id": "erp-address-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-address-type-name-prop": "Mailing" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-address-type-registered",
+            "universal_id": "erp-address-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-address-type-name-prop": "Registered" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-address-type-delivery",
+            "universal_id": "erp-address-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-address-type-name-prop": "Delivery" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== COUNTRY INSTANCES (5) ===",
+            "id": "erp-country-us",
+            "universal_id": "erp-country",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-country-iso-code-prop": "US",
+                "erp-country-name-prop": { "en": "United States" },
+                "erp-country-currency-code-prop": "USD"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-country-gb",
+            "universal_id": "erp-country",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-country-iso-code-prop": "GB",
+                "erp-country-name-prop": { "en": "United Kingdom" },
+                "erp-country-currency-code-prop": "GBP"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-country-de",
+            "universal_id": "erp-country",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-country-iso-code-prop": "DE",
+                "erp-country-name-prop": { "en": "Germany" },
+                "erp-country-currency-code-prop": "EUR"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-country-jp",
+            "universal_id": "erp-country",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-country-iso-code-prop": "JP",
+                "erp-country-name-prop": { "en": "Japan" },
+                "erp-country-currency-code-prop": "JPY"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-country-br",
+            "universal_id": "erp-country",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-country-iso-code-prop": "BR",
+                "erp-country-name-prop": { "en": "Brazil" },
+                "erp-country-currency-code-prop": "BRL"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== REGION INSTANCES (15: 3 per country) ===",
+            "id": "erp-region-us-ca",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "US-CA",
+                "erp-region-name-prop": { "en": "California" },
+                "erp-region-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-us-tx",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "US-TX",
+                "erp-region-name-prop": { "en": "Texas" },
+                "erp-region-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-us-ny",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "US-NY",
+                "erp-region-name-prop": { "en": "New York" },
+                "erp-region-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-gb-eng",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "GB-ENG",
+                "erp-region-name-prop": { "en": "England" },
+                "erp-region-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-gb-sct",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "GB-SCT",
+                "erp-region-name-prop": { "en": "Scotland" },
+                "erp-region-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-gb-wls",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "GB-WLS",
+                "erp-region-name-prop": { "en": "Wales" },
+                "erp-region-is-active-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-de-by",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "DE-BY",
+                "erp-region-name-prop": { "en": "Bavaria" },
+                "erp-region-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-de-be",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "DE-BE",
+                "erp-region-name-prop": { "en": "Berlin" },
+                "erp-region-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-de-nw",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "DE-NW",
+                "erp-region-name-prop": { "en": "North Rhine-Westphalia" },
+                "erp-region-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-jp-13",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "JP-13",
+                "erp-region-name-prop": { "en": "Tokyo" },
+                "erp-region-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-jp-27",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "JP-27",
+                "erp-region-name-prop": { "en": "Osaka" },
+                "erp-region-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-jp-23",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "JP-23",
+                "erp-region-name-prop": { "en": "Aichi" },
+                "erp-region-is-active-prop": false
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-br-sp",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "BR-SP",
+                "erp-region-name-prop": { "en": "Sao Paulo" },
+                "erp-region-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-br-rj",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "BR-RJ",
+                "erp-region-name-prop": { "en": "Rio de Janeiro" },
+                "erp-region-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-br-mg",
+            "universal_id": "erp-region",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-region-code-prop": "BR-MG",
+                "erp-region-name-prop": { "en": "Minas Gerais" },
+                "erp-region-is-active-prop": true
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== SITE INSTANCES (10) ===",
+            "id": "erp-site-sf-hq",
+            "universal_id": "erp-site",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-site-code-prop": "SF-HQ-001",
+                "erp-site-name-prop": { "en": "San Francisco Headquarters" },
+                "erp-site-is-active-prop": true,
+                "erp-site-capacity-prop": { "value": 500, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-austin-wh",
+            "universal_id": "erp-site",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-site-code-prop": "ATX-WH-001",
+                "erp-site-name-prop": { "en": "Austin Distribution Warehouse" },
+                "erp-site-is-active-prop": true,
+                "erp-site-capacity-prop": { "value": 25000, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-nyc-office",
+            "universal_id": "erp-site",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-site-code-prop": "NYC-OF-001",
+                "erp-site-name-prop": { "en": "New York Sales Office" },
+                "erp-site-is-active-prop": true,
+                "erp-site-capacity-prop": { "value": 120, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-london-office",
+            "universal_id": "erp-site",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-site-code-prop": "LDN-OF-001",
+                "erp-site-name-prop": { "en": "London Regional Office" },
+                "erp-site-is-active-prop": true,
+                "erp-site-capacity-prop": { "value": 200, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-munich-plant",
+            "universal_id": "erp-site",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-site-code-prop": "MUC-PL-001",
+                "erp-site-name-prop": { "en": "Munich Manufacturing Plant" },
+                "erp-site-is-active-prop": true,
+                "erp-site-capacity-prop": { "value": 1500, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-tokyo-office",
+            "universal_id": "erp-site",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-site-code-prop": "TYO-OF-001",
+                "erp-site-name-prop": { "en": "Tokyo Office" },
+                "erp-site-is-active-prop": true,
+                "erp-site-capacity-prop": { "value": 80, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-saopaulo-dc",
+            "universal_id": "erp-site",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-site-code-prop": "GRU-DC-001",
+                "erp-site-name-prop": { "en": "Sao Paulo Distribution Center" },
+                "erp-site-is-active-prop": true,
+                "erp-site-capacity-prop": { "value": 8000, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-berlin-datacenter",
+            "universal_id": "erp-site",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-site-code-prop": "BER-DC-001",
+                "erp-site-name-prop": { "en": "Berlin Data Center" },
+                "erp-site-is-active-prop": true,
+                "erp-site-capacity-prop": { "value": 5000, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-remote-ops",
+            "universal_id": "erp-site",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-site-code-prop": "VRT-001",
+                "erp-site-name-prop": { "en": "Global Remote Operations" },
+                "erp-site-is-active-prop": true,
+                "erp-site-capacity-prop": { "value": 350, "unit": "count" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-edinburgh-old",
+            "universal_id": "erp-site",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-site-code-prop": "EDI-OF-001",
+                "erp-site-name-prop": { "en": "Edinburgh Office (Closed)" },
+                "erp-site-is-active-prop": false,
+                "erp-site-capacity-prop": { "value": 50, "unit": "count" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ADDRESS INSTANCES (10) ===",
+            "id": "erp-addr-sf-hq",
+            "universal_id": "erp-address",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-addr-line1-prop": { "en": "101 Market Street" },
+                "erp-addr-line2-prop": { "en": "Suite 3500" },
+                "erp-addr-city-prop": { "en": "San Francisco" },
+                "erp-addr-state-prop": "CA",
+                "erp-addr-postal-code-prop": "94105",
+                "erp-addr-country-code-prop": "US",
+                "erp-addr-latitude-prop": { "value": 37.7937, "unit": "scalar" },
+                "erp-addr-longitude-prop": { "value": -122.3965, "unit": "scalar" },
+                "erp-addr-is-primary-prop": true,
+                "erp-addr-is-active-prop": true,
+                "erp-addr-effective-date-prop": { "value": 1672531200, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-austin-wh",
+            "universal_id": "erp-address",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-addr-line1-prop": { "en": "4500 E Ben White Blvd" },
+                "erp-addr-city-prop": { "en": "Austin" },
+                "erp-addr-state-prop": "TX",
+                "erp-addr-postal-code-prop": "78741",
+                "erp-addr-country-code-prop": "US",
+                "erp-addr-latitude-prop": { "value": 30.2280, "unit": "scalar" },
+                "erp-addr-longitude-prop": { "value": -97.7133, "unit": "scalar" },
+                "erp-addr-is-primary-prop": true,
+                "erp-addr-is-active-prop": true,
+                "erp-addr-effective-date-prop": { "value": 1680307200, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-nyc-office",
+            "universal_id": "erp-address",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-addr-line1-prop": { "en": "350 Fifth Avenue" },
+                "erp-addr-line2-prop": { "en": "Floor 72" },
+                "erp-addr-city-prop": { "en": "New York" },
+                "erp-addr-state-prop": "NY",
+                "erp-addr-postal-code-prop": "10118",
+                "erp-addr-country-code-prop": "US",
+                "erp-addr-latitude-prop": { "value": 40.7484, "unit": "scalar" },
+                "erp-addr-longitude-prop": { "value": -73.9857, "unit": "scalar" },
+                "erp-addr-is-primary-prop": true,
+                "erp-addr-is-active-prop": true,
+                "erp-addr-effective-date-prop": { "value": 1688169600, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-london-office",
+            "universal_id": "erp-address",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-addr-line1-prop": { "en": "30 St Mary Axe" },
+                "erp-addr-city-prop": { "en": "London" },
+                "erp-addr-state-prop": "ENG",
+                "erp-addr-postal-code-prop": "EC3A 8BF",
+                "erp-addr-country-code-prop": "GB",
+                "erp-addr-latitude-prop": { "value": 51.5145, "unit": "scalar" },
+                "erp-addr-longitude-prop": { "value": -0.0803, "unit": "scalar" },
+                "erp-addr-is-primary-prop": true,
+                "erp-addr-is-active-prop": true,
+                "erp-addr-effective-date-prop": { "value": 1672531200, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-munich-plant",
+            "universal_id": "erp-address",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-addr-line1-prop": { "en": "Industriestrasse 42" },
+                "erp-addr-city-prop": { "en": "Munich" },
+                "erp-addr-state-prop": "BY",
+                "erp-addr-postal-code-prop": "80939",
+                "erp-addr-country-code-prop": "DE",
+                "erp-addr-latitude-prop": { "value": 48.1951, "unit": "scalar" },
+                "erp-addr-longitude-prop": { "value": 11.6014, "unit": "scalar" },
+                "erp-addr-is-primary-prop": true,
+                "erp-addr-is-active-prop": true,
+                "erp-addr-effective-date-prop": { "value": 1664582400, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-tokyo-office",
+            "universal_id": "erp-address",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-addr-line1-prop": { "en": "1-7-1 Nishi-Shinjuku" },
+                "erp-addr-line2-prop": { "en": "Shinjuku Mitsui Building 34F" },
+                "erp-addr-city-prop": { "en": "Tokyo" },
+                "erp-addr-state-prop": "13",
+                "erp-addr-postal-code-prop": "163-0434",
+                "erp-addr-country-code-prop": "JP",
+                "erp-addr-latitude-prop": { "value": 35.6938, "unit": "scalar" },
+                "erp-addr-longitude-prop": { "value": 139.6917, "unit": "scalar" },
+                "erp-addr-is-primary-prop": true,
+                "erp-addr-is-active-prop": true,
+                "erp-addr-effective-date-prop": { "value": 1696118400, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-saopaulo-dc",
+            "universal_id": "erp-address",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-addr-line1-prop": { "en": "Rodovia Presidente Dutra, km 228" },
+                "erp-addr-city-prop": { "en": "Guarulhos" },
+                "erp-addr-state-prop": "SP",
+                "erp-addr-postal-code-prop": "07210-010",
+                "erp-addr-country-code-prop": "BR",
+                "erp-addr-latitude-prop": { "value": -23.4356, "unit": "scalar" },
+                "erp-addr-longitude-prop": { "value": -46.4732, "unit": "scalar" },
+                "erp-addr-is-primary-prop": true,
+                "erp-addr-is-active-prop": true,
+                "erp-addr-effective-date-prop": { "value": 1704067200, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-berlin-dc",
+            "universal_id": "erp-address",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-addr-line1-prop": { "en": "Am Borsigturm 40" },
+                "erp-addr-city-prop": { "en": "Berlin" },
+                "erp-addr-state-prop": "BE",
+                "erp-addr-postal-code-prop": "13507",
+                "erp-addr-country-code-prop": "DE",
+                "erp-addr-latitude-prop": { "value": 52.5830, "unit": "scalar" },
+                "erp-addr-longitude-prop": { "value": 13.2897, "unit": "scalar" },
+                "erp-addr-is-primary-prop": true,
+                "erp-addr-is-active-prop": true,
+                "erp-addr-effective-date-prop": { "value": 1696118400, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-edinburgh-old",
+            "universal_id": "erp-address",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-addr-line1-prop": { "en": "1 Princes Street" },
+                "erp-addr-city-prop": { "en": "Edinburgh" },
+                "erp-addr-state-prop": "SCT",
+                "erp-addr-postal-code-prop": "EH2 2EQ",
+                "erp-addr-country-code-prop": "GB",
+                "erp-addr-latitude-prop": { "value": 55.9533, "unit": "scalar" },
+                "erp-addr-longitude-prop": { "value": -3.1883, "unit": "scalar" },
+                "erp-addr-is-primary-prop": true,
+                "erp-addr-is-active-prop": false,
+                "erp-addr-effective-date-prop": { "value": 1640995200, "unit": "seconds" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-sf-mailing",
+            "universal_id": "erp-address",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-addr-line1-prop": { "en": "PO Box 77234" },
+                "erp-addr-city-prop": { "en": "San Francisco" },
+                "erp-addr-state-prop": "CA",
+                "erp-addr-postal-code-prop": "94107",
+                "erp-addr-country-code-prop": "US",
+                "erp-addr-is-primary-prop": false,
+                "erp-addr-is-active-prop": true,
+                "erp-addr-effective-date-prop": { "value": 1672531200, "unit": "seconds" }
+            },
+            "use_seed": true
+        }
+    ],
+
+    "relator_instances": [
+        {
+            "_comment": "=== COUNTRY -> REGION RELATOR INSTANCES (15) ===",
+            "id": "erp-rel-us-ca",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-us", "part": "erp-region-us-ca" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-us-tx",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-us", "part": "erp-region-us-tx" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-us-ny",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-us", "part": "erp-region-us-ny" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-gb-eng",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-gb", "part": "erp-region-gb-eng" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-gb-sct",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-gb", "part": "erp-region-gb-sct" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-gb-wls",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-gb", "part": "erp-region-gb-wls" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-de-by",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-de", "part": "erp-region-de-by" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-de-be",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-de", "part": "erp-region-de-be" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-de-nw",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-de", "part": "erp-region-de-nw" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-jp-13",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-jp", "part": "erp-region-jp-13" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-jp-27",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-jp", "part": "erp-region-jp-27" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-jp-23",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-jp", "part": "erp-region-jp-23" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-br-sp",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-br", "part": "erp-region-br-sp" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-br-rj",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-br", "part": "erp-region-br-rj" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-br-mg",
+            "relator_id": "erp-country-has-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-country-br", "part": "erp-region-br-mg" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== SITE -> ADDRESS RELATOR INSTANCES (10) ===",
+            "id": "erp-rel-sfhq-addr",
+            "relator_id": "erp-site-has-address-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-site-sf-hq", "part": "erp-addr-sf-hq" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-sfhq-mailing",
+            "relator_id": "erp-site-has-address-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-site-sf-hq", "part": "erp-addr-sf-mailing" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-austin-addr",
+            "relator_id": "erp-site-has-address-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-site-austin-wh", "part": "erp-addr-austin-wh" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-nyc-addr",
+            "relator_id": "erp-site-has-address-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-site-nyc-office", "part": "erp-addr-nyc-office" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-london-addr",
+            "relator_id": "erp-site-has-address-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-site-london-office", "part": "erp-addr-london-office" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-munich-addr",
+            "relator_id": "erp-site-has-address-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-site-munich-plant", "part": "erp-addr-munich-plant" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-tokyo-addr",
+            "relator_id": "erp-site-has-address-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-site-tokyo-office", "part": "erp-addr-tokyo-office" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-saopaulo-addr",
+            "relator_id": "erp-site-has-address-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-site-saopaulo-dc", "part": "erp-addr-saopaulo-dc" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-berlin-addr",
+            "relator_id": "erp-site-has-address-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-site-berlin-datacenter", "part": "erp-addr-berlin-dc" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-edinburgh-addr",
+            "relator_id": "erp-site-has-address-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "aggregate": "erp-site-edinburgh-old", "part": "erp-addr-edinburgh-old" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== SITE -> REGION RELATOR INSTANCES (10) ===",
+            "id": "erp-rel-sfhq-region",
+            "relator_id": "erp-site-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-sf-hq", "region": "erp-region-us-ca" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-austin-region",
+            "relator_id": "erp-site-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-austin-wh", "region": "erp-region-us-tx" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-nyc-region",
+            "relator_id": "erp-site-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-nyc-office", "region": "erp-region-us-ny" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-london-region",
+            "relator_id": "erp-site-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-london-office", "region": "erp-region-gb-eng" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-munich-region",
+            "relator_id": "erp-site-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-munich-plant", "region": "erp-region-de-by" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-tokyo-region",
+            "relator_id": "erp-site-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-tokyo-office", "region": "erp-region-jp-13" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-saopaulo-region",
+            "relator_id": "erp-site-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-saopaulo-dc", "region": "erp-region-br-sp" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-berlin-region",
+            "relator_id": "erp-site-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-berlin-datacenter", "region": "erp-region-de-be" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-remote-region",
+            "relator_id": "erp-site-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-remote-ops", "region": "erp-region-us-ca" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-edinburgh-region",
+            "relator_id": "erp-site-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-edinburgh-old", "region": "erp-region-gb-sct" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== SITE -> SITE TYPE RELATOR INSTANCES (10) ===",
+            "id": "erp-rel-sfhq-type",
+            "relator_id": "erp-site-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-sf-hq", "type": "erp-site-type-office" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-austin-type",
+            "relator_id": "erp-site-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-austin-wh", "type": "erp-site-type-warehouse" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-nyc-type",
+            "relator_id": "erp-site-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-nyc-office", "type": "erp-site-type-office" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-london-type",
+            "relator_id": "erp-site-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-london-office", "type": "erp-site-type-office" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-munich-type",
+            "relator_id": "erp-site-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-munich-plant", "type": "erp-site-type-plant" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-tokyo-type",
+            "relator_id": "erp-site-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-tokyo-office", "type": "erp-site-type-office" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-saopaulo-type",
+            "relator_id": "erp-site-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-saopaulo-dc", "type": "erp-site-type-distribution-center" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-berlin-type",
+            "relator_id": "erp-site-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-berlin-datacenter", "type": "erp-site-type-data-center" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-remote-type",
+            "relator_id": "erp-site-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-remote-ops", "type": "erp-site-type-virtual" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-edinburgh-type",
+            "relator_id": "erp-site-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "site": "erp-site-edinburgh-old", "type": "erp-site-type-office" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ADDRESS -> ADDRESS TYPE RELATOR INSTANCES (10) ===",
+            "id": "erp-rel-sfhq-addr-type",
+            "relator_id": "erp-address-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-sf-hq", "address_type": "erp-address-type-work" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-austin-addr-type",
+            "relator_id": "erp-address-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-austin-wh", "address_type": "erp-address-type-shipping" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-nyc-addr-type",
+            "relator_id": "erp-address-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-nyc-office", "address_type": "erp-address-type-work" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-london-addr-type",
+            "relator_id": "erp-address-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-london-office", "address_type": "erp-address-type-work" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-munich-addr-type",
+            "relator_id": "erp-address-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-munich-plant", "address_type": "erp-address-type-work" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-tokyo-addr-type",
+            "relator_id": "erp-address-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-tokyo-office", "address_type": "erp-address-type-work" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-saopaulo-addr-type",
+            "relator_id": "erp-address-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-saopaulo-dc", "address_type": "erp-address-type-shipping" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-berlin-addr-type",
+            "relator_id": "erp-address-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-berlin-dc", "address_type": "erp-address-type-work" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-edinburgh-addr-type",
+            "relator_id": "erp-address-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-edinburgh-old", "address_type": "erp-address-type-work" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-sfmailing-addr-type",
+            "relator_id": "erp-address-type-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-sf-mailing", "address_type": "erp-address-type-mailing" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ADDRESS -> REGION RELATOR INSTANCES (9, optional) ===",
+            "id": "erp-rel-sfhq-addr-region",
+            "relator_id": "erp-address-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-sf-hq", "region": "erp-region-us-ca" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-austin-addr-region",
+            "relator_id": "erp-address-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-austin-wh", "region": "erp-region-us-tx" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-nyc-addr-region",
+            "relator_id": "erp-address-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-nyc-office", "region": "erp-region-us-ny" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-london-addr-region",
+            "relator_id": "erp-address-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-london-office", "region": "erp-region-gb-eng" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-munich-addr-region",
+            "relator_id": "erp-address-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-munich-plant", "region": "erp-region-de-by" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-tokyo-addr-region",
+            "relator_id": "erp-address-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-tokyo-office", "region": "erp-region-jp-13" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-saopaulo-addr-region",
+            "relator_id": "erp-address-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-saopaulo-dc", "region": "erp-region-br-sp" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-berlin-addr-region",
+            "relator_id": "erp-address-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-berlin-dc", "region": "erp-region-de-be" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-sfmailing-addr-region",
+            "relator_id": "erp-address-region-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": { "address": "erp-addr-sf-mailing", "region": "erp-region-us-ca" },
+            "use_seed": true
+        }
+    ]
+}

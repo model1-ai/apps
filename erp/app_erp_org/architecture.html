@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Org Structure — Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 2rem; color: #1a1a2e; background: #f8f9fa; line-height: 1.6; }
+        h1 { color: #16213e; border-bottom: 3px solid #0f3460; padding-bottom: 0.5rem; }
+        h2 { color: #0f3460; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.3rem; margin-top: 2rem; }
+        h3 { color: #533483; }
+        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #0f3460; color: white; }
+        tr:nth-child(even) { background: #f2f2f2; }
+        .mermaid { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 1rem 0; }
+        .decision-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .layer-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
+        .layer-0 { background: #d4edda; color: #155724; }
+        code { background: #e9ecef; padding: 2px 6px; border-radius: 3px; font-size: 0.9rem; }
+        .info-box { background: #e8f4fd; border-left: 4px solid #2196F3; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .warn-box { background: #fff3e0; border-left: 4px solid #ff9800; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .toc { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 1.5rem 0; }
+        .toc ul { list-style: none; padding-left: 1rem; }
+        .toc > ul { padding-left: 0; }
+        .toc a { text-decoration: none; color: #0f3460; }
+        .toc a:hover { text-decoration: underline; }
+        .file-tree { background: #1a1a2e; color: #e0e0e0; padding: 1rem 1.5rem; border-radius: 8px; font-family: monospace; font-size: 0.9rem; margin: 1rem 0; }
+        .file-tree .dir { color: #64b5f6; }
+        .file-tree .file { color: #81c784; }
+        .file-tree .comment { color: #9e9e9e; }
+    </style>
+</head>
+<body>
+
+    <h1>ERP Organizational Structure <span class="layer-badge layer-0">Layer 0</span></h1>
+
+    <p>
+        Org Structure is the skeleton of the enterprise. It is a <strong>Layer 0</strong> block that is
+        <strong>independently deployable</strong> -- it can be loaded as a separate metadata app without requiring
+        other blocks to exist first. Every other ERP domain (HR, Finance, Procurement, Projects) references org structure.
+    </p>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+        <strong>Contents</strong>
+        <ul>
+            <li><a href="#overview">1. Overview</a></li>
+            <li><a href="#layer-info">2. Layer Information</a></li>
+            <li><a href="#generalization">3. Generalization Hierarchy</a></li>
+            <li><a href="#relator-map">4. Relator Map</a></li>
+            <li><a href="#instance-diagram">5. Instance Relationship Diagram</a></li>
+            <li><a href="#property-catalog">6. Property Catalog</a></li>
+            <li><a href="#cross-layer">7. Cross-Layer References</a></li>
+            <li><a href="#artifact">8. Artifact Definition</a></li>
+            <li><a href="#decisions">9. Design Decision Points</a></li>
+            <li><a href="#file-structure">10. File Structure</a></li>
+        </ul>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 1: Overview -->
+    <!-- ================================================================== -->
+    <h2 id="overview">1. Overview</h2>
+
+    <p>The Org Structure block answers three fundamental questions about the enterprise:</p>
+
+    <table>
+        <tr><th>Question</th><th>Modeled By</th><th>Examples</th></tr>
+        <tr>
+            <td><strong>Where does work happen?</strong></td>
+            <td>Departments, Teams, Committees</td>
+            <td>Engineering, Platform Team, Steering Committee</td>
+        </tr>
+        <tr>
+            <td><strong>Who is accountable?</strong></td>
+            <td>Business Units (P&amp;L responsibility)</td>
+            <td>Technology Services, Operations</td>
+        </tr>
+        <tr>
+            <td><strong>Where does money go?</strong></td>
+            <td>Cost Centers (allocation targets)</td>
+            <td>CC-1001 Engineering Operations, CC-9001 Shared IT</td>
+        </tr>
+    </table>
+
+    <div class="info-box">
+        <strong>Layer 0 Independence:</strong> Because it is dependency-free, Org Structure can be deployed, validated,
+        and populated before any other ERP block exists. It has one optional cross-block reference to
+        <code>erp-legal-entity</code> in Party Master via an association relator, established only when both blocks are deployed.
+    </div>
+
+    <p>The block defines 10 universals (4 org-unit specializations, 3 supporting entities, 2 enumerations, 1 artifact output),
+       28 property definitions, 4 domain-specific relators, 2 event definitions, and 1 artifact definition (Headcount by Department).</p>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 2: Layer Information -->
+    <!-- ================================================================== -->
+    <h2 id="layer-info">2. Layer Information</h2>
+
+    <div class="mermaid">
+graph TB
+    subgraph "Layer 0 — Foundation Blocks"
+        ORG["<strong>Org Structure</strong><br/>This block"]
+        PARTY["Party Master<br/>(erp-legal-entity)"]
+    end
+
+    subgraph "Layer 1 — Core Domains"
+        EMP["Employee / HR"]
+        BUD["Budget & Finance"]
+    end
+
+    subgraph "Layer 2 — Strategic"
+        OKR["OKR / Objectives"]
+    end
+
+    ORG -. "optional<br/>association" .-> PARTY
+    EMP --> ORG
+    BUD --> ORG
+    OKR --> ORG
+
+    style ORG fill:#d4edda,stroke:#155724,stroke-width:3px,color:#155724
+    style PARTY fill:#d4edda,stroke:#155724,color:#155724
+    style EMP fill:#cce5ff,stroke:#004085,color:#004085
+    style BUD fill:#cce5ff,stroke:#004085,color:#004085
+    style OKR fill:#e2d9f3,stroke:#533483,color:#533483
+    </div>
+
+    <table>
+        <tr><th>Property</th><th>Value</th></tr>
+        <tr><td>ERP Layer</td><td><span class="layer-badge layer-0">Layer 0</span></td></tr>
+        <tr><td>App ID</td><td><code>erp-org-structure-app</code></td></tr>
+        <tr><td>Deployable independently</td><td>Yes -- no dependencies on other blocks</td></tr>
+        <tr><td>Cross-block link</td><td>Optional many-to-many association to Party Master's <code>erp-legal-entity</code></td></tr>
+        <tr><td>Consumed by</td><td>Employee (L1), Budget (L1), OKR (L2), Procurement (L1), Projects (L1)</td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 3: Generalization Hierarchy -->
+    <!-- ================================================================== -->
+    <h2 id="generalization">3. Generalization Hierarchy</h2>
+
+    <p>
+        All org-unit types share a common abstract base (<code>erp-org-unit</code>) via generalization relators.
+        The base defines shared properties (code, name, dates, status) that every specialization inherits.
+        Each specialization adds only properties unique to its nature.
+    </p>
+
+    <div class="mermaid">
+classDiagram
+    class erp_org_unit {
+        &lt;&lt;abstract Kind&gt;&gt;
+        +erp-org-unit-code-prop : Categorical
+        +erp-org-unit-name-prop : Textual
+        +erp-org-unit-effective-date-prop : Measurement~std-timestamp~
+        +erp-org-unit-end-date-prop : Measurement~std-timestamp~
+        +erp-org-unit-status-prop : Categorical~erp-org-unit-status~
+    }
+
+    class erp_business_unit {
+        &lt;&lt;Kind&gt;&gt;
+        +erp-bu-revenue-target-prop : Measurement~std-currency~
+        +erp-bu-is-profit-center-prop : Boolean
+    }
+
+    class erp_department {
+        &lt;&lt;Kind&gt;&gt;
+        +erp-dept-function-prop : Categorical
+    }
+
+    class erp_team {
+        &lt;&lt;Kind&gt;&gt;
+        +erp-team-purpose-prop : Textual
+        +erp-team-is-permanent-prop : Boolean
+    }
+
+    class erp_committee {
+        &lt;&lt;Kind&gt;&gt;
+        +erp-committee-charter-prop : Textual
+        +erp-committee-meeting-frequency-prop : Categorical
+    }
+
+    class erp_cost_center {
+        &lt;&lt;Kind&gt;&gt;
+        +erp-cc-code-prop : Categorical
+        +erp-cc-name-prop : Textual
+        +erp-cc-is-active-prop : Boolean
+    }
+
+    class erp_position {
+        &lt;&lt;Kind&gt;&gt;
+        +erp-position-title-prop : Textual
+        +erp-position-headcount-prop : Measurement~std-integer~
+        +erp-position-status-prop : Categorical~erp-position-status~
+    }
+
+    class erp_job_grade {
+        &lt;&lt;Kind&gt;&gt;
+        +erp-grade-code-prop : Categorical
+        +erp-grade-name-prop : Textual
+        +erp-grade-min-salary-prop : Measurement~std-currency~
+        +erp-grade-max-salary-prop : Measurement~std-currency~
+    }
+
+    erp_org_unit <|-- erp_business_unit : generalizes
+    erp_org_unit <|-- erp_department : generalizes
+    erp_org_unit <|-- erp_team : generalizes
+    erp_org_unit <|-- erp_committee : generalizes
+    </div>
+
+    <div class="info-box">
+        <strong>Standalone entities:</strong> <code>erp-cost-center</code>, <code>erp-position</code>, and
+        <code>erp-job-grade</code> do not generalize <code>erp-org-unit</code>. They are connected to the
+        org hierarchy via relators (attribution and aggregation), not via inheritance.
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 4: Relator Map -->
+    <!-- ================================================================== -->
+    <h2 id="relator-map">4. Relator Map</h2>
+
+    <p>
+        Four domain-specific relators connect the universals. Each relator specializes a foundational relator type
+        (aggregation or attribution) via a generalization-relator taxonomy entry.
+    </p>
+
+    <div class="mermaid">
+graph LR
+    OU["erp-org-unit<br/>(any specialization)"]
+    DEPT["erp-department"]
+    POS["erp-position"]
+    CC["erp-cost-center"]
+    GRADE["erp-job-grade"]
+
+    OU -- "erp-unit-parent-rel<br/><em>aggregation</em><br/>aggregate / part" --> OU
+    DEPT -- "erp-dept-cost-center-rel<br/><em>attribution</em><br/>department / cost_center" --> CC
+    DEPT -- "erp-dept-has-position-rel<br/><em>aggregation</em><br/>aggregate / part" --> POS
+    POS -- "erp-position-grade-rel<br/><em>attribution</em><br/>position / grade" --> GRADE
+
+    style OU fill:#d4edda,stroke:#155724,color:#155724
+    style DEPT fill:#d4edda,stroke:#155724,color:#155724
+    style POS fill:#cce5ff,stroke:#004085,color:#004085
+    style CC fill:#fff3cd,stroke:#856404,color:#856404
+    style GRADE fill:#e2d9f3,stroke:#533483,color:#533483
+    </div>
+
+    <table>
+        <tr><th>Relator ID</th><th>Role 1</th><th>Role 2</th><th>Taxonomy</th><th>Purpose</th></tr>
+        <tr>
+            <td><code>erp-unit-parent-rel</code></td>
+            <td>aggregate: <code>erp-org-unit</code></td>
+            <td>part: <code>erp-org-unit</code></td>
+            <td><code>aggregation-relator</code></td>
+            <td>Recursive org hierarchy. Children survive parent restructuring.</td>
+        </tr>
+        <tr>
+            <td><code>erp-dept-cost-center-rel</code></td>
+            <td>department: <code>erp-department</code></td>
+            <td>cost_center: <code>erp-cost-center</code></td>
+            <td><code>attribution-relator</code></td>
+            <td>Maps department to cost center for expense allocation.</td>
+        </tr>
+        <tr>
+            <td><code>erp-dept-has-position-rel</code></td>
+            <td>aggregate: <code>erp-department</code></td>
+            <td>part: <code>erp-position</code></td>
+            <td><code>aggregation-relator</code></td>
+            <td>Positions belong to departments but survive restructuring.</td>
+        </tr>
+        <tr>
+            <td><code>erp-position-grade-rel</code></td>
+            <td>position: <code>erp-position</code></td>
+            <td>grade: <code>erp-job-grade</code></td>
+            <td><code>attribution-relator</code></td>
+            <td>Position classified at a compensation band.</td>
+        </tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 5: Instance Relationship Diagram -->
+    <!-- ================================================================== -->
+    <h2 id="instance-diagram">5. Instance Relationship Diagram</h2>
+
+    <p>
+        The following diagram shows the complete sample data from <code>metadata_app_data.json</code>: 2 business units,
+        5 departments, 2 teams, 1 committee, 4 cost centers, 5 job grades, and 12 positions -- linked by hierarchy,
+        cost-center attribution, department-position aggregation, and position-grade attribution relators.
+    </p>
+
+    <h3>5.1 Org Unit Hierarchy</h3>
+
+    <div class="mermaid">
+graph TB
+    subgraph "Technology Services BU (BU-TECH)"
+        BU_TECH["<strong>BU-TECH</strong><br/>Technology Services<br/><em>Business Unit, ACTIVE</em><br/>Revenue Target: $5M"]
+    end
+
+    subgraph "Operations BU (BU-OPS)"
+        BU_OPS["<strong>BU-OPS</strong><br/>Operations<br/><em>Business Unit, ACTIVE</em><br/>Revenue Target: $3M"]
+    end
+
+    BU_TECH --> DEPT_ENG["<strong>DEPT-ENG</strong><br/>Engineering<br/><em>Department, ACTIVE</em>"]
+    BU_TECH --> DEPT_PROD["<strong>DEPT-PROD</strong><br/>Product Management<br/><em>Department, ACTIVE</em>"]
+    BU_TECH --> COM_STEER["<strong>COM-STEER</strong><br/>Technology Steering Committee<br/><em>Committee, ACTIVE</em><br/>Meets Monthly"]
+
+    DEPT_ENG --> TEAM_PLAT["<strong>TEAM-PLAT</strong><br/>Platform Team<br/><em>Team, Permanent</em>"]
+    DEPT_ENG --> TEAM_MIG["<strong>TEAM-MIG</strong><br/>Cloud Migration Team<br/><em>Team, Temporary</em>"]
+
+    BU_OPS --> DEPT_FIN["<strong>DEPT-FIN</strong><br/>Finance<br/><em>Department, ACTIVE</em>"]
+    BU_OPS --> DEPT_HR["<strong>DEPT-HR</strong><br/>Human Resources<br/><em>Department, ACTIVE</em>"]
+    BU_OPS --> DEPT_SALES["<strong>DEPT-SALES</strong><br/>Sales<br/><em>Department, RESTRUCTURING</em>"]
+
+    style BU_TECH fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+    style BU_OPS fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+    style DEPT_ENG fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    style DEPT_PROD fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    style DEPT_FIN fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    style DEPT_HR fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    style DEPT_SALES fill:#ffecb3,stroke:#f57f17,color:#e65100
+    style TEAM_PLAT fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+    style TEAM_MIG fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+    style COM_STEER fill:#fce4ec,stroke:#c62828,color:#b71c1c
+    </div>
+
+    <p>All arrows represent <code>erp-unit-parent-rel</code> (aggregation). The two business units are top-level roots with no parent.</p>
+
+    <h3>5.2 Positions, Cost Centers, and Job Grades</h3>
+
+    <div class="mermaid">
+graph LR
+    subgraph "Engineering Department"
+        ENG["DEPT-ENG<br/>Engineering"]
+        P1["Eng Director<br/>FILLED, hc:1"]
+        P2["Sr Engineer #1<br/>FILLED, hc:1"]
+        P3["Sr Engineer #2<br/>OPEN, hc:1"]
+        P4["Engineer #1<br/>FILLED, hc:2"]
+        P5["Engineer (frozen)<br/>FROZEN, hc:1"]
+        ENG --> P1
+        ENG --> P2
+        ENG --> P3
+        ENG --> P4
+        ENG --> P5
+    end
+
+    subgraph "Finance Department"
+        FIN["DEPT-FIN<br/>Finance"]
+        P6["Finance Manager<br/>FILLED, hc:1"]
+        P7["Staff Accountant<br/>FILLED, hc:2"]
+        FIN --> P6
+        FIN --> P7
+    end
+
+    subgraph "HR Department"
+        HR["DEPT-HR<br/>Human Resources"]
+        P8["HR Manager<br/>FILLED, hc:1"]
+        P9["HR Coordinator<br/>OPEN, hc:1"]
+        HR --> P8
+        HR --> P9
+    end
+
+    subgraph "Job Grades"
+        GD1["D1 - Director<br/>$160K-$250K"]
+        GIC3["IC3 - Senior IC<br/>$110K-$170K"]
+        GIC2["IC2 - IC II<br/>$75K-$120K"]
+        GIC1["IC1 - IC I<br/>$50K-$80K"]
+        GM1["M1 - Manager I<br/>$120K-$180K"]
+    end
+
+    P1 -.-> GD1
+    P2 -.-> GIC3
+    P3 -.-> GIC3
+    P4 -.-> GIC2
+    P5 -.-> GIC1
+    P6 -.-> GM1
+    P7 -.-> GIC2
+    P8 -.-> GM1
+    P9 -.-> GIC1
+
+    subgraph "Cost Centers"
+        CC1["CC-1001<br/>Engineering Ops"]
+        CC2["CC-2001<br/>Finance & Acct"]
+        CC3["CC-3001<br/>Human Resources"]
+        CC4["CC-9001<br/>Shared IT Infra"]
+    end
+
+    ENG -. "attribution" .-> CC1
+    FIN -. "attribution" .-> CC2
+    HR -. "attribution" .-> CC3
+
+    style ENG fill:#e3f2fd,stroke:#1565c0
+    style FIN fill:#e3f2fd,stroke:#1565c0
+    style HR fill:#e3f2fd,stroke:#1565c0
+    style CC4 fill:#fff9c4,stroke:#f9a825
+    </div>
+
+    <p>
+        Solid arrows = <code>erp-dept-has-position-rel</code> (aggregation).
+        Dashed arrows to grades = <code>erp-position-grade-rel</code> (attribution).
+        Dashed arrows to cost centers = <code>erp-dept-cost-center-rel</code> (attribution).
+        Note that <code>CC-9001 Shared IT Infrastructure</code> is not mapped to any department -- demonstrating that
+        cost centers exist independently.
+    </p>
+
+    <h3>5.3 Sample Data Summary</h3>
+
+    <table>
+        <tr><th>Entity Type</th><th>Count</th><th>Instances</th></tr>
+        <tr><td>Business Unit</td><td>2</td><td>Technology Services (BU-TECH), Operations (BU-OPS)</td></tr>
+        <tr><td>Department</td><td>5</td><td>Engineering, Product Mgmt, Finance, HR, Sales</td></tr>
+        <tr><td>Team</td><td>2</td><td>Platform Team (permanent), Cloud Migration (temporary)</td></tr>
+        <tr><td>Committee</td><td>1</td><td>Technology Steering Committee</td></tr>
+        <tr><td>Cost Center</td><td>4</td><td>CC-1001 Eng Ops, CC-2001 Finance, CC-3001 HR, CC-9001 Shared IT</td></tr>
+        <tr><td>Job Grade</td><td>5</td><td>IC1, IC2, IC3, M1, D1</td></tr>
+        <tr><td>Position</td><td>12</td><td>5 in Engineering, 2 in Finance, 2 in HR, 1 in Product, 1 in Sales, 1 frozen</td></tr>
+        <tr><td>Org Unit Status (enum)</td><td>3</td><td>ACTIVE, INACTIVE, RESTRUCTURING</td></tr>
+        <tr><td>Position Status (enum)</td><td>3</td><td>OPEN, FILLED, FROZEN</td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 6: Property Catalog -->
+    <!-- ================================================================== -->
+    <h2 id="property-catalog">6. Property Catalog</h2>
+
+    <h3>6.1 erp-org-unit (inherited by all specializations)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Card.</th><th>Label Opts</th></tr>
+        <tr>
+            <td><code>erp-org-unit-code-prop</code></td>
+            <td>Org Unit Code</td>
+            <td>Categorical</td>
+            <td>--</td>
+            <td>1..1</td>
+            <td>participates: true, seq: 1</td>
+        </tr>
+        <tr>
+            <td><code>erp-org-unit-name-prop</code></td>
+            <td>Org Unit Name</td>
+            <td>Textual</td>
+            <td>--</td>
+            <td>1..1</td>
+            <td>participates: true, seq: 2</td>
+        </tr>
+        <tr>
+            <td><code>erp-org-unit-effective-date-prop</code></td>
+            <td>Effective Date</td>
+            <td>Measurement</td>
+            <td><code>std-timestamp</code></td>
+            <td>0..1</td>
+            <td>--</td>
+        </tr>
+        <tr>
+            <td><code>erp-org-unit-end-date-prop</code></td>
+            <td>End Date</td>
+            <td>Measurement</td>
+            <td><code>std-timestamp</code></td>
+            <td>0..1</td>
+            <td>--</td>
+        </tr>
+        <tr>
+            <td><code>erp-org-unit-status-prop</code></td>
+            <td>Status</td>
+            <td>Categorical</td>
+            <td>-- (ref: <code>erp-org-unit-status</code>)</td>
+            <td>1..1</td>
+            <td>--</td>
+        </tr>
+    </table>
+
+    <h3>6.2 erp-business-unit (additional properties)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Card.</th></tr>
+        <tr>
+            <td><code>erp-bu-revenue-target-prop</code></td>
+            <td>Revenue Target</td>
+            <td>Measurement</td>
+            <td><code>std-currency</code></td>
+            <td>0..1</td>
+        </tr>
+        <tr>
+            <td><code>erp-bu-is-profit-center-prop</code></td>
+            <td>Is Profit Center</td>
+            <td>Boolean</td>
+            <td>--</td>
+            <td>0..1</td>
+        </tr>
+    </table>
+
+    <h3>6.3 erp-department (additional properties)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Card.</th></tr>
+        <tr>
+            <td><code>erp-dept-function-prop</code></td>
+            <td>Function</td>
+            <td>Categorical</td>
+            <td>--</td>
+            <td>0..1</td>
+        </tr>
+    </table>
+    <p>Typical values: Engineering, Finance, HR, Sales, Marketing, Legal, Operations.</p>
+
+    <h3>6.4 erp-team (additional properties)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Card.</th></tr>
+        <tr>
+            <td><code>erp-team-purpose-prop</code></td>
+            <td>Purpose</td>
+            <td>Textual</td>
+            <td>--</td>
+            <td>0..1</td>
+        </tr>
+        <tr>
+            <td><code>erp-team-is-permanent-prop</code></td>
+            <td>Is Permanent</td>
+            <td>Boolean</td>
+            <td>--</td>
+            <td>0..1</td>
+        </tr>
+    </table>
+
+    <h3>6.5 erp-committee (additional properties)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Card.</th></tr>
+        <tr>
+            <td><code>erp-committee-charter-prop</code></td>
+            <td>Charter</td>
+            <td>Textual</td>
+            <td>--</td>
+            <td>0..1</td>
+        </tr>
+        <tr>
+            <td><code>erp-committee-meeting-frequency-prop</code></td>
+            <td>Meeting Frequency</td>
+            <td>Categorical</td>
+            <td>--</td>
+            <td>0..1</td>
+        </tr>
+    </table>
+    <p>Allowed values: Weekly, Biweekly, Monthly, Quarterly, Annually.</p>
+
+    <h3>6.6 erp-cost-center</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Card.</th><th>Label Opts</th></tr>
+        <tr>
+            <td><code>erp-cc-code-prop</code></td>
+            <td>Cost Center Code</td>
+            <td>Categorical</td>
+            <td>--</td>
+            <td>1..1</td>
+            <td>participates: true, seq: 1</td>
+        </tr>
+        <tr>
+            <td><code>erp-cc-name-prop</code></td>
+            <td>Cost Center Name</td>
+            <td>Textual</td>
+            <td>--</td>
+            <td>1..1</td>
+            <td>participates: true, seq: 2</td>
+        </tr>
+        <tr>
+            <td><code>erp-cc-is-active-prop</code></td>
+            <td>Is Active</td>
+            <td>Boolean</td>
+            <td>--</td>
+            <td>0..1</td>
+            <td>--</td>
+        </tr>
+    </table>
+
+    <h3>6.7 erp-position</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Card.</th><th>Label Opts</th></tr>
+        <tr>
+            <td><code>erp-position-title-prop</code></td>
+            <td>Position Title</td>
+            <td>Textual</td>
+            <td>--</td>
+            <td>1..1</td>
+            <td>participates: true, seq: 1</td>
+        </tr>
+        <tr>
+            <td><code>erp-position-headcount-prop</code></td>
+            <td>Headcount</td>
+            <td>Measurement</td>
+            <td><code>std-integer</code></td>
+            <td>0..1</td>
+            <td>--</td>
+        </tr>
+        <tr>
+            <td><code>erp-position-status-prop</code></td>
+            <td>Position Status</td>
+            <td>Categorical</td>
+            <td>-- (ref: <code>erp-position-status</code>)</td>
+            <td>1..1</td>
+            <td>--</td>
+        </tr>
+    </table>
+
+    <h3>6.8 erp-job-grade</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Card.</th><th>Label Opts</th></tr>
+        <tr>
+            <td><code>erp-grade-code-prop</code></td>
+            <td>Grade Code</td>
+            <td>Categorical</td>
+            <td>--</td>
+            <td>1..1</td>
+            <td>participates: true, seq: 1</td>
+        </tr>
+        <tr>
+            <td><code>erp-grade-name-prop</code></td>
+            <td>Grade Name</td>
+            <td>Textual</td>
+            <td>--</td>
+            <td>1..1</td>
+            <td>participates: true, seq: 2</td>
+        </tr>
+        <tr>
+            <td><code>erp-grade-min-salary-prop</code></td>
+            <td>Minimum Salary</td>
+            <td>Measurement</td>
+            <td><code>std-currency</code></td>
+            <td>0..1</td>
+            <td>--</td>
+        </tr>
+        <tr>
+            <td><code>erp-grade-max-salary-prop</code></td>
+            <td>Maximum Salary</td>
+            <td>Measurement</td>
+            <td><code>std-currency</code></td>
+            <td>0..1</td>
+            <td>--</td>
+        </tr>
+    </table>
+
+    <h3>6.9 Enumeration Universals</h3>
+
+    <table>
+        <tr><th>Universal</th><th>Property</th><th>Values</th></tr>
+        <tr>
+            <td><code>erp-org-unit-status</code></td>
+            <td><code>erp-org-unit-status-name-prop</code> (Categorical)</td>
+            <td>ACTIVE, INACTIVE, RESTRUCTURING</td>
+        </tr>
+        <tr>
+            <td><code>erp-position-status</code></td>
+            <td><code>erp-position-status-name-prop</code> (Categorical)</td>
+            <td>OPEN, FILLED, FROZEN</td>
+        </tr>
+    </table>
+
+    <h3>6.10 Artifact Output: erp-headcount-summary</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Label Opts</th></tr>
+        <tr>
+            <td><code>erp-hc-department-name-prop</code></td>
+            <td>Department Name</td>
+            <td>Categorical</td>
+            <td>--</td>
+            <td>participates: true, seq: 1</td>
+        </tr>
+        <tr>
+            <td><code>erp-hc-position-count-prop</code></td>
+            <td>Position Count</td>
+            <td>Measurement</td>
+            <td><code>std-quantity</code></td>
+            <td>--</td>
+        </tr>
+        <tr>
+            <td><code>erp-hc-total-headcount-prop</code></td>
+            <td>Total Headcount</td>
+            <td>Measurement</td>
+            <td><code>std-quantity</code></td>
+            <td>--</td>
+        </tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 7: Cross-Layer References -->
+    <!-- ================================================================== -->
+    <h2 id="cross-layer">7. Cross-Layer References</h2>
+
+    <p>
+        These connections are <strong>not implemented in Layer 0</strong> but are documented here so that higher-layer
+        blocks know how to connect to Org Structure.
+    </p>
+
+    <div class="mermaid">
+graph TB
+    subgraph "Layer 0 — Org Structure"
+        OU["erp-org-unit<br/>(any specialization)"]
+        DEPT["erp-department"]
+        POS["erp-position"]
+    end
+
+    subgraph "Layer 0 — Party Master (cross-block)"
+        LE["erp-legal-entity"]
+    end
+
+    subgraph "Layer 1 — Employee"
+        EMP["Employee"]
+    end
+
+    subgraph "Layer 1 — Budget"
+        BUD["Budget"]
+    end
+
+    subgraph "Layer 2 — OKR"
+        OBJ["Objective"]
+    end
+
+    OU -. "association-relator<br/>many-to-many<br/>(optional cross-block)" .-> LE
+    EMP -- "aggregation-relator<br/>works in" --> DEPT
+    EMP -- "attribution-relator<br/>holds position" --> POS
+    BUD -- "attribution-relator<br/>scoped to" --> OU
+    OBJ -- "attribution-relator<br/>owned by" --> OU
+
+    style OU fill:#d4edda,stroke:#155724,color:#155724
+    style DEPT fill:#d4edda,stroke:#155724,color:#155724
+    style POS fill:#d4edda,stroke:#155724,color:#155724
+    style LE fill:#d4edda,stroke:#155724,color:#155724
+    style EMP fill:#cce5ff,stroke:#004085,color:#004085
+    style BUD fill:#cce5ff,stroke:#004085,color:#004085
+    style OBJ fill:#e2d9f3,stroke:#533483,color:#533483
+    </div>
+
+    <table>
+        <tr><th>Source (This Block)</th><th>Target Block (Layer)</th><th>Relator Type</th><th>Purpose</th></tr>
+        <tr>
+            <td><code>erp-org-unit</code> (any)</td>
+            <td>Party Master (L0, cross-block)</td>
+            <td><code>association-relator</code></td>
+            <td>Many-to-many link to <code>erp-legal-entity</code>. Optional. Informational only -- does not imply the org unit IS the legal entity.</td>
+        </tr>
+        <tr>
+            <td><code>erp-department</code></td>
+            <td>Employee (L1)</td>
+            <td><code>aggregation-relator</code></td>
+            <td>"Works in." Employee aggregated under department but survives restructuring.</td>
+        </tr>
+        <tr>
+            <td><code>erp-position</code></td>
+            <td>Employee (L1)</td>
+            <td><code>attribution-relator</code></td>
+            <td>"Holds position." Employee attributed to a position slot.</td>
+        </tr>
+        <tr>
+            <td><code>erp-org-unit</code> (any)</td>
+            <td>Budget (L1)</td>
+            <td><code>attribution-relator</code></td>
+            <td>"Budget scoped to." Budgets survive org restructuring.</td>
+        </tr>
+        <tr>
+            <td><code>erp-org-unit</code> (any)</td>
+            <td>OKR (L2)</td>
+            <td><code>attribution-relator</code></td>
+            <td>Objectives owned by any org unit type.</td>
+        </tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 8: Artifact Definition -->
+    <!-- ================================================================== -->
+    <h2 id="artifact">8. Artifact Definition: Headcount by Department</h2>
+
+    <div class="info-box">
+        <strong>Planned structural capacity only.</strong> This artifact measures position count and headcount slots
+        per department. Actual filled-vs-open headcount requires Employee occupancy data from Layer 1.
+    </div>
+
+    <div class="mermaid">
+graph LR
+    SRC["Source:<br/><strong>erp-position</strong>"]
+    REL["Navigate via<br/>erp-dept-has-position-rel<br/>(role: aggregate)"]
+    DIM["Dimension:<br/><strong>Department Name</strong><br/>(erp-org-unit-name-prop)"]
+    M1["Measure 1:<br/><strong>Position Count</strong><br/>function: Count"]
+    M2["Measure 2:<br/><strong>Total Headcount</strong><br/>function: Sum<br/>(erp-position-headcount-prop)"]
+    OUT["Output:<br/><strong>erp-headcount-summary</strong>"]
+
+    SRC --> REL --> DIM
+    SRC --> M1
+    SRC --> M2
+    DIM --> OUT
+    M1 --> OUT
+    M2 --> OUT
+
+    style SRC fill:#e3f2fd,stroke:#1565c0
+    style OUT fill:#c8e6c9,stroke:#2e7d32
+    </div>
+
+    <table>
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>Artifact ID</td><td><code>erp-headcount-by-org-artifact</code></td></tr>
+        <tr><td>Source Universal</td><td><code>erp-position</code></td></tr>
+        <tr><td>Output Universal</td><td><code>erp-headcount-summary</code></td></tr>
+        <tr><td>Materialization</td><td>Eager</td></tr>
+        <tr><td>Dimension</td><td>Department Name (via <code>erp-dept-has-position-rel</code> RelatorPath, role <code>aggregate</code>, property <code>erp-org-unit-name-prop</code>)</td></tr>
+        <tr><td>Measure 1</td><td>Position Count -- <code>Count</code> of source instances per dimension</td></tr>
+        <tr><td>Measure 2</td><td>Total Headcount -- <code>Sum</code> of <code>erp-position-headcount-prop</code> per dimension</td></tr>
+        <tr><td>Thresholds</td><td>None defined at Layer 0</td></tr>
+    </table>
+
+    <h3>Expected Output (from sample data)</h3>
+
+    <table>
+        <tr><th>Department</th><th>Position Count</th><th>Total Headcount Slots</th></tr>
+        <tr><td>Engineering</td><td>5</td><td>6</td></tr>
+        <tr><td>Finance</td><td>2</td><td>3</td></tr>
+        <tr><td>Human Resources</td><td>2</td><td>2</td></tr>
+        <tr><td>Product Management</td><td>1</td><td>1</td></tr>
+        <tr><td>Sales</td><td>1</td><td>3</td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 9: Design Decision Points -->
+    <!-- ================================================================== -->
+    <h2 id="decisions">9. Design Decision Points</h2>
+
+    <div class="decision-box">
+        <h3>9.1 No erp-organization Universal</h3>
+        <p>
+            Org Structure deliberately omits a separate "organization" or "company" universal. The legal entity
+            (corporation, partnership, etc.) is modeled in Party Master as <code>erp-legal-entity</code>. Having both
+            <code>erp-organization</code> and <code>erp-legal-entity</code> as first-class entities for one real-world
+            company creates an identity split -- two entities that must stay synchronized. Instead, Party Master owns
+            the legal identity ("who"), and Org Structure owns the internal management hierarchy ("how it's structured").
+            The two are linked via an optional many-to-many association relator.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>9.2 Business Unit Is NOT a Legal Entity</h3>
+        <p>
+            Business units are strategic/management constructs with P&amp;L responsibility, not synonymous with legal entities.
+            The relationship is many-to-many:
+        </p>
+        <ul>
+            <li><strong>One legal entity, multiple BUs:</strong> A corporation may contain separate business units for different product lines.</li>
+            <li><strong>One BU, multiple legal entities:</strong> A multinational business unit may span subsidiaries in different jurisdictions.</li>
+            <li><strong>One-to-one (simple case):</strong> A small company with one BU and one legal entity -- a special case, not the general rule.</li>
+        </ul>
+        <p>
+            The cross-layer association relator is typed to <code>erp-org-unit</code> (not <code>erp-business-unit</code> specifically)
+            because departments and teams can also be associated with legal entities in complex structures.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>9.3 Aggregation for Hierarchy (not Composition)</h3>
+        <p>
+            The recursive <code>erp-unit-parent-rel</code> uses <strong>aggregation</strong> because org restructuring
+            moves units between parents without destroying them. A department can be re-parented from one business unit
+            to another without being deleted and recreated. Composition would imply that deleting the parent destroys
+            all children -- exactly the wrong semantics for restructuring.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>9.4 Aggregation for Position-Department (not Composition)</h3>
+        <p>
+            <code>erp-dept-has-position-rel</code> uses <strong>aggregation</strong> because positions have independent
+            significance:
+        </p>
+        <ul>
+            <li>When a department is dissolved, positions move to a successor department or are explicitly frozen/closed -- they do not silently vanish.</li>
+            <li>Historical staffing analysis requires knowing which positions existed in a department at a given time.</li>
+            <li>A position marked <code>FROZEN</code> retains organizational significance regardless of what happens to its parent department.</li>
+        </ul>
+    </div>
+
+    <div class="decision-box">
+        <h3>9.5 Cost Center Separate from Department</h3>
+        <p>
+            Cost centers are independent entities, not properties of departments:
+        </p>
+        <ul>
+            <li>A project-based cost center may span multiple departments.</li>
+            <li>A shared services cost center (IT infrastructure, facilities) may not correspond to any single department.</li>
+            <li>One department can map to multiple cost centers (e.g., R&amp;D with separate cost centers per product line).</li>
+        </ul>
+        <p>
+            The sample data demonstrates this: <code>CC-9001 Shared IT Infrastructure</code> exists without any department mapping.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>9.6 Manager Is a Role, Not a Universal</h3>
+        <p>
+            Manager is modeled at Layer 1 via a <code>role-assignment-relator</code> connecting a Person (from Party Master /
+            Employee block) to an OrgUnit with a FunctionalRole universal. This keeps Layer 0 free of person-dependent concepts.
+            Position represents a slot ("Engineering Director"), not the person filling it.
+        </p>
+    </div>
+
+    <div class="decision-box">
+        <h3>9.7 Team vs Department Distinction</h3>
+        <p>
+            Both specialize <code>erp-org-unit</code> and participate in the same analytical aggregations. The distinction:
+        </p>
+        <ul>
+            <li><strong>Department:</strong> Permanent functional grouping with a defined function (Engineering, Finance, HR).</li>
+            <li><strong>Team:</strong> Typically cross-functional and may be temporary (<code>erp-team-is-permanent-prop</code>). Can be dissolved without restructuring the department hierarchy.</li>
+        </ul>
+        <p>
+            Both appear as children in <code>erp-unit-parent-rel</code>, enabling mixed hierarchies (e.g., Platform Team reports into Engineering department).
+        </p>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- SECTION 10: File Structure -->
+    <!-- ================================================================== -->
+    <h2 id="file-structure">10. File Structure</h2>
+
+    <div class="file-tree">
+        <span class="dir">apps/erp/app_erp_org/</span><br/>
+        &nbsp;&nbsp;<span class="file">metadata_app.json</span> <span class="comment"># Schema: app, universals, properties, events, artifacts, role assignments (no org/tenant/users &mdash; see app_erp_base)</span><br/>
+        &nbsp;&nbsp;<span class="file">metadata_app_data.json</span> <span class="comment"># Instances: org units, positions, grades, cost centers, relator instances</span><br/>
+        &nbsp;&nbsp;<span class="file">architecture.html</span> <span class="comment"># This document</span><br/>
+        <br/>
+        <span class="dir">concepts/analysis/20260309_erp_foundations/</span><br/>
+        &nbsp;&nbsp;<span class="file">analysis_app_org.md</span> <span class="comment"># Analysis document for this block</span>
+    </div>
+
+    <h3>Events</h3>
+    <table>
+        <tr><th>Event ID</th><th>Scope</th><th>Payload</th><th>Purpose</th></tr>
+        <tr>
+            <td><code>erp-org-unit-created-event</code></td>
+            <td>tenant</td>
+            <td><code>org_unit_id</code> (uuid), <code>org_unit_code</code> (string), <code>org_unit_type</code> (string)</td>
+            <td>Emitted when a new organizational unit is created</td>
+        </tr>
+        <tr>
+            <td><code>erp-org-restructured-event</code></td>
+            <td>tenant</td>
+            <td><code>org_unit_id</code> (uuid), <code>old_parent_id</code> (uuid), <code>new_parent_id</code> (uuid)</td>
+            <td>Emitted when an organizational unit is re-parented</td>
+        </tr>
+    </table>
+
+    <script>mermaid.initialize({startOnLoad: true, theme: 'default', securityLevel: 'loose'});</script>
+</body>
+</html>

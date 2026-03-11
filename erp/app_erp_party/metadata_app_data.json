@@ -1,0 +1,468 @@
+{
+    "_comment": "=== ERP PARTY MASTER - INSTANCE DATA ===",
+    "_description": "5 contact method enums, 3 corporations, 1 partnership, 1 government body, 1 non-profit, 3 natural persons (Party-chain props only -- Person-chain props populated at runtime via dual ancestry), contact info instances, and relator instances.",
+
+    "instances": [
+        {
+            "_comment": "=== CONTACT METHOD ENUM INSTANCES ===",
+            "id": "erp-cm-email",
+            "universal_id": "erp-contact-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-contact-method-name-prop": "Email" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cm-phone",
+            "universal_id": "erp-contact-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-contact-method-name-prop": "Phone" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cm-fax",
+            "universal_id": "erp-contact-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-contact-method-name-prop": "Fax" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cm-mail",
+            "universal_id": "erp-contact-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-contact-method-name-prop": "Mail" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cm-website",
+            "universal_id": "erp-contact-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-contact-method-name-prop": "Website" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== CORPORATION INSTANCES ===",
+            "id": "erp-corp-acme",
+            "universal_id": "erp-corporation",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-party-code-prop": "P-001",
+                "erp-party-display-name-prop": { "en": "ACME Corporation" },
+                "erp-party-tax-id-prop": "US-EIN-12-3456789",
+                "erp-party-is-active-prop": true,
+                "erp-le-legal-name-prop": { "en": "ACME Corporation Inc." },
+                "erp-le-registration-number-prop": "DE-12345678",
+                "erp-le-incorporation-date-prop": { "value": 946684800, "unit": "seconds" },
+                "erp-le-jurisdiction-prop": "US-DE",
+                "erp-corp-stock-ticker-prop": "ACME",
+                "erp-corp-is-public-prop": true
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-corp-globex",
+            "universal_id": "erp-corporation",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-party-code-prop": "P-002",
+                "erp-party-display-name-prop": { "en": "Globex Corporation" },
+                "erp-party-tax-id-prop": "US-EIN-98-7654321",
+                "erp-party-is-active-prop": true,
+                "erp-le-legal-name-prop": { "en": "Globex Corporation" },
+                "erp-le-registration-number-prop": "CA-87654321",
+                "erp-le-incorporation-date-prop": { "value": 1072915200, "unit": "seconds" },
+                "erp-le-jurisdiction-prop": "US-CA",
+                "erp-corp-stock-ticker-prop": "GLBX",
+                "erp-corp-is-public-prop": true
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-corp-initech",
+            "universal_id": "erp-corporation",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-party-code-prop": "P-003",
+                "erp-party-display-name-prop": { "en": "Initech" },
+                "erp-party-tax-id-prop": "US-EIN-55-1234567",
+                "erp-party-is-active-prop": true,
+                "erp-le-legal-name-prop": { "en": "Initech LLC" },
+                "erp-le-registration-number-prop": "TX-11223344",
+                "erp-le-incorporation-date-prop": { "value": 1199145600, "unit": "seconds" },
+                "erp-le-jurisdiction-prop": "US-TX",
+                "erp-corp-is-public-prop": false
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== PARTNERSHIP INSTANCE ===",
+            "id": "erp-part-baker-associates",
+            "universal_id": "erp-partnership",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-party-code-prop": "P-004",
+                "erp-party-display-name-prop": { "en": "Baker & Associates" },
+                "erp-party-tax-id-prop": "US-EIN-77-9876543",
+                "erp-party-is-active-prop": true,
+                "erp-le-legal-name-prop": { "en": "Baker & Associates LLP" },
+                "erp-le-registration-number-prop": "NY-55667788",
+                "erp-le-incorporation-date-prop": { "value": 1388534400, "unit": "seconds" },
+                "erp-le-jurisdiction-prop": "US-NY"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== GOVERNMENT BODY INSTANCE ===",
+            "id": "erp-gov-city-springfield",
+            "universal_id": "erp-government-body",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-party-code-prop": "P-005",
+                "erp-party-display-name-prop": { "en": "City of Springfield" },
+                "erp-party-is-active-prop": true,
+                "erp-le-legal-name-prop": { "en": "Municipality of Springfield" },
+                "erp-le-jurisdiction-prop": "US-IL"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== NON-PROFIT INSTANCE ===",
+            "id": "erp-np-open-future",
+            "universal_id": "erp-non-profit",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-party-code-prop": "P-006",
+                "erp-party-display-name-prop": { "en": "Open Future Foundation" },
+                "erp-party-tax-id-prop": "US-EIN-33-4455667",
+                "erp-party-is-active-prop": true,
+                "erp-le-legal-name-prop": { "en": "Open Future Foundation Inc." },
+                "erp-le-registration-number-prop": "DC-99887766",
+                "erp-le-incorporation-date-prop": { "value": 1483228800, "unit": "seconds" },
+                "erp-le-jurisdiction-prop": "US-DC"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== NATURAL PERSON INSTANCES (Party-chain properties only; Person-chain properties resolved via dual ancestry taxonomy at runtime) ===",
+            "id": "erp-np-maria-garcia",
+            "universal_id": "erp-natural-person",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-party-code-prop": "P-101",
+                "erp-party-display-name-prop": { "en": "Maria Garcia" },
+                "erp-party-is-active-prop": true
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-np-james-chen",
+            "universal_id": "erp-natural-person",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-party-code-prop": "P-102",
+                "erp-party-display-name-prop": { "en": "James Chen" },
+                "erp-party-is-active-prop": true
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-np-anna-kowalski",
+            "universal_id": "erp-natural-person",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-party-code-prop": "P-103",
+                "erp-party-display-name-prop": { "en": "Anna Kowalski" },
+                "erp-party-tax-id-prop": "PL-PESEL-90010112345",
+                "erp-party-is-active-prop": true
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== PERSON INSTANCES (for populating Person-chain properties directly) ===",
+            "id": "erp-person-maria-garcia",
+            "universal_id": "erp-person",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-lb-kingdom-prop": "Animalia",
+                "erp-lb-species-prop": { "en": "Homo sapiens" },
+                "erp-lb-birth-date-prop": { "value": 631152000, "unit": "seconds" },
+                "erp-human-full-name-prop": { "en": "Maria Elena Garcia" },
+                "erp-human-gender-prop": "Female",
+                "erp-human-nationality-prop": "MX",
+                "erp-person-email-prop": "maria.garcia@acme.com",
+                "erp-person-phone-prop": "+1-555-0101",
+                "erp-person-government-id-prop": "SSN-123-45-6789",
+                "erp-person-preferred-language-prop": "es"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-person-james-chen",
+            "universal_id": "erp-person",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-lb-kingdom-prop": "Animalia",
+                "erp-lb-species-prop": { "en": "Homo sapiens" },
+                "erp-lb-birth-date-prop": { "value": 473385600, "unit": "seconds" },
+                "erp-human-full-name-prop": { "en": "James Wei Chen" },
+                "erp-human-gender-prop": "Male",
+                "erp-human-nationality-prop": "US",
+                "erp-person-email-prop": "james.chen@globex.com",
+                "erp-person-phone-prop": "+1-555-0202",
+                "erp-person-preferred-language-prop": "en"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-person-anna-kowalski",
+            "universal_id": "erp-person",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-lb-kingdom-prop": "Animalia",
+                "erp-lb-species-prop": { "en": "Homo sapiens" },
+                "erp-lb-birth-date-prop": { "value": 631238400, "unit": "seconds" },
+                "erp-human-full-name-prop": { "en": "Anna Maria Kowalski" },
+                "erp-human-gender-prop": "Female",
+                "erp-human-nationality-prop": "PL",
+                "erp-person-email-prop": "anna.kowalski@baker-assoc.com",
+                "erp-person-phone-prop": "+48-555-0303",
+                "erp-person-government-id-prop": "PL-90010112345",
+                "erp-person-preferred-language-prop": "pl"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== CONTACT INFO INSTANCES ===",
+            "id": "erp-ci-acme-main-phone",
+            "universal_id": "erp-contact-info",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-ci-contact-value-prop": "+1-800-ACME-001",
+                "erp-ci-is-primary-prop": true
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-ci-acme-main-email",
+            "universal_id": "erp-contact-info",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-ci-contact-value-prop": "info@acme.com",
+                "erp-ci-is-primary-prop": true
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-ci-acme-fax",
+            "universal_id": "erp-contact-info",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-ci-contact-value-prop": "+1-800-ACME-FAX",
+                "erp-ci-is-primary-prop": false
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-ci-globex-website",
+            "universal_id": "erp-contact-info",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-ci-contact-value-prop": "https://www.globex.com",
+                "erp-ci-is-primary-prop": true
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-ci-maria-personal-email",
+            "universal_id": "erp-contact-info",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-ci-contact-value-prop": "maria.garcia.personal@gmail.com",
+                "erp-ci-is-primary-prop": false
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-ci-springfield-phone",
+            "universal_id": "erp-contact-info",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-ci-contact-value-prop": "+1-217-555-0100",
+                "erp-ci-is-primary-prop": true
+            },
+            "use_seed": true,
+            "skip_composition": true
+        }
+    ],
+
+    "relator_instances": [
+        {
+            "_comment": "=== PARTY HAS CONTACT RELATOR INSTANCES ===",
+            "id": "erp-ri-acme-phone",
+            "relator_id": "erp-party-has-contact-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "aggregate": "erp-corp-acme",
+                "part": "erp-ci-acme-main-phone"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ri-acme-email",
+            "relator_id": "erp-party-has-contact-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "aggregate": "erp-corp-acme",
+                "part": "erp-ci-acme-main-email"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ri-acme-fax",
+            "relator_id": "erp-party-has-contact-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "aggregate": "erp-corp-acme",
+                "part": "erp-ci-acme-fax"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ri-globex-website",
+            "relator_id": "erp-party-has-contact-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "aggregate": "erp-corp-globex",
+                "part": "erp-ci-globex-website"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ri-maria-personal-email",
+            "relator_id": "erp-party-has-contact-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "aggregate": "erp-np-maria-garcia",
+                "part": "erp-ci-maria-personal-email"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ri-springfield-phone",
+            "relator_id": "erp-party-has-contact-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "aggregate": "erp-gov-city-springfield",
+                "part": "erp-ci-springfield-phone"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== CONTACT METHOD ATTRIBUTION RELATOR INSTANCES ===",
+            "id": "erp-ri-acme-phone-method",
+            "relator_id": "erp-contact-method-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "contact": "erp-ci-acme-main-phone",
+                "method": "erp-cm-phone"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ri-acme-email-method",
+            "relator_id": "erp-contact-method-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "contact": "erp-ci-acme-main-email",
+                "method": "erp-cm-email"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ri-acme-fax-method",
+            "relator_id": "erp-contact-method-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "contact": "erp-ci-acme-fax",
+                "method": "erp-cm-fax"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ri-globex-website-method",
+            "relator_id": "erp-contact-method-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "contact": "erp-ci-globex-website",
+                "method": "erp-cm-website"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ri-maria-email-method",
+            "relator_id": "erp-contact-method-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "contact": "erp-ci-maria-personal-email",
+                "method": "erp-cm-email"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ri-springfield-phone-method",
+            "relator_id": "erp-contact-method-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "contact": "erp-ci-springfield-phone",
+                "method": "erp-cm-phone"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== PERSON SOCIAL RELATIONSHIP INSTANCES ===",
+            "id": "erp-ri-maria-james-social",
+            "relator_id": "erp-person-social-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "person_a": "erp-person-maria-garcia",
+                "person_b": "erp-person-james-chen"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ri-anna-maria-social",
+            "relator_id": "erp-person-social-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "person_a": "erp-person-anna-kowalski",
+                "person_b": "erp-person-maria-garcia"
+            },
+            "use_seed": true
+        }
+    ]
+}

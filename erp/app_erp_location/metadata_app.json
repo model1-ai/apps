@@ -1,0 +1,1187 @@
+{
+    "_comment": "=== ERP LOCATION MASTER APP ===",
+    "_description": "Geographic hierarchy (countries, regions), operational facilities (sites), and structured address infrastructure. Layer 0 block that is independently deployable.",
+
+    "_organizations_note": "Organizations defined in app_erp_base. Load app_erp_base first.",
+    "_tenants_note": "Tenants defined in app_erp_base. Load app_erp_base first.",
+
+    "universals": [
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Site Type ===",
+            "id": "erp-site-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Site Type" },
+            "description": { "en": "Classifies sites by operational function: Office, Warehouse, Plant, Distribution Center, Data Center, Retail, Virtual" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 30,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Address Type ===",
+            "id": "erp-address-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Address Type" },
+            "description": { "en": "Purpose classification for addresses: Home, Work, Billing, Shipping, Legal, Mailing, Registered, Delivery" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Country ===",
+            "id": "erp-country",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Country" },
+            "description": { "en": "A sovereign country or territory identified by ISO 3166 code. Defines geographic boundary for regulatory compliance, currency, and tax jurisdiction." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Region ===",
+            "id": "erp-region",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Region" },
+            "description": { "en": "A state, province, or administrative region within a country. Used for tax calculations, shipping zones, and regional compliance." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Site ===",
+            "id": "erp-site",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Site" },
+            "description": { "en": "A physical facility -- office, warehouse, plant, distribution center, or virtual location where work happens, goods are stored, or services are delivered." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Address ===",
+            "id": "erp-address",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Address" },
+            "description": { "en": "A structured postal/physical address. Reusable by any entity via aggregation or association. Carries street, city, postal code, coordinates, and links to geographic hierarchy." },
+            "label_schema": {
+                "separator": ", ",
+                "max_length": 60,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Site Distribution Summary (artifact target) ===",
+            "id": "erp-site-distribution-summary",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Site Distribution Summary" },
+            "description": { "en": "Aggregated site data across dimensions like country and site type" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Site Status Summary (artifact target) ===",
+            "id": "erp-site-status-summary",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Site Status Summary" },
+            "description": { "en": "Aggregated site data by active/inactive status and site type" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Address Distribution Summary (artifact target) ===",
+            "id": "erp-address-distribution-summary",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Address Distribution Summary" },
+            "description": { "en": "Aggregated address data across dimensions like country and address type" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Country has Region (aggregation) ===",
+            "id": "erp-country-has-region-rel",
+            "temporal_nature": "Endurant",
+            "meta_category": "Relator",
+            "label": { "en": "Country Has Region" },
+            "description": { "en": "Country contains regions. Aggregation: regions are reference data that varies by deployment." },
+            "roles": [
+                { "name": "aggregate", "universal_id": "erp-country" },
+                { "name": "part", "universal_id": "erp-region" }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "aggregation-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Site has Address (aggregation) ===",
+            "id": "erp-site-has-address-rel",
+            "temporal_nature": "Endurant",
+            "meta_category": "Relator",
+            "label": { "en": "Site Has Address" },
+            "description": { "en": "Site contains its address(es). Aggregation: addresses require authored content, not auto-instantiated." },
+            "roles": [
+                { "name": "aggregate", "universal_id": "erp-site" },
+                { "name": "part", "universal_id": "erp-address" }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "aggregation-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Site -> Region (attribution) ===",
+            "id": "erp-site-region-rel",
+            "temporal_nature": "Endurant",
+            "meta_category": "Relator",
+            "label": { "en": "Site Region" },
+            "description": { "en": "Site is located in a region. Attribution: site has independent identity." },
+            "roles": [
+                { "name": "site", "universal_id": "erp-site" },
+                { "name": "region", "universal_id": "erp-region" }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Site -> Site Type (attribution) ===",
+            "id": "erp-site-type-rel",
+            "temporal_nature": "Endurant",
+            "meta_category": "Relator",
+            "label": { "en": "Site Type Classification" },
+            "description": { "en": "Classifies a site by its operational function. Every site has exactly one type." },
+            "roles": [
+                { "name": "site", "universal_id": "erp-site" },
+                { "name": "type", "universal_id": "erp-site-type" }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Address -> Address Type (attribution) ===",
+            "id": "erp-address-type-rel",
+            "temporal_nature": "Endurant",
+            "meta_category": "Relator",
+            "label": { "en": "Address Type Classification" },
+            "description": { "en": "Classifies an address by purpose (Home, Work, Billing, Shipping, etc.). An address has exactly one type." },
+            "roles": [
+                { "name": "address", "universal_id": "erp-address" },
+                { "name": "address_type", "universal_id": "erp-address-type" }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Address -> Region (attribution, optional) ===",
+            "id": "erp-address-region-rel",
+            "temporal_nature": "Endurant",
+            "meta_category": "Relator",
+            "label": { "en": "Address Region" },
+            "description": { "en": "Links an address to the geographic hierarchy. Optional: not all addresses map to the enterprise region hierarchy." },
+            "roles": [
+                { "name": "address", "universal_id": "erp-address" },
+                { "name": "region", "universal_id": "erp-region" }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
+            ],
+            "use_seed": true
+        }
+    ],
+
+    "property_definitions": [
+        {
+            "_comment": "=== Site Type Properties ===",
+            "id": "erp-site-type-name-prop",
+            "universal_id": "erp-site-type",
+            "label": { "en": "Site Type Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Address Type Properties ===",
+            "id": "erp-address-type-name-prop",
+            "universal_id": "erp-address-type",
+            "label": { "en": "Address Type Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Country Properties ===",
+            "id": "erp-country-iso-code-prop",
+            "universal_id": "erp-country",
+            "label": { "en": "ISO Code" },
+            "description": { "en": "ISO 3166-1 alpha-2 country code (e.g., US, GB, DE, JP, BR)" },
+            "property_schema": {
+                "predicates": ["code", "identifier"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-country-name-prop",
+            "universal_id": "erp-country",
+            "label": { "en": "Country Name" },
+            "description": { "en": "Official name of the country" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-country-currency-code-prop",
+            "universal_id": "erp-country",
+            "label": { "en": "Currency Code" },
+            "description": { "en": "ISO 4217 currency code for the country's primary legal tender (e.g., USD, EUR, GBP)" },
+            "property_schema": {
+                "predicates": ["currency", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Region Properties ===",
+            "id": "erp-region-code-prop",
+            "universal_id": "erp-region",
+            "label": { "en": "Region Code" },
+            "description": { "en": "ISO 3166-2 subdivision code or locally defined code (e.g., US-CA, GB-ENG)" },
+            "property_schema": {
+                "predicates": ["code", "identifier"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-name-prop",
+            "universal_id": "erp-region",
+            "label": { "en": "Region Name" },
+            "description": { "en": "Name of the state, province, or administrative region" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-region-is-active-prop",
+            "universal_id": "erp-region",
+            "label": { "en": "Is Active" },
+            "description": { "en": "Whether this region is currently active for operations" },
+            "property_schema": {
+                "predicates": ["active", "status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Site Properties ===",
+            "id": "erp-site-code-prop",
+            "universal_id": "erp-site",
+            "label": { "en": "Site Code" },
+            "description": { "en": "Unique identifier code for the site" },
+            "property_schema": {
+                "predicates": ["code", "identifier"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-name-prop",
+            "universal_id": "erp-site",
+            "label": { "en": "Site Name" },
+            "description": { "en": "Human-readable name for the site" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-is-active-prop",
+            "universal_id": "erp-site",
+            "label": { "en": "Is Active" },
+            "description": { "en": "Whether this site is currently operational" },
+            "property_schema": {
+                "predicates": ["active", "status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-capacity-prop",
+            "universal_id": "erp-site",
+            "label": { "en": "Capacity" },
+            "description": { "en": "Primary capacity metric. Unit depends on site type: headcount for offices, pallet positions for warehouses, production units/day for plants." },
+            "property_schema": {
+                "predicates": ["capacity", "quantity"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Address Properties ===",
+            "id": "erp-addr-line1-prop",
+            "universal_id": "erp-address",
+            "label": { "en": "Address Line 1" },
+            "description": { "en": "Primary street address line" },
+            "property_schema": {
+                "predicates": ["address", "street", "line1"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-line2-prop",
+            "universal_id": "erp-address",
+            "label": { "en": "Address Line 2" },
+            "description": { "en": "Secondary address line (suite, apartment, floor, building)" },
+            "property_schema": {
+                "predicates": ["address", "line2"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-city-prop",
+            "universal_id": "erp-address",
+            "label": { "en": "City" },
+            "description": { "en": "City or municipality name" },
+            "property_schema": {
+                "predicates": ["city", "municipality"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-state-prop",
+            "universal_id": "erp-address",
+            "label": { "en": "State/Province" },
+            "description": { "en": "State, province, or region code. Should align with attributed erp-region." },
+            "property_schema": {
+                "predicates": ["state", "province"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-postal-code-prop",
+            "universal_id": "erp-address",
+            "label": { "en": "Postal Code" },
+            "description": { "en": "Postal / ZIP code. Format varies by country." },
+            "property_schema": {
+                "predicates": ["postal", "zip", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-country-code-prop",
+            "universal_id": "erp-address",
+            "label": { "en": "Country Code" },
+            "description": { "en": "ISO 3166-1 alpha-2 country code. Denormalized from geographic hierarchy for convenience." },
+            "property_schema": {
+                "predicates": ["country", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-latitude-prop",
+            "universal_id": "erp-address",
+            "label": { "en": "Latitude" },
+            "description": { "en": "Geographic latitude for mapping, distance calculations, and logistics" },
+            "property_schema": {
+                "predicates": ["latitude", "coordinate"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-float"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-longitude-prop",
+            "universal_id": "erp-address",
+            "label": { "en": "Longitude" },
+            "description": { "en": "Geographic longitude" },
+            "property_schema": {
+                "predicates": ["longitude", "coordinate"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-float"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-is-primary-prop",
+            "universal_id": "erp-address",
+            "label": { "en": "Is Primary" },
+            "description": { "en": "Whether this is the primary address for the owning entity" },
+            "property_schema": {
+                "predicates": ["primary", "flag"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-is-active-prop",
+            "universal_id": "erp-address",
+            "label": { "en": "Is Active" },
+            "description": { "en": "Whether this address is currently valid. Allows historical addresses to be kept without deletion." },
+            "property_schema": {
+                "predicates": ["active", "status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-addr-effective-date-prop",
+            "universal_id": "erp-address",
+            "label": { "en": "Effective Date" },
+            "description": { "en": "When this address became effective. Enables temporal address tracking." },
+            "property_schema": {
+                "predicates": ["date", "effective"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Site Distribution Summary Properties (artifact target) ===",
+            "id": "erp-sd-country-dim-prop",
+            "universal_id": "erp-site-distribution-summary",
+            "label": { "en": "Country" },
+            "description": { "en": "Country dimension for site distribution aggregation" },
+            "property_schema": {
+                "predicates": ["country", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-sd-site-type-dim-prop",
+            "universal_id": "erp-site-distribution-summary",
+            "label": { "en": "Site Type" },
+            "description": { "en": "Site type dimension for site distribution aggregation" },
+            "property_schema": {
+                "predicates": ["type", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-sd-site-count-prop",
+            "universal_id": "erp-site-distribution-summary",
+            "label": { "en": "Site Count" },
+            "description": { "en": "Count of sites per country per site type" },
+            "property_schema": {
+                "predicates": ["count", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-sd-total-capacity-prop",
+            "universal_id": "erp-site-distribution-summary",
+            "label": { "en": "Total Capacity" },
+            "description": { "en": "Sum of site capacity per country per site type" },
+            "property_schema": {
+                "predicates": ["capacity", "total", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Site Status Summary Properties (artifact target) ===",
+            "id": "erp-ss-active-status-dim-prop",
+            "universal_id": "erp-site-status-summary",
+            "label": { "en": "Active Status" },
+            "description": { "en": "Active/inactive status dimension" },
+            "property_schema": {
+                "predicates": ["active", "status", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ss-site-type-dim-prop",
+            "universal_id": "erp-site-status-summary",
+            "label": { "en": "Site Type" },
+            "description": { "en": "Site type dimension for status aggregation" },
+            "property_schema": {
+                "predicates": ["type", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ss-site-count-prop",
+            "universal_id": "erp-site-status-summary",
+            "label": { "en": "Site Count" },
+            "description": { "en": "Count of sites per status per type" },
+            "property_schema": {
+                "predicates": ["count", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Address Distribution Summary Properties (artifact target) ===",
+            "id": "erp-ad-country-dim-prop",
+            "universal_id": "erp-address-distribution-summary",
+            "label": { "en": "Country Code" },
+            "description": { "en": "Country code dimension for address distribution" },
+            "property_schema": {
+                "predicates": ["country", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ad-address-type-dim-prop",
+            "universal_id": "erp-address-distribution-summary",
+            "label": { "en": "Address Type" },
+            "description": { "en": "Address type dimension for address distribution" },
+            "property_schema": {
+                "predicates": ["type", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-ad-address-count-prop",
+            "universal_id": "erp-address-distribution-summary",
+            "label": { "en": "Address Count" },
+            "description": { "en": "Count of addresses per country per address type" },
+            "property_schema": {
+                "predicates": ["count", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        }
+    ],
+
+    "event_definitions": [
+        {
+            "id": "erp-site-created-event",
+            "app_id": "erp-location-master-app",
+            "scope": "tenant",
+            "label": { "en": "Site Created" },
+            "description": { "en": "Event emitted when a new site is created" },
+            "payload_schema": [
+                { "name": "site_id", "field_type": "uuid" },
+                { "name": "site_code", "field_type": "string" },
+                { "name": "site_type", "field_type": "string" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "erp-site-deactivated-event",
+            "app_id": "erp-location-master-app",
+            "scope": "tenant",
+            "label": { "en": "Site Deactivated" },
+            "description": { "en": "Event emitted when a site is deactivated" },
+            "payload_schema": [
+                { "name": "site_id", "field_type": "uuid" },
+                { "name": "site_code", "field_type": "string" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "erp-address-created-event",
+            "app_id": "erp-location-master-app",
+            "scope": "tenant",
+            "label": { "en": "Address Created" },
+            "description": { "en": "Event emitted when a new address is created" },
+            "payload_schema": [
+                { "name": "address_id", "field_type": "uuid" },
+                { "name": "country_code", "field_type": "string" },
+                { "name": "address_type", "field_type": "string" }
+            ],
+            "use_seed": true
+        }
+    ],
+
+    "apps": [
+        {
+            "id": "erp-location-master-app",
+            "tenant_id": "model1-testing-tenant",
+            "label": { "en": "ERP Location Master" },
+            "description": { "en": "Geographic hierarchy, operational facilities, and structured address infrastructure for the ERP ontology. Layer 0 block." },
+            "use_seed": true,
+            "modules": [
+                {
+                    "id": "erp-location-geography-module",
+                    "use_seed": true,
+                    "label": { "en": "Geography Module" },
+                    "description": { "en": "Manages countries, regions, and geographic hierarchy." },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": []
+                    }
+                },
+                {
+                    "id": "erp-location-sites-module",
+                    "use_seed": true,
+                    "label": { "en": "Sites Module" },
+                    "description": { "en": "Manages operational facilities with type classification and region attribution." },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": ["erp-site-created-event", "erp-site-deactivated-event"]
+                    }
+                },
+                {
+                    "id": "erp-location-addresses-module",
+                    "use_seed": true,
+                    "label": { "en": "Addresses Module" },
+                    "description": { "en": "Manages structured postal addresses with type classification and geographic linking." },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": ["erp-address-created-event"]
+                    }
+                }
+            ]
+        }
+    ],
+
+    "artifact_definitions": [
+        {
+            "_comment": "=== ARTIFACT 1: Site Distribution by Region/Country ===",
+            "id": "erp-site-distribution-artifact",
+            "name": "Site Distribution by Country",
+            "description": { "en": "Geographic footprint: site count and total capacity by country and site type. Identifies concentration risk and coverage gaps." },
+            "source": { "universal_id": "erp-site" },
+            "artifact_universal_id": "erp-site-distribution-summary",
+            "app_id": "erp-location-master-app",
+            "dimensions": [
+                {
+                    "id": "erp-sd-country-dim",
+                    "code": "country",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            { "relator_universal_id": "erp-site-region-rel", "role_name": "region" },
+                            { "relator_universal_id": "erp-country-has-region-rel", "role_name": "aggregate" }
+                        ],
+                        "property_id": "erp-country-name-prop"
+                    },
+                    "artifact_property_id": "erp-sd-country-dim-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-sd-site-type-dim",
+                    "code": "site_type",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            { "relator_universal_id": "erp-site-type-rel", "role_name": "type" }
+                        ],
+                        "property_id": "erp-site-type-name-prop"
+                    },
+                    "artifact_property_id": "erp-sd-site-type-dim-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "erp-sd-site-count-measure",
+                    "code": "site_count",
+                    "function": "Count",
+                    "artifact_property_id": "erp-sd-site-count-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-sd-total-capacity-measure",
+                    "code": "total_capacity",
+                    "property_id": "erp-site-capacity-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "erp-sd-total-capacity-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": { "strategy": "Eager" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 2: Active vs Inactive Sites ===",
+            "id": "erp-site-status-artifact",
+            "name": "Site Active/Inactive Status",
+            "description": { "en": "Facility lifecycle: count of sites by active/inactive status and type. Useful for facilities planning and real estate portfolio management." },
+            "source": { "universal_id": "erp-site" },
+            "artifact_universal_id": "erp-site-status-summary",
+            "app_id": "erp-location-master-app",
+            "dimensions": [
+                {
+                    "id": "erp-ss-active-status-dim",
+                    "code": "active_status",
+                    "source": {
+                        "type": "Property",
+                        "property_id": "erp-site-is-active-prop"
+                    },
+                    "artifact_property_id": "erp-ss-active-status-dim-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-ss-site-type-dim",
+                    "code": "site_type",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            { "relator_universal_id": "erp-site-type-rel", "role_name": "type" }
+                        ],
+                        "property_id": "erp-site-type-name-prop"
+                    },
+                    "artifact_property_id": "erp-ss-site-type-dim-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "erp-ss-site-count-measure",
+                    "code": "site_count",
+                    "function": "Count",
+                    "artifact_property_id": "erp-ss-site-count-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": { "strategy": "Eager" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 3: Address Distribution by Country ===",
+            "id": "erp-address-distribution-artifact",
+            "name": "Address Distribution by Country",
+            "description": { "en": "Geographic spread of all addressable entities by country and address type. Identifies operational reach and market coverage." },
+            "source": { "universal_id": "erp-address" },
+            "artifact_universal_id": "erp-address-distribution-summary",
+            "app_id": "erp-location-master-app",
+            "dimensions": [
+                {
+                    "id": "erp-ad-country-dim",
+                    "code": "country_code",
+                    "source": {
+                        "type": "Property",
+                        "property_id": "erp-addr-country-code-prop"
+                    },
+                    "artifact_property_id": "erp-ad-country-dim-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-ad-address-type-dim",
+                    "code": "address_type",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            { "relator_universal_id": "erp-address-type-rel", "role_name": "address_type" }
+                        ],
+                        "property_id": "erp-address-type-name-prop"
+                    },
+                    "artifact_property_id": "erp-ad-address-type-dim-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "erp-ad-address-count-measure",
+                    "code": "address_count",
+                    "function": "Count",
+                    "artifact_property_id": "erp-ad-address-count-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": { "strategy": "Eager" },
+            "use_seed": true
+        }
+    ],
+
+    "foundation_role_assignments": [
+        {
+            "id": "fra-erp-admin-admin-location",
+            "user_id": "erp-admin",
+            "role": "AppAdmin",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-location-master-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-admin-dev-location",
+            "user_id": "erp-admin",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-location-master-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-developer-dev-location",
+            "user_id": "erp-developer",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-location-master-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-user-user-location",
+            "user_id": "erp-user",
+            "role": "AppUser",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-location-master-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        }
+    ]
+}

@@ -1,0 +1,2058 @@
+{
+    "_comment": "=== ERP OKR / GOALS APPLICATION (Layer 2) ===",
+    "_description": "OKR (Objectives and Key Results) goal-setting and strategic alignment framework. Tracks objectives, key results, check-ins, initiatives, and OKR cycles. Includes reactive computations for progress, status, and rollup scoring. Two processes: OKR Planning (Tier 1) and OKR Review (Tier 2 with obligations). Four intelligence artifacts for attainment, alignment, compliance, and initiative effort analysis.",
+
+    "_organizations_note": "Organizations defined in app_erp_base. Load app_erp_base first.",
+    "_tenants_note": "Tenants defined in app_erp_base. Load app_erp_base first.",
+    "_erp_goal_note": "erp-goal universal and its 11 properties (erp-goal-title-prop through erp-goal-score-prop) are defined in app_erp_base. erp-objective and erp-key-result generalize erp-goal from the base app.",
+
+    "universals": [
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: OKR Status ===",
+            "id": "erp-okr-status",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "OKR Status" },
+            "description": { "en": "Status of any goal or key result: Not Started, On Track, At Risk, Behind, Achieved, Missed" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Objective Level ===",
+            "id": "erp-objective-level",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Objective Level" },
+            "description": { "en": "Organizational level at which an objective is set: Company, Business Unit, Department, Team, Individual" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: KR Type ===",
+            "id": "erp-kr-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Key Result Type" },
+            "description": { "en": "How the key result is measured: Metric, Milestone, Binary" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Confidence Level ===",
+            "id": "erp-confidence-level",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Confidence Level" },
+            "description": { "en": "Owner subjective confidence in achieving the goal: High, Medium, Low" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Initiative Status ===",
+            "id": "erp-initiative-status",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Initiative Status" },
+            "description": { "en": "Lifecycle status of an initiative: Planned, In Progress, Completed, Cancelled, Blocked" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Scoring Method ===",
+            "id": "erp-scoring-method",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Scoring Method" },
+            "description": { "en": "Method used to calculate the final score: Percentage, Binary, Milestone, Weighted" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Cycle Status ===",
+            "id": "erp-cycle-status",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "OKR Cycle Status" },
+            "description": { "en": "Lifecycle status of an OKR cycle: Planning, Active, Review, Closed" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ENTITY: Objective (specializes erp-goal) ===",
+            "id": "erp-objective",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Objective" },
+            "description": { "en": "Qualitative strategic objective. Expresses intent (e.g. Become the market leader in X). Composes key results." },
+            "generalizes": "erp-goal",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-goal" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 60,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Key Result (specializes erp-goal) ===",
+            "id": "erp-key-result",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Key Result" },
+            "description": { "en": "Quantitative measurable outcome. Expresses a number to hit (e.g. Increase revenue from X to Y)." },
+            "generalizes": "erp-goal",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-goal" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 60,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: OKR Cycle ===",
+            "id": "erp-okr-cycle",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "OKR Cycle" },
+            "description": { "en": "Time-bounded OKR period, typically quarterly. Contains objectives and drives the review cadence." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Check-In ===",
+            "id": "erp-check-in",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Check-In" },
+            "description": { "en": "Periodic progress update on a key result. Records current value, confidence, and notes at a point in time." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Initiative ===",
+            "id": "erp-initiative",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Initiative" },
+            "description": { "en": "Action plan to achieve a key result. Has a lifecycle (planned, in progress, completed)." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ARTIFACT TARGET: OKR Attainment Summary ===",
+            "id": "erp-okr-attainment-artifact-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "OKR Attainment Summary" },
+            "description": { "en": "Materialized aggregate for OKR attainment artifact definition" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT TARGET: OKR Alignment Summary ===",
+            "id": "erp-okr-alignment-artifact-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "OKR Alignment Summary" },
+            "description": { "en": "Materialized aggregate for OKR alignment health artifact definition" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT TARGET: OKR Compliance Summary ===",
+            "id": "erp-okr-compliance-artifact-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "OKR Compliance Summary" },
+            "description": { "en": "Materialized aggregate for check-in compliance artifact definition" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT TARGET: Initiative Effort Summary ===",
+            "id": "erp-okr-initiative-effort-artifact-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Initiative Effort Summary" },
+            "description": { "en": "Materialized aggregate for initiative effort artifact definition" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FUNCTIONAL ROLE: Objective Owner ===",
+            "id": "erp-fr-objective-owner",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": { "en": "Objective Owner" },
+            "description": { "en": "Accountable for an objective outcomes. Typically a manager or team lead. Reviews KR progress, facilitates alignment, signs off on scoring." },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== FUNCTIONAL ROLE: KR Owner ===",
+            "id": "erp-fr-kr-owner",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": { "en": "Key Result Owner" },
+            "description": { "en": "Responsible for delivering a specific key result. Updates progress via check-ins, maintains confidence assessments, owns the number." },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== FUNCTIONAL ROLE: OKR Champion ===",
+            "id": "erp-fr-okr-champion",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": { "en": "OKR Champion" },
+            "description": { "en": "Drives the OKR process across the organization. Facilitates planning sessions, reviews, and retrospectives. Ensures consistency and quality of OKRs." },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== RELATOR: Objective has Key Results (aggregation -- KRs are authored content) ===",
+            "id": "erp-objective-has-kr-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Objective Has Key Results" },
+            "description": { "en": "Objective aggregates its key results. KRs are authored semantic children, not fixed structural components. Typical cardinality: 3-5 KRs per objective." },
+            "roles": [
+                { "name": "aggregate", "universal_id": "erp-objective" },
+                { "name": "part", "universal_id": "erp-key-result" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "aggregation-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Key Result has Check-Ins (composition -- check-ins are structural) ===",
+            "id": "erp-kr-has-checkin-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Key Result Has Check-Ins" },
+            "description": { "en": "Check-ins belong to a key result. Deletion cascades. A check-in has no meaning outside its KR." },
+            "roles": [
+                { "name": "composite", "universal_id": "erp-key-result" },
+                { "name": "component", "universal_id": "erp-check-in" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Key Result has Initiatives (association -- independent lifecycle) ===",
+            "id": "erp-kr-has-initiative-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Key Result Has Initiatives" },
+            "description": { "en": "Initiative supports a KR but has an independent lifecycle. Many-to-many: one initiative may support multiple KRs." },
+            "roles": [
+                { "name": "key_result", "universal_id": "erp-key-result" },
+                { "name": "initiative", "universal_id": "erp-initiative" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Objective Parent-Child (aggregation -- cascading alignment) ===",
+            "id": "erp-objective-parent-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Objective Parent-Child Alignment" },
+            "description": { "en": "Cascading alignment. Child objectives align to parent objectives. Creates the cascade: Company > BU > Department > Team > Individual." },
+            "roles": [
+                { "name": "parent", "universal_id": "erp-objective" },
+                { "name": "child", "universal_id": "erp-objective" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "aggregation-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Objective belongs to Cycle (attribution) ===",
+            "id": "erp-objective-cycle-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Objective Belongs to Cycle" },
+            "description": { "en": "Objective belongs to a cycle. Each objective exists in exactly one cycle. Enables cycle-scoped analytics." },
+            "roles": [
+                { "name": "objective", "universal_id": "erp-objective" },
+                { "name": "cycle", "universal_id": "erp-okr-cycle" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "attribution-relator" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== PROCESS: OKR Planning (Tier 1 -- 3 stages, no obligations) ===",
+            "_note_cross_app_relators": "SKIPPED cross-app relators: erp-cycle-quarter-rel (Fiscal Calendar), erp-objective-orgunit-owner-rel (Org Structure), erp-objective-person-owner-rel (Party Master), erp-kr-owner-rel (Party Master), erp-initiative-owner-rel (Party Master), erp-initiative-project-rel (Project Management), erp-kr-budget-rel (Budget). These reference universals from other apps and should be defined when those apps are deployed alongside OKR.",
+            "id": "erp-okr-planning-process",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "OKR Planning Process" },
+            "description": { "en": "Planning process for each OKR cycle. 3 stages: Draft, Alignment, Finalization. No formal obligations (Tier 1)." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-process" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-okr-draft-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-okr-alignment-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-okr-finalization-stage" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== STAGE: Draft (planning process stage 1) ===",
+            "id": "erp-okr-draft-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "OKR Draft Stage" },
+            "description": { "en": "Objectives and KRs are drafted by owners. Brainstorming, wordsmithing, target-setting." },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== STAGE: Alignment (planning process stage 2) ===",
+            "id": "erp-okr-alignment-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "OKR Alignment Stage" },
+            "description": { "en": "Cascading alignment reviewed. Parent-child objective links validated. Cross-team dependencies identified." },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== STAGE: Finalization (planning process stage 3) ===",
+            "id": "erp-okr-finalization-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "OKR Finalization Stage" },
+            "description": { "en": "Final review. Objectives are locked. Cycle status transitions to Active." },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== PROCESS: OKR Review (Tier 2 -- 3 stages with obligations) ===",
+            "id": "erp-okr-review-process",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "OKR Review Process" },
+            "description": { "en": "Review process at end of each cycle. 3 stages with obligations: Self-Assessment (KR Owner), Manager Review (Objective Owner), Scoring (OKR Champion)." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-process" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-okr-self-assessment-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-okr-manager-review-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-okr-scoring-stage" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== STAGE: Self-Assessment (review stage 1 with obligation) ===",
+            "id": "erp-okr-self-assessment-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Self-Assessment Stage" },
+            "description": { "en": "KR owners update final progress values, write retrospective notes, and self-score their KRs." },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-okr-self-assess-obligation" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== STAGE: Manager Review (review stage 2 with obligation) ===",
+            "id": "erp-okr-manager-review-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Manager Review Stage" },
+            "description": { "en": "Objective owners review team OKRs, validate scores, add manager commentary, and flag discrepancies." },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-okr-manager-review-obligation" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== STAGE: Scoring (review stage 3 with obligation) ===",
+            "id": "erp-okr-scoring-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Scoring Stage" },
+            "description": { "en": "OKR champion finalizes scores, conducts retrospective, documents learnings, and transitions cycle to Closed." },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-okr-scoring-obligation" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== OBLIGATION: Self-Assessment (FR: KR Owner) ===",
+            "id": "erp-okr-self-assess-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Self-Assessment Obligation" },
+            "description": { "en": "Obligation for KR owners to update final progress values and self-score their KRs." },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "erp-fr-kr-owner" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== OBLIGATION: Manager Review (FR: Objective Owner) ===",
+            "id": "erp-okr-manager-review-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Manager Review Obligation" },
+            "description": { "en": "Obligation for objective owners to review team OKRs, validate scores, and add manager commentary." },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "erp-fr-objective-owner" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== OBLIGATION: Scoring (FR: OKR Champion) ===",
+            "id": "erp-okr-scoring-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Scoring Obligation" },
+            "description": { "en": "Obligation for OKR champion to finalize scores, conduct retrospective, and close cycle." },
+            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "erp-fr-okr-champion" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== COMPOSITION RELATOR: Planning Process -> Draft Stage ===",
+            "id": "erp-planning-has-draft-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Planning Has Draft Stage" },
+            "roles": [
+                { "name": "process", "universal_id": "erp-okr-planning-process" },
+                { "name": "stage", "universal_id": "erp-okr-draft-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITION RELATOR: Planning Process -> Alignment Stage ===",
+            "id": "erp-planning-has-alignment-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Planning Has Alignment Stage" },
+            "roles": [
+                { "name": "process", "universal_id": "erp-okr-planning-process" },
+                { "name": "stage", "universal_id": "erp-okr-alignment-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITION RELATOR: Planning Process -> Finalization Stage ===",
+            "id": "erp-planning-has-finalization-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Planning Has Finalization Stage" },
+            "roles": [
+                { "name": "process", "universal_id": "erp-okr-planning-process" },
+                { "name": "stage", "universal_id": "erp-okr-finalization-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== COMPOSITION RELATOR: Review Process -> Self-Assessment Stage ===",
+            "id": "erp-review-has-self-assess-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Review Has Self-Assessment Stage" },
+            "roles": [
+                { "name": "process", "universal_id": "erp-okr-review-process" },
+                { "name": "stage", "universal_id": "erp-okr-self-assessment-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITION RELATOR: Review Process -> Manager Review Stage ===",
+            "id": "erp-review-has-mgr-review-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Review Has Manager Review Stage" },
+            "roles": [
+                { "name": "process", "universal_id": "erp-okr-review-process" },
+                { "name": "stage", "universal_id": "erp-okr-manager-review-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITION RELATOR: Review Process -> Scoring Stage ===",
+            "id": "erp-review-has-scoring-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Review Has Scoring Stage" },
+            "roles": [
+                { "name": "process", "universal_id": "erp-okr-review-process" },
+                { "name": "stage", "universal_id": "erp-okr-scoring-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== COMPOSITION RELATOR: Self-Assessment Stage -> Obligation ===",
+            "id": "erp-self-assess-has-obligation-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Self-Assessment Has Obligation" },
+            "roles": [
+                { "name": "stage", "universal_id": "erp-okr-self-assessment-stage" },
+                { "name": "obligation", "universal_id": "erp-okr-self-assess-obligation" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITION RELATOR: Manager Review Stage -> Obligation ===",
+            "id": "erp-mgr-review-has-obligation-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Manager Review Has Obligation" },
+            "roles": [
+                { "name": "stage", "universal_id": "erp-okr-manager-review-stage" },
+                { "name": "obligation", "universal_id": "erp-okr-manager-review-obligation" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITION RELATOR: Scoring Stage -> Obligation ===",
+            "id": "erp-scoring-has-obligation-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Scoring Has Obligation" },
+            "roles": [
+                { "name": "stage", "universal_id": "erp-okr-scoring-stage" },
+                { "name": "obligation", "universal_id": "erp-okr-scoring-obligation" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        }
+    ],
+
+    "property_definitions": [
+        {
+            "_comment": "=== ENUM PROPERTY: OKR Status Name ===",
+            "id": "erp-okr-status-name-prop",
+            "universal_id": "erp-okr-status",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUM PROPERTY: Objective Level Name ===",
+            "id": "erp-objective-level-name-prop",
+            "universal_id": "erp-objective-level",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUM PROPERTY: KR Type Name ===",
+            "id": "erp-kr-type-name-prop",
+            "universal_id": "erp-kr-type",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUM PROPERTY: Confidence Level Name ===",
+            "id": "erp-confidence-level-name-prop",
+            "universal_id": "erp-confidence-level",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUM PROPERTY: Initiative Status Name ===",
+            "id": "erp-initiative-status-name-prop",
+            "universal_id": "erp-initiative-status",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUM PROPERTY: Scoring Method Name ===",
+            "id": "erp-scoring-method-name-prop",
+            "universal_id": "erp-scoring-method",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUM PROPERTY: Cycle Status Name ===",
+            "id": "erp-cycle-status-name-prop",
+            "universal_id": "erp-cycle-status",
+            "label": { "en": "Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== erp-objective OWN PROPERTIES ===",
+            "id": "erp-obj-level-prop",
+            "universal_id": "erp-objective",
+            "label": { "en": "Objective Level" },
+            "property_schema": {
+                "predicates": ["level", "tier"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": "erp-objective-level", "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-obj-is-aspirational-prop",
+            "universal_id": "erp-objective",
+            "label": { "en": "Is Aspirational" },
+            "description": { "en": "True if moonshot objective. Aspirational objectives use adjusted scoring: 70% achievement = on track." },
+            "property_schema": {
+                "predicates": ["aspirational", "flag"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Boolean" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-obj-alignment-score-prop",
+            "universal_id": "erp-objective",
+            "label": { "en": "Alignment Score" },
+            "description": { "en": "Computed: weighted average of child KR scores." },
+            "property_schema": {
+                "predicates": ["alignment", "score"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-score" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== erp-key-result OWN PROPERTIES ===",
+            "id": "erp-kr-type-prop",
+            "universal_id": "erp-key-result",
+            "label": { "en": "KR Type" },
+            "property_schema": {
+                "predicates": ["type", "measurement"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": "erp-kr-type", "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-kr-unit-prop",
+            "universal_id": "erp-key-result",
+            "label": { "en": "Unit" },
+            "description": { "en": "Unit of measurement for display (%, $, count, users, etc.)." },
+            "property_schema": {
+                "predicates": ["unit"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-kr-confidence-prop",
+            "universal_id": "erp-key-result",
+            "label": { "en": "Confidence" },
+            "property_schema": {
+                "predicates": ["confidence"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": "erp-confidence-level", "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-kr-last-checkin-date-prop",
+            "universal_id": "erp-key-result",
+            "label": { "en": "Last Check-In Date" },
+            "property_schema": {
+                "predicates": ["date", "checkin"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== erp-okr-cycle PROPERTIES ===",
+            "id": "erp-cycle-name-prop",
+            "universal_id": "erp-okr-cycle",
+            "label": { "en": "Cycle Name" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cycle-start-date-prop",
+            "universal_id": "erp-okr-cycle",
+            "label": { "en": "Cycle Start Date" },
+            "property_schema": {
+                "predicates": ["date", "start"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cycle-end-date-prop",
+            "universal_id": "erp-okr-cycle",
+            "label": { "en": "Cycle End Date" },
+            "property_schema": {
+                "predicates": ["date", "end"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cycle-status-prop",
+            "universal_id": "erp-okr-cycle",
+            "label": { "en": "Cycle Status" },
+            "property_schema": {
+                "predicates": ["status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": "erp-cycle-status", "ordered": false },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2 },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cycle-avg-attainment-prop",
+            "universal_id": "erp-okr-cycle",
+            "label": { "en": "Average Attainment" },
+            "description": { "en": "Computed: average goal attainment across all objectives in the cycle." },
+            "property_schema": {
+                "predicates": ["attainment", "average"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-ratio" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== erp-check-in PROPERTIES ===",
+            "id": "erp-checkin-date-prop",
+            "universal_id": "erp-check-in",
+            "label": { "en": "Check-In Date" },
+            "property_schema": {
+                "predicates": ["date"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "erp-checkin-value-prop",
+            "universal_id": "erp-check-in",
+            "label": { "en": "Check-In Value" },
+            "property_schema": {
+                "predicates": ["value", "measurement"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-checkin-confidence-prop",
+            "universal_id": "erp-check-in",
+            "label": { "en": "Confidence" },
+            "property_schema": {
+                "predicates": ["confidence"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": "erp-confidence-level", "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-checkin-notes-prop",
+            "universal_id": "erp-check-in",
+            "label": { "en": "Notes" },
+            "property_schema": {
+                "predicates": ["notes", "description"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-checkin-delta-prop",
+            "universal_id": "erp-check-in",
+            "label": { "en": "Delta" },
+            "description": { "en": "Computed: change from previous check-in value." },
+            "property_schema": {
+                "predicates": ["delta", "change"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== erp-initiative PROPERTIES ===",
+            "id": "erp-init-name-prop",
+            "universal_id": "erp-initiative",
+            "label": { "en": "Initiative Name" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "erp-init-description-prop",
+            "universal_id": "erp-initiative",
+            "label": { "en": "Description" },
+            "property_schema": {
+                "predicates": ["description"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-init-status-prop",
+            "universal_id": "erp-initiative",
+            "label": { "en": "Initiative Status" },
+            "property_schema": {
+                "predicates": ["status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "reference_universal_id": "erp-initiative-status", "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 2 },
+            "use_seed": true
+        },
+        {
+            "id": "erp-init-start-date-prop",
+            "universal_id": "erp-initiative",
+            "label": { "en": "Start Date" },
+            "property_schema": {
+                "predicates": ["date", "start"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-init-end-date-prop",
+            "universal_id": "erp-initiative",
+            "label": { "en": "End Date" },
+            "property_schema": {
+                "predicates": ["date", "end"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-init-effort-estimate-prop",
+            "universal_id": "erp-initiative",
+            "label": { "en": "Effort Estimate" },
+            "description": { "en": "Estimated person-days of effort." },
+            "property_schema": {
+                "predicates": ["effort", "estimate"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-init-effort-actual-prop",
+            "universal_id": "erp-initiative",
+            "label": { "en": "Actual Effort" },
+            "description": { "en": "Actual person-days spent." },
+            "property_schema": {
+                "predicates": ["effort", "actual"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-init-completion-prop",
+            "universal_id": "erp-initiative",
+            "label": { "en": "Completion %" },
+            "description": { "en": "Percentage complete (0-100)." },
+            "property_schema": {
+                "predicates": ["completion", "percentage"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-ratio" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ARTIFACT TARGET PROPERTIES: Attainment ===",
+            "id": "erp-attain-dim-level-prop",
+            "universal_id": "erp-okr-attainment-artifact-type",
+            "label": { "en": "Objective Level" },
+            "property_schema": {
+                "predicates": ["dimension", "level"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "erp-attain-dim-cycle-prop",
+            "universal_id": "erp-okr-attainment-artifact-type",
+            "label": { "en": "Cycle" },
+            "property_schema": {
+                "predicates": ["dimension", "cycle"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-attain-avg-score-prop",
+            "universal_id": "erp-okr-attainment-artifact-type",
+            "label": { "en": "Avg KR Score" },
+            "property_schema": {
+                "predicates": ["measure", "score"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-score" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-attain-kr-count-prop",
+            "universal_id": "erp-okr-attainment-artifact-type",
+            "label": { "en": "KR Count" },
+            "property_schema": {
+                "predicates": ["measure", "count"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-attain-achieved-count-prop",
+            "universal_id": "erp-okr-attainment-artifact-type",
+            "label": { "en": "Achieved Count" },
+            "property_schema": {
+                "predicates": ["measure", "achieved"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ARTIFACT TARGET PROPERTIES: Alignment ===",
+            "id": "erp-align-dim-level-prop",
+            "universal_id": "erp-okr-alignment-artifact-type",
+            "label": { "en": "Objective Level" },
+            "property_schema": {
+                "predicates": ["dimension", "level"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "erp-align-dim-cycle-prop",
+            "universal_id": "erp-okr-alignment-artifact-type",
+            "label": { "en": "Cycle" },
+            "property_schema": {
+                "predicates": ["dimension", "cycle"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-align-obj-count-prop",
+            "universal_id": "erp-okr-alignment-artifact-type",
+            "label": { "en": "Total Objectives" },
+            "property_schema": {
+                "predicates": ["measure", "count"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-align-aligned-count-prop",
+            "universal_id": "erp-okr-alignment-artifact-type",
+            "label": { "en": "Aligned Objectives" },
+            "property_schema": {
+                "predicates": ["measure", "aligned"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-align-ratio-prop",
+            "universal_id": "erp-okr-alignment-artifact-type",
+            "label": { "en": "Alignment Ratio" },
+            "property_schema": {
+                "predicates": ["measure", "ratio"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-ratio" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ARTIFACT TARGET PROPERTIES: Compliance ===",
+            "id": "erp-comply-dim-cycle-prop",
+            "universal_id": "erp-okr-compliance-artifact-type",
+            "label": { "en": "Cycle" },
+            "property_schema": {
+                "predicates": ["dimension", "cycle"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "erp-comply-total-krs-prop",
+            "universal_id": "erp-okr-compliance-artifact-type",
+            "label": { "en": "Total KRs" },
+            "property_schema": {
+                "predicates": ["measure", "count"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-comply-checked-in-prop",
+            "universal_id": "erp-okr-compliance-artifact-type",
+            "label": { "en": "Checked-In KRs" },
+            "property_schema": {
+                "predicates": ["measure", "checked"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-comply-rate-prop",
+            "universal_id": "erp-okr-compliance-artifact-type",
+            "label": { "en": "Compliance Rate" },
+            "property_schema": {
+                "predicates": ["measure", "rate"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-ratio" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== ARTIFACT TARGET PROPERTIES: Initiative Effort ===",
+            "id": "erp-effort-dim-status-prop",
+            "universal_id": "erp-okr-initiative-effort-artifact-type",
+            "label": { "en": "Initiative Status" },
+            "property_schema": {
+                "predicates": ["dimension", "status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Categorical", "ordered": false },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": { "participates": true, "sequence": 1 },
+            "use_seed": true
+        },
+        {
+            "id": "erp-effort-estimate-prop",
+            "universal_id": "erp-okr-initiative-effort-artifact-type",
+            "label": { "en": "Total Estimated Effort" },
+            "property_schema": {
+                "predicates": ["measure", "estimate"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-effort-actual-prop",
+            "universal_id": "erp-okr-initiative-effort-artifact-type",
+            "label": { "en": "Total Actual Effort" },
+            "property_schema": {
+                "predicates": ["measure", "actual"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-float" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-effort-init-count-prop",
+            "universal_id": "erp-okr-initiative-effort-artifact-type",
+            "label": { "en": "Initiative Count" },
+            "property_schema": {
+                "predicates": ["measure", "count"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        }
+    ],
+
+    "event_definitions": [
+        {
+            "id": "erp-kr-achieved-event",
+            "app_id": "erp-okr-app",
+            "scope": "tenant",
+            "label": { "en": "Key Result Achieved" },
+            "description": { "en": "Emitted when a KR progress reaches 100% and status is set to Achieved" },
+            "payload_schema": [
+                { "name": "key_result_id", "field_type": "uuid" },
+                { "name": "objective_id", "field_type": "uuid" },
+                { "name": "final_score", "field_type": "measurement", "measurement_frame": "Float" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "erp-kr-at-risk-event",
+            "app_id": "erp-okr-app",
+            "scope": "tenant",
+            "label": { "en": "Key Result At Risk" },
+            "description": { "en": "Emitted when KR status changes to At Risk (progress 40-70%)" },
+            "payload_schema": [
+                { "name": "key_result_id", "field_type": "uuid" },
+                { "name": "objective_id", "field_type": "uuid" },
+                { "name": "current_progress", "field_type": "measurement", "measurement_frame": "Ratio" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "erp-kr-behind-event",
+            "app_id": "erp-okr-app",
+            "scope": "tenant",
+            "label": { "en": "Key Result Behind" },
+            "description": { "en": "Emitted when KR status changes to Behind (progress < 40%)" },
+            "payload_schema": [
+                { "name": "key_result_id", "field_type": "uuid" },
+                { "name": "objective_id", "field_type": "uuid" },
+                { "name": "current_progress", "field_type": "measurement", "measurement_frame": "Ratio" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "erp-okr-cycle-closed-event",
+            "app_id": "erp-okr-app",
+            "scope": "tenant",
+            "label": { "en": "OKR Cycle Closed" },
+            "description": { "en": "Emitted when cycle status transitions to Closed in the scoring stage" },
+            "payload_schema": [
+                { "name": "cycle_id", "field_type": "uuid" },
+                { "name": "avg_attainment", "field_type": "measurement", "measurement_frame": "Ratio" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "erp-checkin-overdue-event",
+            "app_id": "erp-okr-app",
+            "scope": "tenant",
+            "label": { "en": "Check-In Overdue" },
+            "description": { "en": "Emitted by timer when a KR has not been checked in for > 14 days" },
+            "payload_schema": [
+                { "name": "key_result_id", "field_type": "uuid" },
+                { "name": "days_since_last_checkin", "field_type": "measurement", "measurement_frame": "Quantity" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "erp-okr-low-attainment-event",
+            "app_id": "erp-okr-app",
+            "scope": "tenant",
+            "label": { "en": "Low Attainment Alert" },
+            "description": { "en": "Artifact threshold: avg KR score < 40 for an objective level" },
+            "payload_schema": [
+                { "name": "artifact_instance_id", "field_type": "uuid" },
+                { "name": "measure_value", "field_type": "measurement", "measurement_frame": "Float" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "erp-okr-poor-alignment-event",
+            "app_id": "erp-okr-app",
+            "scope": "tenant",
+            "label": { "en": "Poor Alignment Alert" },
+            "description": { "en": "Artifact threshold: alignment ratio < 70% for an objective level" },
+            "payload_schema": [
+                { "name": "artifact_instance_id", "field_type": "uuid" },
+                { "name": "measure_value", "field_type": "measurement", "measurement_frame": "Ratio" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "erp-checkin-compliance-event",
+            "app_id": "erp-okr-app",
+            "scope": "tenant",
+            "label": { "en": "Low Check-In Compliance" },
+            "description": { "en": "Artifact threshold: check-in compliance rate < 50%" },
+            "payload_schema": [
+                { "name": "artifact_instance_id", "field_type": "uuid" },
+                { "name": "measure_value", "field_type": "measurement", "measurement_frame": "Ratio" }
+            ],
+            "use_seed": true
+        }
+    ],
+
+    "timers": [
+        {
+            "id": "erp-checkin-reminder-timer",
+            "name": "Check-In Reminder",
+            "tenant_id": "model1-testing-tenant",
+            "org_id": "model1-testing-org",
+            "app_id": "erp-okr-app",
+            "schedule": {
+                "type": "Interval",
+                "amount": 7,
+                "unit": "Days",
+                "recurring": true
+            },
+            "enabled": true,
+            "auto_start": true,
+            "event_emission": {
+                "event_code": "erp-checkin-overdue-event"
+            },
+            "use_seed": true,
+            "_comment": "Weekly timer that checks all active KRs for overdue check-ins (> 14 days since last check-in)"
+        },
+        {
+            "id": "erp-cycle-close-timer",
+            "name": "Cycle Close Trigger",
+            "tenant_id": "model1-testing-tenant",
+            "org_id": "model1-testing-org",
+            "app_id": "erp-okr-app",
+            "schedule": {
+                "type": "Interval",
+                "amount": 1,
+                "unit": "Days",
+                "recurring": true
+            },
+            "enabled": true,
+            "auto_start": true,
+            "event_emission": {
+                "event_code": "erp-okr-cycle-closed-event"
+            },
+            "use_seed": true,
+            "_comment": "Daily timer that checks if any cycle has passed its end date and should transition to Review"
+        }
+    ],
+
+    "computations": [
+        {
+            "_comment": "=== COMPUTATION 1: KR Progress (normalizes current/target/baseline to 0-100%) ===",
+            "id": "erp-kr-progress-calc",
+            "code": "erp_kr_progress",
+            "app_id": "erp-okr-app",
+            "label": { "en": "KR Progress Calculation" },
+            "description": { "en": "Computes progress percentage based on current, target, baseline values and KR type (Metric/Binary/Milestone)" },
+            "inputs": [
+                { "source": "property", "variable_name": "target", "property_id": "erp-goal-target-value-prop" },
+                { "source": "property", "variable_name": "current", "property_id": "erp-goal-current-value-prop" },
+                { "source": "property", "variable_name": "baseline", "property_id": "erp-goal-baseline-value-prop" }
+            ],
+            "formula": "let t = target.value; let c = current.value; let b = baseline.value; let range = t - b; let p = if range == 0.0 { 100.0 } else { ((c - b) / range) * 100.0 }; if p < 0.0 { 0.0 } else if p > 100.0 { 100.0 } else { p }",
+            "output": { "target_property_id": "erp-goal-progress-prop" },
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "erp-goal-current-value-prop" }
+            ],
+            "priority": "High",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 2: KR Status Auto-Update (progress -> status category) ===",
+            "id": "erp-kr-status-calc",
+            "code": "erp_kr_status",
+            "app_id": "erp-okr-app",
+            "label": { "en": "KR Status Calculation" },
+            "description": { "en": "Sets KR status based on progress: >= 100 Achieved, >= 70 On Track, >= 40 At Risk, > 0 Behind, else Not Started" },
+            "inputs": [
+                { "source": "property", "variable_name": "progress", "property_id": "erp-goal-progress-prop" }
+            ],
+            "formula": "let p = progress.value; if p >= 100.0 { 5.0 } else if p >= 70.0 { 4.0 } else if p >= 40.0 { 3.0 } else if p > 0.0 { 2.0 } else { 1.0 }",
+            "output": {},
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "erp-goal-progress-prop" }
+            ],
+            "event_bindings": [
+                { "event": "events.erp-kr-achieved-event", "direction": "publish", "trigger": "always" },
+                { "event": "events.erp-kr-at-risk-event", "direction": "publish", "trigger": "always" },
+                { "event": "events.erp-kr-behind-event", "direction": "publish", "trigger": "always" }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 3: Objective Score Rollup (weighted avg of child KR scores) ===",
+            "id": "erp-obj-score-calc",
+            "code": "erp_obj_score",
+            "app_id": "erp-okr-app",
+            "label": { "en": "Objective Score Rollup" },
+            "description": { "en": "Computes objective score as weighted average of child KR scores via erp-objective-has-kr-rel" },
+            "inputs": [
+                {
+                    "source": "role_aggregate",
+                    "variable_name": "kr_score_sum",
+                    "role_id": "erp-objective-has-kr-rel",
+                    "role_name": "part",
+                    "property_id": "erp-goal-score-prop",
+                    "function": "Sum"
+                },
+                {
+                    "source": "role_aggregate",
+                    "variable_name": "kr_count",
+                    "role_id": "erp-objective-has-kr-rel",
+                    "role_name": "part",
+                    "property_id": "erp-goal-score-prop",
+                    "function": "Count"
+                }
+            ],
+            "formula": "let s = kr_score_sum.value; let c = kr_count.value; if c > 0.0 { s / c } else { 0.0 }",
+            "output": { "target_property_id": "erp-goal-score-prop" },
+            "trigger_conditions": [],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 4: Check-In Delta (change from previous check-in) ===",
+            "id": "erp-checkin-delta-calc",
+            "code": "erp_checkin_delta",
+            "app_id": "erp-okr-app",
+            "label": { "en": "Check-In Delta Calculation" },
+            "description": { "en": "Computes delta between current and previous check-in value. First check-in uses 0 as baseline." },
+            "inputs": [
+                { "source": "property", "variable_name": "checkin_value", "property_id": "erp-checkin-value-prop" }
+            ],
+            "formula": "checkin_value.value",
+            "output": { "target_property_id": "erp-checkin-delta-prop" },
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "erp-checkin-value-prop" }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 5: Cycle Average Attainment (avg objective scores in cycle) ===",
+            "id": "erp-cycle-attainment-calc",
+            "code": "erp_cycle_attainment",
+            "app_id": "erp-okr-app",
+            "label": { "en": "Cycle Average Attainment" },
+            "description": { "en": "Computes average goal score across all objectives in the cycle via erp-objective-cycle-rel" },
+            "inputs": [
+                {
+                    "source": "role_aggregate",
+                    "variable_name": "obj_score_sum",
+                    "role_id": "erp-objective-cycle-rel",
+                    "role_name": "objective",
+                    "property_id": "erp-goal-score-prop",
+                    "function": "Sum"
+                },
+                {
+                    "source": "role_aggregate",
+                    "variable_name": "obj_count",
+                    "role_id": "erp-objective-cycle-rel",
+                    "role_name": "objective",
+                    "property_id": "erp-goal-score-prop",
+                    "function": "Count"
+                }
+            ],
+            "formula": "let s = obj_score_sum.value; let c = obj_count.value; if c > 0.0 { s / c } else { 0.0 }",
+            "output": { "target_property_id": "erp-cycle-avg-attainment-prop" },
+            "trigger_conditions": [],
+            "priority": "Low",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION 6: Check-In to KR Value Propagation ===",
+            "id": "erp-checkin-to-kr-propagation",
+            "code": "erp_checkin_to_kr",
+            "app_id": "erp-okr-app",
+            "label": { "en": "Check-In to KR Propagation" },
+            "description": { "en": "Propagates latest check-in value to parent KR current value via erp-kr-has-checkin-rel. Triggers KR progress cascade." },
+            "inputs": [
+                { "source": "property", "variable_name": "checkin_value", "property_id": "erp-checkin-value-prop" }
+            ],
+            "formula": "checkin_value.value",
+            "output": {},
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "erp-checkin-value-prop" }
+            ],
+            "priority": "High",
+            "use_seed": true
+        }
+    ],
+
+    "data_schemas": [],
+    "correlation_rules": [],
+
+    "artifact_definitions": [
+        {
+            "_comment": "=== ARTIFACT 1: OKR Attainment by Objective Level ===",
+            "id": "erp-okr-attainment-by-org-artifact",
+            "name": "OKR Attainment by Objective Level",
+            "description": { "en": "Tracks key result achievement rates across objective levels and cycles. Enables leadership to identify which tiers are executing well." },
+            "source": { "universal_id": "erp-key-result" },
+            "artifact_universal_id": "erp-okr-attainment-artifact-type",
+            "app_id": "erp-okr-app",
+            "dimensions": [
+                {
+                    "id": "erp-attain-dim-level",
+                    "code": "objective_level",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            { "relator_universal_id": "erp-objective-has-kr-rel", "role_name": "aggregate" }
+                        ],
+                        "property_id": "erp-obj-level-prop"
+                    },
+                    "artifact_property_id": "erp-attain-dim-level-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-attain-dim-cycle",
+                    "code": "cycle",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            { "relator_universal_id": "erp-objective-has-kr-rel", "role_name": "aggregate" },
+                            { "relator_universal_id": "erp-objective-cycle-rel", "role_name": "cycle" }
+                        ],
+                        "property_id": "erp-cycle-name-prop"
+                    },
+                    "artifact_property_id": "erp-attain-dim-cycle-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "erp-attain-avg-score",
+                    "code": "avg_kr_score",
+                    "property_id": "erp-goal-score-prop",
+                    "function": "Avg",
+                    "artifact_property_id": "erp-attain-avg-score-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-attain-kr-count",
+                    "code": "kr_count",
+                    "function": "Count",
+                    "artifact_property_id": "erp-attain-kr-count-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-attain-achieved-count",
+                    "code": "achieved_count",
+                    "function": "Count",
+                    "artifact_property_id": "erp-attain-achieved-count-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [
+                {
+                    "id": "erp-threshold-low-attainment",
+                    "code": "low_attainment",
+                    "label": { "en": "Low Attainment Alert" },
+                    "measure_id": "erp-attain-avg-score",
+                    "condition": { "operator": "LessThan", "value": 40.0 },
+                    "event_type_id": "erp-okr-low-attainment-event",
+                    "state_property_id": "erp-attain-avg-score-prop",
+                    "use_seed": true
+                }
+            ],
+            "materialization": { "strategy": "Eager" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 2: Cascading Alignment Health ===",
+            "id": "erp-okr-alignment-health-artifact",
+            "name": "Cascading Alignment Health",
+            "description": { "en": "Measures how well objectives are aligned in the cascade hierarchy. Unaligned (orphan) objectives indicate a breakdown in strategic coherence." },
+            "source": { "universal_id": "erp-objective" },
+            "artifact_universal_id": "erp-okr-alignment-artifact-type",
+            "app_id": "erp-okr-app",
+            "dimensions": [
+                {
+                    "id": "erp-align-dim-level",
+                    "code": "objective_level",
+                    "source": {
+                        "type": "Property",
+                        "property_id": "erp-obj-level-prop"
+                    },
+                    "artifact_property_id": "erp-align-dim-level-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-align-dim-cycle",
+                    "code": "cycle",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            { "relator_universal_id": "erp-objective-cycle-rel", "role_name": "cycle" }
+                        ],
+                        "property_id": "erp-cycle-name-prop"
+                    },
+                    "artifact_property_id": "erp-align-dim-cycle-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "erp-align-obj-count",
+                    "code": "total_objectives",
+                    "function": "Count",
+                    "artifact_property_id": "erp-align-obj-count-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-align-aligned-count",
+                    "code": "aligned_objectives",
+                    "function": "Count",
+                    "artifact_property_id": "erp-align-aligned-count-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-align-ratio",
+                    "code": "alignment_ratio",
+                    "function": "Count",
+                    "artifact_property_id": "erp-align-ratio-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [
+                {
+                    "id": "erp-threshold-poor-alignment",
+                    "code": "poor_alignment",
+                    "label": { "en": "Poor Alignment Alert" },
+                    "measure_id": "erp-align-ratio",
+                    "condition": { "operator": "LessThan", "value": 70.0 },
+                    "event_type_id": "erp-okr-poor-alignment-event",
+                    "state_property_id": "erp-align-ratio-prop",
+                    "use_seed": true
+                }
+            ],
+            "materialization": { "strategy": "Eager" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 3: Check-In Compliance ===",
+            "id": "erp-okr-checkin-compliance-artifact",
+            "name": "Check-In Compliance",
+            "description": { "en": "Tracks whether KR owners are submitting regular progress updates. Low compliance is the leading indicator of OKR program failure." },
+            "source": { "universal_id": "erp-key-result" },
+            "artifact_universal_id": "erp-okr-compliance-artifact-type",
+            "app_id": "erp-okr-app",
+            "dimensions": [
+                {
+                    "id": "erp-comply-dim-cycle",
+                    "code": "cycle",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            { "relator_universal_id": "erp-objective-has-kr-rel", "role_name": "aggregate" },
+                            { "relator_universal_id": "erp-objective-cycle-rel", "role_name": "cycle" }
+                        ],
+                        "property_id": "erp-cycle-name-prop"
+                    },
+                    "artifact_property_id": "erp-comply-dim-cycle-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "erp-comply-total-krs",
+                    "code": "total_krs",
+                    "function": "Count",
+                    "artifact_property_id": "erp-comply-total-krs-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-comply-checked-in",
+                    "code": "checked_in_krs",
+                    "function": "Count",
+                    "artifact_property_id": "erp-comply-checked-in-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-comply-rate",
+                    "code": "compliance_rate",
+                    "function": "Count",
+                    "artifact_property_id": "erp-comply-rate-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [
+                {
+                    "id": "erp-threshold-low-compliance",
+                    "code": "low_compliance",
+                    "label": { "en": "Low Compliance Alert" },
+                    "measure_id": "erp-comply-rate",
+                    "condition": { "operator": "LessThan", "value": 50.0 },
+                    "event_type_id": "erp-checkin-compliance-event",
+                    "state_property_id": "erp-comply-rate-prop",
+                    "use_seed": true
+                }
+            ],
+            "materialization": { "strategy": "Eager" },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 4: Initiative Effort by Status ===",
+            "id": "erp-okr-initiative-effort-artifact",
+            "name": "Initiative Effort by Status",
+            "description": { "en": "Aggregates initiative effort (estimated and actual person-days) by status. Enables resource planning and estimation accuracy analysis." },
+            "source": { "universal_id": "erp-initiative" },
+            "artifact_universal_id": "erp-okr-initiative-effort-artifact-type",
+            "app_id": "erp-okr-app",
+            "dimensions": [
+                {
+                    "id": "erp-effort-dim-status",
+                    "code": "initiative_status",
+                    "source": {
+                        "type": "Property",
+                        "property_id": "erp-init-status-prop"
+                    },
+                    "artifact_property_id": "erp-effort-dim-status-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "erp-effort-estimate",
+                    "code": "total_estimated_effort",
+                    "property_id": "erp-init-effort-estimate-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "erp-effort-estimate-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-effort-actual",
+                    "code": "total_actual_effort",
+                    "property_id": "erp-init-effort-actual-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "erp-effort-actual-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-effort-init-count",
+                    "code": "initiative_count",
+                    "function": "Count",
+                    "artifact_property_id": "erp-effort-init-count-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": { "strategy": "Eager" },
+            "use_seed": true
+        }
+    ],
+
+    "apps": [
+        {
+            "id": "erp-okr-app",
+            "tenant_id": "model1-testing-tenant",
+            "label": { "en": "ERP OKR Application" },
+            "description": { "en": "OKR goal-setting and strategic alignment framework. Tracks objectives, key results, check-ins, initiatives, and OKR cycles with reactive computations, two processes (Planning and Review), and four intelligence artifacts." },
+            "use_seed": true,
+            "modules": [
+                {
+                    "id": "erp-okr-core-module",
+                    "use_seed": true,
+                    "label": { "en": "OKR Core Module" },
+                    "description": { "en": "Core OKR operations: objectives, key results, check-ins, initiatives, cycles" },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": [
+                            "erp-kr-achieved-event",
+                            "erp-kr-at-risk-event",
+                            "erp-kr-behind-event"
+                        ]
+                    }
+                },
+                {
+                    "id": "erp-okr-analytics-module",
+                    "use_seed": true,
+                    "label": { "en": "OKR Analytics Module" },
+                    "description": { "en": "Intelligence artifacts, attainment analysis, alignment health, compliance monitoring" },
+                    "context": {
+                        "subscribed_events": [
+                            "erp-kr-achieved-event",
+                            "erp-kr-at-risk-event",
+                            "erp-kr-behind-event"
+                        ],
+                        "publishable_events": [
+                            "erp-okr-low-attainment-event",
+                            "erp-okr-poor-alignment-event",
+                            "erp-checkin-compliance-event"
+                        ]
+                    }
+                },
+                {
+                    "id": "erp-okr-process-module",
+                    "use_seed": true,
+                    "label": { "en": "OKR Process Module" },
+                    "description": { "en": "OKR planning and review processes with stage-based workflows" },
+                    "context": {
+                        "subscribed_events": [
+                            "erp-checkin-overdue-event"
+                        ],
+                        "publishable_events": [
+                            "erp-okr-cycle-closed-event",
+                            "erp-checkin-overdue-event"
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+
+    "foundation_role_assignments": [
+        {
+            "id": "fra-erp-admin-admin-okr",
+            "user_id": "erp-admin",
+            "role": "AppAdmin",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-okr-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-admin-dev-okr",
+            "user_id": "erp-admin",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-okr-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-developer-dev-okr",
+            "user_id": "erp-developer",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-okr-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-user-user-okr",
+            "user_id": "erp-user",
+            "role": "AppUser",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-okr-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        }
+    ]
+}

@@ -1,0 +1,1791 @@
+{
+    "_comment": "=== ERP BUDGETING APP (Layer 1) ===",
+    "_description": "Budget allocation, tracking, and approval workflow. Depends on Org Structure, Chart of Accounts, Fiscal Calendar (Layer 0). Tracks allocated/committed/spent with reactive computations for remaining/variance/utilization. Includes 3-stage approval process and budget transfer management.",
+    "_cross_layer_note": "Cross-layer relators to erp-org-unit, erp-gl-account, erp-fiscal-period, and erp-party are NOT included because those universals are defined in separate apps. They would be: erp-budget-scope-rel (budget->org-unit), erp-budget-period-rel (budget->fiscal-period), erp-budgetline-account-rel (budget-line->gl-account), erp-budget-owner-rel (budget->party).",
+    "_organizations_note": "Organizations defined in app_erp_base. Load app_erp_base first.",
+    "_tenants_note": "Tenants defined in app_erp_base. Load app_erp_base first.",
+    "universals": [
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Budget Status ===",
+            "id": "erp-budget-status",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Budget Status"
+            },
+            "description": {
+                "en": "Lifecycle states for a budget: Draft, Submitted, Approved, Frozen, Closed, Rejected"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Budget Type ===",
+            "id": "erp-budget-type",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Budget Type"
+            },
+            "description": {
+                "en": "Classification of budget purpose: Operating, Capital, Project, Department"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DOMAIN ENTITY: Budget ===",
+            "id": "erp-budget",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Budget"
+            },
+            "description": {
+                "en": "Budget allocation header. Represents a complete budget for a scope and period. An institutional object with lifecycle states (Draft through Closed)."
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DOMAIN ENTITY: Budget Line ===",
+            "id": "erp-budget-line",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Budget Line"
+            },
+            "description": {
+                "en": "Individual allocation within a budget. The atomic unit carrying allocated, committed, spent, and computed remaining/variance/utilization amounts."
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DOMAIN ENTITY: Budget Version ===",
+            "id": "erp-budget-version",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Budget Version"
+            },
+            "description": {
+                "en": "Immutable snapshot of a budget line-state at a point in time. Only one version is active; historical versions are read-only audit records."
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DOMAIN ENTITY: Budget Version Line ===",
+            "id": "erp-budget-version-line",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Budget Version Line"
+            },
+            "description": {
+                "en": "Snapshot of a single budget line financial state at the time the version was created. Immutable record."
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== DOMAIN ENTITY: Budget Transfer ===",
+            "id": "erp-budget-transfer",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Budget Transfer"
+            },
+            "description": {
+                "en": "Reallocation of funds between budget lines. A temporal event that transfers allocation from one line to another."
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT OUTPUT: Budget Analytics Summary ===",
+            "id": "erp-budget-analytics-summary",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Budget Analytics Summary"
+            },
+            "description": {
+                "en": "Materialized aggregate output universal for budget intelligence artifact definitions"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== FUNCTIONAL ROLE: Department Manager ===",
+            "id": "erp-fr-budget-dept-manager",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": {
+                "en": "Budget Department Manager"
+            },
+            "description": {
+                "en": "Department manager who initiates and reviews budgets at the department level"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== FUNCTIONAL ROLE: Finance Director ===",
+            "id": "erp-fr-budget-finance-director",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": {
+                "en": "Budget Finance Director"
+            },
+            "description": {
+                "en": "Finance director who reviews budget compliance and financial feasibility"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== FUNCTIONAL ROLE: CFO ===",
+            "id": "erp-fr-budget-cfo",
+            "temporal_nature": "Endurant",
+            "meta_category": "FunctionalRole",
+            "label": {
+                "en": "Budget CFO"
+            },
+            "description": {
+                "en": "Chief Financial Officer who provides final approval for budgets above threshold"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== BUDGET APPROVAL PROCESS (specializes base-process) ===",
+            "id": "erp-budget-approval",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Budget Approval Process"
+            },
+            "description": {
+                "en": "3-stage budget approval: Department Review (Dept Manager), Finance Review (Finance Director), Executive Approval (CFO)"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-process" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-budget-dept-review-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-budget-finance-review-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-budget-exec-approval-stage" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "erp-budget" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== STAGE 1: Department Review (specializes base-stage) ===",
+            "id": "erp-budget-dept-review-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Department Budget Review"
+            },
+            "description": {
+                "en": "Department manager reviews budget for completeness and alignment with departmental priorities"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-budget-dept-review-obligation" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== STAGE 2: Finance Review (specializes base-stage) ===",
+            "id": "erp-budget-finance-review-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Finance Budget Review"
+            },
+            "description": {
+                "en": "Finance director reviews budget for compliance with financial policies and cross-departmental consistency"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-budget-finance-review-obligation" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== STAGE 3: Executive Approval (specializes base-stage) ===",
+            "id": "erp-budget-exec-approval-stage",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Executive Budget Approval"
+            },
+            "description": {
+                "en": "CFO provides final approval for budgets, conditionally required above threshold"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
+                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-budget-exec-approval-obligation" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== OBLIGATION: Department Review Obligation (specializes base-obligation) ===",
+            "id": "erp-budget-dept-review-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Department Review Obligation"
+            },
+            "description": {
+                "en": "Obligation for the department manager to review and approve the budget"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "erp-fr-budget-dept-manager" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== OBLIGATION: Finance Review Obligation (specializes base-obligation) ===",
+            "id": "erp-budget-finance-review-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Finance Review Obligation"
+            },
+            "description": {
+                "en": "Obligation for the finance director to review budget compliance"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "erp-fr-budget-finance-director" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== OBLIGATION: Executive Approval Obligation (specializes base-obligation) ===",
+            "id": "erp-budget-exec-approval-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Executive Approval Obligation"
+            },
+            "description": {
+                "en": "Obligation for the CFO to provide final budget approval"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
+                { "relator_universal_id": "association-relator", "target_universal_id": "erp-fr-budget-cfo" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== RELATOR: Budget Has Line (composition) ===",
+            "id": "erp-budget-has-line-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Budget Has Line"
+            },
+            "description": {
+                "en": "Budget contains budget lines. Composition: lines do not exist independently of their budget."
+            },
+            "roles": [
+                { "name": "composite", "universal_id": "erp-budget" },
+                { "name": "component", "universal_id": "erp-budget-line" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Budget Type (attribution) ===",
+            "id": "erp-budget-type-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Budget Type Classification"
+            },
+            "description": {
+                "en": "Budget is classified by type (Operating, Capital, Project, Department)"
+            },
+            "roles": [
+                { "name": "budget", "universal_id": "erp-budget" },
+                { "name": "type", "universal_id": "erp-budget-type" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "attribution-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Budget Version (aggregation) ===",
+            "id": "erp-budget-version-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Budget Has Version"
+            },
+            "description": {
+                "en": "Budget can have multiple versions. Aggregation: versions survive budget restructuring as historical records."
+            },
+            "roles": [
+                { "name": "budget", "universal_id": "erp-budget" },
+                { "name": "version", "universal_id": "erp-budget-version" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "aggregation-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Version Has Line (composition) ===",
+            "id": "erp-version-has-line-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Version Has Line"
+            },
+            "description": {
+                "en": "Version contains immutable version-lines (snapshots). Composition: version-lines exist only as part of their version."
+            },
+            "roles": [
+                { "name": "composite", "universal_id": "erp-budget-version" },
+                { "name": "component", "universal_id": "erp-budget-version-line" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Transfer From Line (association) ===",
+            "id": "erp-transfer-from-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Transfer From Line"
+            },
+            "description": {
+                "en": "Transfer draws funds from this budget line (source of funds)"
+            },
+            "roles": [
+                { "name": "transfer", "universal_id": "erp-budget-transfer" },
+                { "name": "source_line", "universal_id": "erp-budget-line" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Transfer To Line (association) ===",
+            "id": "erp-transfer-to-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Transfer To Line"
+            },
+            "description": {
+                "en": "Transfer deposits funds to this budget line (destination of funds)"
+            },
+            "roles": [
+                { "name": "transfer", "universal_id": "erp-budget-transfer" },
+                { "name": "target_line", "universal_id": "erp-budget-line" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+            ],
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== COMPOSITION RELATOR: Process -> Dept Review Stage ===",
+            "id": "erp-budget-approval-has-dept-review",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Approval Has Dept Review"
+            },
+            "roles": [
+                { "name": "process", "universal_id": "erp-budget-approval" },
+                { "name": "stage", "universal_id": "erp-budget-dept-review-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITION RELATOR: Process -> Finance Review Stage ===",
+            "id": "erp-budget-approval-has-finance-review",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Approval Has Finance Review"
+            },
+            "roles": [
+                { "name": "process", "universal_id": "erp-budget-approval" },
+                { "name": "stage", "universal_id": "erp-budget-finance-review-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITION RELATOR: Process -> Executive Approval Stage ===",
+            "id": "erp-budget-approval-has-exec-approval",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Approval Has Exec Approval"
+            },
+            "roles": [
+                { "name": "process", "universal_id": "erp-budget-approval" },
+                { "name": "stage", "universal_id": "erp-budget-exec-approval-stage" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITION RELATOR: Dept Review Stage -> Obligation ===",
+            "id": "erp-budget-dept-review-has-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Dept Review Has Obligation"
+            },
+            "roles": [
+                { "name": "stage", "universal_id": "erp-budget-dept-review-stage" },
+                { "name": "obligation", "universal_id": "erp-budget-dept-review-obligation" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITION RELATOR: Finance Review Stage -> Obligation ===",
+            "id": "erp-budget-finance-review-has-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Finance Review Has Obligation"
+            },
+            "roles": [
+                { "name": "stage", "universal_id": "erp-budget-finance-review-stage" },
+                { "name": "obligation", "universal_id": "erp-budget-finance-review-obligation" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITION RELATOR: Exec Approval Stage -> Obligation ===",
+            "id": "erp-budget-exec-approval-has-obligation",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Exec Approval Has Obligation"
+            },
+            "roles": [
+                { "name": "stage", "universal_id": "erp-budget-exec-approval-stage" },
+                { "name": "obligation", "universal_id": "erp-budget-exec-approval-obligation" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+            ],
+            "use_seed": true
+        }
+    ],
+    "property_definitions": [
+        {
+            "_comment": "=== Budget Status Enum Name ===",
+            "id": "erp-budget-status-name-prop",
+            "universal_id": "erp-budget-status",
+            "label": {
+                "en": "Status Name"
+            },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Budget Type Enum Name ===",
+            "id": "erp-budget-type-name-prop",
+            "universal_id": "erp-budget-type",
+            "label": {
+                "en": "Type Name"
+            },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Budget: Name ===",
+            "id": "erp-budget-name-prop",
+            "universal_id": "erp-budget",
+            "label": {
+                "en": "Budget Name"
+            },
+            "description": {
+                "en": "Human-readable budget name (e.g., Engineering Q3 2026 Operating Budget)"
+            },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Budget: Total Amount (computed) ===",
+            "id": "erp-budget-total-amount-prop",
+            "universal_id": "erp-budget",
+            "label": {
+                "en": "Total Amount"
+            },
+            "description": {
+                "en": "Aggregate of all budget line allocations. Computed via erp-budget-total-calc."
+            },
+            "property_schema": {
+                "predicates": ["total", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Budget: Approved Date ===",
+            "id": "erp-budget-approved-date-prop",
+            "universal_id": "erp-budget",
+            "label": {
+                "en": "Approved Date"
+            },
+            "description": {
+                "en": "Date when budget status transitioned to Approved. Null until approval."
+            },
+            "property_schema": {
+                "predicates": ["date", "approved"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Budget: Status ===",
+            "id": "erp-budget-status-prop",
+            "universal_id": "erp-budget",
+            "label": {
+                "en": "Status"
+            },
+            "description": {
+                "en": "Current lifecycle state of the budget"
+            },
+            "property_schema": {
+                "predicates": ["status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "erp-budget-status",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Budget: Notes ===",
+            "id": "erp-budget-notes-prop",
+            "universal_id": "erp-budget",
+            "label": {
+                "en": "Notes"
+            },
+            "description": {
+                "en": "Free-text notes, justification, or commentary"
+            },
+            "property_schema": {
+                "predicates": ["notes", "comment"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Budget Line: Description ===",
+            "id": "erp-budgetline-description-prop",
+            "universal_id": "erp-budget-line",
+            "label": {
+                "en": "Description"
+            },
+            "description": {
+                "en": "Human-readable description of the budget line (e.g., Cloud Infrastructure)"
+            },
+            "property_schema": {
+                "predicates": ["description", "name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Budget Line: Allocated (input) ===",
+            "id": "erp-budgetline-allocated-prop",
+            "universal_id": "erp-budget-line",
+            "label": {
+                "en": "Allocated"
+            },
+            "description": {
+                "en": "Planned allocation amount. Input property."
+            },
+            "property_schema": {
+                "predicates": ["allocated", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Budget Line: Committed (input) ===",
+            "id": "erp-budgetline-committed-prop",
+            "universal_id": "erp-budget-line",
+            "label": {
+                "en": "Committed"
+            },
+            "description": {
+                "en": "Amount committed via POs and contracts. Input property (updated from Layer 2)."
+            },
+            "property_schema": {
+                "predicates": ["committed", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Budget Line: Spent (input) ===",
+            "id": "erp-budgetline-spent-prop",
+            "universal_id": "erp-budget-line",
+            "label": {
+                "en": "Spent"
+            },
+            "description": {
+                "en": "Actual expenditure. Input property (updated from Layer 2)."
+            },
+            "property_schema": {
+                "predicates": ["spent", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Budget Line: Remaining (computed) ===",
+            "id": "erp-budgetline-remaining-prop",
+            "universal_id": "erp-budget-line",
+            "label": {
+                "en": "Remaining"
+            },
+            "description": {
+                "en": "Computed: allocated - committed - spent. Output of erp-budgetline-remaining-calc."
+            },
+            "property_schema": {
+                "predicates": ["remaining", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Budget Line: Variance (computed) ===",
+            "id": "erp-budgetline-variance-prop",
+            "universal_id": "erp-budget-line",
+            "label": {
+                "en": "Variance"
+            },
+            "description": {
+                "en": "Computed: allocated - spent. Output of erp-budgetline-variance-calc."
+            },
+            "property_schema": {
+                "predicates": ["variance", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Budget Line: Utilization % (computed) ===",
+            "id": "erp-budgetline-utilization-prop",
+            "universal_id": "erp-budget-line",
+            "label": {
+                "en": "Utilization %"
+            },
+            "description": {
+                "en": "Computed: (spent / allocated) * 100. Output of erp-budgetline-utilization-calc."
+            },
+            "property_schema": {
+                "predicates": ["utilization", "percentage"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-ratio"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Budget Version: Version Code ===",
+            "id": "erp-version-code-prop",
+            "universal_id": "erp-budget-version",
+            "label": {
+                "en": "Version Code"
+            },
+            "description": {
+                "en": "Version identifier: V1, V2, ORIGINAL, REVISED, FINAL"
+            },
+            "property_schema": {
+                "predicates": ["code", "identifier"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Budget Version: Version Date ===",
+            "id": "erp-version-date-prop",
+            "universal_id": "erp-budget-version",
+            "label": {
+                "en": "Version Date"
+            },
+            "description": {
+                "en": "Date this version was created or finalized"
+            },
+            "property_schema": {
+                "predicates": ["date", "version"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Budget Version: Is Active ===",
+            "id": "erp-version-is-active-prop",
+            "universal_id": "erp-budget-version",
+            "label": {
+                "en": "Is Active"
+            },
+            "description": {
+                "en": "Whether this is the current active version. Only one version per budget should be active."
+            },
+            "property_schema": {
+                "predicates": ["active", "status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Boolean" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Version Line: Description ===",
+            "id": "erp-versionline-description-prop",
+            "universal_id": "erp-budget-version-line",
+            "label": {
+                "en": "Description"
+            },
+            "description": {
+                "en": "Copied from the source budget line description at snapshot time"
+            },
+            "property_schema": {
+                "predicates": ["description", "name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Version Line: Allocated (immutable snapshot) ===",
+            "id": "erp-versionline-allocated-prop",
+            "universal_id": "erp-budget-version-line",
+            "label": {
+                "en": "Allocated"
+            },
+            "description": {
+                "en": "Allocated amount at the time the version was created. Immutable."
+            },
+            "property_schema": {
+                "predicates": ["allocated", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Version Line: Committed (immutable snapshot) ===",
+            "id": "erp-versionline-committed-prop",
+            "universal_id": "erp-budget-version-line",
+            "label": {
+                "en": "Committed"
+            },
+            "description": {
+                "en": "Committed amount at snapshot time. Immutable."
+            },
+            "property_schema": {
+                "predicates": ["committed", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Version Line: Spent (immutable snapshot) ===",
+            "id": "erp-versionline-spent-prop",
+            "universal_id": "erp-budget-version-line",
+            "label": {
+                "en": "Spent"
+            },
+            "description": {
+                "en": "Spent amount at snapshot time. Immutable."
+            },
+            "property_schema": {
+                "predicates": ["spent", "amount"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Version Line: GL Account Reference (denormalized snapshot) ===",
+            "id": "erp-versionline-gl-account-ref-prop",
+            "universal_id": "erp-budget-version-line",
+            "label": {
+                "en": "GL Account"
+            },
+            "description": {
+                "en": "Seed ID or label of the GL account. Denormalized from the source line relator to preserve the snapshot."
+            },
+            "property_schema": {
+                "predicates": ["account", "reference"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Transfer: Amount ===",
+            "id": "erp-transfer-amount-prop",
+            "universal_id": "erp-budget-transfer",
+            "label": {
+                "en": "Transfer Amount"
+            },
+            "description": {
+                "en": "Amount being reallocated between budget lines"
+            },
+            "property_schema": {
+                "predicates": ["amount", "transfer"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "$"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Transfer: Date ===",
+            "id": "erp-transfer-date-prop",
+            "universal_id": "erp-budget-transfer",
+            "label": {
+                "en": "Transfer Date"
+            },
+            "description": {
+                "en": "When the transfer was executed or requested"
+            },
+            "property_schema": {
+                "predicates": ["date", "transfer"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Transfer: Reason ===",
+            "id": "erp-transfer-reason-prop",
+            "universal_id": "erp-budget-transfer",
+            "label": {
+                "en": "Reason"
+            },
+            "description": {
+                "en": "Justification for the reallocation"
+            },
+            "property_schema": {
+                "predicates": ["reason", "justification"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": { "type": "Textual" },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Transfer: Status ===",
+            "id": "erp-transfer-status-prop",
+            "universal_id": "erp-budget-transfer",
+            "label": {
+                "en": "Transfer Status"
+            },
+            "description": {
+                "en": "Categorical values: Pending, Approved, Rejected"
+            },
+            "property_schema": {
+                "predicates": ["status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Artifact Summary: Department Dimension ===",
+            "id": "erp-bu-artifact-dept-prop",
+            "universal_id": "erp-budget-analytics-summary",
+            "label": {
+                "en": "Department"
+            },
+            "property_schema": {
+                "predicates": ["department", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Artifact Summary: Account Type Dimension ===",
+            "id": "erp-bu-artifact-acct-type-prop",
+            "universal_id": "erp-budget-analytics-summary",
+            "label": {
+                "en": "Account Type"
+            },
+            "property_schema": {
+                "predicates": ["account_type", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Artifact Summary: Fiscal Period Dimension ===",
+            "id": "erp-bv-artifact-period-prop",
+            "universal_id": "erp-budget-analytics-summary",
+            "label": {
+                "en": "Fiscal Period"
+            },
+            "property_schema": {
+                "predicates": ["period", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Artifact Summary: Total Allocated Measure ===",
+            "id": "erp-bu-artifact-allocated-prop",
+            "universal_id": "erp-budget-analytics-summary",
+            "label": {
+                "en": "Total Allocated"
+            },
+            "property_schema": {
+                "predicates": ["allocated", "total", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Artifact Summary: Total Spent Measure ===",
+            "id": "erp-bu-artifact-spent-prop",
+            "universal_id": "erp-budget-analytics-summary",
+            "label": {
+                "en": "Total Spent"
+            },
+            "property_schema": {
+                "predicates": ["spent", "total", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Artifact Summary: Total Remaining Measure ===",
+            "id": "erp-bu-artifact-remaining-prop",
+            "universal_id": "erp-budget-analytics-summary",
+            "label": {
+                "en": "Total Remaining"
+            },
+            "property_schema": {
+                "predicates": ["remaining", "total", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Artifact Summary: Avg Utilization Measure ===",
+            "id": "erp-bu-artifact-utilization-prop",
+            "universal_id": "erp-budget-analytics-summary",
+            "label": {
+                "en": "Avg Utilization %"
+            },
+            "property_schema": {
+                "predicates": ["utilization", "average", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-ratio"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Artifact Summary: Total Variance Measure ===",
+            "id": "erp-bv-artifact-variance-prop",
+            "universal_id": "erp-budget-analytics-summary",
+            "label": {
+                "en": "Total Variance"
+            },
+            "property_schema": {
+                "predicates": ["variance", "total", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Artifact Summary: Alert State (for thresholds) ===",
+            "id": "erp-bu-artifact-alert-state-prop",
+            "universal_id": "erp-budget-analytics-summary",
+            "label": {
+                "en": "Alert State"
+            },
+            "property_schema": {
+                "predicates": ["threshold", "state"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false,
+                        "allowed_values": ["not_crossed", "crossed"]
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        }
+    ],
+    "event_definitions": [
+        {
+            "id": "erp-budget-approved-event",
+            "app_id": "erp-budget-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Budget Approved"
+            },
+            "description": {
+                "en": "Emitted when a budget completes the approval process and status transitions to Approved"
+            },
+            "payload_schema": [
+                { "name": "budget_id", "field_type": "uuid" },
+                { "name": "budget_name", "field_type": "string" },
+                { "name": "total_amount", "field_type": "measurement", "measurement_frame": "Currency" },
+                { "name": "approved_by", "field_type": "uuid" },
+                { "name": "approved_date", "field_type": "measurement", "measurement_frame": "Timestamp" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "erp-budget-overspend-event",
+            "app_id": "erp-budget-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Budget Overspend Alert"
+            },
+            "description": {
+                "en": "Emitted when a budget line utilization exceeds the configured threshold (90%)"
+            },
+            "payload_schema": [
+                { "name": "artifact_instance_id", "field_type": "uuid" },
+                { "name": "measure_value", "field_type": "measurement", "measurement_frame": "Ratio" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "erp-budget-transfer-event",
+            "app_id": "erp-budget-app",
+            "scope": "tenant",
+            "label": {
+                "en": "Budget Transfer Approved"
+            },
+            "description": {
+                "en": "Emitted when a budget transfer between lines is approved and executed"
+            },
+            "payload_schema": [
+                { "name": "transfer_id", "field_type": "uuid" },
+                { "name": "source_line_id", "field_type": "uuid" },
+                { "name": "target_line_id", "field_type": "uuid" },
+                { "name": "amount", "field_type": "measurement", "measurement_frame": "Currency" },
+                { "name": "reason", "field_type": "string" }
+            ],
+            "use_seed": true
+        }
+    ],
+    "computations": [
+        {
+            "_comment": "=== COMPUTATION: Budget Line Remaining = allocated - committed - spent ===",
+            "id": "erp-budgetline-remaining-calc",
+            "code": "erp_budgetline_remaining",
+            "app_id": "erp-budget-app",
+            "label": {
+                "en": "Remaining Budget Calculation"
+            },
+            "description": {
+                "en": "Computes remaining = allocated - committed - spent for each budget line"
+            },
+            "inputs": [
+                { "source": "property", "variable_name": "allocated", "property_id": "erp-budgetline-allocated-prop" },
+                { "source": "property", "variable_name": "committed", "property_id": "erp-budgetline-committed-prop" },
+                { "source": "property", "variable_name": "spent", "property_id": "erp-budgetline-spent-prop" }
+            ],
+            "formula": "let a = allocated.value; let c = committed.value; let s = spent.value; a - c - s",
+            "output": {
+                "target_property_id": "erp-budgetline-remaining-prop"
+            },
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "erp-budgetline-allocated-prop" },
+                { "type": "PropertyChange", "property_id": "erp-budgetline-committed-prop" },
+                { "type": "PropertyChange", "property_id": "erp-budgetline-spent-prop" }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION: Budget Line Variance = allocated - spent ===",
+            "id": "erp-budgetline-variance-calc",
+            "code": "erp_budgetline_variance",
+            "app_id": "erp-budget-app",
+            "label": {
+                "en": "Budget Variance Calculation"
+            },
+            "description": {
+                "en": "Computes variance = allocated - spent for each budget line"
+            },
+            "inputs": [
+                { "source": "property", "variable_name": "allocated", "property_id": "erp-budgetline-allocated-prop" },
+                { "source": "property", "variable_name": "spent", "property_id": "erp-budgetline-spent-prop" }
+            ],
+            "formula": "let a = allocated.value; let s = spent.value; a - s",
+            "output": {
+                "target_property_id": "erp-budgetline-variance-prop"
+            },
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "erp-budgetline-allocated-prop" },
+                { "type": "PropertyChange", "property_id": "erp-budgetline-spent-prop" }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION: Budget Line Utilization = (spent / allocated) * 100 ===",
+            "id": "erp-budgetline-utilization-calc",
+            "code": "erp_budgetline_utilization",
+            "app_id": "erp-budget-app",
+            "label": {
+                "en": "Budget Utilization Calculation"
+            },
+            "description": {
+                "en": "Computes utilization percentage = (spent / allocated) * 100, returns 0 if allocated is zero"
+            },
+            "inputs": [
+                { "source": "property", "variable_name": "allocated", "property_id": "erp-budgetline-allocated-prop" },
+                { "source": "property", "variable_name": "spent", "property_id": "erp-budgetline-spent-prop" }
+            ],
+            "formula": "let a = allocated.value; let s = spent.value; if a > 0.0 { (s / a) * 100.0 } else { 0.0 }",
+            "output": {
+                "target_property_id": "erp-budgetline-utilization-prop"
+            },
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "erp-budgetline-allocated-prop" },
+                { "type": "PropertyChange", "property_id": "erp-budgetline-spent-prop" }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPUTATION: Budget Total = sum of line allocations ===",
+            "id": "erp-budget-total-calc",
+            "code": "erp_budget_total",
+            "app_id": "erp-budget-app",
+            "label": {
+                "en": "Budget Total Calculation"
+            },
+            "description": {
+                "en": "Aggregates all budget line allocated amounts to compute the budget header total"
+            },
+            "inputs": [
+                {
+                    "source": "role_aggregate",
+                    "variable_name": "lines_allocated",
+                    "role_id": "erp-budget-has-line-rel",
+                    "role_name": "component",
+                    "function": "Sum",
+                    "property_id": "erp-budgetline-allocated-prop"
+                }
+            ],
+            "formula": "lines_allocated",
+            "output": {
+                "target_property_id": "erp-budget-total-amount-prop"
+            },
+            "trigger_conditions": [
+                { "type": "PropertyChange", "property_id": "erp-budgetline-allocated-prop" },
+                { "type": "RelatorLifecycle", "relator_universal_id": "erp-budget-has-line-rel", "lifecycle": "Created" },
+                { "type": "RelatorLifecycle", "relator_universal_id": "erp-budget-has-line-rel", "lifecycle": "Deleted" }
+            ],
+            "priority": "Normal",
+            "use_seed": true
+        }
+    ],
+    "artifact_definitions": [
+        {
+            "_comment": "=== ARTIFACT 1: Budget Utilization by Department ===",
+            "_note": "Dimensions reference cross-layer relators (erp-budget-scope-rel, erp-budgetline-account-rel) that are not defined in this app. The artifact dimensions below use simplified Property-type sources as placeholders. In production, these would use RelatorPath sources traversing cross-app relators.",
+            "id": "erp-budget-utilization-by-dept-artifact",
+            "name": "Budget Utilization by Department",
+            "description": {
+                "en": "Aggregates budget line financial metrics by department and GL account type. Provides real-time visibility into spending against plan."
+            },
+            "source": {
+                "universal_id": "erp-budget-line"
+            },
+            "artifact_universal_id": "erp-budget-analytics-summary",
+            "app_id": "erp-budget-app",
+            "dimensions": [
+                {
+                    "id": "erp-bu-dept-dim",
+                    "code": "department",
+                    "source": {
+                        "type": "Property",
+                        "property_id": "erp-budgetline-description-prop"
+                    },
+                    "artifact_property_id": "erp-bu-artifact-dept-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "erp-bu-allocated-measure",
+                    "code": "total_allocated",
+                    "property_id": "erp-budgetline-allocated-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "erp-bu-artifact-allocated-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-bu-spent-measure",
+                    "code": "total_spent",
+                    "property_id": "erp-budgetline-spent-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "erp-bu-artifact-spent-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-bu-remaining-measure",
+                    "code": "total_remaining",
+                    "property_id": "erp-budgetline-remaining-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "erp-bu-artifact-remaining-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-bu-utilization-measure",
+                    "code": "avg_utilization",
+                    "property_id": "erp-budgetline-utilization-prop",
+                    "function": "Avg",
+                    "artifact_property_id": "erp-bu-artifact-utilization-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [
+                {
+                    "id": "erp-bu-overspend-threshold",
+                    "code": "overspend_alert",
+                    "measure_id": "erp-bu-utilization-measure",
+                    "condition": {
+                        "operator": "GreaterThan",
+                        "value": 90.0
+                    },
+                    "event_type_id": "erp-budget-overspend-event",
+                    "state_property_id": "erp-bu-artifact-alert-state-prop",
+                    "reset_on": "OnDimensionChange",
+                    "use_seed": true
+                }
+            ],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT 2: Budget Variance by Fiscal Period ===",
+            "_note": "Period dimension would use RelatorPath through cross-app erp-budget-period-rel. Simplified to Property source as placeholder.",
+            "id": "erp-budget-variance-by-period-artifact",
+            "name": "Budget Variance by Fiscal Period",
+            "description": {
+                "en": "Aggregates budget line financial metrics by fiscal period. Enables period-over-period comparison and trend analysis."
+            },
+            "source": {
+                "universal_id": "erp-budget-line"
+            },
+            "artifact_universal_id": "erp-budget-analytics-summary",
+            "app_id": "erp-budget-app",
+            "dimensions": [
+                {
+                    "id": "erp-bv-period-dim",
+                    "code": "fiscal_period",
+                    "source": {
+                        "type": "Property",
+                        "property_id": "erp-budgetline-description-prop"
+                    },
+                    "artifact_property_id": "erp-bv-artifact-period-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "erp-bv-allocated-measure",
+                    "code": "total_allocated",
+                    "property_id": "erp-budgetline-allocated-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "erp-bu-artifact-allocated-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-bv-spent-measure",
+                    "code": "total_spent",
+                    "property_id": "erp-budgetline-spent-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "erp-bu-artifact-spent-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-bv-variance-measure",
+                    "code": "total_variance",
+                    "property_id": "erp-budgetline-variance-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "erp-bv-artifact-variance-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": {
+                "strategy": "Eager"
+            },
+            "use_seed": true
+        }
+    ],
+    "data_schemas": [],
+    "apps": [
+        {
+            "id": "erp-budget-app",
+            "tenant_id": "model1-testing-tenant",
+            "label": {
+                "en": "ERP Budget Application"
+            },
+            "description": {
+                "en": "Budget allocation, tracking, and approval workflow. Manages budgets with line-level financial tracking (allocated/committed/spent), reactive computations (remaining/variance/utilization), version snapshots, and transfers. Includes 3-stage approval process."
+            },
+            "use_seed": true,
+            "modules": [
+                {
+                    "id": "erp-budget-core-module",
+                    "use_seed": true,
+                    "label": {
+                        "en": "Budget Core Module"
+                    },
+                    "description": {
+                        "en": "Core budget management: budgets, lines, versions, transfers"
+                    },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": [
+                            "erp-budget-transfer-event"
+                        ]
+                    }
+                },
+                {
+                    "id": "erp-budget-analytics-module",
+                    "use_seed": true,
+                    "label": {
+                        "en": "Budget Analytics Module"
+                    },
+                    "description": {
+                        "en": "Intelligence artifacts: utilization by department, variance by period"
+                    },
+                    "context": {
+                        "subscribed_events": [
+                            "erp-budget-approved-event"
+                        ],
+                        "publishable_events": [
+                            "erp-budget-overspend-event"
+                        ]
+                    }
+                },
+                {
+                    "id": "erp-budget-process-module",
+                    "use_seed": true,
+                    "label": {
+                        "en": "Budget Process Module"
+                    },
+                    "description": {
+                        "en": "Budget approval process: department review, finance review, executive approval"
+                    },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": [
+                            "erp-budget-approved-event"
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "foundation_role_assignments": [
+        {
+            "id": "fra-erp-admin-admin-budget",
+            "user_id": "erp-admin",
+            "role": "AppAdmin",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-budget-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-admin-dev-budget",
+            "user_id": "erp-admin",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-budget-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-developer-dev-budget",
+            "user_id": "erp-developer",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-budget-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-user-user-budget",
+            "user_id": "erp-user",
+            "role": "AppUser",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-budget-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        }
+    ]
+}

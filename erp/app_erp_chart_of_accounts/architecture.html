@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Chart of Accounts — Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 2rem; color: #1a1a2e; background: #f8f9fa; line-height: 1.6; }
+        h1 { color: #16213e; border-bottom: 3px solid #0f3460; padding-bottom: 0.5rem; }
+        h2 { color: #0f3460; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.3rem; margin-top: 2rem; }
+        h3 { color: #533483; }
+        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #0f3460; color: white; }
+        tr:nth-child(even) { background: #f2f2f2; }
+        .mermaid { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 1rem 0; }
+        .decision-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .layer-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
+        .layer-0 { background: #d4edda; color: #155724; }
+        code { background: #e9ecef; padding: 2px 6px; border-radius: 3px; font-size: 0.9rem; }
+        .info-box { background: #e8f4fd; border-left: 4px solid #2196F3; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .dual-container { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .dual-container > div { flex: 1; min-width: 400px; }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .stat-card { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+        .stat-card .number { font-size: 1.8rem; font-weight: bold; color: #0f3460; }
+        .stat-card .label { font-size: 0.85rem; color: #666; }
+    </style>
+</head>
+<body>
+
+    <h1>ERP Chart of Accounts <span class="layer-badge layer-0">Layer 0</span></h1>
+
+    <!-- ============================================================ -->
+    <!-- 1. OVERVIEW -->
+    <!-- ============================================================ -->
+    <h2>1. Overview</h2>
+
+    <p>The Chart of Accounts (CoA) is the <strong>financial classification backbone</strong> of the enterprise. Every monetary transaction ultimately posts to a GL account, and the CoA defines the complete taxonomy of those accounts. It is a <strong>Layer 0</strong> block that is <strong>independently deployable</strong> &mdash; it can be loaded as a separate metadata app without requiring other blocks to exist first.</p>
+
+    <div class="info-box">
+        <strong>Three Fundamental Questions Answered:</strong>
+        <ol>
+            <li><strong>Where is value classified?</strong> GL accounts as the atomic posting target.</li>
+            <li><strong>How are accounts organized?</strong> Account groups for reporting structure (Balance Sheet, Income Statement).</li>
+            <li><strong>What is the account's financial nature?</strong> Account type and subtype for automatic debit/credit behavior and financial statement placement.</li>
+        </ol>
+    </div>
+
+    <p>Because it is dependency-free, the Chart of Accounts can be deployed, validated, and populated before any transactional ERP block exists. Every financial domain &mdash; Budgeting, Journal Entries, Accounts Payable, Accounts Receivable &mdash; references the CoA.</p>
+
+    <h3>Compatibility with Event-Driven Accounting</h3>
+
+    <p>This design is intentionally compatible with the event-driven accounting model planned for Layer 1. In that model, <strong>Economic Events</strong> (sales, purchases, payments) are the primary transactional concept &mdash; journal entries are derived representations, not manually created artifacts. GL accounts serve as classification targets that Economic Events post to, rather than being the source of transactions themselves. This distinction keeps the CoA purely structural: it defines <em>where</em> value is classified, not <em>how</em> it gets there.</p>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="number">4</div>
+            <div class="label">Universals</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">4</div>
+            <div class="label">Relators</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">22</div>
+            <div class="label">GL Accounts</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">8</div>
+            <div class="label">Account Groups</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">5</div>
+            <div class="label">Account Types</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">15</div>
+            <div class="label">Account Subtypes</div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 2. UNIVERSAL MAP -->
+    <!-- ============================================================ -->
+    <h2>2. Universal Map</h2>
+
+    <p>The CoA domain model consists of four universals. Two are enumeration universals (Account Type, Account Subtype) and two are entity universals (GL Account, Account Group). A fifth universal (<code>erp-account-structure-summary</code>) serves as the artifact output target.</p>
+
+    <div class="mermaid">
+classDiagram
+    class GLAccount {
+        &lt;&lt;Kind / Endurant&gt;&gt;
+        erp-gl-account
+        ----
+        code : Categorical
+        name : Textual
+        description : Textual
+        is_active : Boolean
+        normal_balance : Categorical
+        is_summary : Boolean
+        is_control : Boolean
+        is_reconcilable : Boolean
+    }
+
+    class AccountGroup {
+        &lt;&lt;Kind / Endurant&gt;&gt;
+        erp-account-group
+        ----
+        code : Categorical
+        name : Textual
+        sequence : Measurement[std-integer]
+    }
+
+    class AccountType {
+        &lt;&lt;Kind / Endurant / Enum&gt;&gt;
+        erp-account-type
+        ----
+        name : Categorical
+        ----
+        Asset | Liability | Equity
+        Revenue | Expense
+    }
+
+    class AccountSubtype {
+        &lt;&lt;Kind / Endurant / Enum&gt;&gt;
+        erp-account-subtype
+        ----
+        name : Categorical
+        ----
+        Current Asset | Fixed Asset
+        Intangible Asset | Current Liability
+        Long-term Liability | Retained Earnings
+        Share Capital | COGS | OpEx
+        Depreciation | Amortization
+        Interest Income | Other Income
+        Tax Expense | Interest Expense
+    }
+
+    class AccountStructureSummary {
+        &lt;&lt;Kind / Artifact Output&gt;&gt;
+        erp-account-structure-summary
+        ----
+        account_type : Categorical
+        account_subtype : Categorical
+        total_accounts : Measurement
+        active_accounts : Measurement
+    }
+
+    GLAccount --> AccountType : classified as
+    GLAccount --> AccountSubtype : further classified as
+    AccountGroup o-- GLAccount : groups
+    GLAccount --> GLAccount : parent of
+    GLAccount ..> AccountStructureSummary : aggregated into
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 3. RELATOR MAP -->
+    <!-- ============================================================ -->
+    <h2>3. Relator Map</h2>
+
+    <p>Four relators define the structural relationships within the Chart of Accounts. Each specializes a foundation-level relator type via the <code>generalization-relator</code> taxonomy.</p>
+
+    <div class="mermaid">
+graph LR
+    subgraph "Relator Definitions"
+        R1["erp-account-group-has-account-rel<br/><i>Aggregation</i>"]
+        R2["erp-account-type-rel<br/><i>Attribution</i>"]
+        R3["erp-account-subtype-rel<br/><i>Attribution</i>"]
+        R4["erp-account-parent-rel<br/><i>Aggregation</i>"]
+    end
+
+    subgraph "Universals"
+        AG["Account Group"]
+        GL["GL Account"]
+        AT["Account Type"]
+        AS["Account Subtype"]
+    end
+
+    R1 -- "aggregate" --> AG
+    R1 -- "part" --> GL
+
+    R2 -- "account" --> GL
+    R2 -- "type" --> AT
+
+    R3 -- "account" --> GL
+    R3 -- "subtype" --> AS
+
+    R4 -- "aggregate" --> GL
+    R4 -- "part" --> GL
+
+    subgraph "Foundation Taxonomy"
+        AGG["aggregation-relator"]
+        ATT["attribution-relator"]
+    end
+
+    R1 -. "generalizes" .-> AGG
+    R2 -. "generalizes" .-> ATT
+    R3 -. "generalizes" .-> ATT
+    R4 -. "generalizes" .-> AGG
+    </div>
+
+    <table>
+        <tr>
+            <th>Relator</th>
+            <th>Role 1</th>
+            <th>Role 2</th>
+            <th>Taxonomy</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td><code>erp-account-group-has-account-rel</code></td>
+            <td>aggregate &rarr; Account Group</td>
+            <td>part &rarr; GL Account</td>
+            <td>aggregation-relator</td>
+            <td>Group contains accounts. Accounts survive group reorganization.</td>
+        </tr>
+        <tr>
+            <td><code>erp-account-type-rel</code></td>
+            <td>account &rarr; GL Account</td>
+            <td>type &rarr; Account Type</td>
+            <td>attribution-relator</td>
+            <td>Classifies account as Asset, Liability, Equity, Revenue, or Expense.</td>
+        </tr>
+        <tr>
+            <td><code>erp-account-subtype-rel</code></td>
+            <td>account &rarr; GL Account</td>
+            <td>subtype &rarr; Account Subtype</td>
+            <td>attribution-relator</td>
+            <td>Finer classification within the five types.</td>
+        </tr>
+        <tr>
+            <td><code>erp-account-parent-rel</code></td>
+            <td>aggregate &rarr; GL Account</td>
+            <td>part &rarr; GL Account</td>
+            <td>aggregation-relator</td>
+            <td>Recursive hierarchy for balance consolidation.</td>
+        </tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- 4. ACCOUNT HIERARCHY EXAMPLE -->
+    <!-- ============================================================ -->
+    <h2>4. Account Hierarchy (Recursive Parent-Child)</h2>
+
+    <p>The <code>erp-account-parent-rel</code> relator creates a multi-level tree of accounts. Summary accounts (marked <code>is_summary = true</code>) aggregate child balances; leaf accounts receive direct postings. This hierarchy is the <strong>computational</strong> structure for balance consolidation.</p>
+
+    <div class="mermaid">
+graph TD
+    A1000["<b>1000 Assets</b><br/><i>Summary | Debit</i>"]
+    A1100["<b>1100 Current Assets</b><br/><i>Summary | Debit</i>"]
+    A1200["<b>1200 Fixed Assets</b><br/><i>Summary | Debit</i>"]
+    A1110["1110 Cash &amp; Equivalents<br/><i>Leaf | Debit | Reconcilable</i>"]
+    A1120["1120 Accounts Receivable<br/><i>Leaf | Debit | Control</i>"]
+    A1130["1130 Inventory<br/><i>Leaf | Debit</i>"]
+    A1140["1140 Prepaid Expenses<br/><i>Leaf | Debit</i>"]
+    A1210["1210 Property &amp; Equipment<br/><i>Leaf | Debit</i>"]
+    A1220["1220 Accum. Depreciation<br/><i>Leaf | Credit (contra)</i>"]
+
+    A1000 --> A1100
+    A1000 --> A1200
+    A1100 --> A1110
+    A1100 --> A1120
+    A1100 --> A1130
+    A1100 --> A1140
+    A1200 --> A1210
+    A1200 --> A1220
+
+    A2000["<b>2000 Liabilities</b><br/><i>Summary | Credit</i>"]
+    A2100["2100 Accounts Payable<br/><i>Leaf | Credit | Control</i>"]
+    A2200["2200 Accrued Liabilities<br/><i>Leaf | Credit</i>"]
+    A2300["2300 Long-term Debt<br/><i>Leaf | Credit | Reconcilable</i>"]
+
+    A2000 --> A2100
+    A2000 --> A2200
+    A2000 --> A2300
+
+    A3000["<b>3000 Equity</b><br/><i>Summary | Credit</i>"]
+    A3100["3100 Share Capital<br/><i>Leaf | Credit</i>"]
+    A3200["3200 Retained Earnings<br/><i>Leaf | Credit</i>"]
+
+    A3000 --> A3100
+    A3000 --> A3200
+
+    style A1000 fill:#d4edda,stroke:#28a745
+    style A1100 fill:#d4edda,stroke:#28a745
+    style A1200 fill:#d4edda,stroke:#28a745
+    style A2000 fill:#cce5ff,stroke:#007bff
+    style A3000 fill:#f8d7da,stroke:#dc3545
+    style A1220 fill:#fff3cd,stroke:#ffc107
+    style A1120 fill:#e2e3ff,stroke:#6c63ff
+    style A2100 fill:#e2e3ff,stroke:#6c63ff
+    </div>
+
+    <div class="info-box">
+        <strong>Legend:</strong>
+        Green = Asset summary accounts &bull;
+        Blue = Liability summary &bull;
+        Red = Equity summary &bull;
+        Yellow = Contra account (reversed normal balance) &bull;
+        Purple = Control accounts (subsidiary ledger backing)
+    </div>
+
+    <p>Revenue and Expense accounts (4000-series, 5000-series, 6000-series) are flat in this sample data &mdash; they have no parent hierarchy since they do not require multi-level consolidation in a basic chart of accounts. They can be nested if the enterprise grows.</p>
+
+    <!-- ============================================================ -->
+    <!-- 5. DUAL STRUCTURE EXPLANATION -->
+    <!-- ============================================================ -->
+    <h2>5. Dual Structure: Hierarchy vs Groups</h2>
+
+    <p>The CoA maintains two independent structural mechanisms that serve distinct purposes. Understanding their separation is critical for correct usage at higher layers.</p>
+
+    <div class="dual-container">
+        <div>
+            <h3>Account Hierarchy (Computational)</h3>
+            <p><code>erp-account-parent-rel</code></p>
+            <div class="mermaid">
+graph TD
+    H1000["1000 Assets<br/><i>is_summary=true</i>"]
+    H1100["1100 Current Assets<br/><i>is_summary=true</i>"]
+    H1110["1110 Cash"]
+    H1120["1120 AR"]
+    H1130["1130 Inventory"]
+    H1140["1140 Prepaid"]
+    H1200["1200 Fixed Assets<br/><i>is_summary=true</i>"]
+    H1210["1210 Property"]
+    H1220["1220 Accum. Depr."]
+
+    H1000 --> H1100
+    H1000 --> H1200
+    H1100 --> H1110
+    H1100 --> H1120
+    H1100 --> H1130
+    H1100 --> H1140
+    H1200 --> H1210
+    H1200 --> H1220
+
+    style H1000 fill:#e8f5e9,stroke:#4caf50
+    style H1100 fill:#e8f5e9,stroke:#4caf50
+    style H1200 fill:#e8f5e9,stroke:#4caf50
+            </div>
+            <ul>
+                <li>Determines <strong>balance roll-up</strong></li>
+                <li>Controls <strong>posting constraints</strong> (summary = no posting)</li>
+                <li>Used by <strong>reactive computations</strong> at Layer 1</li>
+                <li>Changes <strong>infrequently</strong></li>
+            </ul>
+        </div>
+        <div>
+            <h3>Account Groups (Presentational)</h3>
+            <p><code>erp-account-group-has-account-rel</code></p>
+            <div class="mermaid">
+graph TD
+    GCA["CA - Current Assets<br/><i>seq: 1</i>"]
+    GFA["FA - Fixed Assets<br/><i>seq: 2</i>"]
+
+    GCA --- G1110["1110 Cash"]
+    GCA --- G1120["1120 AR"]
+    GCA --- G1130["1130 Inventory"]
+    GCA --- G1140["1140 Prepaid"]
+    GFA --- G1210["1210 Property"]
+    GFA --- G1220["1220 Accum. Depr."]
+
+    style GCA fill:#e3f2fd,stroke:#1976d2
+    style GFA fill:#e3f2fd,stroke:#1976d2
+            </div>
+            <ul>
+                <li>Determines <strong>financial statement sections</strong></li>
+                <li>Flat grouping &mdash; no nesting</li>
+                <li>Can change <strong>independently</strong> (IFRS vs GAAP)</li>
+                <li><strong>Only leaf accounts</strong> are grouped (not summary accounts)</li>
+            </ul>
+        </div>
+    </div>
+
+    <table>
+        <tr>
+            <th>Concern</th>
+            <th>Use</th>
+            <th>Reason</th>
+        </tr>
+        <tr>
+            <td>What is this account's consolidated balance?</td>
+            <td><code>erp-account-parent-rel</code></td>
+            <td>Computational roll-up</td>
+        </tr>
+        <tr>
+            <td>Where does this account appear on the income statement?</td>
+            <td><code>erp-account-group-has-account-rel</code></td>
+            <td>Presentational grouping</td>
+        </tr>
+        <tr>
+            <td>Can I post to this account?</td>
+            <td><code>is_summary</code> property</td>
+            <td>Posting constraint from parent hierarchy</td>
+        </tr>
+        <tr>
+            <td>How should I reclassify for a new reporting standard?</td>
+            <td>Reassign account groups</td>
+            <td>Groups are independent of hierarchy</td>
+        </tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- 6. PROPERTY CATALOG -->
+    <!-- ============================================================ -->
+    <h2>6. Property Catalog</h2>
+
+    <h3>GL Account (<code>erp-gl-account</code>)</h3>
+    <table>
+        <tr>
+            <th>Property ID</th>
+            <th>Label</th>
+            <th>Type</th>
+            <th>Frame</th>
+            <th>Cardinality</th>
+            <th>Label Options</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <td><code>erp-gl-account-code-prop</code></td>
+            <td>Account Code</td>
+            <td>Categorical</td>
+            <td>&mdash;</td>
+            <td>1..1</td>
+            <td>participates, seq 1, prefix <code>#</code></td>
+            <td>Unique numeric code (e.g., 1000, 1110)</td>
+        </tr>
+        <tr>
+            <td><code>erp-gl-account-name-prop</code></td>
+            <td>Account Name</td>
+            <td>Textual</td>
+            <td>&mdash;</td>
+            <td>1..1</td>
+            <td>participates, seq 2</td>
+            <td>Human-readable name</td>
+        </tr>
+        <tr>
+            <td><code>erp-gl-account-description-prop</code></td>
+            <td>Description</td>
+            <td>Textual</td>
+            <td>&mdash;</td>
+            <td>0..1</td>
+            <td>&mdash;</td>
+            <td>Detailed purpose description</td>
+        </tr>
+        <tr>
+            <td><code>erp-gl-account-is-active-prop</code></td>
+            <td>Is Active</td>
+            <td>Boolean</td>
+            <td>&mdash;</td>
+            <td>1..1</td>
+            <td>&mdash;</td>
+            <td>Whether account accepts postings</td>
+        </tr>
+        <tr>
+            <td><code>erp-gl-account-normal-balance-prop</code></td>
+            <td>Normal Balance</td>
+            <td>Categorical</td>
+            <td>&mdash;</td>
+            <td>1..1</td>
+            <td>&mdash;</td>
+            <td><code>Debit</code> or <code>Credit</code>. Explicit for contra accounts.</td>
+        </tr>
+        <tr>
+            <td><code>erp-gl-account-is-summary-prop</code></td>
+            <td>Is Summary</td>
+            <td>Boolean</td>
+            <td>&mdash;</td>
+            <td>1..1</td>
+            <td>&mdash;</td>
+            <td>Parent/header account. Rejects direct postings.</td>
+        </tr>
+        <tr>
+            <td><code>erp-gl-account-is-control-prop</code></td>
+            <td>Is Control Account</td>
+            <td>Boolean</td>
+            <td>&mdash;</td>
+            <td>1..1</td>
+            <td>&mdash;</td>
+            <td>Backed by subsidiary ledger (AR, AP).</td>
+        </tr>
+        <tr>
+            <td><code>erp-gl-account-is-reconcilable-prop</code></td>
+            <td>Is Reconcilable</td>
+            <td>Boolean</td>
+            <td>&mdash;</td>
+            <td>1..1</td>
+            <td>&mdash;</td>
+            <td>Requires periodic reconciliation.</td>
+        </tr>
+    </table>
+
+    <p><strong>Instance label format:</strong> <code>#1110 - Cash and Equivalents</code> (prefix + code + separator + name)</p>
+
+    <h3>Account Group (<code>erp-account-group</code>)</h3>
+    <table>
+        <tr>
+            <th>Property ID</th>
+            <th>Label</th>
+            <th>Type</th>
+            <th>Frame</th>
+            <th>Cardinality</th>
+            <th>Label Options</th>
+        </tr>
+        <tr>
+            <td><code>erp-account-group-code-prop</code></td>
+            <td>Group Code</td>
+            <td>Categorical</td>
+            <td>&mdash;</td>
+            <td>1..1</td>
+            <td>participates, seq 1</td>
+        </tr>
+        <tr>
+            <td><code>erp-account-group-name-prop</code></td>
+            <td>Group Name</td>
+            <td>Textual</td>
+            <td>&mdash;</td>
+            <td>1..1</td>
+            <td>participates, seq 2</td>
+        </tr>
+        <tr>
+            <td><code>erp-account-group-sequence-prop</code></td>
+            <td>Display Sequence</td>
+            <td>Measurement</td>
+            <td>std-integer</td>
+            <td>1..1</td>
+            <td>&mdash;</td>
+        </tr>
+    </table>
+
+    <h3>Account Type (<code>erp-account-type</code>) &mdash; Enum</h3>
+    <table>
+        <tr>
+            <th>Property ID</th>
+            <th>Label</th>
+            <th>Type</th>
+            <th>Cardinality</th>
+            <th>Label Options</th>
+        </tr>
+        <tr>
+            <td><code>erp-account-type-name-prop</code></td>
+            <td>Type Name</td>
+            <td>Categorical</td>
+            <td>1..1</td>
+            <td>participates, seq 1</td>
+        </tr>
+    </table>
+    <p><strong>Enum values:</strong> <code>Asset</code>, <code>Liability</code>, <code>Equity</code>, <code>Revenue</code>, <code>Expense</code></p>
+
+    <h3>Account Subtype (<code>erp-account-subtype</code>) &mdash; Enum</h3>
+    <table>
+        <tr>
+            <th>Property ID</th>
+            <th>Label</th>
+            <th>Type</th>
+            <th>Cardinality</th>
+            <th>Label Options</th>
+        </tr>
+        <tr>
+            <td><code>erp-account-subtype-name-prop</code></td>
+            <td>Subtype Name</td>
+            <td>Categorical</td>
+            <td>1..1</td>
+            <td>participates, seq 1</td>
+        </tr>
+    </table>
+    <p><strong>Enum values (15):</strong> <code>Current Asset</code>, <code>Fixed Asset</code>, <code>Intangible Asset</code>, <code>Current Liability</code>, <code>Long-term Liability</code>, <code>Retained Earnings</code>, <code>Share Capital</code>, <code>COGS</code>, <code>OpEx</code>, <code>Depreciation</code>, <code>Amortization</code>, <code>Interest Income</code>, <code>Other Income</code>, <code>Tax Expense</code>, <code>Interest Expense</code></p>
+
+    <!-- ============================================================ -->
+    <!-- 7. CROSS-LAYER REFERENCES -->
+    <!-- ============================================================ -->
+    <h2>7. Cross-Layer References</h2>
+
+    <p>These connections are <strong>not implemented in Layer 0</strong> but are documented so that higher-layer blocks know how to connect to the Chart of Accounts.</p>
+
+    <div class="mermaid">
+graph LR
+    subgraph "Layer 0 - Chart of Accounts"
+        GL["erp-gl-account"]
+        GRP["erp-account-group"]
+    end
+
+    subgraph "Layer 1 - Transactional"
+        JL["Journal Line"]
+        BL["Budget Line"]
+        EE["Economic Event"]
+    end
+
+    subgraph "Layer 2 - Reporting"
+        FS["Financial Statement Section"]
+    end
+
+    subgraph "Layer 0 - Org Structure"
+        CC["Cost Center"]
+    end
+
+    GL -- "posts to<br/><i>attribution</i>" --> JL
+    GL -- "budgeted at<br/><i>attribution</i>" --> BL
+    GL -- "classified under<br/><i>attribution</i>" --> EE
+    GRP -- "appears in<br/><i>attribution</i>" --> FS
+    GL -. "allocated via<br/><i>association</i><br/>(cross-block)" .-> CC
+    </div>
+
+    <table>
+        <tr>
+            <th>Source (This Block)</th>
+            <th>Target Block (Layer)</th>
+            <th>Relator Type</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td><code>erp-gl-account</code></td>
+            <td>Journal Line (Layer 1)</td>
+            <td>attribution-relator</td>
+            <td>"Posts to." Every journal line debits or credits exactly one GL account.</td>
+        </tr>
+        <tr>
+            <td><code>erp-gl-account</code></td>
+            <td>Budget Line (Layer 1)</td>
+            <td>attribution-relator</td>
+            <td>"Budgeted at." Budget lines allocate planned amounts to GL accounts.</td>
+        </tr>
+        <tr>
+            <td><code>erp-gl-account</code></td>
+            <td>Economic Event (Layer 1)</td>
+            <td>attribution-relator</td>
+            <td>"Classified under." Economic events reference GL accounts as posting targets.</td>
+        </tr>
+        <tr>
+            <td><code>erp-account-group</code></td>
+            <td>Financial Statement Section (Layer 2)</td>
+            <td>attribution-relator</td>
+            <td>"Appears in." Account groups map to report sections.</td>
+        </tr>
+        <tr>
+            <td><code>erp-gl-account</code></td>
+            <td>Cost Center (Org Structure, Layer 0)</td>
+            <td>association-relator</td>
+            <td>"Allocated via." Optional default cost center for expense allocation. Cross-block.</td>
+        </tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- 8. DECISION POINTS -->
+    <!-- ============================================================ -->
+    <h2>8. Design Decision Points</h2>
+
+    <div class="decision-box">
+        <h3>Account Groups vs Account Hierarchy</h3>
+        <p><strong>Decision:</strong> Maintain two independent structural mechanisms with distinct purposes.</p>
+        <ul>
+            <li><strong>Account hierarchy</strong> (<code>erp-account-parent-rel</code>) = <strong>computational</strong> structure for balance consolidation. Drives reactive computations, balance roll-up, and posting constraints.</li>
+            <li><strong>Account groups</strong> (<code>erp-account-group-has-account-rel</code>) = <strong>presentational</strong> structure for financial statement sections. Can change independently (IFRS vs GAAP migration) without affecting computational roll-up.</li>
+        </ul>
+        <p><strong>Rationale:</strong> Regulatory changes, new reporting standards, or management preferences may require regrouping accounts without altering their computational parent. The two assignments are independent.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Aggregation for Group-Account Relationship</h3>
+        <p><strong>Decision:</strong> Use <code>aggregation-relator</code> (not composition) for <code>erp-account-group-has-account-rel</code>.</p>
+        <p><strong>Rationale:</strong> When a group is dissolved or reorganized, the underlying GL accounts must survive &mdash; they contain historical posting data. Accounts are reassigned to new groups. Composition would imply the account's lifecycle is bound to the group, which is incorrect.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Recursive Account Hierarchy for Consolidation</h3>
+        <p><strong>Decision:</strong> Use a self-referencing <code>erp-account-parent-rel</code> (GL Account &rarr; GL Account) with aggregation semantics.</p>
+        <p><strong>Rationale:</strong> Enterprise GL systems commonly have 3+ levels of nesting (Assets &rarr; Current Assets &rarr; Cash). The recursive structure naturally maps to reactive computation cascade at Layer 1. Aggregation is correct because children survive parent restructuring.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Normal Balance Stored Explicitly</h3>
+        <p><strong>Decision:</strong> Store <code>normal_balance</code> as an explicit Categorical property (<code>Debit</code>/<code>Credit</code>) rather than deriving it from account type.</p>
+        <p><strong>Rationale:</strong> Contra accounts reverse the normal direction:</p>
+        <ul>
+            <li><strong>Accumulated Depreciation</strong> &mdash; Asset account with <strong>Credit</strong> normal balance</li>
+            <li><strong>Sales Returns</strong> &mdash; Revenue account with <strong>Debit</strong> normal balance</li>
+            <li><strong>Owner's Drawings</strong> &mdash; Equity account with <strong>Debit</strong> normal balance</li>
+        </ul>
+        <p>Storing it explicitly avoids special-case logic for contra accounts.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Control Accounts and Subsidiary Ledgers</h3>
+        <p><strong>Decision:</strong> Declare <code>is_control_account</code> as a boolean at Layer 0; enforcement at Layer 1.</p>
+        <p><strong>Rationale:</strong> At Layer 0, we declare intent (this account backs a subsidiary ledger). At Layer 1, the posting engine enforces the invariant: control account balance = sum of subsidiary entries. Examples: Accounts Receivable (acct 1120), Accounts Payable (acct 2100).</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Account Type vs Account Subtype (Two-Level Classification)</h3>
+        <p><strong>Decision:</strong> Separate into 5 fundamental types and 15+ subtypes, each as its own enum universal with attribution relators.</p>
+        <p><strong>Rationale:</strong></p>
+        <ul>
+            <li><strong>Account Type</strong> (5 values) determines fundamental behavior: accounting equation side, financial statement (Balance Sheet vs Income Statement), normal balance direction.</li>
+            <li><strong>Account Subtype</strong> (15+ values) provides finer classification for regulatory reporting, depreciation schedules (Fixed Assets), aging reports (Current Assets), etc.</li>
+        </ul>
+        <p>Both are attribution relators (not properties) because they reference enum universals with their own identity and potential for future enrichment.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3><code>is_summary</code> as Explicit Boolean</h3>
+        <p><strong>Decision:</strong> Store <code>is_summary</code> as an explicit boolean property rather than inferring it from the presence of children in the hierarchy.</p>
+        <p><strong>Rationale:</strong> During account restructuring, a leaf account may temporarily become a parent (or vice versa). Inferring summary status from hierarchy presence would create ambiguity during transitions. The explicit boolean makes the posting constraint unambiguous: the Layer 1 posting engine rejects any posting to an account where <code>is_summary = true</code>, regardless of current hierarchy shape.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 9. ARTIFACT DEFINITION -->
+    <!-- ============================================================ -->
+    <h2>9. Artifact Definition: Account Structure Summary</h2>
+
+    <p>Even at Layer 0 with no transactional data, one analytical artifact is immediately useful for understanding the shape of the chart of accounts.</p>
+
+    <div class="mermaid">
+graph LR
+    subgraph "Source"
+        SRC["erp-gl-account<br/>(22 instances)"]
+    end
+
+    subgraph "Dimensions"
+        D1["Account Type<br/><i>via erp-account-type-rel</i>"]
+        D2["Account Subtype<br/><i>via erp-account-subtype-rel</i>"]
+    end
+
+    subgraph "Measures"
+        M1["Count: Total Accounts"]
+        M2["Count: Active Accounts"]
+    end
+
+    subgraph "Threshold"
+        T1["Total Accounts &gt; 20<br/>&rarr; erp-account-structure-threshold-event"]
+    end
+
+    subgraph "Output"
+        OUT["erp-account-structure-summary"]
+    end
+
+    SRC --> D1
+    SRC --> D2
+    SRC --> M1
+    SRC --> M2
+    M1 --> T1
+    D1 --> OUT
+    D2 --> OUT
+    M1 --> OUT
+    M2 --> OUT
+    </div>
+
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>ID</td>
+            <td><code>erp-account-structure-artifact</code></td>
+        </tr>
+        <tr>
+            <td>Source Universal</td>
+            <td><code>erp-gl-account</code></td>
+        </tr>
+        <tr>
+            <td>Output Universal</td>
+            <td><code>erp-account-structure-summary</code></td>
+        </tr>
+        <tr>
+            <td>Dimension 1</td>
+            <td>Account Type &mdash; via <code>erp-account-type-rel</code> &rarr; <code>erp-account-type-name-prop</code></td>
+        </tr>
+        <tr>
+            <td>Dimension 2</td>
+            <td>Account Subtype &mdash; via <code>erp-account-subtype-rel</code> &rarr; <code>erp-account-subtype-name-prop</code></td>
+        </tr>
+        <tr>
+            <td>Measure 1</td>
+            <td><strong>Count</strong> &mdash; Total GL accounts per type/subtype combination</td>
+        </tr>
+        <tr>
+            <td>Measure 2</td>
+            <td><strong>Count</strong> &mdash; Active GL accounts (note: <code>CountWhere</code> is not a valid aggregate function; use <code>Count</code>)</td>
+        </tr>
+        <tr>
+            <td>Threshold</td>
+            <td>Total accounts &gt; 20 per combination &rarr; emits <code>erp-account-structure-threshold-event</code></td>
+        </tr>
+        <tr>
+            <td>Materialization</td>
+            <td>Eager</td>
+        </tr>
+        <tr>
+            <td>Purpose</td>
+            <td>Identify gaps (e.g., no Intangible Asset accounts) and over-proliferation (too many OpEx sub-accounts) before any transactions exist.</td>
+        </tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- 10. LAYER INFORMATION -->
+    <!-- ============================================================ -->
+    <h2>10. Layer Information &amp; Deployment</h2>
+
+    <div class="info-box">
+        <strong>Layer 0 &mdash; Independently Deployable</strong>
+        <p>The Chart of Accounts block has <strong>zero dependencies</strong> on other ERP blocks. It can be loaded, validated, and populated before any transactional Layer 1 block exists. The only optional cross-block reference is to Org Structure's <code>erp-cost-center</code> for default cost allocation mapping &mdash; this is an <strong>association</strong> (not a dependency), and the CoA functions fully without it.</p>
+    </div>
+
+    <div class="mermaid">
+graph TB
+    subgraph "Layer 0 - Independently Deployable"
+        COA["Chart of Accounts<br/><b>This Block</b>"]
+        ORG["Org Structure<br/><i>separate block</i>"]
+    end
+
+    subgraph "Layer 1 - Transactional (future)"
+        JE["Journal Entries"]
+        BUD["Budgeting"]
+        AP["Accounts Payable"]
+        AR["Accounts Receivable"]
+        EVT["Economic Events"]
+    end
+
+    subgraph "Layer 2 - Reporting (future)"
+        FS["Financial Statements"]
+    end
+
+    COA -. "optional cross-block<br/>association-relator" .-> ORG
+
+    JE -- "depends on" --> COA
+    BUD -- "depends on" --> COA
+    AP -- "depends on" --> COA
+    AR -- "depends on" --> COA
+    EVT -- "depends on" --> COA
+    FS -- "depends on" --> COA
+
+    style COA fill:#d4edda,stroke:#28a745,stroke-width:3px
+    style ORG fill:#e8f4fd,stroke:#2196F3
+    style JE fill:#f2f2f2,stroke:#999
+    style BUD fill:#f2f2f2,stroke:#999
+    style AP fill:#f2f2f2,stroke:#999
+    style AR fill:#f2f2f2,stroke:#999
+    style EVT fill:#f2f2f2,stroke:#999
+    style FS fill:#f2f2f2,stroke:#999
+    </div>
+
+    <h3>Metadata Files</h3>
+    <table>
+        <tr>
+            <th>File</th>
+            <th>Contains</th>
+            <th>Entity Count</th>
+        </tr>
+        <tr>
+            <td><code>metadata_app.json</code></td>
+            <td>App, 4+1 universals, 4 relators, 14 property definitions, 1 event definition, 1 artifact definition, role assignments (no org/tenant/users &mdash; see app_erp_base)</td>
+            <td>Schema only</td>
+        </tr>
+        <tr>
+            <td><code>metadata_app_data.json</code></td>
+            <td>5 account types, 15 account subtypes, 8 account groups, 22 GL accounts, 22 type relators, 17 subtype relators, 18 group relators, 12 parent hierarchy relators</td>
+            <td>119 instances + relator instances</td>
+        </tr>
+    </table>
+
+    <h3>Validation &amp; Loading</h3>
+    <pre><code># Offline validation
+cd model1-admin-cli
+cargo run -- validate --path ../apps/erp/app_erp_chart_of_accounts
+
+# Load to running broker
+cargo run -- --cert-path ../broker/certs/cert.pem load \
+    --dir ../apps/erp/app_erp_chart_of_accounts --progress</code></pre>
+
+    <script>mermaid.initialize({startOnLoad: true, theme: 'default', securityLevel: 'loose'});</script>
+</body>
+</html>

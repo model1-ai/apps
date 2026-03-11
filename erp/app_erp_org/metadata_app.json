@@ -1,0 +1,908 @@
+{
+    "_comment": "=== ERP ORGANIZATIONAL STRUCTURE (Layer 0) ===",
+    "_description": "Org Structure is the skeleton of the enterprise. Defines org units (business units, departments, teams, committees), cost centers, positions, and job grades. Supports recursive org hierarchy, cost allocation, and headcount analytics.",
+
+    "_organizations_note": "Organizations defined in app_erp_base. Load app_erp_base first.",
+    "_tenants_note": "Tenants defined in app_erp_base. Load app_erp_base first.",
+
+    "universals": [
+        {
+            "_comment": "=== ENUMERATION: Org Unit Status ===",
+            "id": "erp-org-unit-status",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Org Unit Status" },
+            "description": { "en": "Enumeration: Active, Inactive, Restructuring" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENUMERATION: Position Status ===",
+            "id": "erp-position-status",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Position Status" },
+            "description": { "en": "Enumeration: Open, Filled, Frozen" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ABSTRACT BASE: Org Unit ===",
+            "id": "erp-org-unit",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Org Unit" },
+            "description": { "en": "Abstract organizational unit base. Specializations: Business Unit, Department, Team, Committee." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== SPECIALIZATION: Business Unit ===",
+            "id": "erp-business-unit",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Business Unit" },
+            "description": { "en": "Strategic unit with P&L responsibility. Not a legal entity." },
+            "generalizes": "erp-org-unit",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-org-unit" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== SPECIALIZATION: Department ===",
+            "id": "erp-department",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Department" },
+            "description": { "en": "Functional grouping (Engineering, Finance, HR, Sales, etc.)" },
+            "generalizes": "erp-org-unit",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-org-unit" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== SPECIALIZATION: Team ===",
+            "id": "erp-team",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Team" },
+            "description": { "en": "Cross-functional or project team; may be temporary." },
+            "generalizes": "erp-org-unit",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-org-unit" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== SPECIALIZATION: Committee ===",
+            "id": "erp-committee",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Committee" },
+            "description": { "en": "Governance body (board committee, steering committee)" },
+            "generalizes": "erp-org-unit",
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-org-unit" }
+            ],
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Cost Center ===",
+            "id": "erp-cost-center",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Cost Center" },
+            "description": { "en": "Cost allocation target. Not always a department." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Position ===",
+            "id": "erp-position",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Position" },
+            "description": { "en": "Job position within a department. Represents a slot, not a person." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Job Grade ===",
+            "id": "erp-job-grade",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Job Grade" },
+            "description": { "en": "Compensation band / career level" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT OUTPUT: Headcount Summary ===",
+            "id": "erp-headcount-summary",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Headcount Summary" },
+            "description": { "en": "Aggregated headcount data per department" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Org Unit Parent-Child (aggregation, recursive) ===",
+            "id": "erp-unit-parent-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Org Unit Hierarchy" },
+            "description": { "en": "Recursive org unit hierarchy. Aggregation because children survive parent restructuring." },
+            "roles": [
+                { "name": "aggregate", "universal_id": "erp-org-unit" },
+                { "name": "part", "universal_id": "erp-org-unit" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "aggregation-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Department -> Cost Center (attribution) ===",
+            "id": "erp-dept-cost-center-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Department Cost Center" },
+            "description": { "en": "Maps department to a cost center for expense allocation." },
+            "roles": [
+                { "name": "department", "universal_id": "erp-department" },
+                { "name": "cost_center", "universal_id": "erp-cost-center" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "attribution-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Department -> Position (aggregation) ===",
+            "id": "erp-dept-has-position-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Department Has Position" },
+            "description": { "en": "Positions belong to departments but survive restructuring." },
+            "roles": [
+                { "name": "aggregate", "universal_id": "erp-department" },
+                { "name": "part", "universal_id": "erp-position" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "aggregation-relator" }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Position -> Job Grade (attribution) ===",
+            "id": "erp-position-grade-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Position Job Grade" },
+            "description": { "en": "Position is classified at a job grade (compensation band)." },
+            "roles": [
+                { "name": "position", "universal_id": "erp-position" },
+                { "name": "grade", "universal_id": "erp-job-grade" }
+            ],
+            "taxonomy": [
+                { "relator_universal_id": "generalization-relator", "target_universal_id": "attribution-relator" }
+            ],
+            "use_seed": true
+        }
+    ],
+
+    "property_definitions": [
+        {
+            "_comment": "=== Org Unit Status Enum Property ===",
+            "id": "erp-org-unit-status-name-prop",
+            "universal_id": "erp-org-unit-status",
+            "label": { "en": "Status Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Position Status Enum Property ===",
+            "id": "erp-position-status-name-prop",
+            "universal_id": "erp-position-status",
+            "label": { "en": "Status Name" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Org Unit Properties (inherited by specializations) ===",
+            "id": "erp-org-unit-code-prop",
+            "universal_id": "erp-org-unit",
+            "label": { "en": "Org Unit Code" },
+            "property_schema": {
+                "predicates": ["code", "identifier"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-org-unit-name-prop",
+            "universal_id": "erp-org-unit",
+            "label": { "en": "Org Unit Name" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-org-unit-effective-date-prop",
+            "universal_id": "erp-org-unit",
+            "label": { "en": "Effective Date" },
+            "description": { "en": "Date when the org unit becomes active" },
+            "property_schema": {
+                "predicates": ["date", "effective"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-org-unit-end-date-prop",
+            "universal_id": "erp-org-unit",
+            "label": { "en": "End Date" },
+            "description": { "en": "Date when the org unit is deactivated (null if still active)" },
+            "property_schema": {
+                "predicates": ["date", "end"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-org-unit-status-prop",
+            "universal_id": "erp-org-unit",
+            "label": { "en": "Status" },
+            "description": { "en": "Current status: Active, Inactive, Restructuring" },
+            "property_schema": {
+                "predicates": ["status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "erp-org-unit-status",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Business Unit Properties ===",
+            "id": "erp-bu-revenue-target-prop",
+            "universal_id": "erp-business-unit",
+            "label": { "en": "Revenue Target" },
+            "description": { "en": "Annual revenue target for the business unit" },
+            "property_schema": {
+                "predicates": ["revenue", "target"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-bu-is-profit-center-prop",
+            "universal_id": "erp-business-unit",
+            "label": { "en": "Is Profit Center" },
+            "description": { "en": "Whether this business unit is a profit center" },
+            "property_schema": {
+                "predicates": ["profit", "center"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Department Properties ===",
+            "id": "erp-dept-function-prop",
+            "universal_id": "erp-department",
+            "label": { "en": "Function" },
+            "description": { "en": "Departmental function: Engineering, Finance, HR, Sales, Marketing, Legal, Operations" },
+            "property_schema": {
+                "predicates": ["function", "category"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Team Properties ===",
+            "id": "erp-team-purpose-prop",
+            "universal_id": "erp-team",
+            "label": { "en": "Purpose" },
+            "description": { "en": "Team purpose or mission statement" },
+            "property_schema": {
+                "predicates": ["purpose", "mission"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-team-is-permanent-prop",
+            "universal_id": "erp-team",
+            "label": { "en": "Is Permanent" },
+            "description": { "en": "Whether the team is permanent or temporary (project-based)" },
+            "property_schema": {
+                "predicates": ["permanent"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Committee Properties ===",
+            "id": "erp-committee-charter-prop",
+            "universal_id": "erp-committee",
+            "label": { "en": "Charter" },
+            "description": { "en": "Committee charter or mandate" },
+            "property_schema": {
+                "predicates": ["charter", "mandate"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-committee-meeting-frequency-prop",
+            "universal_id": "erp-committee",
+            "label": { "en": "Meeting Frequency" },
+            "description": { "en": "How often the committee meets: Weekly, Biweekly, Monthly, Quarterly, Annually" },
+            "property_schema": {
+                "predicates": ["frequency", "meeting"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "allowed_values": ["Weekly", "Biweekly", "Monthly", "Quarterly", "Annually"],
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Cost Center Properties ===",
+            "id": "erp-cc-code-prop",
+            "universal_id": "erp-cost-center",
+            "label": { "en": "Cost Center Code" },
+            "property_schema": {
+                "predicates": ["code", "identifier"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cc-name-prop",
+            "universal_id": "erp-cost-center",
+            "label": { "en": "Cost Center Name" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cc-is-active-prop",
+            "universal_id": "erp-cost-center",
+            "label": { "en": "Is Active" },
+            "property_schema": {
+                "predicates": ["active"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Position Properties ===",
+            "id": "erp-position-title-prop",
+            "universal_id": "erp-position",
+            "label": { "en": "Position Title" },
+            "property_schema": {
+                "predicates": ["title", "name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-position-headcount-prop",
+            "universal_id": "erp-position",
+            "label": { "en": "Headcount" },
+            "description": { "en": "Number of headcount slots for this position" },
+            "property_schema": {
+                "predicates": ["headcount", "count"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-position-status-prop",
+            "universal_id": "erp-position",
+            "label": { "en": "Position Status" },
+            "description": { "en": "Current status: Open, Filled, Frozen" },
+            "property_schema": {
+                "predicates": ["status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "erp-position-status",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Job Grade Properties ===",
+            "id": "erp-grade-code-prop",
+            "universal_id": "erp-job-grade",
+            "label": { "en": "Grade Code" },
+            "property_schema": {
+                "predicates": ["code", "identifier"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-grade-name-prop",
+            "universal_id": "erp-job-grade",
+            "label": { "en": "Grade Name" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-grade-min-salary-prop",
+            "universal_id": "erp-job-grade",
+            "label": { "en": "Minimum Salary" },
+            "property_schema": {
+                "predicates": ["salary", "minimum"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-grade-max-salary-prop",
+            "universal_id": "erp-job-grade",
+            "label": { "en": "Maximum Salary" },
+            "property_schema": {
+                "predicates": ["salary", "maximum"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Headcount Summary Properties (artifact output) ===",
+            "id": "erp-hc-department-name-prop",
+            "universal_id": "erp-headcount-summary",
+            "label": { "en": "Department Name" },
+            "description": { "en": "Department name dimension for headcount aggregation" },
+            "property_schema": {
+                "predicates": ["department", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-hc-position-count-prop",
+            "universal_id": "erp-headcount-summary",
+            "label": { "en": "Position Count" },
+            "description": { "en": "Count of positions in this department" },
+            "property_schema": {
+                "predicates": ["count", "position", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-hc-total-headcount-prop",
+            "universal_id": "erp-headcount-summary",
+            "label": { "en": "Total Headcount" },
+            "description": { "en": "Sum of headcount slots across all positions in this department" },
+            "property_schema": {
+                "predicates": ["headcount", "total", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        }
+    ],
+
+    "event_definitions": [
+        {
+            "id": "erp-org-unit-created-event",
+            "app_id": "erp-org-structure-app",
+            "scope": "tenant",
+            "label": { "en": "Org Unit Created" },
+            "description": { "en": "Event emitted when a new organizational unit is created" },
+            "payload_schema": [
+                { "name": "org_unit_id", "field_type": "uuid" },
+                { "name": "org_unit_code", "field_type": "string" },
+                { "name": "org_unit_type", "field_type": "string" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "erp-org-restructured-event",
+            "app_id": "erp-org-structure-app",
+            "scope": "tenant",
+            "label": { "en": "Org Restructured" },
+            "description": { "en": "Event emitted when an organizational unit is restructured (re-parented)" },
+            "payload_schema": [
+                { "name": "org_unit_id", "field_type": "uuid" },
+                { "name": "old_parent_id", "field_type": "uuid" },
+                { "name": "new_parent_id", "field_type": "uuid" }
+            ],
+            "use_seed": true
+        }
+    ],
+
+    "apps": [
+        {
+            "id": "erp-org-structure-app",
+            "tenant_id": "model1-testing-tenant",
+            "label": { "en": "ERP Organizational Structure" },
+            "description": { "en": "Layer 0 ERP block: Org units, cost centers, positions, and job grades. Independently deployable skeleton of the enterprise." },
+            "use_seed": true,
+            "modules": [
+                {
+                    "id": "erp-org-structure-module",
+                    "use_seed": true,
+                    "label": { "en": "Org Structure Module" },
+                    "description": { "en": "Core org structure operations: CRUD on org units, cost centers, positions, job grades, and their relationships." },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": ["erp-org-unit-created-event", "erp-org-restructured-event"]
+                    }
+                }
+            ]
+        }
+    ],
+
+    "artifact_definitions": [
+        {
+            "_comment": "=== ARTIFACT: Headcount by Org Unit ===",
+            "id": "erp-headcount-by-org-artifact",
+            "name": "Headcount by Department",
+            "description": { "en": "Position count and total headcount slots per department. Navigates position -> department via erp-dept-has-position-rel." },
+            "source": { "universal_id": "erp-position" },
+            "artifact_universal_id": "erp-headcount-summary",
+            "app_id": "erp-org-structure-app",
+            "dimensions": [
+                {
+                    "id": "erp-hc-dept-dim",
+                    "code": "department_name",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            { "relator_universal_id": "erp-dept-has-position-rel", "role_name": "aggregate" }
+                        ],
+                        "property_id": "erp-org-unit-name-prop"
+                    },
+                    "artifact_property_id": "erp-hc-department-name-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "erp-hc-position-count-measure",
+                    "code": "position_count",
+                    "function": "Count",
+                    "artifact_property_id": "erp-hc-position-count-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-hc-total-headcount-measure",
+                    "code": "total_headcount",
+                    "property_id": "erp-position-headcount-prop",
+                    "function": "Sum",
+                    "artifact_property_id": "erp-hc-total-headcount-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": { "strategy": "Eager" },
+            "use_seed": true
+        }
+    ],
+
+    "foundation_role_assignments": [
+        {
+            "id": "fra-erp-admin-admin-org",
+            "user_id": "erp-admin",
+            "role": "AppAdmin",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-org-structure-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-admin-dev-org",
+            "user_id": "erp-admin",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-org-structure-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-developer-dev-org",
+            "user_id": "erp-developer",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-org-structure-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-user-user-org",
+            "user_id": "erp-user",
+            "role": "AppUser",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-org-structure-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        }
+    ]
+}

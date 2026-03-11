@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Resource Catalog — Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 2rem; color: #1a1a2e; background: #f8f9fa; line-height: 1.6; }
+        h1 { color: #16213e; border-bottom: 3px solid #0f3460; padding-bottom: 0.5rem; }
+        h2 { color: #0f3460; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.3rem; margin-top: 2rem; }
+        h3 { color: #533483; }
+        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #0f3460; color: white; }
+        tr:nth-child(even) { background: #f2f2f2; }
+        .mermaid { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 1rem 0; }
+        .decision-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .layer-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
+        .layer-0 { background: #d4edda; color: #155724; }
+        code { background: #e9ecef; padding: 2px 6px; border-radius: 3px; font-size: 0.9rem; }
+        .info-box { background: #e8f4fd; border-left: 4px solid #2196F3; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .warn-box { background: #fff3e0; border-left: 4px solid #ff9800; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .scope-box { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .file-tree { font-family: monospace; font-size: 0.9rem; background: #263238; color: #aed581; padding: 1rem; border-radius: 8px; line-height: 1.8; }
+        .file-tree .comment { color: #78909c; }
+        ul.check { list-style: none; padding-left: 0; }
+        ul.check li::before { content: "\2713 "; color: #4caf50; font-weight: bold; margin-right: 0.3rem; }
+    </style>
+</head>
+<body>
+
+    <h1>ERP Resource Catalog <span class="layer-badge layer-0">Layer 0</span></h1>
+
+    <div class="info-box">
+        <strong>Layer 0 -- Independently Deployable.</strong> The Resource Catalog has no cross-domain dependencies and can be loaded, validated, and populated before any other ERP block exists. Resources are cataloged things regardless of who owns them, where they are stored, or how they are accounted for.
+    </div>
+
+    <!-- ================================================================== -->
+    <h2>1. Overview</h2>
+
+    <p>
+        The Resource Catalog generalizes the traditional "Item Catalog" to encompass <strong>everything an enterprise owns, uses, consumes, produces, assigns, or accounts for</strong>. This includes physical goods, services, financial instruments, information assets, and capacity.
+    </p>
+
+    <p>The block answers three fundamental questions:</p>
+
+    <table>
+        <tr><th>Question</th><th>Examples</th></tr>
+        <tr><td>What does the enterprise <strong>deal with</strong>?</td><td>Physical items for sale/purchase, fixed assets that depreciate, raw materials entering production</td></tr>
+        <tr><td>What <strong>non-physical things</strong> does it consume or provide?</td><td>Services, licenses, information assets, financial instruments</td></tr>
+        <tr><td>What <strong>capacity constraints</strong> does it operate under?</td><td>Labor hours, machine hours, storage space</td></tr>
+    </table>
+
+    <p>
+        The design uses a <strong>3-level generalization hierarchy</strong>: an abstract root (<code>erp-resource</code>), three intermediate abstract branches (<code>erp-tangible-resource</code>, <code>erp-intangible-resource</code>, <code>erp-capacity-resource</code>), and nine concrete leaf universals. This structure enables uniform cataloging, costing, status tracking, and analytical aggregation across all resource types through the shared ancestor.
+    </p>
+
+    <div class="file-tree">
+        apps/erp/app_erp_resource/<br>
+        &nbsp;&nbsp;metadata_app.json &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Schema: universals, properties, relators, computations, artifacts, events</span><br>
+        &nbsp;&nbsp;metadata_app_data.json &nbsp;&nbsp;<span class="comment"># Instances: enums, categories, sample resources, relator instances</span><br>
+        &nbsp;&nbsp;architecture.html &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># This document</span>
+    </div>
+
+    <!-- ================================================================== -->
+    <h2>2. Generalization Hierarchy</h2>
+
+    <p>
+        The hierarchy is organized into three levels. Level 0 is the abstract root, Level 1 provides three intermediate abstractions that group resources by their ontological nature, and Level 2 contains the nine concrete leaf types that are actually instantiated.
+    </p>
+
+    <div class="mermaid">
+classDiagram
+    class erp_resource {
+        &lt;&lt;abstract&gt;&gt;
+        +resource-code : Categorical
+        +resource-name : Textual
+        +resource-description : Textual
+        +resource-status : Categorical
+        +unit-of-measure : Categorical
+    }
+
+    class erp_tangible_resource {
+        &lt;&lt;abstract&gt;&gt;
+        +weight : Measurement[std-weight]
+        +volume : Measurement[std-volume]
+        +is-tracked : Boolean
+    }
+
+    class erp_intangible_resource {
+        &lt;&lt;abstract&gt;&gt;
+        +expiry-date : Date
+        +renewal-terms : Textual
+    }
+
+    class erp_capacity_resource {
+        &lt;&lt;abstract&gt;&gt;
+        +total-capacity : Measurement[std-float]
+        +available-capacity : Measurement[std-float]
+        +utilization-pct : Measurement[std-ratio]
+    }
+
+    class erp_physical_item {
+        +sku : Categorical
+        +is-purchasable : Boolean
+        +is-sellable : Boolean
+        +standard-cost : Measurement[std-currency]
+        +list-price : Measurement[std-currency]
+        +is-serialized : Boolean
+        +is-lot-tracked : Boolean
+        +shelf-life : Measurement[std-integer]
+    }
+
+    class erp_fixed_asset {
+        +acquisition-date : Date
+        +useful-life : Measurement[std-time-duration]
+        +salvage-value : Measurement[std-currency]
+        +depreciation-method : Categorical
+    }
+
+    class erp_raw_material {
+        +min-order-qty : Measurement[std-quantity]
+        +lead-time-days : Measurement[std-integer]
+    }
+
+    class erp_service_item {
+        +billing-unit : Categorical
+        +default-rate : Measurement[std-currency]
+    }
+
+    class erp_information_resource {
+        +format : Categorical
+        +classification : Categorical
+    }
+
+    class erp_financial_instrument {
+        +face-value : Measurement[std-currency]
+        +maturity-date : Date
+        +instrument-type : Categorical
+    }
+
+    class erp_license {
+        +seat-count : Measurement[std-integer]
+        +license-type : Categorical
+    }
+
+    class erp_labor_capacity {
+        +period : Categorical
+        +fte-equivalent : Measurement[std-float]
+    }
+
+    class erp_machine_capacity {
+        +hours-per-shift : Measurement[std-float]
+        +shifts-per-day : Measurement[std-integer]
+    }
+
+    class erp_storage_capacity {
+        +storage-unit : Categorical
+        +is-climate-controlled : Boolean
+    }
+
+    erp_resource <|-- erp_tangible_resource : generalizes
+    erp_resource <|-- erp_intangible_resource : generalizes
+    erp_resource <|-- erp_capacity_resource : generalizes
+
+    erp_tangible_resource <|-- erp_physical_item : generalizes
+    erp_tangible_resource <|-- erp_fixed_asset : generalizes
+    erp_tangible_resource <|-- erp_raw_material : generalizes
+
+    erp_intangible_resource <|-- erp_service_item : generalizes
+    erp_intangible_resource <|-- erp_information_resource : generalizes
+    erp_intangible_resource <|-- erp_financial_instrument : generalizes
+    erp_intangible_resource <|-- erp_license : generalizes
+
+    erp_capacity_resource <|-- erp_labor_capacity : generalizes
+    erp_capacity_resource <|-- erp_machine_capacity : generalizes
+    erp_capacity_resource <|-- erp_storage_capacity : generalizes
+    </div>
+
+    <h3>Hierarchy Levels</h3>
+    <table>
+        <tr><th>Level</th><th>Universal</th><th>Nature</th><th>Role</th></tr>
+        <tr><td>0</td><td><code>erp-resource</code></td><td>Abstract</td><td>Root. Shared properties: code, name, description, status, UOM. Never instantiated.</td></tr>
+        <tr><td>1</td><td><code>erp-tangible-resource</code></td><td>Abstract</td><td>Physical things with weight, volume, and tracking. Never instantiated directly.</td></tr>
+        <tr><td>1</td><td><code>erp-intangible-resource</code></td><td>Abstract</td><td>Non-physical resources with optional expiry and renewal. Never instantiated directly.</td></tr>
+        <tr><td>1</td><td><code>erp-capacity-resource</code></td><td>Abstract</td><td>Available capacity that can be allocated. Never instantiated directly.</td></tr>
+        <tr><td>2</td><td><code>erp-physical-item</code></td><td>Concrete</td><td>Tradeable inventory goods. The traditional item master record.</td></tr>
+        <tr><td>2</td><td><code>erp-fixed-asset</code></td><td>Concrete</td><td>Long-lived equipment, property, infrastructure. Subject to depreciation.</td></tr>
+        <tr><td>2</td><td><code>erp-raw-material</code></td><td>Concrete</td><td>Manufacturing inputs and BOM components. Consumed in production.</td></tr>
+        <tr><td>2</td><td><code>erp-service-item</code></td><td>Concrete</td><td>Labor, consulting, SaaS subscriptions. Billed by unit.</td></tr>
+        <tr><td>2</td><td><code>erp-information-resource</code></td><td>Concrete</td><td>Documents, datasets, intellectual property.</td></tr>
+        <tr><td>2</td><td><code>erp-financial-instrument</code></td><td>Concrete</td><td>Bonds, securities, derivatives. Excludes receivables/payables.</td></tr>
+        <tr><td>2</td><td><code>erp-license</code></td><td>Concrete</td><td>Software licenses, patent rights, franchise agreements.</td></tr>
+        <tr><td>2</td><td><code>erp-labor-capacity</code></td><td>Concrete</td><td>Person-hours or FTE allocation.</td></tr>
+        <tr><td>2</td><td><code>erp-machine-capacity</code></td><td>Concrete</td><td>Machine-hours or production slots.</td></tr>
+        <tr><td>2</td><td><code>erp-storage-capacity</code></td><td>Concrete</td><td>Warehouse space, cloud storage quotas.</td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <h2>3. Relator Map</h2>
+
+    <p>Two relators provide resource classification and recursive category hierarchy.</p>
+
+    <div class="mermaid">
+graph LR
+    subgraph "Taxonomy Types"
+        ATTR["attribution-relator"]
+        AGG["aggregation-relator"]
+    end
+
+    subgraph "Domain Relators"
+        RCR["erp-resource-category-rel<br/><em>Resource &harr; Category</em>"]
+        CPR["erp-category-parent-rel<br/><em>Parent &harr; Child Category</em>"]
+    end
+
+    RCR -->|"generalizes"| ATTR
+    CPR -->|"generalizes"| AGG
+
+    RES["erp-resource<br/>(and all specializations)"]
+    CAT["erp-resource-category"]
+
+    RES -->|"resource role"| RCR
+    CAT -->|"category role"| RCR
+
+    CAT -->|"parent role"| CPR
+    CAT -->|"child role"| CPR
+    </div>
+
+    <table>
+        <tr><th>Relator</th><th>Role 1</th><th>Role 2</th><th>Taxonomy</th><th>Purpose</th></tr>
+        <tr>
+            <td><code>erp-resource-category-rel</code></td>
+            <td>resource (<code>erp-resource</code>)</td>
+            <td>category (<code>erp-resource-category</code>)</td>
+            <td><code>attribution-relator</code></td>
+            <td>Classifies a resource into a catalog category. One primary category per resource.</td>
+        </tr>
+        <tr>
+            <td><code>erp-category-parent-rel</code></td>
+            <td>parent (<code>erp-resource-category</code>)</td>
+            <td>child (<code>erp-resource-category</code>)</td>
+            <td><code>aggregation-relator</code></td>
+            <td>Recursive category hierarchy. Aggregation so child categories survive parent reorganization.</td>
+        </tr>
+    </table>
+
+    <div class="info-box">
+        <strong>Why aggregation for category hierarchy?</strong> Reorganizing the category tree -- merging categories, splitting one into subcategories, moving a branch -- should not destroy child categories or their resource assignments. Aggregation preserves part independence.
+    </div>
+
+    <!-- ================================================================== -->
+    <h2>4. Instance Diagram (Sample Data)</h2>
+
+    <p>The following diagram shows all sample instances from <code>metadata_app_data.json</code>, illustrating the category hierarchy and resource classifications across all branches of the generalization tree.</p>
+
+    <div class="mermaid">
+graph TB
+    subgraph "Category Hierarchy"
+        ELEC["ELEC<br/>Electronics"]
+        ELEC_COMP["ELEC-COMP<br/>Electronic Components"]
+        ELEC_ASSY["ELEC-ASSY<br/>Electronic Assemblies"]
+        SVC["SVC<br/>Services"]
+        RAW["RAW<br/>Raw Materials"]
+        SW["SW<br/>Software"]
+        EQUIP["EQUIP<br/>Equipment"]
+
+        ELEC -->|"parent"| ELEC_COMP
+        ELEC -->|"parent"| ELEC_ASSY
+    end
+
+    subgraph "Physical Items"
+        R10K["ELEC-R10K<br/>10K Ohm Resistor<br/><em>$0.02 / $0.05</em>"]
+        PCB["ELEC-PCB01<br/>Main Controller PCB<br/><em>$45.00 / $89.99</em>"]
+        PSU["ELEC-PS500<br/>500W Power Supply<br/><em>$55.00 / $99.99</em>"]
+    end
+
+    subgraph "Fixed Assets"
+        CNC["EQUIP-CNC01<br/>CNC Milling Machine<br/><em>Salvage: $25K</em>"]
+        FORK["EQUIP-FL02<br/>Electric Forklift<br/><em>Salvage: $8K</em>"]
+    end
+
+    subgraph "Raw Materials"
+        CU["RAW-CU-WIRE<br/>Copper Wire 22AWG<br/><em>MOQ: 50, Lead: 14d</em>"]
+        SLD["RAW-SLD-P<br/>Solder Paste<br/><em>MOQ: 10, Lead: 7d</em>"]
+    end
+
+    subgraph "Service Items"
+        CON["SVC-CONSULT<br/>Engineering Consulting<br/><em>$175/hr</em>"]
+        CLD["SVC-CLOUD<br/>Cloud Hosting<br/><em>$2,500/mo</em>"]
+    end
+
+    subgraph "Information Resources"
+        SPEC["INFO-SPEC01<br/>Design Specifications<br/><em>PDF / Confidential</em>"]
+    end
+
+    subgraph "Financial Instruments"
+        BOND["FIN-BOND01<br/>Corporate Bond Series A<br/><em>$1,000 face / 2029</em>"]
+    end
+
+    subgraph "Licenses"
+        CAD["LIC-CAD01<br/>CAD Software License<br/><em>25 seats / Subscription</em>"]
+        ERP["LIC-ERP01<br/>ERP System License<br/><em>100 seats / Perpetual</em>"]
+    end
+
+    subgraph "Capacity Resources"
+        LAB["CAP-LABOR-ENG<br/>Engineering Capacity<br/><em>640h total / 160h avail</em>"]
+        MACH["CAP-MACH-CNC<br/>CNC Machine Capacity<br/><em>120h total / 45h avail</em>"]
+        STOR["CAP-STOR-WHA<br/>Warehouse A Storage<br/><em>500 pallets / 125 avail</em>"]
+    end
+
+    R10K -.->|"classified"| ELEC_COMP
+    PCB -.->|"classified"| ELEC_ASSY
+    PSU -.->|"classified"| ELEC_ASSY
+    CNC -.->|"classified"| EQUIP
+    FORK -.->|"classified"| EQUIP
+    CU -.->|"classified"| RAW
+    SLD -.->|"classified"| RAW
+    CON -.->|"classified"| SVC
+    CLD -.->|"classified"| SVC
+    CAD -.->|"classified"| SW
+    ERP -.->|"classified"| SW
+    </div>
+
+    <h3>Instance Summary</h3>
+    <table>
+        <tr><th>Universal</th><th>Count</th><th>Sample Instances</th></tr>
+        <tr><td><code>erp-physical-item</code></td><td>3</td><td>10K Ohm Resistor, Main Controller PCB, 500W Power Supply</td></tr>
+        <tr><td><code>erp-fixed-asset</code></td><td>2</td><td>CNC Milling Machine, Electric Forklift</td></tr>
+        <tr><td><code>erp-raw-material</code></td><td>2</td><td>Copper Wire 22AWG, Lead-Free Solder Paste</td></tr>
+        <tr><td><code>erp-service-item</code></td><td>2</td><td>Engineering Consulting, Cloud Hosting Service</td></tr>
+        <tr><td><code>erp-information-resource</code></td><td>1</td><td>Product Design Specifications</td></tr>
+        <tr><td><code>erp-financial-instrument</code></td><td>1</td><td>Corporate Bond Series A</td></tr>
+        <tr><td><code>erp-license</code></td><td>2</td><td>CAD Software License, ERP System License</td></tr>
+        <tr><td><code>erp-labor-capacity</code></td><td>1</td><td>Engineering Team Capacity (640h/mo, 4 FTE)</td></tr>
+        <tr><td><code>erp-machine-capacity</code></td><td>1</td><td>CNC Machine Capacity (120h/wk, 3 shifts)</td></tr>
+        <tr><td><code>erp-storage-capacity</code></td><td>1</td><td>Warehouse A Storage (500 pallets, climate-controlled)</td></tr>
+        <tr><td><code>erp-resource-category</code></td><td>7</td><td>Electronics, Electronic Components, Electronic Assemblies, Services, Raw Materials, Software, Equipment</td></tr>
+        <tr><td><code>erp-resource-status</code> (enum)</td><td>4</td><td>ACTIVE, DISCONTINUED, PENDING, BLOCKED</td></tr>
+        <tr><td><code>erp-depreciation-method</code> (enum)</td><td>3</td><td>STRAIGHT_LINE, DECLINING_BALANCE, UNITS_OF_PRODUCTION</td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <h2>5. Property Inheritance Table</h2>
+
+    <p>
+        Properties defined on ancestor universals are inherited by all descendants. The table below shows which properties each leaf universal carries, distinguishing <strong>inherited</strong> from <strong>own</strong> properties.
+    </p>
+
+    <table>
+        <tr>
+            <th>Property</th>
+            <th>Defined On</th>
+            <th style="font-size:0.75rem">Physical<br/>Item</th>
+            <th style="font-size:0.75rem">Fixed<br/>Asset</th>
+            <th style="font-size:0.75rem">Raw<br/>Material</th>
+            <th style="font-size:0.75rem">Service<br/>Item</th>
+            <th style="font-size:0.75rem">Info<br/>Resource</th>
+            <th style="font-size:0.75rem">Financial<br/>Instrument</th>
+            <th style="font-size:0.75rem">License</th>
+            <th style="font-size:0.75rem">Labor<br/>Capacity</th>
+            <th style="font-size:0.75rem">Machine<br/>Capacity</th>
+            <th style="font-size:0.75rem">Storage<br/>Capacity</th>
+        </tr>
+        <!-- erp-resource base (Level 0) -->
+        <tr><td>resource-code</td><td>erp-resource</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td></tr>
+        <tr><td>resource-name</td><td>erp-resource</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td></tr>
+        <tr><td>description</td><td>erp-resource</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td></tr>
+        <tr><td>status</td><td>erp-resource</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td></tr>
+        <tr><td>unit-of-measure</td><td>erp-resource</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I</td></tr>
+        <!-- tangible (Level 1) -->
+        <tr><td>weight</td><td>erp-tangible-resource</td><td>I</td><td>I</td><td>I</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>volume</td><td>erp-tangible-resource</td><td>I</td><td>I</td><td>I</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>is-tracked</td><td>erp-tangible-resource</td><td>I</td><td>I</td><td>I</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <!-- intangible (Level 1) -->
+        <tr><td>expiry-date</td><td>erp-intangible-resource</td><td>-</td><td>-</td><td>-</td><td>I</td><td>I</td><td>I</td><td>I</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>renewal-terms</td><td>erp-intangible-resource</td><td>-</td><td>-</td><td>-</td><td>I</td><td>I</td><td>I</td><td>I</td><td>-</td><td>-</td><td>-</td></tr>
+        <!-- capacity (Level 1) -->
+        <tr><td>total-capacity</td><td>erp-capacity-resource</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>I</td><td>I</td><td>I</td></tr>
+        <tr><td>available-capacity</td><td>erp-capacity-resource</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>I</td><td>I</td><td>I</td></tr>
+        <tr><td>utilization-%</td><td>erp-capacity-resource</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>I</td><td>I</td><td>I</td></tr>
+        <!-- leaf own properties -->
+        <tr><td>sku</td><td>erp-physical-item</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>is-purchasable</td><td>erp-physical-item</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>is-sellable</td><td>erp-physical-item</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>standard-cost</td><td>erp-physical-item</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>list-price</td><td>erp-physical-item</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>is-serialized</td><td>erp-physical-item</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>is-lot-tracked</td><td>erp-physical-item</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>shelf-life</td><td>erp-physical-item</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>acquisition-date</td><td>erp-fixed-asset</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>useful-life</td><td>erp-fixed-asset</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>salvage-value</td><td>erp-fixed-asset</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>depreciation-method</td><td>erp-fixed-asset</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>min-order-qty</td><td>erp-raw-material</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>lead-time-days</td><td>erp-raw-material</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>billing-unit</td><td>erp-service-item</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>default-rate</td><td>erp-service-item</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>format</td><td>erp-information-resource</td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>classification</td><td>erp-information-resource</td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>face-value</td><td>erp-financial-instrument</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>maturity-date</td><td>erp-financial-instrument</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>instrument-type</td><td>erp-financial-instrument</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>seat-count</td><td>erp-license</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>license-type</td><td>erp-license</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>period</td><td>erp-labor-capacity</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td></tr>
+        <tr><td>fte-equivalent</td><td>erp-labor-capacity</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td><td>-</td></tr>
+        <tr><td>hours-per-shift</td><td>erp-machine-capacity</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td></tr>
+        <tr><td>shifts-per-day</td><td>erp-machine-capacity</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td><td>-</td></tr>
+        <tr><td>storage-unit</td><td>erp-storage-capacity</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td></tr>
+        <tr><td>is-climate-controlled</td><td>erp-storage-capacity</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><strong>O</strong></td></tr>
+    </table>
+
+    <p><strong>Legend:</strong> <strong>I</strong> = Inherited, <strong>O</strong> = Own (defined at this level), <strong>-</strong> = Not applicable.</p>
+
+    <!-- ================================================================== -->
+    <h2>6. Property Catalog</h2>
+
+    <h3>6.1 erp-resource (base -- inherited by all)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-resource-code-prop</code></td><td>Resource Code</td><td>Categorical</td><td>--</td><td>seq 1</td></tr>
+        <tr><td><code>erp-resource-name-prop</code></td><td>Resource Name</td><td>Textual</td><td>--</td><td>seq 2</td></tr>
+        <tr><td><code>erp-resource-description-prop</code></td><td>Description</td><td>Textual</td><td>--</td><td>--</td></tr>
+        <tr><td><code>erp-resource-status-prop</code></td><td>Status</td><td>Categorical (ref: erp-resource-status)</td><td>--</td><td>--</td></tr>
+        <tr><td><code>erp-resource-unit-of-measure-prop</code></td><td>Unit of Measure</td><td>Categorical</td><td>--</td><td>--</td></tr>
+    </table>
+
+    <h3>6.2 erp-tangible-resource (inherited by physical-item, fixed-asset, raw-material)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th></tr>
+        <tr><td><code>erp-tangible-weight-prop</code></td><td>Weight</td><td>Measurement</td><td>std-weight</td></tr>
+        <tr><td><code>erp-tangible-volume-prop</code></td><td>Volume</td><td>Measurement</td><td>std-volume</td></tr>
+        <tr><td><code>erp-tangible-is-tracked-prop</code></td><td>Is Tracked</td><td>Boolean</td><td>--</td></tr>
+    </table>
+
+    <h3>6.3 erp-physical-item</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th></tr>
+        <tr><td><code>erp-item-sku-prop</code></td><td>SKU</td><td>Categorical</td><td>--</td></tr>
+        <tr><td><code>erp-item-is-purchasable-prop</code></td><td>Is Purchasable</td><td>Boolean</td><td>--</td></tr>
+        <tr><td><code>erp-item-is-sellable-prop</code></td><td>Is Sellable</td><td>Boolean</td><td>--</td></tr>
+        <tr><td><code>erp-item-standard-cost-prop</code></td><td>Standard Cost</td><td>Measurement</td><td>std-currency</td></tr>
+        <tr><td><code>erp-item-list-price-prop</code></td><td>List Price</td><td>Measurement</td><td>std-currency</td></tr>
+        <tr><td><code>erp-item-is-serialized-prop</code></td><td>Is Serialized</td><td>Boolean</td><td>--</td></tr>
+        <tr><td><code>erp-item-is-lot-tracked-prop</code></td><td>Is Lot Tracked</td><td>Boolean</td><td>--</td></tr>
+        <tr><td><code>erp-item-shelf-life-prop</code></td><td>Shelf Life (days)</td><td>Measurement</td><td>std-integer</td></tr>
+    </table>
+
+    <h3>6.4 erp-fixed-asset</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th></tr>
+        <tr><td><code>erp-asset-acquisition-date-prop</code></td><td>Acquisition Date</td><td>Date</td><td>--</td></tr>
+        <tr><td><code>erp-asset-useful-life-prop</code></td><td>Useful Life</td><td>Measurement</td><td>std-time-duration</td></tr>
+        <tr><td><code>erp-asset-salvage-value-prop</code></td><td>Salvage Value</td><td>Measurement</td><td>std-currency</td></tr>
+        <tr><td><code>erp-asset-depreciation-method-prop</code></td><td>Depreciation Method</td><td>Categorical (ref: erp-depreciation-method)</td><td>--</td></tr>
+    </table>
+
+    <h3>6.5 erp-raw-material</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th></tr>
+        <tr><td><code>erp-raw-min-order-qty-prop</code></td><td>Minimum Order Qty</td><td>Measurement</td><td>std-quantity</td></tr>
+        <tr><td><code>erp-raw-lead-time-days-prop</code></td><td>Lead Time (days)</td><td>Measurement</td><td>std-integer</td></tr>
+    </table>
+
+    <h3>6.6 erp-intangible-resource (inherited by service-item, info-resource, financial-instrument, license)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th></tr>
+        <tr><td><code>erp-intangible-expiry-date-prop</code></td><td>Expiry Date</td><td>Date</td><td>--</td></tr>
+        <tr><td><code>erp-intangible-renewal-terms-prop</code></td><td>Renewal Terms</td><td>Textual</td><td>--</td></tr>
+    </table>
+
+    <h3>6.7 erp-service-item</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th></tr>
+        <tr><td><code>erp-service-billing-unit-prop</code></td><td>Billing Unit</td><td>Categorical</td><td>--</td></tr>
+        <tr><td><code>erp-service-default-rate-prop</code></td><td>Default Rate</td><td>Measurement</td><td>std-currency</td></tr>
+    </table>
+
+    <h3>6.8 erp-information-resource</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th></tr>
+        <tr><td><code>erp-info-format-prop</code></td><td>Format</td><td>Categorical</td><td>--</td></tr>
+        <tr><td><code>erp-info-classification-prop</code></td><td>Classification</td><td>Categorical</td><td>--</td></tr>
+    </table>
+
+    <h3>6.9 erp-financial-instrument</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th></tr>
+        <tr><td><code>erp-fin-face-value-prop</code></td><td>Face Value</td><td>Measurement</td><td>std-currency</td></tr>
+        <tr><td><code>erp-fin-maturity-date-prop</code></td><td>Maturity Date</td><td>Date</td><td>--</td></tr>
+        <tr><td><code>erp-fin-instrument-type-prop</code></td><td>Instrument Type</td><td>Categorical</td><td>--</td></tr>
+    </table>
+
+    <h3>6.10 erp-license</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th></tr>
+        <tr><td><code>erp-license-seat-count-prop</code></td><td>Seat Count</td><td>Measurement</td><td>std-integer</td></tr>
+        <tr><td><code>erp-license-license-type-prop</code></td><td>License Type</td><td>Categorical</td><td>--</td></tr>
+    </table>
+
+    <h3>6.11 erp-capacity-resource (inherited by labor, machine, storage)</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th></tr>
+        <tr><td><code>erp-capacity-total-prop</code></td><td>Total Capacity</td><td>Measurement</td><td>std-float</td></tr>
+        <tr><td><code>erp-capacity-available-prop</code></td><td>Available Capacity</td><td>Measurement</td><td>std-float</td></tr>
+        <tr><td><code>erp-capacity-utilization-prop</code></td><td>Utilization %</td><td>Measurement</td><td>std-ratio</td></tr>
+    </table>
+
+    <h3>6.12 erp-labor-capacity</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th></tr>
+        <tr><td><code>erp-labor-period-prop</code></td><td>Period</td><td>Categorical</td><td>--</td></tr>
+        <tr><td><code>erp-labor-fte-equivalent-prop</code></td><td>FTE Equivalent</td><td>Measurement</td><td>std-float</td></tr>
+    </table>
+
+    <h3>6.13 erp-machine-capacity</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th></tr>
+        <tr><td><code>erp-machine-hours-per-shift-prop</code></td><td>Hours Per Shift</td><td>Measurement</td><td>std-float</td></tr>
+        <tr><td><code>erp-machine-shifts-per-day-prop</code></td><td>Shifts Per Day</td><td>Measurement</td><td>std-integer</td></tr>
+    </table>
+
+    <h3>6.14 erp-storage-capacity</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th></tr>
+        <tr><td><code>erp-storage-unit-prop</code></td><td>Storage Unit</td><td>Categorical</td><td>--</td></tr>
+        <tr><td><code>erp-storage-is-climate-controlled-prop</code></td><td>Climate Controlled</td><td>Boolean</td><td>--</td></tr>
+    </table>
+
+    <h3>6.15 erp-resource-category</h3>
+    <table>
+        <tr><th>Property ID</th><th>Label</th><th>Type</th><th>Frame</th><th>Label Opts</th></tr>
+        <tr><td><code>erp-resource-category-code-prop</code></td><td>Category Code</td><td>Categorical</td><td>--</td><td>seq 1</td></tr>
+        <tr><td><code>erp-resource-category-name-prop</code></td><td>Category Name</td><td>Textual</td><td>--</td><td>seq 2</td></tr>
+        <tr><td><code>erp-resource-category-description-prop</code></td><td>Category Description</td><td>Textual</td><td>--</td><td>--</td></tr>
+    </table>
+
+    <h3>6.16 Enumerations</h3>
+    <table>
+        <tr><th>Enum Universal</th><th>Property</th><th>Values</th></tr>
+        <tr><td><code>erp-resource-status</code></td><td><code>erp-resource-status-name-prop</code></td><td>ACTIVE, DISCONTINUED, PENDING, BLOCKED</td></tr>
+        <tr><td><code>erp-depreciation-method</code></td><td><code>erp-depreciation-method-name-prop</code></td><td>STRAIGHT_LINE, DECLINING_BALANCE, UNITS_OF_PRODUCTION</td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <h2>7. Computation: Capacity Utilization Rate</h2>
+
+    <p>A single reactive computation auto-calculates utilization percentage for all capacity resources.</p>
+
+    <table>
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>ID</td><td><code>erp-capacity-utilization-calc</code></td></tr>
+        <tr><td>Label</td><td>Capacity Utilization Rate</td></tr>
+        <tr><td>Formula</td><td><code>let t = total.value; let a = available.value; if t > 0.0 { (t - a) / t * 100.0 } else { 0.0 }</code></td></tr>
+        <tr><td>Input: total</td><td><code>erp-capacity-total-prop</code> (Measurement, std-float)</td></tr>
+        <tr><td>Input: available</td><td><code>erp-capacity-available-prop</code> (Measurement, std-float)</td></tr>
+        <tr><td>Output</td><td><code>erp-capacity-utilization-prop</code> (Measurement, std-ratio)</td></tr>
+        <tr><td>Triggers</td><td>PropertyChange on <code>erp-capacity-available-prop</code> or <code>erp-capacity-total-prop</code></td></tr>
+        <tr><td>Scope</td><td>All <code>erp-capacity-resource</code> instances and specializations</td></tr>
+    </table>
+
+    <div class="mermaid">
+sequenceDiagram
+    participant User
+    participant MemDB
+    participant ReactiveSystem
+    participant Instance
+
+    User->>MemDB: Update available capacity (e.g., allocate 20h)
+    MemDB->>ReactiveSystem: PropertyChange event (erp-capacity-available-prop)
+    ReactiveSystem->>Instance: Read total (640.0) and available (140.0)
+    ReactiveSystem->>ReactiveSystem: Compute (640 - 140) / 640 * 100 = 78.125
+    ReactiveSystem->>Instance: Write utilization = 78.125%
+    Note over Instance: erp-capacity-utilization-prop updated
+    </div>
+
+    <h3>Sample Utilization Values</h3>
+    <table>
+        <tr><th>Resource</th><th>Total</th><th>Available</th><th>Utilization</th></tr>
+        <tr><td>Engineering Team Capacity</td><td>640 hours</td><td>160 hours</td><td>75.0%</td></tr>
+        <tr><td>CNC Machine Capacity</td><td>120 hours</td><td>45 hours</td><td>62.5%</td></tr>
+        <tr><td>Warehouse A Storage</td><td>500 pallets</td><td>125 pallets</td><td>75.0%</td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <h2>8. Artifact Definition: Resource Inventory by Category</h2>
+
+    <p>An artifact definition aggregates resources by catalog category, providing counts and cost summaries.</p>
+
+    <table>
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>ID</td><td><code>erp-resource-by-category-artifact</code></td></tr>
+        <tr><td>Label</td><td>Resource Inventory by Category</td></tr>
+        <tr><td>Source</td><td><code>erp-physical-item</code></td></tr>
+        <tr><td>Output Universal</td><td><code>erp-resource-inventory-summary</code></td></tr>
+        <tr><td>Materialization</td><td>Eager</td></tr>
+    </table>
+
+    <h3>Dimension</h3>
+    <table>
+        <tr><th>ID</th><th>Source</th><th>Path</th><th>Output Property</th></tr>
+        <tr><td><code>erp-category-dim</code></td><td>RelatorPath</td><td><code>erp-resource-category-rel</code> (role: category) -&gt; <code>erp-resource-category-name-prop</code></td><td><code>erp-summary-category-name-prop</code></td></tr>
+    </table>
+
+    <h3>Measures</h3>
+    <table>
+        <tr><th>ID</th><th>Function</th><th>Source Property</th><th>Output Property</th></tr>
+        <tr><td><code>erp-category-resource-count</code></td><td>Count</td><td>(none -- counts instances)</td><td><code>erp-summary-resource-count-prop</code></td></tr>
+        <tr><td><code>erp-category-total-cost</code></td><td>Sum</td><td><code>erp-item-standard-cost-prop</code></td><td><code>erp-summary-total-standard-cost-prop</code></td></tr>
+    </table>
+
+    <h3>Threshold</h3>
+    <table>
+        <tr><th>ID</th><th>Measure</th><th>Condition</th><th>Event</th><th>State Property</th></tr>
+        <tr><td><code>erp-high-category-cost-threshold</code></td><td><code>erp-category-total-cost</code></td><td>GreaterThan 100,000.0</td><td><code>erp-high-category-cost-event</code></td><td><code>erp-summary-threshold-state-prop</code></td></tr>
+    </table>
+
+    <div class="mermaid">
+graph LR
+    subgraph "Source Instances"
+        PI1["Physical Item 1"]
+        PI2["Physical Item 2"]
+        PI3["Physical Item 3"]
+    end
+
+    subgraph "Relator Path"
+        REL["erp-resource-category-rel"]
+    end
+
+    subgraph "Category Dimension"
+        CAT["erp-resource-category"]
+    end
+
+    subgraph "Artifact Output"
+        ART["erp-resource-inventory-summary<br/>category | count | total cost"]
+    end
+
+    PI1 --> REL
+    PI2 --> REL
+    PI3 --> REL
+    REL --> CAT
+    CAT --> ART
+
+    subgraph "Threshold"
+        THR["total cost &gt; $100K?"]
+        EVT["erp-high-category-cost-event"]
+    end
+
+    ART --> THR
+    THR -->|"yes"| EVT
+    </div>
+
+    <!-- ================================================================== -->
+    <h2>9. Event Definitions</h2>
+
+    <table>
+        <tr><th>Event ID</th><th>Label</th><th>Scope</th><th>Routing</th><th>Payload</th></tr>
+        <tr>
+            <td><code>erp-capacity-utilization-high-event</code></td>
+            <td>High Capacity Utilization</td>
+            <td>tenant</td>
+            <td>broadcast / local</td>
+            <td><code>resource_id</code> (uuid), <code>utilization_percent</code> (float)</td>
+        </tr>
+        <tr>
+            <td><code>erp-high-category-cost-event</code></td>
+            <td>High Category Cost Threshold</td>
+            <td>tenant</td>
+            <td>broadcast / local</td>
+            <td><code>artifact_instance_id</code> (uuid), <code>measure_value</code> (measurement/Currency)</td>
+        </tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <h2>10. Cross-Layer References</h2>
+
+    <p>These connections are <strong>not implemented in Layer 0</strong> but are documented here so that higher-layer blocks know how to connect to the Resource Catalog.</p>
+
+    <div class="mermaid">
+graph TB
+    subgraph "Layer 0 -- Resource Catalog"
+        PI["erp-physical-item"]
+        FA["erp-fixed-asset"]
+        RM["erp-raw-material"]
+        SI["erp-service-item"]
+        CR["erp-capacity-resource"]
+        LI["erp-license"]
+        FI["erp-financial-instrument"]
+    end
+
+    subgraph "Layer 1"
+        VM["Vendor Management"]
+        CM["Customer Management"]
+        COA["Chart of Accounts"]
+    end
+
+    subgraph "Layer 2"
+        PROC["Procurement"]
+        BOM["Manufacturing / BOM"]
+        PM["Project Management"]
+    end
+
+    subgraph "Layer 3"
+        AM["Asset Management"]
+    end
+
+    PI -->|"association"| VM
+    PI -->|"association"| CM
+    PI -->|"participation"| PROC
+    RM -->|"composition"| BOM
+    FA -->|"attribution"| AM
+    FA -->|"attribution"| COA
+    SI -->|"participation"| PROC
+    CR -->|"association"| PM
+    LI -->|"association"| VM
+    FI -->|"attribution"| COA
+    </div>
+
+    <table>
+        <tr><th>Source (this block)</th><th>Target Block (Layer)</th><th>Relator Type</th><th>Purpose</th></tr>
+        <tr><td><code>erp-physical-item</code></td><td>Vendor Mgmt (L1)</td><td>association</td><td>Vendor-Item relationship: approved vendors with lead time and pricing</td></tr>
+        <tr><td><code>erp-physical-item</code></td><td>Customer Mgmt (L1)</td><td>association</td><td>Customer-Item relationship: customer-specific pricing and availability</td></tr>
+        <tr><td><code>erp-physical-item</code></td><td>Procurement (L2)</td><td>participation</td><td>Purchase order lines reference the physical item being procured</td></tr>
+        <tr><td><code>erp-raw-material</code></td><td>Manufacturing / BOM (L2)</td><td>composition</td><td>BOM links raw materials as components of finished goods</td></tr>
+        <tr><td><code>erp-fixed-asset</code></td><td>Asset Management (L3)</td><td>attribution</td><td>Lifecycle tracking: depreciation schedules, disposal workflows</td></tr>
+        <tr><td><code>erp-fixed-asset</code></td><td>Chart of Accounts (L1)</td><td>attribution</td><td>Maps asset categories to GL accounts for capitalization and depreciation posting</td></tr>
+        <tr><td><code>erp-service-item</code></td><td>Procurement (L2)</td><td>participation</td><td>Service procurement lines reference the service item being contracted</td></tr>
+        <tr><td><code>erp-capacity-resource</code></td><td>Project Mgmt (L2)</td><td>association</td><td>Projects consume capacity resources (labor hours, machine time)</td></tr>
+        <tr><td><code>erp-license</code></td><td>Vendor Mgmt (L1)</td><td>association</td><td>License vendor relationship for renewal and compliance tracking</td></tr>
+        <tr><td><code>erp-financial-instrument</code></td><td>Accounting Core (L1)</td><td>attribution</td><td>Instruments map to GL accounts for valuation and economic events</td></tr>
+    </table>
+
+    <!-- ================================================================== -->
+    <h2>11. Analytical Value</h2>
+
+    <p>The 3-level generalization hierarchy unlocks cross-domain aggregation that would be impossible with separate, unrelated catalogs.</p>
+
+    <div class="scope-box">
+        <h3>Resource Consumption by Department</h3>
+        <p>At Layer 1+, when resources are linked to org units, an artifact can aggregate physical items consumed, services procured, and labor hours allocated through the shared <code>erp-resource</code> root. A department that consumed 500 units of raw materials, 40 hours of consulting, and 160 hours of machine capacity reports all three as "resources consumed" in a single view -- with drill-down into each subtype.</p>
+    </div>
+
+    <div class="scope-box">
+        <h3>Uniform Capacity Utilization Dashboard</h3>
+        <p>The <code>erp-capacity-utilization-calc</code> computation applies identically across all capacity subtypes. Whether tracking person-hours, machine-hours, or warehouse pallet positions, the formula is the same. This enables a dashboard showing all constrained resources side by side, highlighting bottlenecks and driving rebalancing decisions.</p>
+    </div>
+
+    <div class="scope-box">
+        <h3>Category-Based Cost Analysis</h3>
+        <p>Because <code>erp-resource-category-rel</code> applies at the <code>erp-resource</code> level, categories can span tangible and intangible resources. A category like "IT Infrastructure" might contain fixed assets (servers), licenses (software), services (cloud hosting), and storage capacity (data center space). Aggregating at the category level gives a true total-cost view no single traditional ERP module provides.</p>
+    </div>
+
+    <div class="mermaid">
+graph TB
+    subgraph "Shared erp-resource Root"
+        ROOT["erp-resource"]
+    end
+
+    subgraph "Cross-Domain Aggregation"
+        AGG1["Total resource consumption<br/>by department"]
+        AGG2["Capacity utilization<br/>dashboard"]
+        AGG3["Category-level<br/>total cost analysis"]
+    end
+
+    ROOT --> AGG1
+    ROOT --> AGG2
+    ROOT --> AGG3
+
+    subgraph "Tangible"
+        T1["500 raw material units"]
+        T2["2 fixed assets"]
+    end
+
+    subgraph "Intangible"
+        I1["40h consulting"]
+        I2["2 licenses"]
+    end
+
+    subgraph "Capacity"
+        C1["160h machine time"]
+        C2["375 pallets used"]
+    end
+
+    T1 --> AGG1
+    I1 --> AGG1
+    C1 --> AGG1
+    C1 --> AGG2
+    C2 --> AGG2
+    T1 --> AGG3
+    T2 --> AGG3
+    I2 --> AGG3
+    </div>
+
+    <!-- ================================================================== -->
+    <h2>12. Decision Points</h2>
+
+    <div class="decision-box">
+        <h3>3-Level Hierarchy for Analytical Power</h3>
+        <p>A flat list of resource types (physical item, service, license, ...) loses the ability to aggregate at intermediate levels. The 3-level hierarchy enables queries like "total tangible resource cost" or "all intangible resources expiring this quarter" without enumerating every leaf type. The intermediate abstractions (<code>erp-tangible-resource</code>, <code>erp-intangible-resource</code>, <code>erp-capacity-resource</code>) carry properties common to their branch, avoiding property duplication on leaf types.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Tangible vs Intangible vs Capacity</h3>
+        <p>The three-branch structure reflects a genuine ontological distinction:</p>
+        <ul>
+            <li><strong>Tangible resources</strong> have physical properties (weight, volume) and can be tracked by serial/lot. They exist in space.</li>
+            <li><strong>Intangible resources</strong> have no physical form but may expire and require renewal. They exist as rights or representations.</li>
+            <li><strong>Capacity resources</strong> represent available potential rather than a discrete thing. They are consumed by allocation over time, not by ownership transfer.</li>
+        </ul>
+        <p>This branching determines which properties are inherited and which computations apply. Weight and volume are meaningless for a license; utilization rate is meaningless for a serialized physical item.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Resource Is NOT a Party</h3>
+        <p>Resources are what parties <em>transact with</em> -- they are the objects of economic events, not the agents. A vendor sells resources; a department consumes them; a customer buys them. Conflating resources with parties would collapse the fundamental agent/object distinction in economic modeling. The Party Catalog is a separate Layer 0 block.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Standard Measurement Frames for Diverse Types</h3>
+        <p>Rather than creating custom measurement frames, the catalog uses standard frames from the foundation bootstrap: <code>std-weight</code>, <code>std-volume</code>, <code>std-currency</code>, <code>std-float</code>, <code>std-ratio</code>, <code>std-integer</code>, <code>std-quantity</code>, <code>std-time-duration</code>, <code>std-timestamp</code>. This ensures interoperability with other ERP blocks and analytics without frame conversion logic.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Capacity Resources as a Distinct Category</h3>
+        <p>Traditional ERP systems track items and sometimes services, but capacity (labor-hours, machine-hours, storage space) is usually managed in separate modules with separate data models. Elevating capacity to a first-class branch under <code>erp-resource</code> means capacity can be cataloged, classified, and analytically aggregated alongside items and services. The <code>erp-capacity-utilization-calc</code> computation applies uniformly to all three capacity subtypes through inheritance.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Category Hierarchy Separate from Generalization</h3>
+        <p>The generalization hierarchy (<code>erp-resource</code> -&gt; <code>erp-tangible-resource</code> -&gt; <code>erp-physical-item</code>) defines what a resource IS ontologically. The category hierarchy (<code>erp-resource-category</code> via <code>erp-category-parent-rel</code>) defines how a resource is CLASSIFIED operationally. A physical item that IS a tangible resource might be CLASSIFIED under "Electronics &gt; Components &gt; Resistors". Both hierarchies coexist without conflict.</p>
+    </div>
+
+    <div class="decision-box">
+        <h3>Financial Instruments -- Scope Boundary</h3>
+        <p><code>erp-financial-instrument</code> covers tradable or held-to-maturity instruments (bonds, securities, derivatives). <strong>Receivables and payables are explicitly excluded</strong> -- they are transactional positions created by economic events at Layer 1+, not catalog entries. Including them would conflate master data with transactional state.</p>
+    </div>
+
+    <!-- ================================================================== -->
+    <h2>13. Layer Information</h2>
+
+    <div class="info-box">
+        <strong>Layer:</strong> 0 (Foundation)<br/>
+        <strong>Dependencies:</strong> None (independently deployable)<br/>
+        <strong>App ID:</strong> <code>erp-resource-catalog-app</code><br/>
+        <strong>Module:</strong> <code>erp-resource-catalog-module</code> (publishes: <code>erp-capacity-utilization-high-event</code>)<br/>
+        <strong>Universals:</strong> 16 (1 abstract root + 3 intermediate abstracts + 9 concrete leaves + 2 enums + 1 category)<br/>
+        <strong>Property Definitions:</strong> 46 total (5 base + 3 tangible + 8 physical-item + 4 fixed-asset + 2 raw-material + 2 intangible + 2 service + 2 info-resource + 3 financial + 2 license + 3 capacity + 2 labor + 2 machine + 2 storage + 3 category + 2 enum name props + 4 artifact output props)<br/>
+        <strong>Relators:</strong> 2 (resource-category attribution, category-parent aggregation)<br/>
+        <strong>Computations:</strong> 1 (capacity utilization rate)<br/>
+        <strong>Artifact Definitions:</strong> 1 (resource inventory by category)<br/>
+        <strong>Event Definitions:</strong> 2 (high capacity utilization, high category cost threshold)
+    </div>
+
+    <p>
+        The Resource Catalog can be loaded, validated, and fully populated as a standalone metadata app. No other ERP block needs to exist. Higher layers connect to it by creating relators that reference the resource universals defined here. This design ensures that the foundation of all resource-related operations -- cataloging, status management, categorization, and capacity tracking -- is stable before transactional complexity is layered on top.
+    </p>
+
+    <script>mermaid.initialize({startOnLoad: true, theme: 'default', securityLevel: 'loose'});</script>
+</body>
+</html>

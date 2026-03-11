@@ -1,0 +1,790 @@
+{
+    "_comment": "=== ERP ORGANIZATIONAL STRUCTURE - INSTANCE DATA ===",
+    "_description": "3 org unit status enums, 3 position status enums, 2 business units, 5 departments, 2 teams, 1 committee, 4 cost centers, 5 job grades, 12 positions, hierarchy relators, dept-cost-center relators, dept-position relators, position-grade relators.",
+
+    "instances": [
+        {
+            "_comment": "=== ORG UNIT STATUS ENUM INSTANCES ===",
+            "id": "erp-status-active",
+            "universal_id": "erp-org-unit-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-org-unit-status-name-prop": "ACTIVE" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-status-inactive",
+            "universal_id": "erp-org-unit-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-org-unit-status-name-prop": "INACTIVE" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-status-restructuring",
+            "universal_id": "erp-org-unit-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-org-unit-status-name-prop": "RESTRUCTURING" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== POSITION STATUS ENUM INSTANCES ===",
+            "id": "erp-pos-status-open",
+            "universal_id": "erp-position-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-position-status-name-prop": "OPEN" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-pos-status-filled",
+            "universal_id": "erp-position-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-position-status-name-prop": "FILLED" },
+            "use_seed": true
+        },
+        {
+            "id": "erp-pos-status-frozen",
+            "universal_id": "erp-position-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-position-status-name-prop": "FROZEN" },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== BUSINESS UNITS ===",
+            "id": "erp-bu-technology",
+            "universal_id": "erp-business-unit",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-org-unit-code-prop": "BU-TECH",
+                "erp-org-unit-name-prop": { "en": "Technology Services" },
+                "erp-org-unit-effective-date-prop": { "value": 1609459200, "unit": "seconds" },
+                "erp-org-unit-status-prop": "ACTIVE",
+                "erp-bu-revenue-target-prop": { "value": 5000000, "unit": "usd" },
+                "erp-bu-is-profit-center-prop": true
+            },
+            "skip_composition": true,
+            "use_seed": true
+        },
+        {
+            "id": "erp-bu-operations",
+            "universal_id": "erp-business-unit",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-org-unit-code-prop": "BU-OPS",
+                "erp-org-unit-name-prop": { "en": "Operations" },
+                "erp-org-unit-effective-date-prop": { "value": 1609459200, "unit": "seconds" },
+                "erp-org-unit-status-prop": "ACTIVE",
+                "erp-bu-revenue-target-prop": { "value": 3000000, "unit": "usd" },
+                "erp-bu-is-profit-center-prop": false
+            },
+            "skip_composition": true,
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== DEPARTMENTS (under Technology BU) ===",
+            "id": "erp-dept-engineering",
+            "universal_id": "erp-department",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-org-unit-code-prop": "DEPT-ENG",
+                "erp-org-unit-name-prop": { "en": "Engineering" },
+                "erp-org-unit-effective-date-prop": { "value": 1609459200, "unit": "seconds" },
+                "erp-org-unit-status-prop": "ACTIVE",
+                "erp-dept-function-prop": "Engineering"
+            },
+            "skip_composition": true,
+            "use_seed": true
+        },
+        {
+            "id": "erp-dept-product",
+            "universal_id": "erp-department",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-org-unit-code-prop": "DEPT-PROD",
+                "erp-org-unit-name-prop": { "en": "Product Management" },
+                "erp-org-unit-effective-date-prop": { "value": 1609459200, "unit": "seconds" },
+                "erp-org-unit-status-prop": "ACTIVE",
+                "erp-dept-function-prop": "Operations"
+            },
+            "skip_composition": true,
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== DEPARTMENTS (under Operations BU) ===",
+            "id": "erp-dept-finance",
+            "universal_id": "erp-department",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-org-unit-code-prop": "DEPT-FIN",
+                "erp-org-unit-name-prop": { "en": "Finance" },
+                "erp-org-unit-effective-date-prop": { "value": 1609459200, "unit": "seconds" },
+                "erp-org-unit-status-prop": "ACTIVE",
+                "erp-dept-function-prop": "Finance"
+            },
+            "skip_composition": true,
+            "use_seed": true
+        },
+        {
+            "id": "erp-dept-hr",
+            "universal_id": "erp-department",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-org-unit-code-prop": "DEPT-HR",
+                "erp-org-unit-name-prop": { "en": "Human Resources" },
+                "erp-org-unit-effective-date-prop": { "value": 1609459200, "unit": "seconds" },
+                "erp-org-unit-status-prop": "ACTIVE",
+                "erp-dept-function-prop": "HR"
+            },
+            "skip_composition": true,
+            "use_seed": true
+        },
+        {
+            "id": "erp-dept-sales",
+            "universal_id": "erp-department",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-org-unit-code-prop": "DEPT-SALES",
+                "erp-org-unit-name-prop": { "en": "Sales" },
+                "erp-org-unit-effective-date-prop": { "value": 1609459200, "unit": "seconds" },
+                "erp-org-unit-status-prop": "RESTRUCTURING",
+                "erp-dept-function-prop": "Sales"
+            },
+            "skip_composition": true,
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== TEAMS ===",
+            "id": "erp-team-platform",
+            "universal_id": "erp-team",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-org-unit-code-prop": "TEAM-PLAT",
+                "erp-org-unit-name-prop": { "en": "Platform Team" },
+                "erp-org-unit-effective-date-prop": { "value": 1640995200, "unit": "seconds" },
+                "erp-org-unit-status-prop": "ACTIVE",
+                "erp-team-purpose-prop": { "en": "Build and maintain core platform infrastructure" },
+                "erp-team-is-permanent-prop": true
+            },
+            "skip_composition": true,
+            "use_seed": true
+        },
+        {
+            "id": "erp-team-migration",
+            "universal_id": "erp-team",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-org-unit-code-prop": "TEAM-MIG",
+                "erp-org-unit-name-prop": { "en": "Cloud Migration Team" },
+                "erp-org-unit-effective-date-prop": { "value": 1672531200, "unit": "seconds" },
+                "erp-org-unit-status-prop": "ACTIVE",
+                "erp-team-purpose-prop": { "en": "Migrate on-premise services to cloud infrastructure" },
+                "erp-team-is-permanent-prop": false
+            },
+            "skip_composition": true,
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== COMMITTEE ===",
+            "id": "erp-committee-steering",
+            "universal_id": "erp-committee",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-org-unit-code-prop": "COM-STEER",
+                "erp-org-unit-name-prop": { "en": "Technology Steering Committee" },
+                "erp-org-unit-effective-date-prop": { "value": 1609459200, "unit": "seconds" },
+                "erp-org-unit-status-prop": "ACTIVE",
+                "erp-committee-charter-prop": { "en": "Oversee technology strategy, investment decisions, and architecture governance" },
+                "erp-committee-meeting-frequency-prop": "Monthly"
+            },
+            "skip_composition": true,
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== COST CENTERS ===",
+            "id": "erp-cc-engineering",
+            "universal_id": "erp-cost-center",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-cc-code-prop": "CC-1001",
+                "erp-cc-name-prop": { "en": "Engineering Operations" },
+                "erp-cc-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cc-finance",
+            "universal_id": "erp-cost-center",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-cc-code-prop": "CC-2001",
+                "erp-cc-name-prop": { "en": "Finance & Accounting" },
+                "erp-cc-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cc-hr",
+            "universal_id": "erp-cost-center",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-cc-code-prop": "CC-3001",
+                "erp-cc-name-prop": { "en": "Human Resources" },
+                "erp-cc-is-active-prop": true
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-cc-shared-it",
+            "universal_id": "erp-cost-center",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-cc-code-prop": "CC-9001",
+                "erp-cc-name-prop": { "en": "Shared IT Infrastructure" },
+                "erp-cc-is-active-prop": true
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== JOB GRADES ===",
+            "id": "erp-grade-ic1",
+            "universal_id": "erp-job-grade",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-grade-code-prop": "IC1",
+                "erp-grade-name-prop": { "en": "Individual Contributor I" },
+                "erp-grade-min-salary-prop": { "value": 50000, "unit": "usd" },
+                "erp-grade-max-salary-prop": { "value": 80000, "unit": "usd" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-grade-ic2",
+            "universal_id": "erp-job-grade",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-grade-code-prop": "IC2",
+                "erp-grade-name-prop": { "en": "Individual Contributor II" },
+                "erp-grade-min-salary-prop": { "value": 75000, "unit": "usd" },
+                "erp-grade-max-salary-prop": { "value": 120000, "unit": "usd" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-grade-ic3",
+            "universal_id": "erp-job-grade",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-grade-code-prop": "IC3",
+                "erp-grade-name-prop": { "en": "Senior Individual Contributor" },
+                "erp-grade-min-salary-prop": { "value": 110000, "unit": "usd" },
+                "erp-grade-max-salary-prop": { "value": 170000, "unit": "usd" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-grade-m1",
+            "universal_id": "erp-job-grade",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-grade-code-prop": "M1",
+                "erp-grade-name-prop": { "en": "Manager I" },
+                "erp-grade-min-salary-prop": { "value": 120000, "unit": "usd" },
+                "erp-grade-max-salary-prop": { "value": 180000, "unit": "usd" }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-grade-d1",
+            "universal_id": "erp-job-grade",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-grade-code-prop": "D1",
+                "erp-grade-name-prop": { "en": "Director" },
+                "erp-grade-min-salary-prop": { "value": 160000, "unit": "usd" },
+                "erp-grade-max-salary-prop": { "value": 250000, "unit": "usd" }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== POSITIONS (Engineering) ===",
+            "id": "erp-pos-eng-director",
+            "universal_id": "erp-position",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-position-title-prop": { "en": "Engineering Director" },
+                "erp-position-headcount-prop": { "value": 1, "unit": "count" },
+                "erp-position-status-prop": "FILLED"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-pos-sr-engineer-1",
+            "universal_id": "erp-position",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-position-title-prop": { "en": "Senior Software Engineer" },
+                "erp-position-headcount-prop": { "value": 1, "unit": "count" },
+                "erp-position-status-prop": "FILLED"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-pos-sr-engineer-2",
+            "universal_id": "erp-position",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-position-title-prop": { "en": "Senior Software Engineer" },
+                "erp-position-headcount-prop": { "value": 1, "unit": "count" },
+                "erp-position-status-prop": "OPEN"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-pos-engineer-1",
+            "universal_id": "erp-position",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-position-title-prop": { "en": "Software Engineer" },
+                "erp-position-headcount-prop": { "value": 2, "unit": "count" },
+                "erp-position-status-prop": "FILLED"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-pos-engineer-frozen",
+            "universal_id": "erp-position",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-position-title-prop": { "en": "Software Engineer" },
+                "erp-position-headcount-prop": { "value": 1, "unit": "count" },
+                "erp-position-status-prop": "FROZEN"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== POSITIONS (Finance) ===",
+            "id": "erp-pos-fin-manager",
+            "universal_id": "erp-position",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-position-title-prop": { "en": "Finance Manager" },
+                "erp-position-headcount-prop": { "value": 1, "unit": "count" },
+                "erp-position-status-prop": "FILLED"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-pos-accountant",
+            "universal_id": "erp-position",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-position-title-prop": { "en": "Staff Accountant" },
+                "erp-position-headcount-prop": { "value": 2, "unit": "count" },
+                "erp-position-status-prop": "FILLED"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== POSITIONS (HR) ===",
+            "id": "erp-pos-hr-manager",
+            "universal_id": "erp-position",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-position-title-prop": { "en": "HR Manager" },
+                "erp-position-headcount-prop": { "value": 1, "unit": "count" },
+                "erp-position-status-prop": "FILLED"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-pos-hr-coordinator",
+            "universal_id": "erp-position",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-position-title-prop": { "en": "HR Coordinator" },
+                "erp-position-headcount-prop": { "value": 1, "unit": "count" },
+                "erp-position-status-prop": "OPEN"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== POSITIONS (Product) ===",
+            "id": "erp-pos-product-manager",
+            "universal_id": "erp-position",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-position-title-prop": { "en": "Product Manager" },
+                "erp-position-headcount-prop": { "value": 1, "unit": "count" },
+                "erp-position-status-prop": "FILLED"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== POSITIONS (Sales) ===",
+            "id": "erp-pos-sales-rep",
+            "universal_id": "erp-position",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-position-title-prop": { "en": "Sales Representative" },
+                "erp-position-headcount-prop": { "value": 3, "unit": "count" },
+                "erp-position-status-prop": "FILLED"
+            },
+            "use_seed": true
+        }
+    ],
+
+    "relator_instances": [
+        {
+            "_comment": "=== ORG HIERARCHY: BUs are top-level (no parent). Departments under BUs. ===",
+
+            "_comment_tech_hierarchy": "=== Technology BU hierarchy ===",
+            "id": "erp-rel-tech-eng",
+            "relator_id": "erp-unit-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-bu-technology",
+                "part": "erp-dept-engineering"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-tech-product",
+            "relator_id": "erp-unit-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-bu-technology",
+                "part": "erp-dept-product"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-eng-platform-team",
+            "relator_id": "erp-unit-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-dept-engineering",
+                "part": "erp-team-platform"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-eng-migration-team",
+            "relator_id": "erp-unit-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-dept-engineering",
+                "part": "erp-team-migration"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-tech-steering",
+            "relator_id": "erp-unit-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-bu-technology",
+                "part": "erp-committee-steering"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment_ops_hierarchy": "=== Operations BU hierarchy ===",
+            "id": "erp-rel-ops-finance",
+            "relator_id": "erp-unit-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-bu-operations",
+                "part": "erp-dept-finance"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-ops-hr",
+            "relator_id": "erp-unit-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-bu-operations",
+                "part": "erp-dept-hr"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-ops-sales",
+            "relator_id": "erp-unit-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-bu-operations",
+                "part": "erp-dept-sales"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment_dept_cc": "=== Department -> Cost Center mappings ===",
+            "id": "erp-rel-eng-cc",
+            "relator_id": "erp-dept-cost-center-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "department": "erp-dept-engineering",
+                "cost_center": "erp-cc-engineering"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-fin-cc",
+            "relator_id": "erp-dept-cost-center-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "department": "erp-dept-finance",
+                "cost_center": "erp-cc-finance"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-hr-cc",
+            "relator_id": "erp-dept-cost-center-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "department": "erp-dept-hr",
+                "cost_center": "erp-cc-hr"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment_dept_pos": "=== Department -> Position mappings ===",
+            "id": "erp-rel-eng-pos-director",
+            "relator_id": "erp-dept-has-position-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-dept-engineering",
+                "part": "erp-pos-eng-director"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-eng-pos-sr1",
+            "relator_id": "erp-dept-has-position-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-dept-engineering",
+                "part": "erp-pos-sr-engineer-1"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-eng-pos-sr2",
+            "relator_id": "erp-dept-has-position-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-dept-engineering",
+                "part": "erp-pos-sr-engineer-2"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-eng-pos-eng1",
+            "relator_id": "erp-dept-has-position-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-dept-engineering",
+                "part": "erp-pos-engineer-1"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-eng-pos-frozen",
+            "relator_id": "erp-dept-has-position-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-dept-engineering",
+                "part": "erp-pos-engineer-frozen"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-fin-pos-manager",
+            "relator_id": "erp-dept-has-position-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-dept-finance",
+                "part": "erp-pos-fin-manager"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-fin-pos-accountant",
+            "relator_id": "erp-dept-has-position-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-dept-finance",
+                "part": "erp-pos-accountant"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-hr-pos-manager",
+            "relator_id": "erp-dept-has-position-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-dept-hr",
+                "part": "erp-pos-hr-manager"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-hr-pos-coordinator",
+            "relator_id": "erp-dept-has-position-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-dept-hr",
+                "part": "erp-pos-hr-coordinator"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-prod-pos-pm",
+            "relator_id": "erp-dept-has-position-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-dept-product",
+                "part": "erp-pos-product-manager"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-sales-pos-rep",
+            "relator_id": "erp-dept-has-position-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-dept-sales",
+                "part": "erp-pos-sales-rep"
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment_pos_grade": "=== Position -> Job Grade mappings ===",
+            "id": "erp-rel-grade-eng-director",
+            "relator_id": "erp-position-grade-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "position": "erp-pos-eng-director",
+                "grade": "erp-grade-d1"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grade-sr-eng1",
+            "relator_id": "erp-position-grade-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "position": "erp-pos-sr-engineer-1",
+                "grade": "erp-grade-ic3"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grade-sr-eng2",
+            "relator_id": "erp-position-grade-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "position": "erp-pos-sr-engineer-2",
+                "grade": "erp-grade-ic3"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grade-eng1",
+            "relator_id": "erp-position-grade-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "position": "erp-pos-engineer-1",
+                "grade": "erp-grade-ic2"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grade-eng-frozen",
+            "relator_id": "erp-position-grade-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "position": "erp-pos-engineer-frozen",
+                "grade": "erp-grade-ic1"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grade-fin-mgr",
+            "relator_id": "erp-position-grade-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "position": "erp-pos-fin-manager",
+                "grade": "erp-grade-m1"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grade-accountant",
+            "relator_id": "erp-position-grade-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "position": "erp-pos-accountant",
+                "grade": "erp-grade-ic2"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grade-hr-mgr",
+            "relator_id": "erp-position-grade-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "position": "erp-pos-hr-manager",
+                "grade": "erp-grade-m1"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grade-hr-coord",
+            "relator_id": "erp-position-grade-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "position": "erp-pos-hr-coordinator",
+                "grade": "erp-grade-ic1"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grade-product-mgr",
+            "relator_id": "erp-position-grade-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "position": "erp-pos-product-manager",
+                "grade": "erp-grade-ic3"
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-rel-grade-sales-rep",
+            "relator_id": "erp-position-grade-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "position": "erp-pos-sales-rep",
+                "grade": "erp-grade-ic2"
+            },
+            "use_seed": true
+        }
+    ]
+}

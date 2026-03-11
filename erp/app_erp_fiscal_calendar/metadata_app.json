@@ -1,0 +1,657 @@
+{
+    "_comment": "=== ERP FISCAL CALENDAR (Layer 0) ===",
+    "_description": "Fiscal calendar structure: fiscal years, quarters, periods with status control. Composition hierarchy: Year -> Quarter -> Period. Supports 13th adjustment period.",
+
+    "_organizations_note": "Organizations defined in app_erp_base. Load app_erp_base first.",
+    "_tenants_note": "Tenants defined in app_erp_base. Load app_erp_base first.",
+
+    "universals": [
+        {
+            "_comment": "=== ENUMERATION UNIVERSAL: Fiscal Status ===",
+            "id": "erp-fiscal-status",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Fiscal Status" },
+            "description": { "en": "Enumeration of fiscal period and year statuses: Open, Closed, Adjustment, Locked" },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Fiscal Year ===",
+            "id": "erp-fiscal-year",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Fiscal Year" },
+            "description": { "en": "An accounting year. May span any 12-month window, not necessarily January-December. Contains quarters and periods." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Fiscal Quarter ===",
+            "id": "erp-fiscal-quarter",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Fiscal Quarter" },
+            "description": { "en": "A quarter within a fiscal year. Contains periods (typically 3 months). Exists only within its parent year." },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ENTITY: Fiscal Period ===",
+            "id": "erp-fiscal-period",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": { "en": "Fiscal Period" },
+            "description": { "en": "A month-level posting period within a quarter. The atomic time unit for financial transactions. Includes support for a 13th adjustment period." },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== ARTIFACT TARGET: Calendar Coverage Summary ===",
+            "id": "erp-calendar-coverage-summary",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": { "en": "Calendar Coverage Summary" },
+            "description": { "en": "Aggregated view of fiscal periods per year per status for calendar completeness monitoring" },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40,
+                "fallback_language": "en"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Year -> Quarter (composition) ===",
+            "id": "erp-year-has-quarter-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Year Contains Quarter" },
+            "description": { "en": "Composition: fiscal year contains quarters. Quarters cannot exist independently of their fiscal year." },
+            "roles": [
+                { "name": "composite", "universal_id": "erp-fiscal-year" },
+                { "name": "component", "universal_id": "erp-fiscal-quarter" }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== RELATOR: Quarter -> Period (composition) ===",
+            "id": "erp-quarter-has-period-rel",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": { "en": "Quarter Contains Period" },
+            "description": { "en": "Composition: fiscal quarter contains periods. Periods cannot exist independently of their quarter." },
+            "roles": [
+                { "name": "composite", "universal_id": "erp-fiscal-quarter" },
+                { "name": "component", "universal_id": "erp-fiscal-period" }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
+            ],
+            "use_seed": true
+        }
+    ],
+
+    "property_definitions": [
+        {
+            "_comment": "=== Fiscal Status Properties ===",
+            "id": "erp-fiscal-status-name-prop",
+            "universal_id": "erp-fiscal-status",
+            "label": { "en": "Status Name" },
+            "description": { "en": "Fiscal status name: Open, Closed, Adjustment, or Locked" },
+            "property_schema": {
+                "predicates": ["name", "code"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Fiscal Year Properties ===",
+            "id": "erp-fiscal-year-code-prop",
+            "universal_id": "erp-fiscal-year",
+            "label": { "en": "Fiscal Year Code" },
+            "description": { "en": "Short code identifying the fiscal year, e.g. FY2025, FY2026" },
+            "property_schema": {
+                "predicates": ["code", "identifier"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fiscal-year-name-prop",
+            "universal_id": "erp-fiscal-year",
+            "label": { "en": "Fiscal Year Name" },
+            "description": { "en": "Human-readable name for the fiscal year" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fiscal-year-start-date-prop",
+            "universal_id": "erp-fiscal-year",
+            "label": { "en": "Start Date" },
+            "description": { "en": "First day of the fiscal year" },
+            "property_schema": {
+                "predicates": ["date", "start"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fiscal-year-end-date-prop",
+            "universal_id": "erp-fiscal-year",
+            "label": { "en": "End Date" },
+            "description": { "en": "Last day of the fiscal year" },
+            "property_schema": {
+                "predicates": ["date", "end"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fiscal-year-status-prop",
+            "universal_id": "erp-fiscal-year",
+            "label": { "en": "Status" },
+            "description": { "en": "Current fiscal year status: Open, Closed, Adjustment, or Locked" },
+            "property_schema": {
+                "predicates": ["status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "erp-fiscal-status",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Fiscal Quarter Properties ===",
+            "id": "erp-fiscal-quarter-code-prop",
+            "universal_id": "erp-fiscal-quarter",
+            "label": { "en": "Quarter Code" },
+            "description": { "en": "Short code identifying the quarter, e.g. Q1, Q2, Q3, Q4" },
+            "property_schema": {
+                "predicates": ["code", "identifier"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fiscal-quarter-sequence-prop",
+            "universal_id": "erp-fiscal-quarter",
+            "label": { "en": "Sequence" },
+            "description": { "en": "Ordering position of the quarter within the fiscal year (1-4)" },
+            "property_schema": {
+                "predicates": ["sequence", "order"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fiscal-quarter-start-date-prop",
+            "universal_id": "erp-fiscal-quarter",
+            "label": { "en": "Start Date" },
+            "description": { "en": "First day of the fiscal quarter" },
+            "property_schema": {
+                "predicates": ["date", "start"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fiscal-quarter-end-date-prop",
+            "universal_id": "erp-fiscal-quarter",
+            "label": { "en": "End Date" },
+            "description": { "en": "Last day of the fiscal quarter" },
+            "property_schema": {
+                "predicates": ["date", "end"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Fiscal Period Properties ===",
+            "id": "erp-fiscal-period-code-prop",
+            "universal_id": "erp-fiscal-period",
+            "label": { "en": "Period Code" },
+            "description": { "en": "Short code identifying the period, e.g. P01 through P13" },
+            "property_schema": {
+                "predicates": ["code", "identifier"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fiscal-period-name-prop",
+            "universal_id": "erp-fiscal-period",
+            "label": { "en": "Period Name" },
+            "description": { "en": "Human-readable name for the period, e.g. January, February, Adjustment" },
+            "property_schema": {
+                "predicates": ["name"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fiscal-period-sequence-prop",
+            "universal_id": "erp-fiscal-period",
+            "label": { "en": "Sequence" },
+            "description": { "en": "Ordering position of the period within the year (1-13)" },
+            "property_schema": {
+                "predicates": ["sequence", "order"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fiscal-period-start-date-prop",
+            "universal_id": "erp-fiscal-period",
+            "label": { "en": "Start Date" },
+            "description": { "en": "First day of the fiscal period" },
+            "property_schema": {
+                "predicates": ["date", "start"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fiscal-period-end-date-prop",
+            "universal_id": "erp-fiscal-period",
+            "label": { "en": "End Date" },
+            "description": { "en": "Last day of the fiscal period" },
+            "property_schema": {
+                "predicates": ["date", "end"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fiscal-period-status-prop",
+            "universal_id": "erp-fiscal-period",
+            "label": { "en": "Status" },
+            "description": { "en": "Current fiscal period status: Open, Closed, Adjustment, or Locked" },
+            "property_schema": {
+                "predicates": ["status"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "erp-fiscal-status",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-fiscal-period-is-adjustment-prop",
+            "universal_id": "erp-fiscal-period",
+            "label": { "en": "Is Adjustment Period" },
+            "description": { "en": "Whether this is a year-end adjustment period (P13)" },
+            "property_schema": {
+                "predicates": ["adjustment", "flag"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": { "min": 1, "max": 1 }
+                }
+            },
+            "use_seed": true
+        },
+
+        {
+            "_comment": "=== Calendar Coverage Summary Properties (artifact target) ===",
+            "id": "erp-coverage-fiscal-year-prop",
+            "universal_id": "erp-calendar-coverage-summary",
+            "label": { "en": "Fiscal Year" },
+            "description": { "en": "Fiscal year code dimension for coverage aggregation" },
+            "property_schema": {
+                "predicates": ["year", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-coverage-status-prop",
+            "universal_id": "erp-calendar-coverage-summary",
+            "label": { "en": "Period Status" },
+            "description": { "en": "Period status dimension for coverage aggregation" },
+            "property_schema": {
+                "predicates": ["status", "dimension"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "erp-coverage-period-count-prop",
+            "universal_id": "erp-calendar-coverage-summary",
+            "label": { "en": "Period Count" },
+            "description": { "en": "Number of fiscal periods per year per status" },
+            "property_schema": {
+                "predicates": ["count", "measure"],
+                "relator": { "relator_type": "Attribution" },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer"
+                    },
+                    "cardinality": { "min": 0, "max": 1 }
+                }
+            },
+            "use_seed": true
+        }
+    ],
+
+    "event_definitions": [
+        {
+            "id": "erp-period-status-changed-event",
+            "app_id": "erp-fiscal-calendar-app",
+            "scope": "tenant",
+            "label": { "en": "Period Status Changed" },
+            "description": { "en": "Emitted when a fiscal period status transitions (e.g. Open to Closed)" },
+            "payload_schema": [
+                { "name": "period_id", "field_type": "uuid" },
+                { "name": "period_code", "field_type": "string" },
+                { "name": "fiscal_year_code", "field_type": "string" },
+                { "name": "old_status", "field_type": "string" },
+                { "name": "new_status", "field_type": "string" }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "erp-year-status-changed-event",
+            "app_id": "erp-fiscal-calendar-app",
+            "scope": "tenant",
+            "label": { "en": "Year Status Changed" },
+            "description": { "en": "Emitted when a fiscal year status transitions" },
+            "payload_schema": [
+                { "name": "year_id", "field_type": "uuid" },
+                { "name": "year_code", "field_type": "string" },
+                { "name": "old_status", "field_type": "string" },
+                { "name": "new_status", "field_type": "string" }
+            ],
+            "use_seed": true
+        }
+    ],
+
+    "artifact_definitions": [
+        {
+            "_comment": "=== Calendar Coverage Summary: periods per year per status ===",
+            "id": "erp-calendar-coverage-artifact",
+            "name": "Calendar Coverage Summary",
+            "description": { "en": "At-a-glance view of which fiscal years have all periods defined, and which periods are open vs closed. Identifies incomplete calendar setup and year-end close progress." },
+            "source": { "universal_id": "erp-fiscal-period" },
+            "artifact_universal_id": "erp-calendar-coverage-summary",
+            "app_id": "erp-fiscal-calendar-app",
+            "dimensions": [
+                {
+                    "id": "erp-coverage-year-dim",
+                    "code": "fiscal_year",
+                    "source": {
+                        "type": "RelatorPath",
+                        "path": [
+                            { "relator_universal_id": "erp-quarter-has-period-rel", "role_name": "composite" },
+                            { "relator_universal_id": "erp-year-has-quarter-rel", "role_name": "composite" }
+                        ],
+                        "property_id": "erp-fiscal-year-code-prop"
+                    },
+                    "artifact_property_id": "erp-coverage-fiscal-year-prop",
+                    "use_seed": true
+                },
+                {
+                    "id": "erp-coverage-status-dim",
+                    "code": "period_status",
+                    "source": { "type": "Property", "property_id": "erp-fiscal-period-status-prop" },
+                    "artifact_property_id": "erp-coverage-status-prop",
+                    "use_seed": true
+                }
+            ],
+            "measures": [
+                {
+                    "id": "erp-coverage-period-count-measure",
+                    "code": "period_count",
+                    "function": "Count",
+                    "artifact_property_id": "erp-coverage-period-count-prop",
+                    "use_seed": true
+                }
+            ],
+            "thresholds": [],
+            "materialization": { "strategy": "Eager" },
+            "use_seed": true
+        }
+    ],
+
+    "apps": [
+        {
+            "id": "erp-fiscal-calendar-app",
+            "tenant_id": "model1-testing-tenant",
+            "label": { "en": "ERP Fiscal Calendar" },
+            "description": { "en": "Fiscal calendar management: fiscal years, quarters, and periods with status control for financial posting windows." },
+            "use_seed": true,
+            "modules": [
+                {
+                    "id": "erp-fiscal-calendar-module",
+                    "use_seed": true,
+                    "label": { "en": "Fiscal Calendar Module" },
+                    "description": { "en": "Core fiscal calendar operations: create fiscal years with auto-instantiated quarters and periods, manage period statuses." },
+                    "context": {
+                        "subscribed_events": [],
+                        "publishable_events": ["erp-period-status-changed-event", "erp-year-status-changed-event"]
+                    }
+                }
+            ]
+        }
+    ],
+
+    "foundation_role_assignments": [
+        {
+            "id": "fra-erp-admin-admin-fiscal",
+            "user_id": "erp-admin",
+            "role": "AppAdmin",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-fiscal-calendar-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-admin-dev-fiscal",
+            "user_id": "erp-admin",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-fiscal-calendar-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-developer-dev-fiscal",
+            "user_id": "erp-developer",
+            "role": "AppDeveloper",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-fiscal-calendar-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        },
+        {
+            "id": "fra-erp-user-user-fiscal",
+            "user_id": "erp-user",
+            "role": "AppUser",
+            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-fiscal-calendar-app" },
+            "assigned_by": "erp-admin",
+            "use_seed": true
+        }
+    ]
+}

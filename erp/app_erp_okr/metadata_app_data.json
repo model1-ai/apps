@@ -1,0 +1,551 @@
+{
+    "_comment": "=== ERP OKR INSTANCE DATA ===",
+    "_description": "Enumeration instances, sample OKR cycle, objectives, key results, check-ins, and initiatives for the OKR app.",
+
+    "instances": [
+        {
+            "_comment": "=== OKR STATUS ENUM INSTANCES ===",
+            "id": "erp-okr-status-not-started",
+            "universal_id": "erp-okr-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-okr-status-name-prop": "Not Started" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-okr-status-on-track",
+            "universal_id": "erp-okr-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-okr-status-name-prop": "On Track" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-okr-status-at-risk",
+            "universal_id": "erp-okr-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-okr-status-name-prop": "At Risk" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-okr-status-behind",
+            "universal_id": "erp-okr-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-okr-status-name-prop": "Behind" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-okr-status-achieved",
+            "universal_id": "erp-okr-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-okr-status-name-prop": "Achieved" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-okr-status-missed",
+            "universal_id": "erp-okr-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-okr-status-name-prop": "Missed" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== OBJECTIVE LEVEL ENUM INSTANCES ===",
+            "id": "erp-obj-level-company",
+            "universal_id": "erp-objective-level",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-objective-level-name-prop": "Company" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-obj-level-business-unit",
+            "universal_id": "erp-objective-level",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-objective-level-name-prop": "Business Unit" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-obj-level-department",
+            "universal_id": "erp-objective-level",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-objective-level-name-prop": "Department" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-obj-level-team",
+            "universal_id": "erp-objective-level",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-objective-level-name-prop": "Team" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-obj-level-individual",
+            "universal_id": "erp-objective-level",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-objective-level-name-prop": "Individual" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== KR TYPE ENUM INSTANCES ===",
+            "id": "erp-kr-type-metric",
+            "universal_id": "erp-kr-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-kr-type-name-prop": "Metric" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-kr-type-milestone",
+            "universal_id": "erp-kr-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-kr-type-name-prop": "Milestone" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-kr-type-binary",
+            "universal_id": "erp-kr-type",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-kr-type-name-prop": "Binary" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== CONFIDENCE LEVEL ENUM INSTANCES ===",
+            "id": "erp-confidence-high",
+            "universal_id": "erp-confidence-level",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-confidence-level-name-prop": "High" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-confidence-medium",
+            "universal_id": "erp-confidence-level",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-confidence-level-name-prop": "Medium" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-confidence-low",
+            "universal_id": "erp-confidence-level",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-confidence-level-name-prop": "Low" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== INITIATIVE STATUS ENUM INSTANCES ===",
+            "id": "erp-init-status-planned",
+            "universal_id": "erp-initiative-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-initiative-status-name-prop": "Planned" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-init-status-in-progress",
+            "universal_id": "erp-initiative-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-initiative-status-name-prop": "In Progress" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-init-status-completed",
+            "universal_id": "erp-initiative-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-initiative-status-name-prop": "Completed" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-init-status-cancelled",
+            "universal_id": "erp-initiative-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-initiative-status-name-prop": "Cancelled" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-init-status-blocked",
+            "universal_id": "erp-initiative-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-initiative-status-name-prop": "Blocked" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== SCORING METHOD ENUM INSTANCES ===",
+            "id": "erp-scoring-percentage",
+            "universal_id": "erp-scoring-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-scoring-method-name-prop": "Percentage" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-scoring-binary",
+            "universal_id": "erp-scoring-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-scoring-method-name-prop": "Binary" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-scoring-milestone",
+            "universal_id": "erp-scoring-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-scoring-method-name-prop": "Milestone" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-scoring-weighted",
+            "universal_id": "erp-scoring-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-scoring-method-name-prop": "Weighted" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== CYCLE STATUS ENUM INSTANCES ===",
+            "id": "erp-cycle-status-planning",
+            "universal_id": "erp-cycle-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-cycle-status-name-prop": "Planning" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-cycle-status-active",
+            "universal_id": "erp-cycle-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-cycle-status-name-prop": "Active" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-cycle-status-review",
+            "universal_id": "erp-cycle-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-cycle-status-name-prop": "Review" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "erp-cycle-status-closed",
+            "universal_id": "erp-cycle-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": { "erp-cycle-status-name-prop": "Closed" },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== SAMPLE OKR CYCLE: Q1 2026 ===",
+            "id": "erp-cycle-q1-2026",
+            "universal_id": "erp-okr-cycle",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-cycle-name-prop": { "en": "Q1 2026 OKRs" },
+                "erp-cycle-start-date-prop": { "value": 1735689600, "unit": "seconds" },
+                "erp-cycle-end-date-prop": { "value": 1743465600, "unit": "seconds" },
+                "erp-cycle-status-prop": "Active"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== SAMPLE OBJECTIVE 1: Company-level ===",
+            "id": "erp-obj-market-leader",
+            "universal_id": "erp-objective",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-goal-title-prop": { "en": "Become the market leader in enterprise analytics" },
+                "erp-goal-description-prop": { "en": "Establish leadership position in the enterprise analytics market through product innovation and customer acquisition." },
+                "erp-goal-target-value-prop": { "value": 100.0, "unit": "scalar" },
+                "erp-goal-current-value-prop": { "value": 0.0, "unit": "scalar" },
+                "erp-goal-baseline-value-prop": { "value": 0.0, "unit": "scalar" },
+                "erp-goal-weight-prop": { "value": 1.0, "unit": "scalar" },
+                "erp-goal-status-prop": "Not Started",
+                "erp-obj-level-prop": "Company",
+                "erp-obj-is-aspirational-prop": true
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== SAMPLE OBJECTIVE 2: Department-level (child of obj-1) ===",
+            "id": "erp-obj-revenue-growth",
+            "universal_id": "erp-objective",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-goal-title-prop": { "en": "Drive 40% revenue growth in Q1" },
+                "erp-goal-description-prop": { "en": "Accelerate revenue growth through new customer acquisition and expansion of existing accounts." },
+                "erp-goal-target-value-prop": { "value": 100.0, "unit": "scalar" },
+                "erp-goal-current-value-prop": { "value": 0.0, "unit": "scalar" },
+                "erp-goal-baseline-value-prop": { "value": 0.0, "unit": "scalar" },
+                "erp-goal-weight-prop": { "value": 1.0, "unit": "scalar" },
+                "erp-goal-status-prop": "Not Started",
+                "erp-obj-level-prop": "Department",
+                "erp-obj-is-aspirational-prop": false
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== SAMPLE KR 1: Revenue metric KR ===",
+            "id": "erp-kr-new-arr",
+            "universal_id": "erp-key-result",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-goal-title-prop": { "en": "Achieve $2M in new ARR" },
+                "erp-goal-target-value-prop": { "value": 2000000.0, "unit": "scalar" },
+                "erp-goal-current-value-prop": { "value": 750000.0, "unit": "scalar" },
+                "erp-goal-baseline-value-prop": { "value": 0.0, "unit": "scalar" },
+                "erp-goal-weight-prop": { "value": 2.0, "unit": "scalar" },
+                "erp-goal-status-prop": "At Risk",
+                "erp-kr-type-prop": "Metric",
+                "erp-kr-unit-prop": "USD",
+                "erp-kr-confidence-prop": "Medium"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== SAMPLE KR 2: Binary KR ===",
+            "id": "erp-kr-launch-v2",
+            "universal_id": "erp-key-result",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-goal-title-prop": { "en": "Launch Analytics V2 platform" },
+                "erp-goal-target-value-prop": { "value": 1.0, "unit": "scalar" },
+                "erp-goal-current-value-prop": { "value": 0.0, "unit": "scalar" },
+                "erp-goal-baseline-value-prop": { "value": 0.0, "unit": "scalar" },
+                "erp-goal-weight-prop": { "value": 1.0, "unit": "scalar" },
+                "erp-goal-status-prop": "Behind",
+                "erp-kr-type-prop": "Binary",
+                "erp-kr-unit-prop": "yes/no",
+                "erp-kr-confidence-prop": "Low"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== SAMPLE KR 3: Metric KR ===",
+            "id": "erp-kr-nps-score",
+            "universal_id": "erp-key-result",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-goal-title-prop": { "en": "Achieve NPS score of 60+" },
+                "erp-goal-target-value-prop": { "value": 60.0, "unit": "scalar" },
+                "erp-goal-current-value-prop": { "value": 52.0, "unit": "scalar" },
+                "erp-goal-baseline-value-prop": { "value": 42.0, "unit": "scalar" },
+                "erp-goal-weight-prop": { "value": 1.0, "unit": "scalar" },
+                "erp-goal-status-prop": "On Track",
+                "erp-kr-type-prop": "Metric",
+                "erp-kr-unit-prop": "points",
+                "erp-kr-confidence-prop": "High"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== SAMPLE CHECK-IN 1: For KR new-arr ===",
+            "id": "erp-checkin-arr-w1",
+            "universal_id": "erp-check-in",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-checkin-date-prop": { "value": 1736294400, "unit": "seconds" },
+                "erp-checkin-value-prop": { "value": 250000.0, "unit": "scalar" },
+                "erp-checkin-confidence-prop": "High",
+                "erp-checkin-notes-prop": { "en": "Strong pipeline, 3 deals closing this week." }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== SAMPLE CHECK-IN 2: For KR new-arr ===",
+            "id": "erp-checkin-arr-w4",
+            "universal_id": "erp-check-in",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-checkin-date-prop": { "value": 1738108800, "unit": "seconds" },
+                "erp-checkin-value-prop": { "value": 750000.0, "unit": "scalar" },
+                "erp-checkin-confidence-prop": "Medium",
+                "erp-checkin-notes-prop": { "en": "Two deals slipped to next month. Need to accelerate outbound." }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== SAMPLE INITIATIVE 1 ===",
+            "id": "erp-init-outbound-campaign",
+            "universal_id": "erp-initiative",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-init-name-prop": { "en": "Launch targeted outbound campaign for enterprise segment" },
+                "erp-init-description-prop": { "en": "Multi-channel outbound campaign targeting F500 analytics buyers. Email sequences, LinkedIn outreach, and partner referrals." },
+                "erp-init-status-prop": "In Progress",
+                "erp-init-start-date-prop": { "value": 1735689600, "unit": "seconds" },
+                "erp-init-end-date-prop": { "value": 1740873600, "unit": "seconds" },
+                "erp-init-effort-estimate-prop": { "value": 45.0, "unit": "scalar" },
+                "erp-init-effort-actual-prop": { "value": 22.0, "unit": "scalar" },
+                "erp-init-completion-prop": { "value": 55.0, "unit": "percent" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== SAMPLE INITIATIVE 2 ===",
+            "id": "erp-init-redesign-onboarding",
+            "universal_id": "erp-initiative",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "erp-init-name-prop": { "en": "Redesign customer onboarding flow" },
+                "erp-init-description-prop": { "en": "Streamline onboarding to reduce time-to-value from 14 days to 3 days. Automated provisioning and guided setup." },
+                "erp-init-status-prop": "Planned",
+                "erp-init-start-date-prop": { "value": 1737504000, "unit": "seconds" },
+                "erp-init-end-date-prop": { "value": 1743465600, "unit": "seconds" },
+                "erp-init-effort-estimate-prop": { "value": 30.0, "unit": "scalar" },
+                "erp-init-effort-actual-prop": { "value": 0.0, "unit": "scalar" },
+                "erp-init-completion-prop": { "value": 0.0, "unit": "percent" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        }
+    ],
+
+    "relator_instances": [
+        {
+            "_comment": "=== Objective 1 belongs to Q1 2026 cycle ===",
+            "id": "erp-ri-obj1-cycle-q1",
+            "relator_id": "erp-objective-cycle-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "objective": "erp-obj-market-leader",
+                "cycle": "erp-cycle-q1-2026"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Objective 2 belongs to Q1 2026 cycle ===",
+            "id": "erp-ri-obj2-cycle-q1",
+            "relator_id": "erp-objective-cycle-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "objective": "erp-obj-revenue-growth",
+                "cycle": "erp-cycle-q1-2026"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Objective 2 is child of Objective 1 (cascading alignment) ===",
+            "id": "erp-ri-obj2-parent-obj1",
+            "relator_id": "erp-objective-parent-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "parent": "erp-obj-market-leader",
+                "child": "erp-obj-revenue-growth"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Objective 2 aggregates KR new-arr ===",
+            "id": "erp-ri-obj2-kr-arr",
+            "relator_id": "erp-objective-has-kr-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-obj-revenue-growth",
+                "part": "erp-kr-new-arr"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Objective 1 aggregates KR launch-v2 ===",
+            "id": "erp-ri-obj1-kr-v2",
+            "relator_id": "erp-objective-has-kr-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-obj-market-leader",
+                "part": "erp-kr-launch-v2"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== Objective 1 aggregates KR nps-score ===",
+            "id": "erp-ri-obj1-kr-nps",
+            "relator_id": "erp-objective-has-kr-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "aggregate": "erp-obj-market-leader",
+                "part": "erp-kr-nps-score"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== KR new-arr has check-in week 1 ===",
+            "id": "erp-ri-kr-arr-checkin-w1",
+            "relator_id": "erp-kr-has-checkin-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "composite": "erp-kr-new-arr",
+                "component": "erp-checkin-arr-w1"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== KR new-arr has check-in week 4 ===",
+            "id": "erp-ri-kr-arr-checkin-w4",
+            "relator_id": "erp-kr-has-checkin-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "composite": "erp-kr-new-arr",
+                "component": "erp-checkin-arr-w4"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== KR new-arr has initiative outbound-campaign ===",
+            "id": "erp-ri-kr-arr-init-outbound",
+            "relator_id": "erp-kr-has-initiative-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "key_result": "erp-kr-new-arr",
+                "initiative": "erp-init-outbound-campaign"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== KR nps-score has initiative redesign-onboarding ===",
+            "id": "erp-ri-kr-nps-init-onboarding",
+            "relator_id": "erp-kr-has-initiative-rel",
+            "tenant_id": "model1-testing-tenant",
+            "roles": {
+                "key_result": "erp-kr-nps-score",
+                "initiative": "erp-init-redesign-onboarding"
+            },
+            "use_seed": true
+        }
+    ]
+}
