@@ -863,11 +863,11 @@ graph TB
     <h3>Validation &amp; Loading</h3>
     <pre><code># Offline validation
 cd model1-admin-cli
-cargo run -- validate --path ../apps/erp/app_erp_chart_of_accounts
+cargo run -- validate --path ../apps/erp/erp_base/app_erp_chart_of_accounts
 
 # Load to running broker
 cargo run -- --cert-path ../broker/certs/cert.pem load \
-    --dir ../apps/erp/app_erp_chart_of_accounts --progress</code></pre>
+    --dir ../apps/erp/erp_base/app_erp_chart_of_accounts --progress</code></pre>
 
     <script>mermaid.initialize({startOnLoad: true, theme: 'default', securityLevel: 'loose'});</script>
 </body>

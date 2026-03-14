@@ -57,7 +57,7 @@
     <!-- ============================================================ -->
 
     <div class="file-tree">
-        <span class="dir">apps/erp/app_erp_party/</span><br>
+        <span class="dir">apps/erp/erp_base/app_erp_party/</span><br>
         &nbsp;&nbsp;<span class="file">metadata_app.json</span> <span class="comment">&mdash; schema: universals, properties, relators, app, role assignments (no users &mdash; see app_erp_base)</span><br>
         &nbsp;&nbsp;<span class="file">metadata_app_data.json</span> <span class="comment">&mdash; instances: enum values, parties, contacts, relator instances</span><br>
         &nbsp;&nbsp;<span class="file">architecture.html</span> <span class="comment">&mdash; this document</span>
@@ -694,10 +694,10 @@ graph TB
     <pre style="background:#272822;color:#f8f8f2;padding:1rem;border-radius:8px;overflow-x:auto;">
 <span style="color:#75715e"># Offline validation (no broker needed)</span>
 cd model1-admin-cli
-cargo run -- validate --path ../apps/erp/app_erp_party
+cargo run -- validate --path ../apps/erp/erp_base/app_erp_party
 
 <span style="color:#75715e"># Load to broker (requires broker on localhost:8443)</span>
-cargo run -- --cert-path ../broker/certs/cert.pem load --dir ../apps/erp/app_erp_party --progress
+cargo run -- --cert-path ../broker/certs/cert.pem load --dir ../apps/erp/erp_base/app_erp_party --progress
     </pre>
 
     <!-- ============================================================ -->

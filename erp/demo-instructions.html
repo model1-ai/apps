@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Procurement Demo Guide - Model1</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.7;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+            color: #333;
+            background: #fafafa;
+        }
+        h1 { color: var(--primary); border-bottom: 4px solid var(--secondary); padding-bottom: 15px; font-size: 2.2em; }
+        h2 { color: var(--primary); border-bottom: 2px solid var(--light); padding-bottom: 10px; margin-top: 50px; }
+        h3 { color: var(--dark); margin-top: 35px; }
+        h4 { color: #7f8c8d; margin-top: 25px; }
+        .mermaid {
+            background: #fff; padding: 25px; border-radius: 10px;
+            border: 1px solid #e0e0e0; margin: 25px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .note {
+            background: linear-gradient(135deg, #e8f4f8 0%, #d4edda 100%);
+            border-left: 5px solid var(--secondary); padding: 20px; margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .warning {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+            border-left: 5px solid var(--warning); padding: 20px; margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-left: 5px solid var(--success); padding: 20px; margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        code { background: #f4f4f4; padding: 3px 8px; border-radius: 4px; font-size: 0.9em; }
+        pre {
+            background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 10px;
+            overflow-x: auto; font-size: 0.9em; line-height: 1.5;
+        }
+        pre code { background: none; padding: 0; color: inherit; }
+        table {
+            border-collapse: collapse; width: 100%; margin: 20px 0;
+            background: #fff; border-radius: 10px; overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        th { background: var(--primary); color: #fff; padding: 12px 15px; text-align: left; font-weight: 600; }
+        td { padding: 10px 15px; border-bottom: 1px solid #eee; }
+        tr:hover { background: #f8f9fa; }
+        .step-number {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; background: var(--secondary); color: #fff;
+            border-radius: 50%; font-weight: bold; margin-right: 10px;
+        }
+        .step { display: flex; align-items: center; margin: 25px 0 10px 0; }
+        .step-title { font-size: 1.2em; font-weight: 600; color: var(--primary); }
+        .journey-card {
+            background: #fff; border: 2px solid var(--light); border-radius: 12px;
+            padding: 25px; margin: 20px 0; box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        }
+        .journey-card h3 { margin-top: 0; color: var(--secondary); }
+        .role-badge {
+            display: inline-block; padding: 3px 10px; border-radius: 12px;
+            font-size: 0.8em; font-weight: 600; margin: 2px;
+        }
+        .role-requester { background: #dbeafe; color: #1e40af; }
+        .role-dept { background: #fef3c7; color: #92400e; }
+        .role-finance { background: #d1fae5; color: #065f46; }
+        .role-cfo { background: #ede9fe; color: #5b21b6; }
+    </style>
+</head>
+<body>
+
+<h1>ERP Procurement Demo Guide</h1>
+
+<p>This guide walks through starting the Model1 platform and demonstrating the full procurement lifecycle:
+requisitions with multi-line items, a 3-stage approval process, goods receipts, payments,
+reactive computations, and procurement spend analytics.</p>
+
+<!-- ================================================================== -->
+<h2>1. Startup Sequence</h2>
+<!-- ================================================================== -->
+
+<div class="mermaid">
+sequenceDiagram
+    participant T as Terminal
+    participant B as Broker :8443
+    participant FG as Front-Gate :8080
+    participant BR as Browser
+
+    T->>B: cargo run --release
+    Note over B: Auto-loads foundation + process base
+
+    T->>B: load_erp.sh
+    Note over B: L0: base, org, coa, fiscal,<br/>party, resource, location<br/>L1: budget<br/>L2: okr, procurement
+
+    T->>FG: cargo run --release
+    Note over FG: Connects to broker :8443<br/>Serves front/ static files
+
+    BR->>FG: http://localhost:8080/app/
+    FG-->>BR: Login page
+</div>
+
+<div class="step"><span class="step-number">1</span><span class="step-title">Start the Broker</span></div>
+<pre><code>cd broker &amp;&amp; cargo run --release</code></pre>
+<p>The broker auto-loads <code>bootstrap/1_foundation/</code> (measurement frames, base universals, foundation relators)
+and <code>bootstrap/2_process_base/</code> (base-process, base-stage, base-obligation universals and their properties).</p>
+
+<div class="step"><span class="step-number">2</span><span class="step-title">Load ERP Apps</span></div>
+<pre><code>cd apps/erp &amp;&amp; ./load_erp.sh</code></pre>
+<p>This loads all ERP foundation apps in dependency order. The script handles layers automatically:</p>
+
+<table>
+    <tr><th>Layer</th><th>App</th><th>What It Provides</th></tr>
+    <tr><td colspan="3" style="background:#e0f7fa;"><strong>erp_base/</strong> — ERP Foundation</td></tr>
+    <tr><td>BASE</td><td>app_erp_base</td><td>Organization, tenant, shared users, erp-goal universal</td></tr>
+    <tr><td>L0</td><td>app_erp_org</td><td>Organizational units, department hierarchy</td></tr>
+    <tr><td>L0</td><td>app_erp_chart_of_accounts</td><td>GL accounts, account categories</td></tr>
+    <tr><td>L0</td><td>app_erp_fiscal_calendar</td><td>Fiscal years, quarters, periods</td></tr>
+    <tr><td>L0</td><td>app_erp_party</td><td>Vendors, customers, parties</td></tr>
+    <tr><td>L0</td><td>app_erp_resource</td><td>Resource catalog (goods and services)</td></tr>
+    <tr><td>L0</td><td>app_erp_location</td><td>Location master</td></tr>
+    <tr><td>L1</td><td>app_erp_budget</td><td>Budget positions, budget lines, budget entries (ledger)</td></tr>
+    <tr><td>L2</td><td>app_erp_okr</td><td>OKR / Goals</td></tr>
+    <tr><td colspan="3" style="background:#fff3e0;"><strong>erp_apps/</strong> — ERP Applications</td></tr>
+    <tr><td><strong>L2</strong></td><td><strong>app_erp_procurement</strong></td><td><strong>Requisitions, approval process, receipts, payments, spend artifact</strong></td></tr>
+</table>
+
+<div class="warning">
+    <strong>Load order matters.</strong> Procurement (Layer 2) depends on budget (Layer 1), which depends on
+    fiscal calendar and chart of accounts (Layer 0), which depend on base (Layer BASE).
+    The <code>load_erp.sh</code> script handles this automatically.
+</div>
+
+<p>Alternatively, to load only what procurement needs:</p>
+<pre><code># Minimal load for procurement demo
+cd model1-admin-cli
+./load_app.sh ../apps/erp/erp_base/app_erp_base
+./load_app.sh ../apps/erp/erp_base/app_erp_party
+./load_app.sh ../apps/erp/erp_base/app_erp_fiscal_calendar
+./load_app.sh ../apps/erp/erp_base/app_erp_chart_of_accounts
+./load_app.sh ../apps/erp/erp_base/app_erp_resource
+./load_app.sh ../apps/erp/erp_base/app_erp_org
+./load_app.sh ../apps/erp/erp_base/app_erp_budget
+./load_app.sh ../apps/erp/erp_apps/app_erp_procurement</code></pre>
+
+<div class="step"><span class="step-number">3</span><span class="step-title">Start Front-Gate</span></div>
+<pre><code>cd front-gate &amp;&amp; cargo run --release</code></pre>
+<p>Front-gate starts on <code>localhost:8080</code>, connects to the broker on <code>localhost:8443</code>,
+and serves the <code>front/</code> static files automatically.</p>
+
+<div class="step"><span class="step-number">4</span><span class="step-title">Login</span></div>
+<p>Open <a href="http://localhost:8080/app/">http://localhost:8080/app/</a> and log in as the demo super-user:</p>
+
+<table>
+    <tr><th>Field</th><th>Value</th></tr>
+    <tr><td>Email</td><td><code>erp-procurement-demo@test.model1.ai</code></td></tr>
+    <tr><td>Password</td><td><code>TestPass123!_</code></td></tr>
+</table>
+
+<div class="note">
+    <strong>Demo user capabilities:</strong> This user has <code>AppAdmin</code> on the procurement app,
+    plus all four FunctionalRoles (Requester, Department Manager, Finance Controller, CFO).
+    This allows a single user to walk through the entire procurement lifecycle, including
+    creating requisitions and approving at every stage.
+</div>
+
+<!-- ================================================================== -->
+<h2>2. Domain Model</h2>
+<!-- ================================================================== -->
+
+<p>The procurement app models a complete procure-to-pay cycle with a 3-stage approval process (Tier 2).</p>
+
+<h3>2.1 Entity Relationships</h3>
+
+<div class="mermaid">
+erDiagram
+    REQUISITION ||--o{ REQ_LINE : "has lines (composition)"
+    REQ_LINE }o--|| RESOURCE : "references"
+    REQ_LINE }o--|| BUDGET_LINE : "draws from"
+    REQUISITION }o--|| VENDOR : "assigned to"
+    REQUISITION }o--|| FISCAL_PERIOD : "fiscal period"
+    REQUISITION ||--o| APPROVAL_PROCESS : "triggers"
+    GOODS_RECEIPT ||--|| REQUISITION : "fulfills"
+    GOODS_RECEIPT ||--o{ RECEIPT_LINE : "has lines (composition)"
+    RECEIPT_LINE }o--|| REQ_LINE : "matches"
+    PAYMENT ||--|| REQUISITION : "settles"
+
+    REQUISITION {
+        string code "PR-xxxx"
+        text description
+        enum status "DRAFT to PAID"
+        enum priority "LOW to URGENT"
+        currency total "computed"
+        boolean needs_exec_approval "computed"
+    }
+    REQ_LINE {
+        int line_number "L1, L2..."
+        text description
+        quantity qty
+        currency unit_price
+        currency line_total "computed"
+    }
+    GOODS_RECEIPT {
+        string code "GR-xxxx"
+        date receipt_date
+        enum status
+    }
+    RECEIPT_LINE {
+        int line_number
+        quantity qty_received
+        currency actual_price
+        currency line_total "computed"
+    }
+    PAYMENT {
+        string code "PAY-xxxx"
+        currency amount
+        date payment_date
+        enum status
+    }
+</div>
+
+<h3>2.2 Approval Process (Tier 2)</h3>
+
+<p>The procurement approval process is a <strong>Tier 2 process</strong> (3 stages with role-based obligations),
+modeled using the Process as Universal architecture. Each stage is a composed universal with
+an obligation that references a FunctionalRole.</p>
+
+<div class="mermaid">
+graph TD
+    PA["Procurement Approval<br/>(specializes base-process)"]
+
+    S1["Stage 1: Department Review<br/>(specializes base-stage)"]
+    S2["Stage 2: Finance Review<br/>(specializes base-stage)"]
+    S3["Stage 3: Executive Approval<br/>(specializes base-stage)<br/><em>conditional: total &gt; $10K</em>"]
+
+    O1["Obligation<br/>(specializes base-obligation)"]
+    O2["Obligation<br/>(specializes base-obligation)"]
+    O3["Obligation<br/>(specializes base-obligation)"]
+
+    FR1["Dept Manager<br/>(FunctionalRole)"]
+    FR2["Finance Controller<br/>(FunctionalRole)"]
+    FR3["CFO<br/>(FunctionalRole)"]
+
+    PA -->|composition| S1
+    PA -->|composition| S2
+    PA -->|composition| S3
+    S1 -->|composition| O1
+    S2 -->|composition| O2
+    S3 -->|composition| O3
+    O1 -.->|association| FR1
+    O2 -.->|association| FR2
+    O3 -.->|association| FR3
+
+    style PA fill:#3498db,color:#fff
+    style S1 fill:#f39c12,color:#fff
+    style S2 fill:#27ae60,color:#fff
+    style S3 fill:#8e44ad,color:#fff
+    style FR1 fill:#fef3c7,color:#92400e
+    style FR2 fill:#d1fae5,color:#065f46
+    style FR3 fill:#ede9fe,color:#5b21b6
+</div>
+
+<h3>2.3 Reactive Computations</h3>
+
+<table>
+    <tr><th>Computation</th><th>Formula</th><th>Triggers On</th></tr>
+    <tr>
+        <td>Line Total</td>
+        <td><code>quantity * unit_price</code></td>
+        <td>Change to quantity or unit_price on any Requisition Line</td>
+    </tr>
+    <tr>
+        <td>Requisition Total</td>
+        <td><code>Sum(line_totals)</code> via composition relator</td>
+        <td>Cascade from Line Total computation</td>
+    </tr>
+    <tr>
+        <td>Needs Executive Approval</td>
+        <td><code>total &gt; 10000 ? true : false</code></td>
+        <td>Change to requisition total</td>
+    </tr>
+    <tr>
+        <td>Receipt Line Total</td>
+        <td><code>qty_received * actual_unit_price</code></td>
+        <td>Change to qty or price on any Receipt Line</td>
+    </tr>
+</table>
+
+<div class="mermaid">
+graph LR
+    QTY["qty changed"] --> LT["Line Total<br/>= qty * price"]
+    PRICE["price changed"] --> LT
+    LT -->|cascade| RT["Req Total<br/>= Sum(lines)"]
+    RT -->|cascade| EA["Needs Exec Approval<br/>= total > 10K"]
+
+    style LT fill:#3498db,color:#fff
+    style RT fill:#27ae60,color:#fff
+    style EA fill:#8e44ad,color:#fff
+</div>
+
+<h3>2.4 Requisition Lifecycle</h3>
+
+<div class="mermaid">
+stateDiagram-v2
+    [*] --> DRAFT : Create requisition
+    DRAFT --> SUBMITTED : Submit for approval
+    SUBMITTED --> APPROVED : Pass all stages
+    SUBMITTED --> REJECTED : Rejected at any stage
+    APPROVED --> ORDERED : Place with vendor
+    ORDERED --> PARTIALLY_RECEIVED : Partial goods receipt
+    ORDERED --> RECEIVED : Full goods receipt
+    PARTIALLY_RECEIVED --> RECEIVED : Remaining goods
+    RECEIVED --> PAID : Payment completed
+    DRAFT --> CANCELLED : Cancel
+    SUBMITTED --> CANCELLED : Cancel
+    REJECTED --> DRAFT : Revise and resubmit
+</div>
+
+<!-- ================================================================== -->
+<h2>3. User Journeys</h2>
+<!-- ================================================================== -->
+
+<h3>3.1 FunctionalRoles in the Demo</h3>
+
+<p>The demo user holds all four roles simultaneously. In a real deployment, these would be assigned to different users:</p>
+
+<table>
+    <tr><th>FunctionalRole</th><th>Stage</th><th>Responsibility</th></tr>
+    <tr>
+        <td><span class="role-badge role-requester">Requester</span></td>
+        <td>Pre-process</td>
+        <td>Creates and submits procurement requisitions</td>
+    </tr>
+    <tr>
+        <td><span class="role-badge role-dept">Department Manager</span></td>
+        <td>Stage 1: Dept Review</td>
+        <td>Reviews need, validates priority and specifications</td>
+    </tr>
+    <tr>
+        <td><span class="role-badge role-finance">Finance Controller</span></td>
+        <td>Stage 2: Finance Review</td>
+        <td>Validates budget availability and GL coding</td>
+    </tr>
+    <tr>
+        <td><span class="role-badge role-cfo">CFO</span></td>
+        <td>Stage 3: Exec Approval</td>
+        <td>Final approval for requisitions over $10,000</td>
+    </tr>
+</table>
+
+<!-- Journey A -->
+<div class="journey-card">
+<h3>Journey A: Standard Requisition (Under $10K)</h3>
+<p>A routine purchase under the executive approval threshold. Only 2 of the 3 stages activate.</p>
+
+<div class="mermaid">
+sequenceDiagram
+    actor R as Requester
+    participant APP as /app Runtime
+    participant RE as Reactive Engine
+    participant PE as Process Engine
+
+    R->>APP: Create Requisition (PR-2024-001)
+    R->>APP: Add Line 1: 50x Office Chairs @ $120
+    APP->>RE: PropertyChange (qty/price)
+    RE-->>APP: Line Total = $6,000
+    RE-->>APP: Req Total = $6,000
+    RE-->>APP: Needs Exec Approval = false
+
+    R->>APP: Add Line 2: 10x Standing Desks @ $350
+    APP->>RE: PropertyChange
+    RE-->>APP: Line Total = $3,500
+    RE-->>APP: Req Total = $9,500
+    RE-->>APP: Needs Exec Approval = false
+
+    R->>APP: Submit Requisition
+    APP->>PE: Start Procurement Approval
+
+    Note over PE: Stage 1: Dept Review
+    R->>APP: Approve (as Dept Manager)
+    APP->>PE: Stage 1 obligation fulfilled
+
+    Note over PE: Stage 2: Finance Review
+    R->>APP: Approve (as Finance Controller)
+    APP->>PE: Stage 2 obligation fulfilled
+
+    Note over PE: Stage 3: SKIPPED (total &lt; $10K)
+
+    PE-->>APP: Process complete - APPROVED
+    APP-->>R: Requisition status = APPROVED
+</div>
+
+<h4>Steps to Demonstrate</h4>
+<ol>
+    <li>In <code>/app</code>, navigate to <strong>Procurement Requisition</strong> entity list</li>
+    <li>Click <strong>New</strong> to create a requisition
+        <ul>
+            <li>Code: <code>2024-001</code> (displays as PR-2024-001)</li>
+            <li>Description: <code>Office Furniture Refresh</code></li>
+            <li>Status: <code>DRAFT</code></li>
+            <li>Priority: <code>MEDIUM</code></li>
+        </ul>
+    </li>
+    <li>Create <strong>Requisition Lines</strong> (composed children)
+        <ul>
+            <li>Line 1: qty=50, unit_price=120.00, description: "Ergonomic Office Chairs"</li>
+            <li>Line 2: qty=10, unit_price=350.00, description: "Adjustable Standing Desks"</li>
+        </ul>
+    </li>
+    <li>Observe <strong>reactive computations</strong> fire:
+        <ul>
+            <li>Each line total computes automatically (6,000 and 3,500)</li>
+            <li>Requisition total aggregates to 9,500</li>
+            <li>"Needs Executive Approval" stays <code>false</code></li>
+        </ul>
+    </li>
+    <li>Change status to <strong>SUBMITTED</strong> to trigger the approval process</li>
+    <li>Walk through <strong>Stage 1</strong> (Dept Review) and <strong>Stage 2</strong> (Finance Review)</li>
+    <li>Stage 3 is automatically skipped since total &lt; $10,000</li>
+    <li>Requisition status becomes <strong>APPROVED</strong></li>
+</ol>
+
+<div class="success">
+    <strong>Key demo points:</strong> Reactive computation cascade (line &rarr; total &rarr; threshold),
+    automatic stage skipping based on computed property, metadata-driven process without any hardcoded logic.
+</div>
+</div>
+
+<!-- Journey B -->
+<div class="journey-card">
+<h3>Journey B: High-Value Requisition (Over $10K) &mdash; Full 3-Stage Approval</h3>
+<p>A large purchase that triggers all three approval stages including executive review by the CFO.</p>
+
+<div class="mermaid">
+sequenceDiagram
+    actor R as Requester
+    participant APP as /app Runtime
+    participant RE as Reactive Engine
+    participant PE as Process Engine
+
+    R->>APP: Create Requisition (PR-2024-002)
+    R->>APP: Add Line 1: 5x Server Racks @ $2,500
+    APP->>RE: PropertyChange
+    RE-->>APP: Line Total = $12,500
+    RE-->>APP: Req Total = $12,500
+    RE-->>APP: Needs Exec Approval = true
+
+    R->>APP: Submit Requisition
+    APP->>PE: Start Procurement Approval
+
+    Note over PE: Stage 1: Dept Review
+    R->>APP: Approve (as Dept Manager)
+
+    Note over PE: Stage 2: Finance Review
+    R->>APP: Approve (as Finance Controller)
+
+    Note over PE: Stage 3: Executive Approval
+    Note right of PE: Activated because total > $10K
+    R->>APP: Approve (as CFO)
+
+    PE-->>APP: All 3 stages complete - APPROVED
+    APP-->>R: Requisition status = APPROVED
+</div>
+
+<h4>Steps to Demonstrate</h4>
+<ol>
+    <li>Create a new requisition:
+        <ul>
+            <li>Code: <code>2024-002</code>, Description: <code>Data Center Expansion</code></li>
+            <li>Priority: <code>HIGH</code></li>
+        </ul>
+    </li>
+    <li>Add a line: qty=5, unit_price=2500.00, description: "42U Server Racks"</li>
+    <li>Observe: total = $12,500, <strong>"Needs Executive Approval" = true</strong></li>
+    <li>Submit and walk through all <strong>3 stages</strong>:
+        <ul>
+            <li><span class="role-badge role-dept">Dept Manager</span> approves need and specs</li>
+            <li><span class="role-badge role-finance">Finance Controller</span> validates budget</li>
+            <li><span class="role-badge role-cfo">CFO</span> gives final executive approval</li>
+        </ul>
+    </li>
+</ol>
+
+<div class="success">
+    <strong>Key demo points:</strong> The $10,000 threshold is a reactive computation that dynamically
+    activates Stage 3. The same process definition handles both 2-stage and 3-stage flows
+    based purely on data, not code.
+</div>
+</div>
+
+<!-- Journey C -->
+<div class="journey-card">
+<h3>Journey C: Procure-to-Pay &mdash; Complete Lifecycle</h3>
+<p>End-to-end flow from requisition through goods receipt and payment, demonstrating the full entity graph.</p>
+
+<div class="mermaid">
+sequenceDiagram
+    actor U as Demo User
+    participant APP as /app Runtime
+    participant RE as Reactive Engine
+
+    Note over U,RE: Phase 1: Requisition + Approval
+    U->>APP: Create Requisition PR-2024-003
+    U->>APP: Add 3 lines (total = $4,800)
+    APP->>RE: Compute totals
+    U->>APP: Submit and Approve (2 stages)
+
+    Note over U,RE: Phase 2: Goods Receipt
+    U->>APP: Create Goods Receipt GR-2024-001
+    U->>APP: Link to PR-2024-003
+    U->>APP: Add Receipt Lines (match req lines)
+    APP->>RE: Compute receipt line totals
+    U->>APP: Set receipt status = INSPECTED
+
+    Note over U,RE: Phase 3: Payment
+    U->>APP: Create Payment PAY-2024-001
+    U->>APP: Link to PR-2024-003
+    U->>APP: Set amount = $4,800
+    U->>APP: Set status = COMPLETED
+
+    Note over U,RE: Phase 4: Close Out
+    U->>APP: Update requisition status = PAID
+</div>
+
+<h4>Steps to Demonstrate</h4>
+<ol>
+    <li><strong>Phase 1 &mdash; Requisition:</strong>
+        <ul>
+            <li>Create requisition PR-2024-003, description "Q1 Lab Supplies"</li>
+            <li>Add 3 lines: chemicals ($1,500), glassware ($2,000), PPE ($1,300)</li>
+            <li>Observe computed total = $4,800 (under $10K, so 2-stage approval)</li>
+            <li>Submit and approve through Dept Review + Finance Review</li>
+        </ul>
+    </li>
+    <li><strong>Phase 2 &mdash; Goods Receipt:</strong>
+        <ul>
+            <li>Create a new Goods Receipt (GR-2024-001)</li>
+            <li>Link it to the approved requisition via the <strong>Receipt-Requisition</strong> relationship</li>
+            <li>Add receipt lines matching each requisition line</li>
+            <li>Show that receipt line totals compute reactively (qty_received * actual_price)</li>
+        </ul>
+    </li>
+    <li><strong>Phase 3 &mdash; Payment:</strong>
+        <ul>
+            <li>Create a Payment record (PAY-2024-001)</li>
+            <li>Link it to the requisition via the <strong>Payment-Requisition</strong> relationship</li>
+            <li>Set amount and mark as COMPLETED</li>
+        </ul>
+    </li>
+    <li><strong>Phase 4 &mdash; Close:</strong>
+        <ul>
+            <li>Update requisition status to PAID (terminal state)</li>
+        </ul>
+    </li>
+</ol>
+
+<div class="success">
+    <strong>Key demo points:</strong> Full entity graph traversal &mdash; requisition &rarr; lines &rarr; receipt &rarr;
+    receipt lines &rarr; payment. All linked via typed relators (composition and association).
+    Navigate relationships in the <code>/app</code> form view to show the connected graph.
+</div>
+</div>
+
+<!-- Journey D -->
+<div class="journey-card">
+<h3>Journey D: Procurement Spend Analytics</h3>
+<p>Demonstrate the intelligence layer: the procurement spend artifact aggregates budget entries
+by fiscal period, department, and entry type.</p>
+
+<div class="mermaid">
+graph TD
+    BE["Budget Entries<br/>(source: erp-budget-entry)"] --> ART["Procurement Spend Artifact"]
+
+    ART --> D1["Dim: Fiscal Year<br/>(via RelatorPath)"]
+    ART --> D2["Dim: Fiscal Period<br/>(via RelatorPath)"]
+    ART --> D3["Dim: Department<br/>(via RelatorPath)"]
+    ART --> D4["Dim: Entry Type<br/>(Property: COMMITMENT /<br/>CONSUMPTION / RELEASE)"]
+
+    ART --> M1["Measure: Signed Amount<br/>(Sum)"]
+    ART --> M2["Measure: Entry Count<br/>(Count)"]
+
+    ART --> OUT["Procurement Spend Summary<br/>(materialized instances)"]
+
+    style ART fill:#3498db,color:#fff
+    style OUT fill:#27ae60,color:#fff
+    style BE fill:#f39c12,color:#fff
+</div>
+
+<h4>Steps to Demonstrate</h4>
+<ol>
+    <li>Navigate to the <strong>Intelligence</strong> section in <code>/app</code></li>
+    <li>Open the <strong>Procurement Spend by Period</strong> artifact</li>
+    <li>Show the materialized summary instances grouped by:
+        <ul>
+            <li>Fiscal year and period (e.g., FY2024 / Q1-Jan)</li>
+            <li>Department (Engineering, Operations, etc.)</li>
+            <li>Entry type (COMMITMENT vs CONSUMPTION)</li>
+        </ul>
+    </li>
+    <li>Explain the <strong>RelatorPath</strong> dimensions &mdash; the artifact traverses relator chains
+        (budget entry &rarr; fiscal period &rarr; quarter &rarr; year) to extract the fiscal year dimension</li>
+    <li>Show that creating new requisitions and approving them (which creates budget entries)
+        automatically updates the materialized artifact</li>
+</ol>
+
+<div class="note">
+    <strong>Architecture note:</strong> The artifact sources from <code>erp-budget-entry</code> (defined in
+    <code>app_erp_budget</code>), not from requisitions directly. Budget entries are created when
+    a requisition is approved (COMMITMENT) and when goods are received (CONSUMPTION).
+    This means procurement analytics are built on the same ledger as budget analytics, ensuring consistency.
+</div>
+</div>
+
+<!-- ================================================================== -->
+<h2>4. Events Emitted</h2>
+<!-- ================================================================== -->
+
+<p>The procurement app emits the following events throughout the lifecycle. These can be observed
+in the <strong>Event Monitor</strong> in <code>/app</code>.</p>
+
+<table>
+    <tr><th>Event</th><th>When</th><th>Payload</th></tr>
+    <tr>
+        <td><code>Requisition Submitted</code></td>
+        <td>Status changes to SUBMITTED</td>
+        <td>requisition_id, total_amount, requester</td>
+    </tr>
+    <tr>
+        <td><code>Requisition Approved</code></td>
+        <td>All approval stages pass</td>
+        <td>requisition_id, total_amount</td>
+    </tr>
+    <tr>
+        <td><code>Requisition Rejected</code></td>
+        <td>Rejected at any stage</td>
+        <td>requisition_id, stage, reason</td>
+    </tr>
+    <tr>
+        <td><code>Goods Received</code></td>
+        <td>Goods receipt created</td>
+        <td>requisition_id, receipt_id, total_received</td>
+    </tr>
+    <tr>
+        <td><code>Payment Completed</code></td>
+        <td>Payment marked complete</td>
+        <td>requisition_id, payment_id, amount</td>
+    </tr>
+    <tr>
+        <td><code>Budget Warning</code></td>
+        <td>Spend artifact threshold crossed</td>
+        <td>artifact_instance_id, measure_value</td>
+    </tr>
+    <tr>
+        <td><code>Budget Exceeded</code></td>
+        <td>Spend exceeds allocation</td>
+        <td>artifact_instance_id, measure_value</td>
+    </tr>
+</table>
+
+<!-- ================================================================== -->
+<h2>5. Studio Inspection (Optional)</h2>
+<!-- ================================================================== -->
+
+<p>For a technical audience, open <a href="http://localhost:8080/studio/">http://localhost:8080/studio/</a>
+with the same credentials to inspect the metadata structure:</p>
+
+<ul>
+    <li><strong>Universals</strong> &mdash; Browse the entity type hierarchy (Requisition, Req Line, Receipt, etc.),
+        the process composition tree (Procurement Approval &rarr; 3 stages &rarr; 3 obligations),
+        and the FunctionalRole universals</li>
+    <li><strong>Property Definitions</strong> &mdash; See the property schemas, measurement frames, and label options</li>
+    <li><strong>Computations</strong> &mdash; Inspect the 4 reactive formulas and their trigger conditions</li>
+    <li><strong>Event Definitions</strong> &mdash; Review the 7 event types and their payload schemas</li>
+    <li><strong>Artifact Definitions</strong> &mdash; Examine the spend artifact with its 4 dimensions (including RelatorPath)
+        and 2 measures</li>
+</ul>
+
+<!-- ================================================================== -->
+<h2>6. Quick Reference</h2>
+<!-- ================================================================== -->
+
+<h3>6.1 Sample Data (Pre-loaded)</h3>
+<p>The <code>metadata_app_data.json</code> file pre-loads enum instances and two sample requisitions.
+After loading, you should see:</p>
+
+<table>
+    <tr><th>Entity Type</th><th>Count</th><th>Examples</th></tr>
+    <tr><td>Requisition Status (enum)</td><td>9</td><td>DRAFT, SUBMITTED, APPROVED, ORDERED, PARTIALLY_RECEIVED, RECEIVED, PAID, REJECTED, CANCELLED</td></tr>
+    <tr><td>Requisition Priority (enum)</td><td>4</td><td>LOW, MEDIUM, HIGH, URGENT</td></tr>
+    <tr><td>Receipt Status (enum)</td><td>4</td><td>PENDING, INSPECTED, ACCEPTED, REJECTED</td></tr>
+    <tr><td>Payment Status (enum)</td><td>4</td><td>PENDING, PROCESSING, COMPLETED, FAILED</td></tr>
+    <tr><td>Sample Requisitions</td><td>2</td><td>PR-2024-001 (Office Supplies, $5,640), PR-2024-002 (IT Equipment, $25,250)</td></tr>
+</table>
+
+<h3>6.2 Useful Commands</h3>
+<pre><code># Validate procurement metadata (offline, no broker needed)
+cd model1-admin-cli
+./target/release/model1-cli validate --path ../apps/erp/erp_apps/app_erp_procurement \
+    --foundation ../broker/bootstrap/1_foundation/metadata_app.json
+
+# Load procurement to running broker
+./load_app.sh ../apps/erp/erp_apps/app_erp_procurement
+
+# Load all ERP apps at once
+cd apps/erp &amp;&amp; ./load_erp.sh
+
+# Validate all ERP apps without loading
+cd apps/erp &amp;&amp; ./load_erp.sh --validate-only
+
+# Show load order without executing
+cd apps/erp &amp;&amp; ./load_erp.sh --dry-run</code></pre>
+
+<h3>6.3 Troubleshooting</h3>
+
+<table>
+    <tr><th>Error</th><th>Cause</th><th>Fix</th></tr>
+    <tr>
+        <td><code>Connection refused</code></td>
+        <td>Broker not running</td>
+        <td><code>cd broker &amp;&amp; cargo run --release</code></td>
+    </tr>
+    <tr>
+        <td><code>certificate verify failed</code></td>
+        <td>TLS certs missing or expired</td>
+        <td><code>cd broker &amp;&amp; ./generate_certs.sh</code></td>
+    </tr>
+    <tr>
+        <td><code>references non-existent App 'erp-budget-app'</code></td>
+        <td>Budget app not loaded before procurement</td>
+        <td>Use <code>load_erp.sh</code> to load in correct order</td>
+    </tr>
+    <tr>
+        <td><code>duplicate key</code></td>
+        <td>App already loaded in this broker session</td>
+        <td>Restart broker to clear state, then reload</td>
+    </tr>
+    <tr>
+        <td>Login fails (401)</td>
+        <td>Procurement app metadata not loaded</td>
+        <td>Load procurement app (it defines the demo user)</td>
+    </tr>
+</table>
+
+</body>
+</html>

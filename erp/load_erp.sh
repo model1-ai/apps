@@ -5,11 +5,12 @@
 # Usage: ./load_erp.sh [--validate-only] [--skip-base] [--layer <0|1|2|all>]
 #
 # Load order respects the dependency graph:
-#   1. app_erp_base          (org, tenant, shared users, erp-goal)
-#   2. Layer 0 apps          (org, coa, fiscal, party, resource, location)
-#   3. Layer 1 apps          (budget)
-#   4. Layer 2 apps          (okr)
-#   5. app_erp_integration   (cross-app relators) — future
+#   1. erp_base/app_erp_base          (org, tenant, shared users, erp-goal)
+#   2. erp_base/ Layer 0 apps        (org, coa, fiscal, party, resource, location)
+#   3. erp_base/ Layer 1 apps        (budget)
+#   4. erp_base/ Layer 2 apps        (okr)
+#   5. erp_apps/ Layer 2 apps        (procurement)
+#   6. app_erp_integration            (cross-app relators) — future
 #
 # Options:
 #   --validate-only    Only validate, do not load to broker
@@ -77,6 +78,7 @@ while [[ $# -gt 0 ]]; do
             echo "  -h, --help         Show this help message"
             echo ""
             echo "Load order:"
+            echo "  erp_base/"
             echo "  1. app_erp_base             (shared infrastructure)"
             echo "  2. app_erp_org              (Layer 0)"
             echo "  3. app_erp_chart_of_accounts (Layer 0)"
@@ -86,6 +88,9 @@ while [[ $# -gt 0 ]]; do
             echo "  7. app_erp_location         (Layer 0)"
             echo "  8. app_erp_budget           (Layer 1)"
             echo "  9. app_erp_okr              (Layer 2)"
+            echo ""
+            echo "  erp_apps/"
+            echo " 10. app_erp_procurement      (Layer 2)"
             exit 0
             ;;
         *)
@@ -119,17 +124,18 @@ fi
 
 # ─── Define Load Order ──────────────────────────────────────────────────────
 
-# Each entry: "layer:directory_name:description"
+# Each entry: "layer:directory_path:description"
 declare -a LOAD_ORDER=(
-    "base:app_erp_base:Shared Infrastructure (org, tenant, users, erp-goal)"
-    "0:app_erp_org:Organizational Structure"
-    "0:app_erp_chart_of_accounts:Chart of Accounts"
-    "0:app_erp_fiscal_calendar:Fiscal Calendar"
-    "0:app_erp_party:Party Master"
-    "0:app_erp_resource:Resource Catalog"
-    "0:app_erp_location:Location Master"
-    "1:app_erp_budget:Budgeting"
-    "2:app_erp_okr:OKR / Goals"
+    "base:erp_base/app_erp_base:Shared Infrastructure (org, tenant, users, erp-goal)"
+    "0:erp_base/app_erp_org:Organizational Structure"
+    "0:erp_base/app_erp_chart_of_accounts:Chart of Accounts"
+    "0:erp_base/app_erp_fiscal_calendar:Fiscal Calendar"
+    "0:erp_base/app_erp_party:Party Master"
+    "0:erp_base/app_erp_resource:Resource Catalog"
+    "0:erp_base/app_erp_location:Location Master"
+    "1:erp_base/app_erp_budget:Budgeting"
+    "2:erp_base/app_erp_okr:OKR / Goals"
+    "2:erp_apps/app_erp_procurement:Procurement Requisitions"
 )
 
 # ─── Filter by Layer ────────────────────────────────────────────────────────

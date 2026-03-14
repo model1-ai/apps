@@ -1055,19 +1055,21 @@ classDiagram
     <h3>Directory Structure</h3>
     <pre style="background: #1a1a2e; color: #e0e0e0; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem;">
 apps/erp/
-&#9500;&#9472;&#9472; <span style="color: #00bcd4;">app_erp_base/</span>                  &larr; Shared infrastructure (load first)
-&#9474;   &#9500;&#9472;&#9472; metadata_app.json           org, tenant, 3 shared users, erp-goal universal
-&#9474;   &#9492;&#9472;&#9472; metadata_app_data.json
+&#9500;&#9472;&#9472; <span style="color: #00bcd4;">erp_base/</span>                      &larr; ERP Foundation
+&#9474;   &#9500;&#9472;&#9472; <span style="color: #00bcd4;">app_erp_base/</span>              Shared infrastructure (load first)
+&#9474;   &#9474;   &#9500;&#9472;&#9472; metadata_app.json       org, tenant, 3 shared users, erp-goal universal
+&#9474;   &#9474;   &#9492;&#9472;&#9472; metadata_app_data.json
+&#9474;   &#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_org/</span>               Layer 0
+&#9474;   &#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_chart_of_accounts/</span> Layer 0
+&#9474;   &#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_fiscal_calendar/</span>   Layer 0
+&#9474;   &#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_party/</span>             Layer 0
+&#9474;   &#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_resource/</span>          Layer 0
+&#9474;   &#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_location/</span>          Layer 0
+&#9474;   &#9500;&#9472;&#9472; <span style="color: #2196f3;">app_erp_budget/</span>            Layer 1
+&#9474;   &#9492;&#9472;&#9472; <span style="color: #f44336;">app_erp_okr/</span>               Layer 2
 &#9474;
-&#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_org/</span>                   &larr; Layer 0
-&#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_chart_of_accounts/</span>     &larr; Layer 0
-&#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_fiscal_calendar/</span>       &larr; Layer 0
-&#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_party/</span>                 &larr; Layer 0
-&#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_resource/</span>              &larr; Layer 0
-&#9500;&#9472;&#9472; <span style="color: #4caf50;">app_erp_location/</span>              &larr; Layer 0
-&#9474;
-&#9500;&#9472;&#9472; <span style="color: #2196f3;">app_erp_budget/</span>                &larr; Layer 1
-&#9500;&#9472;&#9472; <span style="color: #f44336;">app_erp_okr/</span>                   &larr; Layer 2
+&#9500;&#9472;&#9472; <span style="color: #ff9800;">erp_apps/</span>                      &larr; ERP Applications
+&#9474;   &#9492;&#9472;&#9472; <span style="color: #ff9800;">app_erp_procurement/</span>       Layer 2
 &#9474;
 &#9500;&#9472;&#9472; <span style="color: #ff9800;">load_erp.sh</span>                    &larr; Automated load script
 &#9492;&#9472;&#9472; erp_foundations_overview.html   (this document)
@@ -1322,7 +1324,7 @@ graph LR
         <code>concepts/analysis/20260309_erp_foundations/erp_foundational_ontology_claude.md</code>
         and individual analysis files in the same directory.
         <br>
-        <strong>Metadata apps:</strong> <code>apps/erp/app_erp_base</code> + <code>apps/erp/app_erp_*</code>
+        <strong>Metadata apps:</strong> <code>apps/erp/erp_base/</code> (foundation) + <code>apps/erp/erp_apps/</code> (applications)
         <br>
         <strong>Load script:</strong> <code>apps/erp/load_erp.sh</code>
         <br>
