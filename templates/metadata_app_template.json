@@ -1275,6 +1275,7 @@
                 },
                 {
                     "_comment": "=== DIMENSION VIA RELATOR PATH (navigate relationships) ===",
+                    "_comment2": "Each path step can include 'disable_transitive_closure: true' to suppress automatic transitive expansion for transitive relators (Parthood, Generalization, Causation). Default is false. This field is for JSON editing only — not exposed in Studio UI since the path browser already lets users select explicit paths.",
                     "id": "parent-dim",
                     "code": "parent_name",
                     "source": {
@@ -1282,7 +1283,8 @@
                         "path": [
                             {
                                 "relator_universal_id": "parent-child-rel",
-                                "role_name": "parent"
+                                "role_name": "parent",
+                                "disable_transitive_closure": false
                             }
                         ],
                         "property_id": "parent-name-prop"

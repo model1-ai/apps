@@ -1117,7 +1117,7 @@
             "taxonomy": [
                 {
                     "relator_universal_id": "generalization-relator",
-                    "target_universal_id": "attribution-relator"
+                    "target_universal_id": "association-relator"
                 }
             ],
             "use_seed": true
