@@ -53,7 +53,8 @@
         "base-process-status-prop": "Active",
         "base-process-current-stage-prop": { "value": 1, "unit": "count" },
         "base-process-subject-ref-prop": "po-laptops-2026",
-        "approval-urgency-prop": "Normal"
+        "approval-urgency-prop": "Normal",
+        "approval-po-ref-prop": ["po-laptops-2026"]
       },
       "use_seed": true
     },
@@ -65,7 +66,8 @@
       "properties": {
         "base-process-status-prop": "Pending",
         "base-process-subject-ref-prop": "po-office-furniture",
-        "approval-urgency-prop": "Low"
+        "approval-urgency-prop": "Low",
+        "approval-po-ref-prop": ["po-office-furniture"]
       },
       "use_seed": true
     },
@@ -78,7 +80,8 @@
         "base-process-status-prop": "Active",
         "base-process-current-stage-prop": { "value": 2, "unit": "count" },
         "base-process-subject-ref-prop": "po-cloud-services",
-        "approval-urgency-prop": "High"
+        "approval-urgency-prop": "High",
+        "approval-po-ref-prop": ["po-cloud-services"]
       },
       "use_seed": true
     },
@@ -155,7 +158,8 @@
       "universal_id": "budget-approval-obligation",
       "tenant_id": "model1-testing-tenant",
       "properties": {
-        "base-obligation-status-prop": "Active"
+        "base-obligation-status-prop": "Active",
+        "base-obligation-role-ref-prop": ["budget-owner-role"]
       },
       "use_seed": true
     },
@@ -164,7 +168,8 @@
       "universal_id": "procurement-approval-obligation",
       "tenant_id": "model1-testing-tenant",
       "properties": {
-        "base-obligation-status-prop": "Pending"
+        "base-obligation-status-prop": "Pending",
+        "base-obligation-role-ref-prop": ["procurement-manager-role"]
       },
       "use_seed": true
     },
@@ -173,7 +178,8 @@
       "universal_id": "budget-approval-obligation",
       "tenant_id": "model1-testing-tenant",
       "properties": {
-        "base-obligation-status-prop": "Completed"
+        "base-obligation-status-prop": "Completed",
+        "base-obligation-role-ref-prop": ["budget-owner-role"]
       },
       "use_seed": true
     },
@@ -182,7 +188,8 @@
       "universal_id": "procurement-approval-obligation",
       "tenant_id": "model1-testing-tenant",
       "properties": {
-        "base-obligation-status-prop": "Active"
+        "base-obligation-status-prop": "Active",
+        "base-obligation-role-ref-prop": ["procurement-manager-role"]
       },
       "use_seed": true
     }

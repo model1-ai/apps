@@ -1,55 +1,69 @@
 {
     "_comment": "=== APP COSTA BANANA INTELLIGENCE - INSTANCE DATA ===",
-    "_description": "Domain instances (recipes, ingredients, suppliers, batches, orders, shipments, packages), enum instances, NP definition and runtime instances, and all relator instances.",
+    "_description": "Domain instances (recipes, ingredients, suppliers, batches, orders, shipments, packages), enum instances, and all relator instances.",
     "instances": [
         {
             "_comment": "=== ENUM INSTANCES: Batch Status (7) ===",
             "id": "cb-batch-status-preparing",
             "universal_id": "cb-batch-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-batch-status-name-prop": "Preparing" },
+            "properties": {
+                "cb-batch-status-name-prop": "Preparing"
+            },
             "use_seed": true
         },
         {
             "id": "cb-batch-status-mixing",
             "universal_id": "cb-batch-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-batch-status-name-prop": "Mixing" },
+            "properties": {
+                "cb-batch-status-name-prop": "Mixing"
+            },
             "use_seed": true
         },
         {
             "id": "cb-batch-status-baking",
             "universal_id": "cb-batch-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-batch-status-name-prop": "Baking" },
+            "properties": {
+                "cb-batch-status-name-prop": "Baking"
+            },
             "use_seed": true
         },
         {
             "id": "cb-batch-status-cooling",
             "universal_id": "cb-batch-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-batch-status-name-prop": "Cooling" },
+            "properties": {
+                "cb-batch-status-name-prop": "Cooling"
+            },
             "use_seed": true
         },
         {
             "id": "cb-batch-status-packaging",
             "universal_id": "cb-batch-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-batch-status-name-prop": "Packaging" },
+            "properties": {
+                "cb-batch-status-name-prop": "Packaging"
+            },
             "use_seed": true
         },
         {
             "id": "cb-batch-status-shipped",
             "universal_id": "cb-batch-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-batch-status-name-prop": "Shipped" },
+            "properties": {
+                "cb-batch-status-name-prop": "Shipped"
+            },
             "use_seed": true
         },
         {
             "id": "cb-batch-status-delivered",
             "universal_id": "cb-batch-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-batch-status-name-prop": "Delivered" },
+            "properties": {
+                "cb-batch-status-name-prop": "Delivered"
+            },
             "use_seed": true
         },
         {
@@ -57,35 +71,45 @@
             "id": "cb-category-dry",
             "universal_id": "cb-ingredient-category-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-ingredient-category-name-prop": "Dry" },
+            "properties": {
+                "cb-ingredient-category-name-prop": "Dry"
+            },
             "use_seed": true
         },
         {
             "id": "cb-category-wet",
             "universal_id": "cb-ingredient-category-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-ingredient-category-name-prop": "Wet" },
+            "properties": {
+                "cb-ingredient-category-name-prop": "Wet"
+            },
             "use_seed": true
         },
         {
             "id": "cb-category-leavening",
             "universal_id": "cb-ingredient-category-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-ingredient-category-name-prop": "Leavening" },
+            "properties": {
+                "cb-ingredient-category-name-prop": "Leavening"
+            },
             "use_seed": true
         },
         {
             "id": "cb-category-flavoring",
             "universal_id": "cb-ingredient-category-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-ingredient-category-name-prop": "Flavoring" },
+            "properties": {
+                "cb-ingredient-category-name-prop": "Flavoring"
+            },
             "use_seed": true
         },
         {
             "id": "cb-category-topping",
             "universal_id": "cb-ingredient-category-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-ingredient-category-name-prop": "Topping" },
+            "properties": {
+                "cb-ingredient-category-name-prop": "Topping"
+            },
             "use_seed": true
         },
         {
@@ -93,35 +117,45 @@
             "id": "cb-order-status-requested",
             "universal_id": "cb-order-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-order-status-name-prop": "Requested" },
+            "properties": {
+                "cb-order-status-name-prop": "Requested"
+            },
             "use_seed": true
         },
         {
             "id": "cb-order-status-confirmed",
             "universal_id": "cb-order-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-order-status-name-prop": "Confirmed" },
+            "properties": {
+                "cb-order-status-name-prop": "Confirmed"
+            },
             "use_seed": true
         },
         {
             "id": "cb-order-status-shipped",
             "universal_id": "cb-order-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-order-status-name-prop": "Shipped" },
+            "properties": {
+                "cb-order-status-name-prop": "Shipped"
+            },
             "use_seed": true
         },
         {
             "id": "cb-order-status-received",
             "universal_id": "cb-order-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-order-status-name-prop": "Received" },
+            "properties": {
+                "cb-order-status-name-prop": "Received"
+            },
             "use_seed": true
         },
         {
             "id": "cb-order-status-rejected",
             "universal_id": "cb-order-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-order-status-name-prop": "Rejected" },
+            "properties": {
+                "cb-order-status-name-prop": "Rejected"
+            },
             "use_seed": true
         },
         {
@@ -129,28 +163,36 @@
             "id": "cb-delivery-status-pending",
             "universal_id": "cb-delivery-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-delivery-status-name-prop": "Pending" },
+            "properties": {
+                "cb-delivery-status-name-prop": "Pending"
+            },
             "use_seed": true
         },
         {
             "id": "cb-delivery-status-intransit",
             "universal_id": "cb-delivery-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-delivery-status-name-prop": "InTransit" },
+            "properties": {
+                "cb-delivery-status-name-prop": "InTransit"
+            },
             "use_seed": true
         },
         {
             "id": "cb-delivery-status-delivered",
             "universal_id": "cb-delivery-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-delivery-status-name-prop": "Delivered" },
+            "properties": {
+                "cb-delivery-status-name-prop": "Delivered"
+            },
             "use_seed": true
         },
         {
             "id": "cb-delivery-status-failed",
             "universal_id": "cb-delivery-status-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-delivery-status-name-prop": "Failed" },
+            "properties": {
+                "cb-delivery-status-name-prop": "Failed"
+            },
             "use_seed": true
         },
         {
@@ -158,490 +200,56 @@
             "id": "cb-nutrition-calories",
             "universal_id": "cb-nutrition-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-nutrition-type-name-prop": "Calories" },
+            "properties": {
+                "cb-nutrition-type-name-prop": "Calories"
+            },
             "use_seed": true
         },
         {
             "id": "cb-nutrition-protein",
             "universal_id": "cb-nutrition-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-nutrition-type-name-prop": "Protein" },
+            "properties": {
+                "cb-nutrition-type-name-prop": "Protein"
+            },
             "use_seed": true
         },
         {
             "id": "cb-nutrition-fat",
             "universal_id": "cb-nutrition-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-nutrition-type-name-prop": "Fat" },
+            "properties": {
+                "cb-nutrition-type-name-prop": "Fat"
+            },
             "use_seed": true
         },
         {
             "id": "cb-nutrition-carbohydrates",
             "universal_id": "cb-nutrition-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-nutrition-type-name-prop": "Carbohydrates" },
+            "properties": {
+                "cb-nutrition-type-name-prop": "Carbohydrates"
+            },
             "use_seed": true
         },
         {
             "id": "cb-nutrition-fiber",
             "universal_id": "cb-nutrition-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-nutrition-type-name-prop": "Fiber" },
+            "properties": {
+                "cb-nutrition-type-name-prop": "Fiber"
+            },
             "use_seed": true
         },
         {
             "id": "cb-nutrition-sugar",
             "universal_id": "cb-nutrition-type",
             "tenant_id": "costa-food-industries-tenant",
-            "properties": { "cb-nutrition-type-name-prop": "Sugar" },
+            "properties": {
+                "cb-nutrition-type-name-prop": "Sugar"
+            },
             "use_seed": true
         },
-
-        {
-            "_comment": "========== NP DEFINITION INSTANCES ==========",
-            "_comment2": "=== AUTHORITY DEFINITIONS (8) ===",
-            "id": "cb-auth-ingredient-setup",
-            "universal_id": "np-authority-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-authdef-role-id": ["role-head-baker"],
-                "np-authdef-scope": "Global",
-                "np-authdef-constraints": "[]",
-                "np-authdef-delegatable": true
-            }
-        },
-        {
-            "id": "cb-auth-pre-baking-qc",
-            "universal_id": "np-authority-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-authdef-role-id": ["role-quality-inspector"],
-                "np-authdef-scope": "Global",
-                "np-authdef-constraints": "[]",
-                "np-authdef-delegatable": true
-            }
-        },
-        {
-            "id": "cb-auth-baking",
-            "universal_id": "np-authority-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-authdef-role-id": ["role-head-baker"],
-                "np-authdef-scope": "Global",
-                "np-authdef-constraints": "[]",
-                "np-authdef-delegatable": false
-            }
-        },
-        {
-            "id": "cb-auth-packaging",
-            "universal_id": "np-authority-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-authdef-role-id": ["role-logistics-coordinator"],
-                "np-authdef-scope": "Global",
-                "np-authdef-constraints": "[]",
-                "np-authdef-delegatable": true
-            }
-        },
-        {
-            "id": "cb-auth-delivery",
-            "universal_id": "np-authority-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-authdef-role-id": ["role-bakery-manager"],
-                "np-authdef-scope": "Global",
-                "np-authdef-constraints": "[]",
-                "np-authdef-delegatable": false
-            }
-        },
-        {
-            "id": "cb-auth-request-validation",
-            "universal_id": "np-authority-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-authdef-role-id": ["role-procurement-officer"],
-                "np-authdef-scope": "Global",
-                "np-authdef-constraints": "[]",
-                "np-authdef-delegatable": true
-            }
-        },
-        {
-            "id": "cb-auth-supplier-confirmation",
-            "universal_id": "np-authority-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-authdef-role-id": ["role-procurement-officer"],
-                "np-authdef-scope": "Global",
-                "np-authdef-constraints": "[]",
-                "np-authdef-delegatable": true
-            }
-        },
-        {
-            "id": "cb-auth-receipt-approval",
-            "universal_id": "np-authority-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-authdef-role-id": ["role-bakery-manager"],
-                "np-authdef-scope": "Global",
-                "np-authdef-constraints": "[]",
-                "np-authdef-delegatable": false
-            }
-        },
-
-        {
-            "_comment": "=== DECISION DEFINITIONS (8) ===",
-            "id": "cb-decdef-ingredient-setup",
-            "universal_id": "np-decision-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-decision-code-prop": "ingredient-setup-decision",
-                "np-decision-outcome-map-prop": "{\"Approved\":\"advance\",\"Rejected\":\"terminate\",\"Returned\":\"return_to_requestor\"}"
-            }
-        },
-        {
-            "id": "cb-decdef-pre-baking-qc",
-            "universal_id": "np-decision-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-decision-code-prop": "pre-baking-qc-decision",
-                "np-decision-outcome-map-prop": "{\"Approved\":\"advance\",\"Rejected\":\"terminate\",\"Returned\":\"return_to_requestor\"}"
-            }
-        },
-        {
-            "id": "cb-decdef-baking",
-            "universal_id": "np-decision-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-decision-code-prop": "baking-decision",
-                "np-decision-outcome-map-prop": "{\"Approved\":\"advance\",\"Rejected\":\"terminate\"}"
-            }
-        },
-        {
-            "id": "cb-decdef-packaging",
-            "universal_id": "np-decision-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-decision-code-prop": "packaging-decision",
-                "np-decision-outcome-map-prop": "{\"Approved\":\"advance\",\"Rejected\":\"terminate\"}"
-            }
-        },
-        {
-            "id": "cb-decdef-delivery",
-            "universal_id": "np-decision-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-decision-code-prop": "delivery-decision",
-                "np-decision-outcome-map-prop": "{\"Approved\":\"advance\",\"Rejected\":\"terminate\"}"
-            }
-        },
-        {
-            "id": "cb-decdef-request-validation",
-            "universal_id": "np-decision-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-decision-code-prop": "request-validation-decision",
-                "np-decision-outcome-map-prop": "{\"Approved\":\"advance\",\"Rejected\":\"terminate\",\"Returned\":\"return_to_requestor\"}"
-            }
-        },
-        {
-            "id": "cb-decdef-supplier-confirmation",
-            "universal_id": "np-decision-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-decision-code-prop": "supplier-confirmation-decision",
-                "np-decision-outcome-map-prop": "{\"Approved\":\"advance\",\"Rejected\":\"terminate\",\"Returned\":\"return_to_requestor\"}"
-            }
-        },
-        {
-            "id": "cb-decdef-receipt-approval",
-            "universal_id": "np-decision-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-decision-code-prop": "receipt-approval-decision",
-                "np-decision-outcome-map-prop": "{\"Approved\":\"advance\",\"Rejected\":\"terminate\"}"
-            }
-        },
-
-        {
-            "_comment": "=== EVIDENCE DEFINITIONS (12) ===",
-            "id": "cb-evdef-batch-details",
-            "universal_id": "np-evidence-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-evidence-code-prop": "batch-details",
-                "np-evidence-kind-prop": "DirectProperty",
-                "np-evidence-snapshot-policy-prop": "AtStageOpen"
-            }
-        },
-        {
-            "id": "cb-evdef-recipe-ingredients",
-            "universal_id": "np-evidence-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-evidence-code-prop": "recipe-ingredients",
-                "np-evidence-kind-prop": "DirectProperty",
-                "np-evidence-snapshot-policy-prop": "Live"
-            }
-        },
-        {
-            "id": "cb-evdef-ingredient-quality",
-            "universal_id": "np-evidence-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-evidence-code-prop": "ingredient-quality-data",
-                "np-evidence-kind-prop": "DirectProperty",
-                "np-evidence-snapshot-policy-prop": "AtStageOpen"
-            }
-        },
-        {
-            "id": "cb-evdef-batch-temps",
-            "universal_id": "np-evidence-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-evidence-code-prop": "batch-temps-timing",
-                "np-evidence-kind-prop": "DirectProperty",
-                "np-evidence-snapshot-policy-prop": "AtDecisionTime"
-            }
-        },
-        {
-            "id": "cb-evdef-product-weight",
-            "universal_id": "np-evidence-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-evidence-code-prop": "product-weight-count",
-                "np-evidence-kind-prop": "DirectProperty",
-                "np-evidence-snapshot-policy-prop": "AtDecisionTime"
-            }
-        },
-        {
-            "id": "cb-evdef-shipment-details",
-            "universal_id": "np-evidence-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-evidence-code-prop": "shipment-details",
-                "np-evidence-kind-prop": "DirectProperty",
-                "np-evidence-snapshot-policy-prop": "AtDecisionTime"
-            }
-        },
-        {
-            "id": "cb-evdef-quality-report",
-            "universal_id": "np-evidence-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-evidence-code-prop": "quality-report",
-                "np-evidence-kind-prop": "ProcessDerived",
-                "np-evidence-snapshot-policy-prop": "Live"
-            }
-        },
-        {
-            "id": "cb-evdef-order-details",
-            "universal_id": "np-evidence-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-evidence-code-prop": "order-details",
-                "np-evidence-kind-prop": "DirectProperty",
-                "np-evidence-snapshot-policy-prop": "AtStageOpen"
-            }
-        },
-        {
-            "id": "cb-evdef-supplier-history",
-            "universal_id": "np-evidence-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-evidence-code-prop": "supplier-history",
-                "np-evidence-kind-prop": "DirectProperty",
-                "np-evidence-snapshot-policy-prop": "Live"
-            }
-        },
-        {
-            "id": "cb-evdef-supplier-rating",
-            "universal_id": "np-evidence-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-evidence-code-prop": "supplier-rating",
-                "np-evidence-kind-prop": "DirectProperty",
-                "np-evidence-snapshot-policy-prop": "Live"
-            }
-        },
-        {
-            "id": "cb-evdef-order-cost",
-            "universal_id": "np-evidence-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-evidence-code-prop": "order-cost",
-                "np-evidence-kind-prop": "DirectProperty",
-                "np-evidence-snapshot-policy-prop": "AtStageOpen"
-            }
-        },
-        {
-            "id": "cb-evdef-delivery-inspection",
-            "universal_id": "np-evidence-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-evidence-code-prop": "delivery-inspection",
-                "np-evidence-kind-prop": "DirectProperty",
-                "np-evidence-snapshot-policy-prop": "AtDecisionTime"
-            }
-        },
-
-        {
-            "_comment": "=== PROCESS DEFINITIONS (2) ===",
-            "id": "cb-procdef-baking",
-            "universal_id": "np-process-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "label": { "en": "Baking Process" },
-            "properties": {
-                "np-procdef-code": "baking-process",
-                "np-procdef-version": { "value": 1.0, "unit": "version" },
-                "np-procdef-intent-prop": "approval",
-                "np-procdef-display-sequence-prop": { "value": 1.0, "unit": "sequence" },
-                "np-procdef-subject-type": ["cb-baking-batch"]
-            }
-        },
-        {
-            "id": "cb-procdef-acquisition",
-            "universal_id": "np-process-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "label": { "en": "Ingredient Acquisition" },
-            "properties": {
-                "np-procdef-code": "ingredient-acquisition",
-                "np-procdef-version": { "value": 1.0, "unit": "version" },
-                "np-procdef-intent-prop": "approval",
-                "np-procdef-display-sequence-prop": { "value": 2.0, "unit": "sequence" },
-                "np-procdef-subject-type": ["cb-ingredient-order"]
-            }
-        },
-
-        {
-            "_comment": "=== STAGE DEFINITIONS: Baking Process (5) ===",
-            "id": "cb-stagedef-ingredient-setup",
-            "universal_id": "np-stage-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "label": { "en": "Ingredient Setup" },
-            "properties": {
-                "np-stagedef-sequence": { "value": 1.0, "unit": "sequence" },
-                "np-stagedef-default-deadline": { "value": 86400.0, "unit": "seconds" },
-                "np-stagedef-allowed-outcomes": "[\"Approved\", \"Rejected\", \"Returned\"]"
-            }
-        },
-        {
-            "id": "cb-stagedef-pre-baking-qc",
-            "universal_id": "np-stage-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "label": { "en": "Pre-Baking QC" },
-            "properties": {
-                "np-stagedef-sequence": { "value": 2.0, "unit": "sequence" },
-                "np-stagedef-default-deadline": { "value": 43200.0, "unit": "seconds" },
-                "np-stagedef-allowed-outcomes": "[\"Approved\", \"Rejected\", \"Returned\"]"
-            }
-        },
-        {
-            "id": "cb-stagedef-baking",
-            "universal_id": "np-stage-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "label": { "en": "Baking" },
-            "properties": {
-                "np-stagedef-sequence": { "value": 3.0, "unit": "sequence" },
-                "np-stagedef-default-deadline": { "value": 21600.0, "unit": "seconds" },
-                "np-stagedef-allowed-outcomes": "[\"Approved\", \"Rejected\"]"
-            }
-        },
-        {
-            "id": "cb-stagedef-packaging",
-            "universal_id": "np-stage-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "label": { "en": "Packaging" },
-            "properties": {
-                "np-stagedef-sequence": { "value": 4.0, "unit": "sequence" },
-                "np-stagedef-default-deadline": { "value": 43200.0, "unit": "seconds" },
-                "np-stagedef-allowed-outcomes": "[\"Approved\", \"Rejected\"]"
-            }
-        },
-        {
-            "id": "cb-stagedef-delivery",
-            "universal_id": "np-stage-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "label": { "en": "Delivery" },
-            "properties": {
-                "np-stagedef-sequence": { "value": 5.0, "unit": "sequence" },
-                "np-stagedef-default-deadline": { "value": 172800.0, "unit": "seconds" },
-                "np-stagedef-allowed-outcomes": "[\"Approved\", \"Rejected\"]"
-            }
-        },
-
-        {
-            "_comment": "=== STAGE DEFINITIONS: Acquisition Process (3) ===",
-            "id": "cb-stagedef-request-validation",
-            "universal_id": "np-stage-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "label": { "en": "Request Validation" },
-            "properties": {
-                "np-stagedef-sequence": { "value": 1.0, "unit": "sequence" },
-                "np-stagedef-default-deadline": { "value": 172800.0, "unit": "seconds" },
-                "np-stagedef-allowed-outcomes": "[\"Approved\", \"Rejected\", \"Returned\"]"
-            }
-        },
-        {
-            "id": "cb-stagedef-supplier-confirmation",
-            "universal_id": "np-stage-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "label": { "en": "Supplier Confirmation" },
-            "properties": {
-                "np-stagedef-sequence": { "value": 2.0, "unit": "sequence" },
-                "np-stagedef-default-deadline": { "value": 259200.0, "unit": "seconds" },
-                "np-stagedef-allowed-outcomes": "[\"Approved\", \"Rejected\", \"Returned\"]"
-            }
-        },
-        {
-            "id": "cb-stagedef-receipt-approval",
-            "universal_id": "np-stage-definition",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "label": { "en": "Receipt Approval" },
-            "properties": {
-                "np-stagedef-sequence": { "value": 3.0, "unit": "sequence" },
-                "np-stagedef-default-deadline": { "value": 86400.0, "unit": "seconds" },
-                "np-stagedef-allowed-outcomes": "[\"Approved\", \"Rejected\"]"
-            }
-        },
-
         {
             "_comment": "========== DOMAIN INSTANCES ==========",
             "_comment2": "=== RECIPES (3) ===",
@@ -650,12 +258,28 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-recipe-name-prop": { "en": "Classic Banana Bread" },
-                "cb-recipe-version-prop": { "value": 1.0, "unit": "version" },
-                "cb-recipe-description-prop": { "en": "Traditional moist banana bread with a golden crust" },
-                "cb-recipe-prep-time-prop": { "value": 15.0, "unit": "minutes" },
-                "cb-recipe-bake-time-prop": { "value": 60.0, "unit": "minutes" },
-                "cb-recipe-yield-prop": { "value": 12, "unit": "servings" }
+                "cb-recipe-name-prop": {
+                    "en": "Classic Banana Bread"
+                },
+                "cb-recipe-version-prop": {
+                    "value": 1.0,
+                    "unit": "version"
+                },
+                "cb-recipe-description-prop": {
+                    "en": "Traditional moist banana bread with a golden crust"
+                },
+                "cb-recipe-prep-time-prop": {
+                    "value": 15.0,
+                    "unit": "minutes"
+                },
+                "cb-recipe-bake-time-prop": {
+                    "value": 60.0,
+                    "unit": "minutes"
+                },
+                "cb-recipe-yield-prop": {
+                    "value": 12,
+                    "unit": "servings"
+                }
             }
         },
         {
@@ -664,12 +288,28 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-recipe-name-prop": { "en": "Chocolate Chip Banana Bread" },
-                "cb-recipe-version-prop": { "value": 1.0, "unit": "version" },
-                "cb-recipe-description-prop": { "en": "Rich banana bread studded with dark chocolate chips" },
-                "cb-recipe-prep-time-prop": { "value": 20.0, "unit": "minutes" },
-                "cb-recipe-bake-time-prop": { "value": 65.0, "unit": "minutes" },
-                "cb-recipe-yield-prop": { "value": 12, "unit": "servings" }
+                "cb-recipe-name-prop": {
+                    "en": "Chocolate Chip Banana Bread"
+                },
+                "cb-recipe-version-prop": {
+                    "value": 1.0,
+                    "unit": "version"
+                },
+                "cb-recipe-description-prop": {
+                    "en": "Rich banana bread studded with dark chocolate chips"
+                },
+                "cb-recipe-prep-time-prop": {
+                    "value": 20.0,
+                    "unit": "minutes"
+                },
+                "cb-recipe-bake-time-prop": {
+                    "value": 65.0,
+                    "unit": "minutes"
+                },
+                "cb-recipe-yield-prop": {
+                    "value": 12,
+                    "unit": "servings"
+                }
             }
         },
         {
@@ -678,15 +318,30 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-recipe-name-prop": { "en": "Walnut Banana Bread" },
-                "cb-recipe-version-prop": { "value": 1.0, "unit": "version" },
-                "cb-recipe-description-prop": { "en": "Hearty banana bread loaded with crunchy walnuts" },
-                "cb-recipe-prep-time-prop": { "value": 15.0, "unit": "minutes" },
-                "cb-recipe-bake-time-prop": { "value": 55.0, "unit": "minutes" },
-                "cb-recipe-yield-prop": { "value": 10, "unit": "servings" }
+                "cb-recipe-name-prop": {
+                    "en": "Walnut Banana Bread"
+                },
+                "cb-recipe-version-prop": {
+                    "value": 1.0,
+                    "unit": "version"
+                },
+                "cb-recipe-description-prop": {
+                    "en": "Hearty banana bread loaded with crunchy walnuts"
+                },
+                "cb-recipe-prep-time-prop": {
+                    "value": 15.0,
+                    "unit": "minutes"
+                },
+                "cb-recipe-bake-time-prop": {
+                    "value": 55.0,
+                    "unit": "minutes"
+                },
+                "cb-recipe-yield-prop": {
+                    "value": 10,
+                    "unit": "servings"
+                }
             }
         },
-
         {
             "_comment": "=== INGREDIENTS (15) ===",
             "id": "cb-ing-bananas",
@@ -694,14 +349,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Ripe Bananas" },
+                "cb-ingredient-name-prop": {
+                    "en": "Ripe Bananas"
+                },
                 "cb-ingredient-category-prop": "Wet",
-                "cb-ingredient-quantity-prop": { "value": 340.0, "unit": "grams" },
-                "cb-ingredient-calories-prop": { "value": 302.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 3.7, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 1.1, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 77.5, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 8.8, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 340.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 302.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 3.7,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 1.1,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 77.5,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 8.8,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -710,14 +385,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "All-Purpose Flour" },
+                "cb-ingredient-name-prop": {
+                    "en": "All-Purpose Flour"
+                },
                 "cb-ingredient-category-prop": "Dry",
-                "cb-ingredient-quantity-prop": { "value": 280.0, "unit": "grams" },
-                "cb-ingredient-calories-prop": { "value": 1015.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 28.7, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 2.7, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 213.1, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 7.6, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 280.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 1015.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 28.7,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 2.7,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 213.1,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 7.6,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -726,14 +421,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Granulated Sugar" },
+                "cb-ingredient-name-prop": {
+                    "en": "Granulated Sugar"
+                },
                 "cb-ingredient-category-prop": "Dry",
-                "cb-ingredient-quantity-prop": { "value": 200.0, "unit": "grams" },
-                "cb-ingredient-calories-prop": { "value": 774.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 200.0, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 0.0, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 200.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 774.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 200.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -742,14 +457,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Eggs" },
+                "cb-ingredient-name-prop": {
+                    "en": "Eggs"
+                },
                 "cb-ingredient-category-prop": "Wet",
-                "cb-ingredient-quantity-prop": { "value": 100.0, "unit": "grams" },
-                "cb-ingredient-calories-prop": { "value": 143.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 12.6, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 9.5, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 0.7, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 0.0, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 100.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 143.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 12.6,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 9.5,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 0.7,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -758,14 +493,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Unsalted Butter" },
+                "cb-ingredient-name-prop": {
+                    "en": "Unsalted Butter"
+                },
                 "cb-ingredient-category-prop": "Wet",
-                "cb-ingredient-quantity-prop": { "value": 115.0, "unit": "grams" },
-                "cb-ingredient-calories-prop": { "value": 824.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 1.0, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 93.2, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 0.1, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 0.0, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 115.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 824.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 1.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 93.2,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 0.1,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -774,14 +529,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Baking Soda" },
+                "cb-ingredient-name-prop": {
+                    "en": "Baking Soda"
+                },
                 "cb-ingredient-category-prop": "Leavening",
-                "cb-ingredient-quantity-prop": { "value": 6.0, "unit": "grams" },
-                "cb-ingredient-calories-prop": { "value": 0.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 0.0, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 6.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 0.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -790,14 +565,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Salt" },
+                "cb-ingredient-name-prop": {
+                    "en": "Salt"
+                },
                 "cb-ingredient-category-prop": "Dry",
-                "cb-ingredient-quantity-prop": { "value": 3.0, "unit": "grams" },
-                "cb-ingredient-calories-prop": { "value": 0.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 0.0, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 3.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 0.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -806,14 +601,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Vanilla Extract" },
+                "cb-ingredient-name-prop": {
+                    "en": "Vanilla Extract"
+                },
                 "cb-ingredient-category-prop": "Flavoring",
-                "cb-ingredient-quantity-prop": { "value": 5.0, "unit": "ml" },
-                "cb-ingredient-calories-prop": { "value": 12.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 0.5, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 0.0, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 5.0,
+                    "unit": "ml"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 12.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 0.5,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -822,14 +637,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Dark Chocolate Chips" },
+                "cb-ingredient-name-prop": {
+                    "en": "Dark Chocolate Chips"
+                },
                 "cb-ingredient-category-prop": "Topping",
-                "cb-ingredient-quantity-prop": { "value": 170.0, "unit": "grams" },
-                "cb-ingredient-calories-prop": { "value": 805.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 7.3, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 50.2, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 92.5, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 10.9, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 170.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 805.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 7.3,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 50.2,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 92.5,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 10.9,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -838,14 +673,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Walnuts" },
+                "cb-ingredient-name-prop": {
+                    "en": "Walnuts"
+                },
                 "cb-ingredient-category-prop": "Topping",
-                "cb-ingredient-quantity-prop": { "value": 120.0, "unit": "grams" },
-                "cb-ingredient-calories-prop": { "value": 786.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 18.3, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 78.5, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 16.3, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 8.0, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 120.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 786.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 18.3,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 78.5,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 16.3,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 8.0,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -854,14 +709,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Ground Cinnamon" },
+                "cb-ingredient-name-prop": {
+                    "en": "Ground Cinnamon"
+                },
                 "cb-ingredient-category-prop": "Flavoring",
-                "cb-ingredient-quantity-prop": { "value": 3.0, "unit": "grams" },
-                "cb-ingredient-calories-prop": { "value": 7.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 0.1, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 2.4, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 1.6, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 3.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 7.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 0.1,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 2.4,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 1.6,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -870,14 +745,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Whole Milk" },
+                "cb-ingredient-name-prop": {
+                    "en": "Whole Milk"
+                },
                 "cb-ingredient-category-prop": "Wet",
-                "cb-ingredient-quantity-prop": { "value": 60.0, "unit": "ml" },
-                "cb-ingredient-calories-prop": { "value": 37.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 1.9, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 2.0, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 2.9, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 0.0, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 60.0,
+                    "unit": "ml"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 37.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 1.9,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 2.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 2.9,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -886,14 +781,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Honey" },
+                "cb-ingredient-name-prop": {
+                    "en": "Honey"
+                },
                 "cb-ingredient-category-prop": "Flavoring",
-                "cb-ingredient-quantity-prop": { "value": 40.0, "unit": "grams" },
-                "cb-ingredient-calories-prop": { "value": 122.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 0.1, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 33.1, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 0.1, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 40.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 122.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 0.1,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 33.1,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 0.1,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -902,14 +817,34 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Coconut Oil" },
+                "cb-ingredient-name-prop": {
+                    "en": "Coconut Oil"
+                },
                 "cb-ingredient-category-prop": "Wet",
-                "cb-ingredient-quantity-prop": { "value": 60.0, "unit": "ml" },
-                "cb-ingredient-calories-prop": { "value": 520.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 60.0, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 0.0, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 60.0,
+                    "unit": "ml"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 520.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 60.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                }
             }
         },
         {
@@ -918,17 +853,36 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-ingredient-name-prop": { "en": "Brown Sugar" },
+                "cb-ingredient-name-prop": {
+                    "en": "Brown Sugar"
+                },
                 "cb-ingredient-category-prop": "Dry",
-                "cb-ingredient-quantity-prop": { "value": 150.0, "unit": "grams" },
-                "cb-ingredient-calories-prop": { "value": 570.0, "unit": "kcal" },
-                "cb-ingredient-protein-prop": { "value": 0.1, "unit": "grams" },
-                "cb-ingredient-fat-prop": { "value": 0.0, "unit": "grams" },
-                "cb-ingredient-carbs-prop": { "value": 147.4, "unit": "grams" },
-                "cb-ingredient-fiber-prop": { "value": 0.0, "unit": "grams" }
+                "cb-ingredient-quantity-prop": {
+                    "value": 150.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-calories-prop": {
+                    "value": 570.0,
+                    "unit": "kcal"
+                },
+                "cb-ingredient-protein-prop": {
+                    "value": 0.1,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fat-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                },
+                "cb-ingredient-carbs-prop": {
+                    "value": 147.4,
+                    "unit": "grams"
+                },
+                "cb-ingredient-fiber-prop": {
+                    "value": 0.0,
+                    "unit": "grams"
+                }
             }
         },
-
         {
             "_comment": "=== SUPPLIERS (3) ===",
             "id": "cb-sup-tropical-farms",
@@ -936,11 +890,20 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-supplier-name-prop": { "en": "Tropical Farms" },
+                "cb-supplier-name-prop": {
+                    "en": "Tropical Farms"
+                },
                 "cb-supplier-code-prop": "TF001",
-                "cb-supplier-contact-prop": { "en": "info@tropicalfarms.cr" },
-                "cb-supplier-rating-prop": { "value": 4.8, "unit": "stars" },
-                "cb-supplier-location-prop": { "en": "Limon, Costa Rica" }
+                "cb-supplier-contact-prop": {
+                    "en": "info@tropicalfarms.cr"
+                },
+                "cb-supplier-rating-prop": {
+                    "value": 4.8,
+                    "unit": "stars"
+                },
+                "cb-supplier-location-prop": {
+                    "en": "Limon, Costa Rica"
+                }
             }
         },
         {
@@ -949,11 +912,20 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-supplier-name-prop": { "en": "Pacific Flour Co" },
+                "cb-supplier-name-prop": {
+                    "en": "Pacific Flour Co"
+                },
                 "cb-supplier-code-prop": "PF002",
-                "cb-supplier-contact-prop": { "en": "sales@pacificflour.com" },
-                "cb-supplier-rating-prop": { "value": 4.5, "unit": "stars" },
-                "cb-supplier-location-prop": { "en": "San Jose, Costa Rica" }
+                "cb-supplier-contact-prop": {
+                    "en": "sales@pacificflour.com"
+                },
+                "cb-supplier-rating-prop": {
+                    "value": 4.5,
+                    "unit": "stars"
+                },
+                "cb-supplier-location-prop": {
+                    "en": "San Jose, Costa Rica"
+                }
             }
         },
         {
@@ -962,14 +934,22 @@
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
             "properties": {
-                "cb-supplier-name-prop": { "en": "Mountain Dairy" },
+                "cb-supplier-name-prop": {
+                    "en": "Mountain Dairy"
+                },
                 "cb-supplier-code-prop": "MD003",
-                "cb-supplier-contact-prop": { "en": "orders@mountaindairy.cr" },
-                "cb-supplier-rating-prop": { "value": 4.2, "unit": "stars" },
-                "cb-supplier-location-prop": { "en": "Cartago, Costa Rica" }
+                "cb-supplier-contact-prop": {
+                    "en": "orders@mountaindairy.cr"
+                },
+                "cb-supplier-rating-prop": {
+                    "value": 4.2,
+                    "unit": "stars"
+                },
+                "cb-supplier-location-prop": {
+                    "en": "Cartago, Costa Rica"
+                }
             }
         },
-
         {
             "_comment": "=== BAKING BATCHES (4) ===",
             "id": "cb-batch-001",
@@ -979,11 +959,25 @@
             "properties": {
                 "cb-batch-code-prop": "2026-001",
                 "cb-batch-status-prop": "Baking",
-                "cb-batch-start-date-prop": { "value": 1771372800.0, "unit": "timestamp" },
-                "cb-batch-quantity-prop": { "value": 24, "unit": "loaves" },
-                "cb-batch-oven-temp-prop": { "value": 175.0, "unit": "celsius" },
-                "cb-batch-total-weight-prop": { "value": 28.8, "unit": "kg" },
-                "cb-batch-notes-prop": { "en": "Morning production run - Classic recipe" }
+                "cb-batch-start-date-prop": {
+                    "value": 1771372800.0,
+                    "unit": "timestamp"
+                },
+                "cb-batch-quantity-prop": {
+                    "value": 24,
+                    "unit": "loaves"
+                },
+                "cb-batch-oven-temp-prop": {
+                    "value": 175.0,
+                    "unit": "celsius"
+                },
+                "cb-batch-total-weight-prop": {
+                    "value": 28.8,
+                    "unit": "kg"
+                },
+                "cb-batch-notes-prop": {
+                    "en": "Morning production run - Classic recipe"
+                }
             }
         },
         {
@@ -994,11 +988,25 @@
             "properties": {
                 "cb-batch-code-prop": "2026-002",
                 "cb-batch-status-prop": "Mixing",
-                "cb-batch-start-date-prop": { "value": 1771459200.0, "unit": "timestamp" },
-                "cb-batch-quantity-prop": { "value": 18, "unit": "loaves" },
-                "cb-batch-oven-temp-prop": { "value": 170.0, "unit": "celsius" },
-                "cb-batch-total-weight-prop": { "value": 23.4, "unit": "kg" },
-                "cb-batch-notes-prop": { "en": "Afternoon run - Chocolate Chip variant" }
+                "cb-batch-start-date-prop": {
+                    "value": 1771459200.0,
+                    "unit": "timestamp"
+                },
+                "cb-batch-quantity-prop": {
+                    "value": 18,
+                    "unit": "loaves"
+                },
+                "cb-batch-oven-temp-prop": {
+                    "value": 170.0,
+                    "unit": "celsius"
+                },
+                "cb-batch-total-weight-prop": {
+                    "value": 23.4,
+                    "unit": "kg"
+                },
+                "cb-batch-notes-prop": {
+                    "en": "Afternoon run - Chocolate Chip variant"
+                }
             }
         },
         {
@@ -1009,11 +1017,25 @@
             "properties": {
                 "cb-batch-code-prop": "2026-003",
                 "cb-batch-status-prop": "Shipped",
-                "cb-batch-start-date-prop": { "value": 1771200000.0, "unit": "timestamp" },
-                "cb-batch-quantity-prop": { "value": 30, "unit": "loaves" },
-                "cb-batch-oven-temp-prop": { "value": 175.0, "unit": "celsius" },
-                "cb-batch-total-weight-prop": { "value": 36.0, "unit": "kg" },
-                "cb-batch-notes-prop": { "en": "Completed and shipped - Walnut variety" }
+                "cb-batch-start-date-prop": {
+                    "value": 1771200000.0,
+                    "unit": "timestamp"
+                },
+                "cb-batch-quantity-prop": {
+                    "value": 30,
+                    "unit": "loaves"
+                },
+                "cb-batch-oven-temp-prop": {
+                    "value": 175.0,
+                    "unit": "celsius"
+                },
+                "cb-batch-total-weight-prop": {
+                    "value": 36.0,
+                    "unit": "kg"
+                },
+                "cb-batch-notes-prop": {
+                    "en": "Completed and shipped - Walnut variety"
+                }
             }
         },
         {
@@ -1024,14 +1046,27 @@
             "properties": {
                 "cb-batch-code-prop": "2026-004",
                 "cb-batch-status-prop": "Preparing",
-                "cb-batch-start-date-prop": { "value": 1771545600.0, "unit": "timestamp" },
-                "cb-batch-quantity-prop": { "value": 12, "unit": "loaves" },
-                "cb-batch-oven-temp-prop": { "value": 180.0, "unit": "celsius" },
-                "cb-batch-total-weight-prop": { "value": 14.4, "unit": "kg" },
-                "cb-batch-notes-prop": { "en": "Special order - Classic recipe with honey" }
+                "cb-batch-start-date-prop": {
+                    "value": 1771545600.0,
+                    "unit": "timestamp"
+                },
+                "cb-batch-quantity-prop": {
+                    "value": 12,
+                    "unit": "loaves"
+                },
+                "cb-batch-oven-temp-prop": {
+                    "value": 180.0,
+                    "unit": "celsius"
+                },
+                "cb-batch-total-weight-prop": {
+                    "value": 14.4,
+                    "unit": "kg"
+                },
+                "cb-batch-notes-prop": {
+                    "en": "Special order - Classic recipe with honey"
+                }
             }
         },
-
         {
             "_comment": "=== INGREDIENT ORDERS (3) ===",
             "id": "cb-order-001",
@@ -1041,10 +1076,22 @@
             "properties": {
                 "cb-order-code-prop": "2026-ORD-001",
                 "cb-order-status-prop": "Received",
-                "cb-order-quantity-prop": { "value": 50.0, "unit": "kg" },
-                "cb-order-unit-price-prop": { "value": 1.20, "unit": "usd" },
-                "cb-order-total-cost-prop": { "value": 60.0, "unit": "usd" },
-                "cb-order-date-prop": { "value": 1771100000.0, "unit": "timestamp" }
+                "cb-order-quantity-prop": {
+                    "value": 50.0,
+                    "unit": "kg"
+                },
+                "cb-order-unit-price-prop": {
+                    "value": 1.2,
+                    "unit": "usd"
+                },
+                "cb-order-total-cost-prop": {
+                    "value": 60.0,
+                    "unit": "usd"
+                },
+                "cb-order-date-prop": {
+                    "value": 1771100000.0,
+                    "unit": "timestamp"
+                }
             }
         },
         {
@@ -1055,10 +1102,22 @@
             "properties": {
                 "cb-order-code-prop": "2026-ORD-002",
                 "cb-order-status-prop": "Confirmed",
-                "cb-order-quantity-prop": { "value": 100.0, "unit": "kg" },
-                "cb-order-unit-price-prop": { "value": 0.85, "unit": "usd" },
-                "cb-order-total-cost-prop": { "value": 85.0, "unit": "usd" },
-                "cb-order-date-prop": { "value": 1771300000.0, "unit": "timestamp" }
+                "cb-order-quantity-prop": {
+                    "value": 100.0,
+                    "unit": "kg"
+                },
+                "cb-order-unit-price-prop": {
+                    "value": 0.85,
+                    "unit": "usd"
+                },
+                "cb-order-total-cost-prop": {
+                    "value": 85.0,
+                    "unit": "usd"
+                },
+                "cb-order-date-prop": {
+                    "value": 1771300000.0,
+                    "unit": "timestamp"
+                }
             }
         },
         {
@@ -1069,13 +1128,24 @@
             "properties": {
                 "cb-order-code-prop": "2026-ORD-003",
                 "cb-order-status-prop": "Requested",
-                "cb-order-quantity-prop": { "value": 25.0, "unit": "kg" },
-                "cb-order-unit-price-prop": { "value": 3.50, "unit": "usd" },
-                "cb-order-total-cost-prop": { "value": 87.5, "unit": "usd" },
-                "cb-order-date-prop": { "value": 1771450000.0, "unit": "timestamp" }
+                "cb-order-quantity-prop": {
+                    "value": 25.0,
+                    "unit": "kg"
+                },
+                "cb-order-unit-price-prop": {
+                    "value": 3.5,
+                    "unit": "usd"
+                },
+                "cb-order-total-cost-prop": {
+                    "value": 87.5,
+                    "unit": "usd"
+                },
+                "cb-order-date-prop": {
+                    "value": 1771450000.0,
+                    "unit": "timestamp"
+                }
             }
         },
-
         {
             "_comment": "=== DELIVERY SHIPMENTS (2) ===",
             "id": "cb-shipment-001",
@@ -1085,9 +1155,17 @@
             "properties": {
                 "cb-shipment-code-prop": "2026-SHP-001",
                 "cb-shipment-status-prop": "InTransit",
-                "cb-shipment-destination-prop": { "en": "San Jose Central Market" },
-                "cb-shipment-weight-prop": { "value": 36.0, "unit": "kg" },
-                "cb-shipment-dispatch-date-prop": { "value": 1771300000.0, "unit": "timestamp" }
+                "cb-shipment-destination-prop": {
+                    "en": "San Jose Central Market"
+                },
+                "cb-shipment-weight-prop": {
+                    "value": 36.0,
+                    "unit": "kg"
+                },
+                "cb-shipment-dispatch-date-prop": {
+                    "value": 1771300000.0,
+                    "unit": "timestamp"
+                }
             }
         },
         {
@@ -1098,13 +1176,23 @@
             "properties": {
                 "cb-shipment-code-prop": "2026-SHP-002",
                 "cb-shipment-status-prop": "Delivered",
-                "cb-shipment-destination-prop": { "en": "Escazu Premium Bakery Shop" },
-                "cb-shipment-weight-prop": { "value": 14.4, "unit": "kg" },
-                "cb-shipment-dispatch-date-prop": { "value": 1771100000.0, "unit": "timestamp" },
-                "cb-shipment-delivery-date-prop": { "value": 1771186400.0, "unit": "timestamp" }
+                "cb-shipment-destination-prop": {
+                    "en": "Escazu Premium Bakery Shop"
+                },
+                "cb-shipment-weight-prop": {
+                    "value": 14.4,
+                    "unit": "kg"
+                },
+                "cb-shipment-dispatch-date-prop": {
+                    "value": 1771100000.0,
+                    "unit": "timestamp"
+                },
+                "cb-shipment-delivery-date-prop": {
+                    "value": 1771186400.0,
+                    "unit": "timestamp"
+                }
             }
         },
-
         {
             "_comment": "=== PRODUCT PACKAGES (2) ===",
             "id": "cb-package-001",
@@ -1113,10 +1201,22 @@
             "use_seed": true,
             "properties": {
                 "cb-package-code-prop": "2026-PKG-001",
-                "cb-package-loaf-count-prop": { "value": 30, "unit": "units" },
-                "cb-package-total-weight-prop": { "value": 36.0, "unit": "kg" },
-                "cb-package-total-calories-prop": { "value": 72000.0, "unit": "kcal" },
-                "cb-package-date-prop": { "value": 1771280000.0, "unit": "timestamp" }
+                "cb-package-loaf-count-prop": {
+                    "value": 30,
+                    "unit": "units"
+                },
+                "cb-package-total-weight-prop": {
+                    "value": 36.0,
+                    "unit": "kg"
+                },
+                "cb-package-total-calories-prop": {
+                    "value": 72000.0,
+                    "unit": "kcal"
+                },
+                "cb-package-date-prop": {
+                    "value": 1771280000.0,
+                    "unit": "timestamp"
+                }
             }
         },
         {
@@ -1126,877 +1226,26 @@
             "use_seed": true,
             "properties": {
                 "cb-package-code-prop": "2026-PKG-002",
-                "cb-package-loaf-count-prop": { "value": 12, "unit": "units" },
-                "cb-package-total-weight-prop": { "value": 14.4, "unit": "kg" },
-                "cb-package-total-calories-prop": { "value": 28800.0, "unit": "kcal" },
-                "cb-package-date-prop": { "value": 1771080000.0, "unit": "timestamp" }
-            }
-        },
-
-        {
-            "_comment": "========== RUNTIME NP INSTANCES ==========",
-            "_comment2": "=== PROCESS INSTANCES (4 for baking batches) ===",
-            "id": "cb-process-batch-001",
-            "universal_id": "np-normative-process",
-            "tenant_id": "costa-food-industries-tenant",
-            "label": { "en": "BATCH-2026-001: Baking Process" },
-            "use_seed": true,
-            "properties": {
-                "np-process-status": "Active",
-                "np-process-current-stage": { "value": 3.0, "unit": "stage" },
-                "np-process-started-at": { "value": 1771372800.0, "unit": "timestamp" }
-            }
-        },
-        {
-            "id": "cb-process-batch-002",
-            "universal_id": "np-normative-process",
-            "tenant_id": "costa-food-industries-tenant",
-            "label": { "en": "BATCH-2026-002: Baking Process" },
-            "use_seed": true,
-            "properties": {
-                "np-process-status": "Active",
-                "np-process-current-stage": { "value": 1.0, "unit": "stage" },
-                "np-process-started-at": { "value": 1771459200.0, "unit": "timestamp" }
-            }
-        },
-        {
-            "id": "cb-process-batch-003",
-            "universal_id": "np-normative-process",
-            "tenant_id": "costa-food-industries-tenant",
-            "label": { "en": "BATCH-2026-003: Baking Process" },
-            "use_seed": true,
-            "properties": {
-                "np-process-status": "Completed",
-                "np-process-current-stage": { "value": 5.0, "unit": "stage" },
-                "np-process-started-at": { "value": 1771200000.0, "unit": "timestamp" }
-            }
-        },
-        {
-            "id": "cb-process-batch-004",
-            "universal_id": "np-normative-process",
-            "tenant_id": "costa-food-industries-tenant",
-            "label": { "en": "BATCH-2026-004: Baking Process" },
-            "use_seed": true,
-            "properties": {
-                "np-process-status": "Pending",
-                "np-process-current-stage": { "value": 1.0, "unit": "stage" },
-                "np-process-started-at": { "value": 1771545600.0, "unit": "timestamp" }
-            }
-        },
-
-        {
-            "_comment": "=== STAGE INSTANCES (6) ===",
-            "id": "cb-stage-b001-setup",
-            "universal_id": "np-process-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-stage-definition-ref": ["cb-stagedef-ingredient-setup"],
-                "np-stage-sequence": { "value": 1.0, "unit": "sequence" },
-                "np-stage-status": "Completed",
-                "np-stage-started-at": { "value": 1771372800.0, "unit": "timestamp" }
-            }
-        },
-        {
-            "id": "cb-stage-b001-qc",
-            "universal_id": "np-process-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-stage-definition-ref": ["cb-stagedef-pre-baking-qc"],
-                "np-stage-sequence": { "value": 2.0, "unit": "sequence" },
-                "np-stage-status": "Completed",
-                "np-stage-started-at": { "value": 1771380000.0, "unit": "timestamp" }
-            }
-        },
-        {
-            "id": "cb-stage-b001-baking",
-            "universal_id": "np-process-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-stage-definition-ref": ["cb-stagedef-baking"],
-                "np-stage-sequence": { "value": 3.0, "unit": "sequence" },
-                "np-stage-status": "Active",
-                "np-stage-started-at": { "value": 1771390000.0, "unit": "timestamp" }
-            }
-        },
-        {
-            "id": "cb-stage-b002-setup",
-            "universal_id": "np-process-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-stage-definition-ref": ["cb-stagedef-ingredient-setup"],
-                "np-stage-sequence": { "value": 1.0, "unit": "sequence" },
-                "np-stage-status": "Active",
-                "np-stage-started-at": { "value": 1771459200.0, "unit": "timestamp" }
-            }
-        },
-        {
-            "id": "cb-stage-b003-delivery",
-            "universal_id": "np-process-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-stage-definition-ref": ["cb-stagedef-delivery"],
-                "np-stage-sequence": { "value": 5.0, "unit": "sequence" },
-                "np-stage-status": "Completed",
-                "np-stage-started-at": { "value": 1771260000.0, "unit": "timestamp" }
-            }
-        },
-        {
-            "id": "cb-stage-b004-setup",
-            "universal_id": "np-process-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-stage-definition-ref": ["cb-stagedef-ingredient-setup"],
-                "np-stage-sequence": { "value": 1.0, "unit": "sequence" },
-                "np-stage-status": "Pending",
-                "np-stage-started-at": { "value": 1771545600.0, "unit": "timestamp" }
-            }
-        },
-
-        {
-            "_comment": "=== OBLIGATION INSTANCES (5) ===",
-            "id": "cb-obligation-b001-baking",
-            "universal_id": "np-normative-obligation",
-            "tenant_id": "costa-food-industries-tenant",
-            "label": { "en": "Baking: BATCH-2026-001" },
-            "use_seed": true,
-            "properties": {
-                "np-obligation-authority-ref": ["cb-auth-baking"],
-                "np-obligation-status": "Active",
-                "np-obligation-created-at": { "value": 1771390000.0, "unit": "timestamp" },
-                "np-obligation-deadline": { "value": 1771411600.0, "unit": "timestamp" }
-            }
-        },
-        {
-            "id": "cb-obligation-b002-setup",
-            "universal_id": "np-normative-obligation",
-            "tenant_id": "costa-food-industries-tenant",
-            "label": { "en": "Ingredient Setup: BATCH-2026-002" },
-            "use_seed": true,
-            "properties": {
-                "np-obligation-authority-ref": ["cb-auth-ingredient-setup"],
-                "np-obligation-status": "Active",
-                "np-obligation-created-at": { "value": 1771459200.0, "unit": "timestamp" },
-                "np-obligation-deadline": { "value": 1771545600.0, "unit": "timestamp" }
-            }
-        },
-        {
-            "id": "cb-obligation-b001-setup",
-            "universal_id": "np-normative-obligation",
-            "tenant_id": "costa-food-industries-tenant",
-            "label": { "en": "Ingredient Setup: BATCH-2026-001" },
-            "use_seed": true,
-            "properties": {
-                "np-obligation-authority-ref": ["cb-auth-ingredient-setup"],
-                "np-obligation-status": "Fulfilled",
-                "np-obligation-created-at": { "value": 1771372800.0, "unit": "timestamp" },
-                "np-obligation-deadline": { "value": 1771459200.0, "unit": "timestamp" }
-            }
-        },
-        {
-            "id": "cb-obligation-b001-qc",
-            "universal_id": "np-normative-obligation",
-            "tenant_id": "costa-food-industries-tenant",
-            "label": { "en": "Pre-Baking QC: BATCH-2026-001" },
-            "use_seed": true,
-            "properties": {
-                "np-obligation-authority-ref": ["cb-auth-pre-baking-qc"],
-                "np-obligation-status": "Fulfilled",
-                "np-obligation-created-at": { "value": 1771380000.0, "unit": "timestamp" },
-                "np-obligation-deadline": { "value": 1771423200.0, "unit": "timestamp" }
-            }
-        },
-        {
-            "id": "cb-obligation-b003-delivery",
-            "universal_id": "np-normative-obligation",
-            "tenant_id": "costa-food-industries-tenant",
-            "label": { "en": "Delivery: BATCH-2026-003" },
-            "use_seed": true,
-            "properties": {
-                "np-obligation-authority-ref": ["cb-auth-delivery"],
-                "np-obligation-status": "Fulfilled",
-                "np-obligation-created-at": { "value": 1771260000.0, "unit": "timestamp" },
-                "np-obligation-deadline": { "value": 1771432800.0, "unit": "timestamp" }
-            }
-        },
-
-        {
-            "_comment": "=== DECISION EVENTS (3) ===",
-            "id": "cb-decision-b001-setup-approved",
-            "universal_id": "np-decision-event",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-decision-decision": "Approved",
-                "np-decision-rationale": "All ingredients verified and measured correctly for Classic Banana Bread batch.",
-                "np-decision-recorded-at": { "value": 1771376400.0, "unit": "timestamp" },
-                "np-decision-authority-chain": "[{\"type\": \"direct\", \"authority_id\": \"cb-auth-ingredient-setup\", \"role\": \"role-head-baker\"}]"
-            }
-        },
-        {
-            "id": "cb-decision-b001-qc-approved",
-            "universal_id": "np-decision-event",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-decision-decision": "Approved",
-                "np-decision-rationale": "Ingredient quality meets standards. Batter consistency verified. Ready for oven.",
-                "np-decision-recorded-at": { "value": 1771387200.0, "unit": "timestamp" },
-                "np-decision-authority-chain": "[{\"type\": \"direct\", \"authority_id\": \"cb-auth-pre-baking-qc\", \"role\": \"role-quality-inspector\"}]"
-            }
-        },
-        {
-            "id": "cb-decision-b003-delivery-approved",
-            "universal_id": "np-decision-event",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "properties": {
-                "np-decision-decision": "Approved",
-                "np-decision-rationale": "Delivery verified at San Jose Central Market. All 30 loaves in good condition.",
-                "np-decision-recorded-at": { "value": 1771280000.0, "unit": "timestamp" },
-                "np-decision-authority-chain": "[{\"type\": \"direct\", \"authority_id\": \"cb-auth-delivery\", \"role\": \"role-bakery-manager\"}]"
+                "cb-package-loaf-count-prop": {
+                    "value": 12,
+                    "unit": "units"
+                },
+                "cb-package-total-weight-prop": {
+                    "value": 14.4,
+                    "unit": "kg"
+                },
+                "cb-package-total-calories-prop": {
+                    "value": 28800.0,
+                    "unit": "kcal"
+                },
+                "cb-package-date-prop": {
+                    "value": 1771080000.0,
+                    "unit": "timestamp"
+                }
             }
         }
     ],
     "relator_instances": [
-        {
-            "_comment": "========== NP DEFINITION RELATOR INSTANCES ==========",
-            "_comment2": "=== Process -> Governs Universal (2) ===",
-            "id": "cb-rel-procdef-baking-governs",
-            "relator_id": "np-definition-governs-universal",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "process_definition": "cb-procdef-baking",
-                "subject_universal": "cb-baking-batch"
-            },
-            "properties": {
-                "np-governs-governance-type-prop": "approval",
-                "np-governs-status-property-id-prop": ["cb-batch-status-prop"]
-            }
-        },
-        {
-            "id": "cb-rel-procdef-acquisition-governs",
-            "relator_id": "np-definition-governs-universal",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "process_definition": "cb-procdef-acquisition",
-                "subject_universal": "cb-ingredient-order"
-            },
-            "properties": {
-                "np-governs-governance-type-prop": "approval",
-                "np-governs-status-property-id-prop": ["cb-order-status-prop"]
-            }
-        },
-
-        {
-            "_comment": "=== Process -> Uses Profile (2) ===",
-            "id": "cb-rel-procdef-baking-uses-profile",
-            "relator_id": "definition-uses-profile",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "process_definition": "cb-procdef-baking",
-                "framework_profile": "np-profile"
-            }
-        },
-        {
-            "id": "cb-rel-procdef-acquisition-uses-profile",
-            "relator_id": "definition-uses-profile",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "process_definition": "cb-procdef-acquisition",
-                "framework_profile": "np-profile"
-            }
-        },
-
-        {
-            "_comment": "=== Process -> Stage: Baking (5) ===",
-            "id": "cb-rel-baking-stage1",
-            "relator_id": "np-definition-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "process_definition": "cb-procdef-baking",
-                "stage_definition": "cb-stagedef-ingredient-setup"
-            }
-        },
-        {
-            "id": "cb-rel-baking-stage2",
-            "relator_id": "np-definition-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "process_definition": "cb-procdef-baking",
-                "stage_definition": "cb-stagedef-pre-baking-qc"
-            }
-        },
-        {
-            "id": "cb-rel-baking-stage3",
-            "relator_id": "np-definition-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "process_definition": "cb-procdef-baking",
-                "stage_definition": "cb-stagedef-baking"
-            }
-        },
-        {
-            "id": "cb-rel-baking-stage4",
-            "relator_id": "np-definition-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "process_definition": "cb-procdef-baking",
-                "stage_definition": "cb-stagedef-packaging"
-            }
-        },
-        {
-            "id": "cb-rel-baking-stage5",
-            "relator_id": "np-definition-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "process_definition": "cb-procdef-baking",
-                "stage_definition": "cb-stagedef-delivery"
-            }
-        },
-
-        {
-            "_comment": "=== Process -> Stage: Acquisition (3) ===",
-            "id": "cb-rel-acq-stage1",
-            "relator_id": "np-definition-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "process_definition": "cb-procdef-acquisition",
-                "stage_definition": "cb-stagedef-request-validation"
-            }
-        },
-        {
-            "id": "cb-rel-acq-stage2",
-            "relator_id": "np-definition-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "process_definition": "cb-procdef-acquisition",
-                "stage_definition": "cb-stagedef-supplier-confirmation"
-            }
-        },
-        {
-            "id": "cb-rel-acq-stage3",
-            "relator_id": "np-definition-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "process_definition": "cb-procdef-acquisition",
-                "stage_definition": "cb-stagedef-receipt-approval"
-            }
-        },
-
-        {
-            "_comment": "=== Stage -> Authority: Baking (5) ===",
-            "id": "cb-rel-stage-setup-auth",
-            "relator_id": "np-stage-requires-authority",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-ingredient-setup",
-                "authority": "cb-auth-ingredient-setup"
-            }
-        },
-        {
-            "id": "cb-rel-stage-qc-auth",
-            "relator_id": "np-stage-requires-authority",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-pre-baking-qc",
-                "authority": "cb-auth-pre-baking-qc"
-            }
-        },
-        {
-            "id": "cb-rel-stage-baking-auth",
-            "relator_id": "np-stage-requires-authority",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-baking",
-                "authority": "cb-auth-baking"
-            }
-        },
-        {
-            "id": "cb-rel-stage-packaging-auth",
-            "relator_id": "np-stage-requires-authority",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-packaging",
-                "authority": "cb-auth-packaging"
-            }
-        },
-        {
-            "id": "cb-rel-stage-delivery-auth",
-            "relator_id": "np-stage-requires-authority",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-delivery",
-                "authority": "cb-auth-delivery"
-            }
-        },
-
-        {
-            "_comment": "=== Stage -> Authority: Acquisition (3) ===",
-            "id": "cb-rel-stage-reqval-auth",
-            "relator_id": "np-stage-requires-authority",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-request-validation",
-                "authority": "cb-auth-request-validation"
-            }
-        },
-        {
-            "id": "cb-rel-stage-supconf-auth",
-            "relator_id": "np-stage-requires-authority",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-supplier-confirmation",
-                "authority": "cb-auth-supplier-confirmation"
-            }
-        },
-        {
-            "id": "cb-rel-stage-receipt-auth",
-            "relator_id": "np-stage-requires-authority",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-receipt-approval",
-                "authority": "cb-auth-receipt-approval"
-            }
-        },
-
-        {
-            "_comment": "=== Stage -> Decision: Baking (5) ===",
-            "id": "cb-rel-stage-setup-dec",
-            "relator_id": "np-stage-has-decision",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-ingredient-setup",
-                "decision_definition": "cb-decdef-ingredient-setup"
-            }
-        },
-        {
-            "id": "cb-rel-stage-qc-dec",
-            "relator_id": "np-stage-has-decision",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-pre-baking-qc",
-                "decision_definition": "cb-decdef-pre-baking-qc"
-            }
-        },
-        {
-            "id": "cb-rel-stage-baking-dec",
-            "relator_id": "np-stage-has-decision",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-baking",
-                "decision_definition": "cb-decdef-baking"
-            }
-        },
-        {
-            "id": "cb-rel-stage-packaging-dec",
-            "relator_id": "np-stage-has-decision",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-packaging",
-                "decision_definition": "cb-decdef-packaging"
-            }
-        },
-        {
-            "id": "cb-rel-stage-delivery-dec",
-            "relator_id": "np-stage-has-decision",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-delivery",
-                "decision_definition": "cb-decdef-delivery"
-            }
-        },
-
-        {
-            "_comment": "=== Stage -> Decision: Acquisition (3) ===",
-            "id": "cb-rel-stage-reqval-dec",
-            "relator_id": "np-stage-has-decision",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-request-validation",
-                "decision_definition": "cb-decdef-request-validation"
-            }
-        },
-        {
-            "id": "cb-rel-stage-supconf-dec",
-            "relator_id": "np-stage-has-decision",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-supplier-confirmation",
-                "decision_definition": "cb-decdef-supplier-confirmation"
-            }
-        },
-        {
-            "id": "cb-rel-stage-receipt-dec",
-            "relator_id": "np-stage-has-decision",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "stage_definition": "cb-stagedef-receipt-approval",
-                "decision_definition": "cb-decdef-receipt-approval"
-            }
-        },
-
-        {
-            "_comment": "=== Decision -> Evidence: Baking Process ===",
-            "id": "cb-rel-dec-setup-ev-batch",
-            "relator_id": "np-decision-requires-evidence",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "decision_definition": "cb-decdef-ingredient-setup",
-                "evidence_definition": "cb-evdef-batch-details"
-            },
-            "properties": {
-                "np-evidence-requirement-timing-prop": "required_before_decision",
-                "np-evidence-requirement-class-prop": "required_for_decision"
-            }
-        },
-        {
-            "id": "cb-rel-dec-setup-ev-recipe",
-            "relator_id": "np-decision-requires-evidence",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "decision_definition": "cb-decdef-ingredient-setup",
-                "evidence_definition": "cb-evdef-recipe-ingredients"
-            },
-            "properties": {
-                "np-evidence-requirement-timing-prop": "required_before_decision",
-                "np-evidence-requirement-class-prop": "required_for_decision"
-            }
-        },
-        {
-            "id": "cb-rel-dec-qc-ev-quality",
-            "relator_id": "np-decision-requires-evidence",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "decision_definition": "cb-decdef-pre-baking-qc",
-                "evidence_definition": "cb-evdef-ingredient-quality"
-            },
-            "properties": {
-                "np-evidence-requirement-timing-prop": "required_before_decision",
-                "np-evidence-requirement-class-prop": "required_for_decision"
-            }
-        },
-        {
-            "id": "cb-rel-dec-baking-ev-temps",
-            "relator_id": "np-decision-requires-evidence",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "decision_definition": "cb-decdef-baking",
-                "evidence_definition": "cb-evdef-batch-temps"
-            },
-            "properties": {
-                "np-evidence-requirement-timing-prop": "required_before_decision",
-                "np-evidence-requirement-class-prop": "required_for_decision"
-            }
-        },
-        {
-            "id": "cb-rel-dec-pkg-ev-weight",
-            "relator_id": "np-decision-requires-evidence",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "decision_definition": "cb-decdef-packaging",
-                "evidence_definition": "cb-evdef-product-weight"
-            },
-            "properties": {
-                "np-evidence-requirement-timing-prop": "required_before_decision",
-                "np-evidence-requirement-class-prop": "required_for_decision"
-            }
-        },
-        {
-            "id": "cb-rel-dec-delivery-ev-shipment",
-            "relator_id": "np-decision-requires-evidence",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "decision_definition": "cb-decdef-delivery",
-                "evidence_definition": "cb-evdef-shipment-details"
-            },
-            "properties": {
-                "np-evidence-requirement-timing-prop": "required_before_decision",
-                "np-evidence-requirement-class-prop": "required_for_decision"
-            }
-        },
-        {
-            "id": "cb-rel-dec-delivery-ev-quality",
-            "relator_id": "np-decision-requires-evidence",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "decision_definition": "cb-decdef-delivery",
-                "evidence_definition": "cb-evdef-quality-report"
-            },
-            "properties": {
-                "np-evidence-requirement-timing-prop": "optional",
-                "np-evidence-requirement-class-prop": "supporting"
-            }
-        },
-
-        {
-            "_comment": "=== Decision -> Evidence: Acquisition Process ===",
-            "id": "cb-rel-dec-reqval-ev-order",
-            "relator_id": "np-decision-requires-evidence",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "decision_definition": "cb-decdef-request-validation",
-                "evidence_definition": "cb-evdef-order-details"
-            },
-            "properties": {
-                "np-evidence-requirement-timing-prop": "required_before_decision",
-                "np-evidence-requirement-class-prop": "required_for_decision"
-            }
-        },
-        {
-            "id": "cb-rel-dec-reqval-ev-supplier",
-            "relator_id": "np-decision-requires-evidence",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "decision_definition": "cb-decdef-request-validation",
-                "evidence_definition": "cb-evdef-supplier-history"
-            },
-            "properties": {
-                "np-evidence-requirement-timing-prop": "optional",
-                "np-evidence-requirement-class-prop": "supporting"
-            }
-        },
-        {
-            "id": "cb-rel-dec-supconf-ev-rating",
-            "relator_id": "np-decision-requires-evidence",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "decision_definition": "cb-decdef-supplier-confirmation",
-                "evidence_definition": "cb-evdef-supplier-rating"
-            },
-            "properties": {
-                "np-evidence-requirement-timing-prop": "required_before_decision",
-                "np-evidence-requirement-class-prop": "required_for_decision"
-            }
-        },
-        {
-            "id": "cb-rel-dec-supconf-ev-cost",
-            "relator_id": "np-decision-requires-evidence",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "decision_definition": "cb-decdef-supplier-confirmation",
-                "evidence_definition": "cb-evdef-order-cost"
-            },
-            "properties": {
-                "np-evidence-requirement-timing-prop": "required_before_decision",
-                "np-evidence-requirement-class-prop": "required_for_decision"
-            }
-        },
-        {
-            "id": "cb-rel-dec-receipt-ev-inspection",
-            "relator_id": "np-decision-requires-evidence",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "decision_definition": "cb-decdef-receipt-approval",
-                "evidence_definition": "cb-evdef-delivery-inspection"
-            },
-            "properties": {
-                "np-evidence-requirement-timing-prop": "required_before_decision",
-                "np-evidence-requirement-class-prop": "required_for_decision"
-            }
-        },
-
-        {
-            "_comment": "=== Evidence -> Source Universal ===",
-            "id": "cb-rel-ev-batch-source",
-            "relator_id": "np-evidence-reads-universal-data",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "evidence_definition": "cb-evdef-batch-details",
-                "source_universal": "cb-baking-batch"
-            },
-            "properties": {
-                "np-evidence-property-ids-prop": ["cb-batch-code-prop", "cb-batch-status-prop", "cb-batch-quantity-prop"],
-                "np-evidence-min-access-prop": "view"
-            }
-        },
-        {
-            "id": "cb-rel-ev-recipe-source",
-            "relator_id": "np-evidence-reads-universal-data",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "evidence_definition": "cb-evdef-recipe-ingredients",
-                "source_universal": "cb-banana-bread-recipe"
-            },
-            "properties": {
-                "np-evidence-property-ids-prop": ["cb-recipe-name-prop"],
-                "np-evidence-min-access-prop": "view"
-            }
-        },
-        {
-            "id": "cb-rel-ev-quality-source",
-            "relator_id": "np-evidence-reads-universal-data",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "evidence_definition": "cb-evdef-ingredient-quality",
-                "source_universal": "cb-ingredient"
-            },
-            "properties": {
-                "np-evidence-property-ids-prop": ["cb-ingredient-name-prop", "cb-ingredient-category-prop"],
-                "np-evidence-min-access-prop": "view"
-            }
-        },
-        {
-            "id": "cb-rel-ev-temps-source",
-            "relator_id": "np-evidence-reads-universal-data",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "evidence_definition": "cb-evdef-batch-temps",
-                "source_universal": "cb-baking-batch"
-            },
-            "properties": {
-                "np-evidence-property-ids-prop": ["cb-batch-oven-temp-prop", "cb-batch-total-weight-prop"],
-                "np-evidence-min-access-prop": "view"
-            }
-        },
-        {
-            "id": "cb-rel-ev-weight-source",
-            "relator_id": "np-evidence-reads-universal-data",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "evidence_definition": "cb-evdef-product-weight",
-                "source_universal": "cb-product-package"
-            },
-            "properties": {
-                "np-evidence-property-ids-prop": ["cb-package-loaf-count-prop", "cb-package-total-weight-prop"],
-                "np-evidence-min-access-prop": "view"
-            }
-        },
-        {
-            "id": "cb-rel-ev-shipment-source",
-            "relator_id": "np-evidence-reads-universal-data",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "evidence_definition": "cb-evdef-shipment-details",
-                "source_universal": "cb-delivery-shipment"
-            },
-            "properties": {
-                "np-evidence-property-ids-prop": ["cb-shipment-code-prop", "cb-shipment-status-prop", "cb-shipment-weight-prop"],
-                "np-evidence-min-access-prop": "view"
-            }
-        },
-        {
-            "id": "cb-rel-ev-order-source",
-            "relator_id": "np-evidence-reads-universal-data",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "evidence_definition": "cb-evdef-order-details",
-                "source_universal": "cb-ingredient-order"
-            },
-            "properties": {
-                "np-evidence-property-ids-prop": ["cb-order-code-prop", "cb-order-status-prop", "cb-order-quantity-prop"],
-                "np-evidence-min-access-prop": "view"
-            }
-        },
-        {
-            "id": "cb-rel-ev-supplier-history-source",
-            "relator_id": "np-evidence-reads-universal-data",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "evidence_definition": "cb-evdef-supplier-history",
-                "source_universal": "cb-supplier"
-            },
-            "properties": {
-                "np-evidence-property-ids-prop": ["cb-supplier-name-prop", "cb-supplier-rating-prop"],
-                "np-evidence-min-access-prop": "view"
-            }
-        },
-        {
-            "id": "cb-rel-ev-supplier-rating-source",
-            "relator_id": "np-evidence-reads-universal-data",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "evidence_definition": "cb-evdef-supplier-rating",
-                "source_universal": "cb-supplier"
-            },
-            "properties": {
-                "np-evidence-property-ids-prop": ["cb-supplier-rating-prop", "cb-supplier-code-prop"],
-                "np-evidence-min-access-prop": "view"
-            }
-        },
-        {
-            "id": "cb-rel-ev-cost-source",
-            "relator_id": "np-evidence-reads-universal-data",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "evidence_definition": "cb-evdef-order-cost",
-                "source_universal": "cb-ingredient-order"
-            },
-            "properties": {
-                "np-evidence-property-ids-prop": ["cb-order-unit-price-prop", "cb-order-total-cost-prop"],
-                "np-evidence-min-access-prop": "view"
-            }
-        },
-        {
-            "id": "cb-rel-ev-inspection-source",
-            "relator_id": "np-evidence-reads-universal-data",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": {
-                "evidence_definition": "cb-evdef-delivery-inspection",
-                "source_universal": "cb-ingredient-order"
-            },
-            "properties": {
-                "np-evidence-property-ids-prop": ["cb-order-quantity-prop", "cb-order-status-prop"],
-                "np-evidence-min-access-prop": "view"
-            }
-        },
-
         {
             "_comment": "========== DOMAIN RELATOR INSTANCES ==========",
             "_comment2": "=== Recipe -> Ingredient (Classic: 8 ingredients) ===",
@@ -2004,410 +1253,579 @@
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-classic", "ingredient": "cb-ing-bananas" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 340.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-classic",
+                "ingredient": "cb-ing-bananas"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 340.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-classic-flour",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-classic", "ingredient": "cb-ing-flour" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 280.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-classic",
+                "ingredient": "cb-ing-flour"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 280.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-classic-sugar",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-classic", "ingredient": "cb-ing-sugar" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 200.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-classic",
+                "ingredient": "cb-ing-sugar"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 200.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-classic-eggs",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-classic", "ingredient": "cb-ing-eggs" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 100.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-classic",
+                "ingredient": "cb-ing-eggs"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 100.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-classic-butter",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-classic", "ingredient": "cb-ing-butter" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 115.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-classic",
+                "ingredient": "cb-ing-butter"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 115.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-classic-baking-soda",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-classic", "ingredient": "cb-ing-baking-soda" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 6.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-classic",
+                "ingredient": "cb-ing-baking-soda"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 6.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-classic-salt",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-classic", "ingredient": "cb-ing-salt" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 3.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-classic",
+                "ingredient": "cb-ing-salt"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 3.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-classic-vanilla",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-classic", "ingredient": "cb-ing-vanilla" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 5.0, "unit": "ml" } }
+            "participants": {
+                "recipe": "cb-recipe-classic",
+                "ingredient": "cb-ing-vanilla"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 5.0,
+                    "unit": "ml"
+                }
+            }
         },
-
         {
             "_comment": "=== Recipe -> Ingredient (Chocolate Chip: 9 ingredients) ===",
             "id": "cb-rel-choc-bananas",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-chocolate-chip", "ingredient": "cb-ing-bananas" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 340.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-chocolate-chip",
+                "ingredient": "cb-ing-bananas"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 340.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-choc-flour",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-chocolate-chip", "ingredient": "cb-ing-flour" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 280.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-chocolate-chip",
+                "ingredient": "cb-ing-flour"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 280.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-choc-brown-sugar",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-chocolate-chip", "ingredient": "cb-ing-brown-sugar" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 150.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-chocolate-chip",
+                "ingredient": "cb-ing-brown-sugar"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 150.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-choc-eggs",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-chocolate-chip", "ingredient": "cb-ing-eggs" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 100.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-chocolate-chip",
+                "ingredient": "cb-ing-eggs"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 100.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-choc-butter",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-chocolate-chip", "ingredient": "cb-ing-butter" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 115.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-chocolate-chip",
+                "ingredient": "cb-ing-butter"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 115.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-choc-baking-soda",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-chocolate-chip", "ingredient": "cb-ing-baking-soda" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 6.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-chocolate-chip",
+                "ingredient": "cb-ing-baking-soda"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 6.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-choc-salt",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-chocolate-chip", "ingredient": "cb-ing-salt" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 3.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-chocolate-chip",
+                "ingredient": "cb-ing-salt"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 3.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-choc-vanilla",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-chocolate-chip", "ingredient": "cb-ing-vanilla" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 5.0, "unit": "ml" } }
+            "participants": {
+                "recipe": "cb-recipe-chocolate-chip",
+                "ingredient": "cb-ing-vanilla"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 5.0,
+                    "unit": "ml"
+                }
+            }
         },
         {
             "id": "cb-rel-choc-chips",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-chocolate-chip", "ingredient": "cb-ing-chocolate-chips" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 170.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-chocolate-chip",
+                "ingredient": "cb-ing-chocolate-chips"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 170.0,
+                    "unit": "grams"
+                }
+            }
         },
-
         {
             "_comment": "=== Recipe -> Ingredient (Walnut: 10 ingredients) ===",
             "id": "cb-rel-walnut-bananas",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-walnut", "ingredient": "cb-ing-bananas" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 340.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-walnut",
+                "ingredient": "cb-ing-bananas"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 340.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-walnut-flour",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-walnut", "ingredient": "cb-ing-flour" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 250.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-walnut",
+                "ingredient": "cb-ing-flour"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 250.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-walnut-brown-sugar",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-walnut", "ingredient": "cb-ing-brown-sugar" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 120.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-walnut",
+                "ingredient": "cb-ing-brown-sugar"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 120.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-walnut-eggs",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-walnut", "ingredient": "cb-ing-eggs" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 100.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-walnut",
+                "ingredient": "cb-ing-eggs"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 100.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-walnut-coconut-oil",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-walnut", "ingredient": "cb-ing-coconut-oil" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 60.0, "unit": "ml" } }
+            "participants": {
+                "recipe": "cb-recipe-walnut",
+                "ingredient": "cb-ing-coconut-oil"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 60.0,
+                    "unit": "ml"
+                }
+            }
         },
         {
             "id": "cb-rel-walnut-baking-soda",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-walnut", "ingredient": "cb-ing-baking-soda" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 6.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-walnut",
+                "ingredient": "cb-ing-baking-soda"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 6.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-walnut-salt",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-walnut", "ingredient": "cb-ing-salt" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 3.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-walnut",
+                "ingredient": "cb-ing-salt"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 3.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-walnut-honey",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-walnut", "ingredient": "cb-ing-honey" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 40.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-walnut",
+                "ingredient": "cb-ing-honey"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 40.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-walnut-cinnamon",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-walnut", "ingredient": "cb-ing-cinnamon" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 3.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-walnut",
+                "ingredient": "cb-ing-cinnamon"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 3.0,
+                    "unit": "grams"
+                }
+            }
         },
         {
             "id": "cb-rel-walnut-walnuts",
             "relator_id": "cb-recipe-has-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "recipe": "cb-recipe-walnut", "ingredient": "cb-ing-walnuts" },
-            "properties": { "cb-recipe-ingredient-quantity-prop": { "value": 120.0, "unit": "grams" } }
+            "participants": {
+                "recipe": "cb-recipe-walnut",
+                "ingredient": "cb-ing-walnuts"
+            },
+            "properties": {
+                "cb-recipe-ingredient-quantity-prop": {
+                    "value": 120.0,
+                    "unit": "grams"
+                }
+            }
         },
-
         {
             "_comment": "=== Batch -> Recipe (4) ===",
             "id": "cb-rel-batch001-recipe",
             "relator_id": "cb-batch-uses-recipe",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "batch": "cb-batch-001", "recipe": "cb-recipe-classic" }
+            "participants": {
+                "batch": "cb-batch-001",
+                "recipe": "cb-recipe-classic"
+            }
         },
         {
             "id": "cb-rel-batch002-recipe",
             "relator_id": "cb-batch-uses-recipe",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "batch": "cb-batch-002", "recipe": "cb-recipe-chocolate-chip" }
+            "participants": {
+                "batch": "cb-batch-002",
+                "recipe": "cb-recipe-chocolate-chip"
+            }
         },
         {
             "id": "cb-rel-batch003-recipe",
             "relator_id": "cb-batch-uses-recipe",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "batch": "cb-batch-003", "recipe": "cb-recipe-walnut" }
+            "participants": {
+                "batch": "cb-batch-003",
+                "recipe": "cb-recipe-walnut"
+            }
         },
         {
             "id": "cb-rel-batch004-recipe",
             "relator_id": "cb-batch-uses-recipe",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "batch": "cb-batch-004", "recipe": "cb-recipe-classic" }
+            "participants": {
+                "batch": "cb-batch-004",
+                "recipe": "cb-recipe-classic"
+            }
         },
-
         {
             "_comment": "=== Order -> Ingredient (3) ===",
             "id": "cb-rel-order001-ingredient",
             "relator_id": "cb-order-for-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "order": "cb-order-001", "ingredient": "cb-ing-bananas" }
+            "participants": {
+                "order": "cb-order-001",
+                "ingredient": "cb-ing-bananas"
+            }
         },
         {
             "id": "cb-rel-order002-ingredient",
             "relator_id": "cb-order-for-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "order": "cb-order-002", "ingredient": "cb-ing-flour" }
+            "participants": {
+                "order": "cb-order-002",
+                "ingredient": "cb-ing-flour"
+            }
         },
         {
             "id": "cb-rel-order003-ingredient",
             "relator_id": "cb-order-for-ingredient",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "order": "cb-order-003", "ingredient": "cb-ing-butter" }
+            "participants": {
+                "order": "cb-order-003",
+                "ingredient": "cb-ing-butter"
+            }
         },
-
         {
             "_comment": "=== Order -> Supplier (3) ===",
             "id": "cb-rel-order001-supplier",
             "relator_id": "cb-order-from-supplier",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "order": "cb-order-001", "supplier": "cb-sup-tropical-farms" }
+            "participants": {
+                "order": "cb-order-001",
+                "supplier": "cb-sup-tropical-farms"
+            }
         },
         {
             "id": "cb-rel-order002-supplier",
             "relator_id": "cb-order-from-supplier",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "order": "cb-order-002", "supplier": "cb-sup-pacific-flour" }
+            "participants": {
+                "order": "cb-order-002",
+                "supplier": "cb-sup-pacific-flour"
+            }
         },
         {
             "id": "cb-rel-order003-supplier",
             "relator_id": "cb-order-from-supplier",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "order": "cb-order-003", "supplier": "cb-sup-mountain-dairy" }
+            "participants": {
+                "order": "cb-order-003",
+                "supplier": "cb-sup-mountain-dairy"
+            }
         },
-
         {
             "_comment": "=== Shipment -> Batch (2) ===",
             "id": "cb-rel-shipment001-batch",
             "relator_id": "cb-shipment-for-batch",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "shipment": "cb-shipment-001", "batch": "cb-batch-003" }
+            "participants": {
+                "shipment": "cb-shipment-001",
+                "batch": "cb-batch-003"
+            }
         },
         {
             "id": "cb-rel-shipment002-batch",
             "relator_id": "cb-shipment-for-batch",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "shipment": "cb-shipment-002", "batch": "cb-batch-003" }
+            "participants": {
+                "shipment": "cb-shipment-002",
+                "batch": "cb-batch-003"
+            }
         },
-
         {
             "_comment": "=== Batch -> Package (2) ===",
             "id": "cb-rel-batch003-package001",
             "relator_id": "cb-batch-produces-package",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "batch": "cb-batch-003", "package": "cb-package-001" }
+            "participants": {
+                "batch": "cb-batch-003",
+                "package": "cb-package-001"
+            }
         },
         {
             "id": "cb-rel-batch003-package002",
             "relator_id": "cb-batch-produces-package",
             "tenant_id": "costa-food-industries-tenant",
             "use_seed": true,
-            "participants": { "batch": "cb-batch-003", "package": "cb-package-002" }
-        },
-
-        {
-            "_comment": "========== RUNTIME NP RELATOR INSTANCES ==========",
-            "_comment2": "=== Process -> Stage (6) ===",
-            "id": "cb-rel-proc-b001-stage-setup",
-            "relator_id": "np-process-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": { "process": "cb-process-batch-001", "stage": "cb-stage-b001-setup" }
-        },
-        {
-            "id": "cb-rel-proc-b001-stage-qc",
-            "relator_id": "np-process-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": { "process": "cb-process-batch-001", "stage": "cb-stage-b001-qc" }
-        },
-        {
-            "id": "cb-rel-proc-b001-stage-baking",
-            "relator_id": "np-process-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": { "process": "cb-process-batch-001", "stage": "cb-stage-b001-baking" }
-        },
-        {
-            "id": "cb-rel-proc-b002-stage-setup",
-            "relator_id": "np-process-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": { "process": "cb-process-batch-002", "stage": "cb-stage-b002-setup" }
-        },
-        {
-            "id": "cb-rel-proc-b003-stage-delivery",
-            "relator_id": "np-process-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": { "process": "cb-process-batch-003", "stage": "cb-stage-b003-delivery" }
-        },
-        {
-            "id": "cb-rel-proc-b004-stage-setup",
-            "relator_id": "np-process-has-stage",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": { "process": "cb-process-batch-004", "stage": "cb-stage-b004-setup" }
-        },
-
-        {
-            "_comment": "=== Stage -> Obligation (5) ===",
-            "id": "cb-rel-stage-obl-b001-baking",
-            "relator_id": "np-stage-creates-obligation",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": { "stage": "cb-stage-b001-baking", "obligation": "cb-obligation-b001-baking" }
-        },
-        {
-            "id": "cb-rel-stage-obl-b002-setup",
-            "relator_id": "np-stage-creates-obligation",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": { "stage": "cb-stage-b002-setup", "obligation": "cb-obligation-b002-setup" }
-        },
-        {
-            "id": "cb-rel-stage-obl-b001-setup",
-            "relator_id": "np-stage-creates-obligation",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": { "stage": "cb-stage-b001-setup", "obligation": "cb-obligation-b001-setup" }
-        },
-        {
-            "id": "cb-rel-stage-obl-b001-qc",
-            "relator_id": "np-stage-creates-obligation",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": { "stage": "cb-stage-b001-qc", "obligation": "cb-obligation-b001-qc" }
-        },
-        {
-            "id": "cb-rel-stage-obl-b003-delivery",
-            "relator_id": "np-stage-creates-obligation",
-            "tenant_id": "costa-food-industries-tenant",
-            "use_seed": true,
-            "participants": { "stage": "cb-stage-b003-delivery", "obligation": "cb-obligation-b003-delivery" }
+            "participants": {
+                "batch": "cb-batch-003",
+                "package": "cb-package-002"
+            }
         }
     ]
 }

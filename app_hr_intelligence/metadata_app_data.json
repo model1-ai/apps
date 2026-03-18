@@ -53141,6 +53141,7 @@
                     "value": 160000,
                     "unit": "usd"
                 },
+                "hr-req-salary-scope-prop": "hr-salary-scope-yearly",
                 "hr-req-priority-prop": "hr-req-priority-high",
                 "hr-req-target-start": "2026-04-01",
                 "hr-req-status-prop": "hr-req-status-open"
@@ -53172,6 +53173,7 @@
                     "value": 170000,
                     "unit": "usd"
                 },
+                "hr-req-salary-scope-prop": "hr-salary-scope-yearly",
                 "hr-req-priority-prop": "hr-req-priority-medium",
                 "hr-req-target-start": "2026-05-01",
                 "hr-req-status-prop": "hr-req-status-open"
@@ -53203,6 +53205,7 @@
                     "value": 130000,
                     "unit": "usd"
                 },
+                "hr-req-salary-scope-prop": "hr-salary-scope-yearly",
                 "hr-req-priority-prop": "hr-req-priority-medium",
                 "hr-req-target-start": "2026-03-15",
                 "hr-req-status-prop": "hr-req-status-filled"
@@ -53234,6 +53237,7 @@
                     "value": 150000,
                     "unit": "usd"
                 },
+                "hr-req-salary-scope-prop": "hr-salary-scope-yearly",
                 "hr-req-priority-prop": "hr-req-priority-high",
                 "hr-req-target-start": "2026-04-15",
                 "hr-req-status-prop": "hr-req-status-open"
@@ -53381,6 +53385,7 @@
             "universal_id": "hr-validation-obligation",
             "tenant_id": "model1-testing-tenant",
             "properties": {
+                "base-obligation-role-ref-prop": ["hr-role-hr-admin"],
                 "base-obligation-status-prop": "Active"
             },
             "use_seed": true
@@ -53390,6 +53395,7 @@
             "universal_id": "hr-mgmt-approval-obligation",
             "tenant_id": "model1-testing-tenant",
             "properties": {
+                "base-obligation-role-ref-prop": ["hr-role-dept-manager"],
                 "base-obligation-status-prop": "Active"
             },
             "use_seed": true
@@ -53399,6 +53405,7 @@
             "universal_id": "hr-validation-obligation",
             "tenant_id": "model1-testing-tenant",
             "properties": {
+                "base-obligation-role-ref-prop": ["hr-role-hr-admin"],
                 "base-obligation-status-prop": "Completed"
             },
             "use_seed": true
@@ -53408,6 +53415,7 @@
             "universal_id": "hr-validation-obligation",
             "tenant_id": "model1-testing-tenant",
             "properties": {
+                "base-obligation-role-ref-prop": ["hr-role-hr-admin"],
                 "base-obligation-status-prop": "Completed"
             },
             "use_seed": true
@@ -53417,6 +53425,7 @@
             "universal_id": "hr-mgmt-approval-obligation",
             "tenant_id": "model1-testing-tenant",
             "properties": {
+                "base-obligation-role-ref-prop": ["hr-role-dept-manager"],
                 "base-obligation-status-prop": "Completed"
             },
             "use_seed": true
@@ -53426,6 +53435,7 @@
             "universal_id": "hr-recruitment-obligation",
             "tenant_id": "model1-testing-tenant",
             "properties": {
+                "base-obligation-role-ref-prop": ["hr-role-recruiter"],
                 "base-obligation-status-prop": "Completed"
             },
             "use_seed": true
@@ -53435,6 +53445,7 @@
             "universal_id": "hr-validation-obligation",
             "tenant_id": "model1-testing-tenant",
             "properties": {
+                "base-obligation-role-ref-prop": ["hr-role-hr-admin"],
                 "base-obligation-status-prop": "Active"
             },
             "use_seed": true
@@ -53448,7 +53459,9 @@
             "use_seed": true,
             "properties": {
                 "base-decision-outcome-code-prop": "Approved",
-                "base-decision-rationale-prop": "Requisition aligns with approved headcount plan. Salary range within band for L4 Product Manager."
+                "base-decision-rationale-prop": "Requisition aligns with approved headcount plan. Salary range within band for L4 Product Manager.",
+                "base-decision-decided-by-prop": ["hr-admin-alice"],
+                "base-decision-decided-at-prop": { "value": 1772553600, "unit": "seconds" }
             }
         },
         {
@@ -53458,7 +53471,9 @@
             "use_seed": true,
             "properties": {
                 "base-decision-outcome-code-prop": "Approved",
-                "base-decision-rationale-prop": "Design team headcount justified by current designer-to-developer ratio analysis. Budget confirmed."
+                "base-decision-rationale-prop": "Design team headcount justified by current designer-to-developer ratio analysis. Budget confirmed.",
+                "base-decision-decided-by-prop": ["hr-admin-alice"],
+                "base-decision-decided-at-prop": { "value": 1771344000, "unit": "seconds" }
             }
         },
         {
@@ -53468,7 +53483,9 @@
             "use_seed": true,
             "properties": {
                 "base-decision-outcome-code-prop": "Approved",
-                "base-decision-rationale-prop": "Approved. Design capacity is critical for Q2 product launches. Two positions approved as requested."
+                "base-decision-rationale-prop": "Approved. Design capacity is critical for Q2 product launches. Two positions approved as requested.",
+                "base-decision-decided-by-prop": ["hr-admin-bob"],
+                "base-decision-decided-at-prop": { "value": 1771430400, "unit": "seconds" }
             }
         },
         {
@@ -53478,7 +53495,9 @@
             "use_seed": true,
             "properties": {
                 "base-decision-outcome-code-prop": "Filled",
-                "base-decision-rationale-prop": "Both positions filled. Candidate A starts March 15, Candidate B starts April 1. Offer letters signed."
+                "base-decision-rationale-prop": "Both positions filled. Candidate A starts March 15, Candidate B starts April 1. Offer letters signed.",
+                "base-decision-decided-by-prop": ["hr-admin-bob"],
+                "base-decision-decided-at-prop": { "value": 1773763200, "unit": "seconds" }
             }
         }
     ],

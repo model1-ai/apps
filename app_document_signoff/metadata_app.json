@@ -25,14 +25,10 @@
       "tenant_id": "model1-testing-tenant",
       "email": "doc-admin@test.model1.ai",
       "display_name": "Doc Admin",
-      "password_hash": "$argon2id$v=19$m=19456,t=2,p=1$YWJjZGVmZ2hpamtsbW5vcA$+hKV5JBvxTe2796V5bITYWmmCDFjGpOwyVJOGNPnVL4",
+      "password": "TestPass123!_",
+      "is_active": true,
       "use_seed": true,
-      "role_assignments": [
-        {
-          "role": "TenantAdmin",
-          "scope": { "type": "Tenant", "tenant_id": "model1-testing-tenant" }
-        }
-      ]
+      "roles": ["TenantAdmin"]
     }
   ],
 

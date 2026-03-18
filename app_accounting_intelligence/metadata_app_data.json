@@ -1076,7 +1076,8 @@
             "universal_id": "acct-director-review-obligation",
             "tenant_id": "model1-testing-tenant",
             "properties": {
-                "base-obligation-status-prop": "Active"
+                "base-obligation-status-prop": "Active",
+                "base-obligation-role-ref-prop": ["acct-fr-finance-director"]
             },
             "use_seed": true
         },
@@ -1085,7 +1086,8 @@
             "universal_id": "acct-initial-review-obligation",
             "tenant_id": "model1-testing-tenant",
             "properties": {
-                "base-obligation-status-prop": "Completed"
+                "base-obligation-status-prop": "Completed",
+                "base-obligation-role-ref-prop": ["acct-fr-ap-clerk"]
             },
             "use_seed": true
         },
@@ -1094,7 +1096,8 @@
             "universal_id": "acct-manager-review-obligation",
             "tenant_id": "model1-testing-tenant",
             "properties": {
-                "base-obligation-status-prop": "Completed"
+                "base-obligation-status-prop": "Completed",
+                "base-obligation-role-ref-prop": ["acct-fr-department-manager"]
             },
             "use_seed": true
         },
@@ -1103,7 +1106,8 @@
             "universal_id": "acct-initial-review-obligation",
             "tenant_id": "model1-testing-tenant",
             "properties": {
-                "base-obligation-status-prop": "Active"
+                "base-obligation-status-prop": "Active",
+                "base-obligation-role-ref-prop": ["acct-fr-ap-clerk"]
             },
             "use_seed": true
         },
@@ -1112,7 +1116,8 @@
             "universal_id": "acct-initial-review-obligation",
             "tenant_id": "model1-testing-tenant",
             "properties": {
-                "base-obligation-status-prop": "Completed"
+                "base-obligation-status-prop": "Completed",
+                "base-obligation-role-ref-prop": ["acct-fr-ap-clerk"]
             },
             "use_seed": true
         },
@@ -1121,7 +1126,8 @@
             "universal_id": "acct-manager-review-obligation",
             "tenant_id": "model1-testing-tenant",
             "properties": {
-                "base-obligation-status-prop": "Completed"
+                "base-obligation-status-prop": "Completed",
+                "base-obligation-role-ref-prop": ["acct-fr-department-manager"]
             },
             "use_seed": true
         },

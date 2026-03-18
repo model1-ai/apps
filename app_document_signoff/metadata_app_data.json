@@ -46,7 +46,8 @@
       "properties": {
         "base-process-status-prop": "Active",
         "base-process-final-outcome-prop": "",
-        "signoff-reviewer-notes-prop": { "en": "Reviewing security policy for annual compliance update" }
+        "signoff-reviewer-notes-prop": { "en": "Reviewing security policy for annual compliance update" },
+        "signoff-document-ref-prop": ["doc-security-policy"]
       },
       "use_seed": true
     },
@@ -58,7 +59,8 @@
       "properties": {
         "base-process-status-prop": "Completed",
         "base-process-final-outcome-prop": "Approved",
-        "signoff-reviewer-notes-prop": { "en": "Guide updated with new benefits information. Approved." }
+        "signoff-reviewer-notes-prop": { "en": "Guide updated with new benefits information. Approved." },
+        "signoff-document-ref-prop": ["doc-onboarding-guide"]
       },
       "use_seed": true
     },
@@ -69,7 +71,8 @@
       "skip_composition": true,
       "properties": {
         "base-process-status-prop": "Pending",
-        "base-process-final-outcome-prop": ""
+        "base-process-final-outcome-prop": "",
+        "signoff-document-ref-prop": ["doc-api-spec"]
       },
       "use_seed": true
     }

@@ -1,0 +1,247 @@
+{
+    "_comment": "=== APP VALIDATIONS: Sample instance data ===",
+    "_description": "Instances demonstrating validation scenarios: unique vendor codes, contracts with cross-field rules, conditional-required fields, InstanceRefs, and reactive computation inputs.",
+
+    "instances": [
+        {
+            "_comment": "=== ENUM INSTANCES: Contract Status ===",
+            "id": "val-status-draft",
+            "universal_id": "val-contract-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-status-name-prop": "DRAFT"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "val-status-active",
+            "universal_id": "val-contract-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-status-name-prop": "ACTIVE"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "val-status-approved",
+            "universal_id": "val-contract-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-status-name-prop": "APPROVED"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "val-status-terminated",
+            "universal_id": "val-contract-status",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-status-name-prop": "TERMINATED"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== ENUM INSTANCES: Payment Method ===",
+            "id": "val-method-wire",
+            "universal_id": "val-payment-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-method-name-prop": "WIRE"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "val-method-check",
+            "universal_id": "val-payment-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-method-name-prop": "CHECK"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "id": "val-method-card",
+            "universal_id": "val-payment-method",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-method-name-prop": "CARD"
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== VENDOR 1: ACME Corporation ===",
+            "id": "val-vendor-acme",
+            "universal_id": "val-vendor",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-vendor-code-prop": { "en": "ACME001" },
+                "val-vendor-name-prop": { "en": "ACME Corporation" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== VENDOR 2: Global Services ===",
+            "id": "val-vendor-global",
+            "universal_id": "val-vendor",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-vendor-code-prop": { "en": "GBL002" },
+                "val-vendor-name-prop": { "en": "Global Services Ltd" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== CONTRACT 1: ACME IT Support (DRAFT, valid) ===",
+            "id": "val-contract-1",
+            "universal_id": "val-contract",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-contract-number-prop": { "en": "CTR-2024-0001" },
+                "val-contract-year-prop": "2024",
+                "val-contract-status-prop": "DRAFT",
+                "val-contract-start-prop": "2024-01-01",
+                "val-contract-end-prop": "2024-12-31",
+                "val-contract-min-value-prop": { "value": 10000.0, "unit": "usd" },
+                "val-contract-max-value-prop": { "value": 50000.0, "unit": "usd" },
+                "val-contract-email-prop": { "en": "contracts@acme.com" },
+                "val-contract-wire-prop": { "en": "ACME Bank Acct 12345" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== CONTRACT 2: Global Consulting (APPROVED, with approval date) ===",
+            "id": "val-contract-2",
+            "universal_id": "val-contract",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-contract-number-prop": { "en": "CTR-2024-0002" },
+                "val-contract-year-prop": "2024",
+                "val-contract-status-prop": "APPROVED",
+                "val-contract-start-prop": "2024-03-01",
+                "val-contract-end-prop": "2025-02-28",
+                "val-contract-min-value-prop": { "value": 25000.0, "unit": "usd" },
+                "val-contract-max-value-prop": { "value": 100000.0, "unit": "usd" },
+                "val-contract-phone-prop": { "en": "+1-555-0100" },
+                "val-contract-check-prop": { "en": "Global Services Check Acct 67890" },
+                "val-contract-approval-date-prop": "2024-02-15",
+                "val-contract-department-prop": "ENGINEERING",
+                "val-contract-manager-prop": { "en": "Jane Smith" },
+                "val-contract-sla-tier-prop": "GOLD",
+                "val-contract-sla-terms-prop": { "en": "99.9% uptime, 4-hour response time, 24/7 support" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+
+        {
+            "_comment": "=== LINE ITEM 1: IT Support Hours ===",
+            "id": "val-item-1",
+            "universal_id": "val-contract-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-item-description-prop": { "en": "IT Support Hours" },
+                "val-item-quantity-prop": { "value": 100.0, "unit": "units" },
+                "val-item-unit-price-prop": { "value": 150.0, "unit": "usd" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== LINE ITEM 2: Software Licenses ===",
+            "id": "val-item-2",
+            "universal_id": "val-contract-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-item-description-prop": { "en": "Software Licenses" },
+                "val-item-quantity-prop": { "value": 50.0, "unit": "units" },
+                "val-item-unit-price-prop": { "value": 200.0, "unit": "usd" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        },
+        {
+            "_comment": "=== LINE ITEM 3: Consulting Days ===",
+            "id": "val-item-3",
+            "universal_id": "val-contract-item",
+            "tenant_id": "model1-testing-tenant",
+            "properties": {
+                "val-item-description-prop": { "en": "Consulting Days" },
+                "val-item-quantity-prop": { "value": 20.0, "unit": "units" },
+                "val-item-unit-price-prop": { "value": 1200.0, "unit": "usd" }
+            },
+            "use_seed": true,
+            "skip_composition": true
+        }
+    ],
+
+    "relator_instances": [
+        {
+            "_comment": "Contract 1 -> ACME Vendor",
+            "id": "val-rel-contract1-acme",
+            "relator_id": "val-contract-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "contract": "val-contract-1",
+                "vendor": "val-vendor-acme"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "Contract 2 -> Global Vendor",
+            "id": "val-rel-contract2-global",
+            "relator_id": "val-contract-vendor-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "contract": "val-contract-2",
+                "vendor": "val-vendor-global"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "Contract 1 -> Item 1 (IT Support)",
+            "id": "val-rel-contract1-item1",
+            "relator_id": "val-contract-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "contract": "val-contract-1",
+                "item": "val-item-1"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "Contract 1 -> Item 2 (Software)",
+            "id": "val-rel-contract1-item2",
+            "relator_id": "val-contract-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "contract": "val-contract-1",
+                "item": "val-item-2"
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "Contract 2 -> Item 3 (Consulting)",
+            "id": "val-rel-contract2-item3",
+            "relator_id": "val-contract-item-rel",
+            "tenant_id": "model1-testing-tenant",
+            "participants": {
+                "contract": "val-contract-2",
+                "item": "val-item-3"
+            },
+            "use_seed": true
+        }
+    ]
+}
