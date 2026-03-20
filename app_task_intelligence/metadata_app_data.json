@@ -7,68 +7,84 @@
             "id": "task-priority-critical",
             "universal_id": "task-priority-type",
             "tenant_id": "model1-testing-tenant",
-            "properties": { "task-priority-name-prop": "CRITICAL" },
+            "properties": {
+                "task-priority-name-prop": "CRITICAL"
+            },
             "use_seed": true
         },
         {
             "id": "task-priority-high",
             "universal_id": "task-priority-type",
             "tenant_id": "model1-testing-tenant",
-            "properties": { "task-priority-name-prop": "HIGH" },
+            "properties": {
+                "task-priority-name-prop": "HIGH"
+            },
             "use_seed": true
         },
         {
             "id": "task-priority-medium",
             "universal_id": "task-priority-type",
             "tenant_id": "model1-testing-tenant",
-            "properties": { "task-priority-name-prop": "MEDIUM" },
+            "properties": {
+                "task-priority-name-prop": "MEDIUM"
+            },
             "use_seed": true
         },
         {
             "id": "task-priority-low",
             "universal_id": "task-priority-type",
             "tenant_id": "model1-testing-tenant",
-            "properties": { "task-priority-name-prop": "LOW" },
+            "properties": {
+                "task-priority-name-prop": "LOW"
+            },
             "use_seed": true
         },
-
         {
             "_comment": "=== CATEGORY ENUMERATION INSTANCES ===",
             "id": "task-category-feature",
             "universal_id": "task-category-type",
             "tenant_id": "model1-testing-tenant",
-            "properties": { "task-category-name-prop": "FEATURE" },
+            "properties": {
+                "task-category-name-prop": "FEATURE"
+            },
             "use_seed": true
         },
         {
             "id": "task-category-bug",
             "universal_id": "task-category-type",
             "tenant_id": "model1-testing-tenant",
-            "properties": { "task-category-name-prop": "BUG" },
+            "properties": {
+                "task-category-name-prop": "BUG"
+            },
             "use_seed": true
         },
         {
             "id": "task-category-chore",
             "universal_id": "task-category-type",
             "tenant_id": "model1-testing-tenant",
-            "properties": { "task-category-name-prop": "CHORE" },
+            "properties": {
+                "task-category-name-prop": "CHORE"
+            },
             "use_seed": true
         },
         {
             "id": "task-category-spike",
             "universal_id": "task-category-type",
             "tenant_id": "model1-testing-tenant",
-            "properties": { "task-category-name-prop": "SPIKE" },
+            "properties": {
+                "task-category-name-prop": "SPIKE"
+            },
             "use_seed": true
         },
         {
             "id": "task-category-docs",
             "universal_id": "task-category-type",
             "tenant_id": "model1-testing-tenant",
-            "properties": { "task-category-name-prop": "DOCUMENTATION" },
+            "properties": {
+                "task-category-name-prop": "DOCUMENTATION"
+            },
             "use_seed": true
         },
-
         {
             "_comment": "=== PROJECTS (3) ===",
             "id": "project-platform",
@@ -77,7 +93,9 @@
             "use_seed": true,
             "properties": {
                 "task-project-code-prop": "PLAT",
-                "task-project-name-prop": { "en": "Platform Core" }
+                "task-project-name-prop": {
+                    "en": "Platform Core"
+                }
             }
         },
         {
@@ -87,7 +105,9 @@
             "use_seed": true,
             "properties": {
                 "task-project-code-prop": "MOB",
-                "task-project-name-prop": { "en": "Mobile App" }
+                "task-project-name-prop": {
+                    "en": "Mobile App"
+                }
             }
         },
         {
@@ -97,10 +117,11 @@
             "use_seed": true,
             "properties": {
                 "task-project-code-prop": "ANA",
-                "task-project-name-prop": { "en": "Analytics Dashboard" }
+                "task-project-name-prop": {
+                    "en": "Analytics Dashboard"
+                }
             }
         },
-
         {
             "_comment": "=== TEAM MEMBERS (5) ===",
             "id": "member-alice",
@@ -108,7 +129,9 @@
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
             "properties": {
-                "task-member-name-prop": { "en": "Alice Chen" },
+                "task-member-name-prop": {
+                    "en": "Alice Chen"
+                },
                 "task-member-role-prop": "Tech Lead"
             }
         },
@@ -118,7 +141,9 @@
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
             "properties": {
-                "task-member-name-prop": { "en": "Bob Martinez" },
+                "task-member-name-prop": {
+                    "en": "Bob Martinez"
+                },
                 "task-member-role-prop": "Senior Developer"
             }
         },
@@ -128,7 +153,9 @@
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
             "properties": {
-                "task-member-name-prop": { "en": "Carol Johnson" },
+                "task-member-name-prop": {
+                    "en": "Carol Johnson"
+                },
                 "task-member-role-prop": "Developer"
             }
         },
@@ -138,7 +165,9 @@
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
             "properties": {
-                "task-member-name-prop": { "en": "Dave Kim" },
+                "task-member-name-prop": {
+                    "en": "Dave Kim"
+                },
                 "task-member-role-prop": "Developer"
             }
         },
@@ -148,11 +177,12 @@
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
             "properties": {
-                "task-member-name-prop": { "en": "Eve Thompson" },
+                "task-member-name-prop": {
+                    "en": "Eve Thompson"
+                },
                 "task-member-role-prop": "QA Engineer"
             }
         },
-
         {
             "_comment": "=== TASKS (12) - Various statuses across the Kanban board ===",
             "_comment2": "--- Backlog tasks (3) ---",
@@ -162,13 +192,23 @@
             "use_seed": true,
             "properties": {
                 "task-code-prop": "PLAT-101",
-                "task-title-prop": { "en": "Add WebSocket reconnection logic" },
-                "task-description-prop": { "en": "Implement automatic reconnection with exponential backoff when WS connection drops" },
+                "task-title-prop": {
+                    "en": "Add WebSocket reconnection logic"
+                },
+                "task-description-prop": {
+                    "en": "Implement automatic reconnection with exponential backoff when WS connection drops"
+                },
                 "task-status-prop": "Backlog",
                 "task-priority-prop": "MEDIUM",
                 "task-category-prop": "FEATURE",
-                "task-story-points-prop": { "value": 5, "unit": "points" },
-                "task-created-at-prop": { "value": 1740000000, "unit": "seconds" }
+                "task-story-points-prop": {
+                    "value": 5,
+                    "unit": "points"
+                },
+                "task-created-at-prop": {
+                    "value": 1740000000,
+                    "unit": "seconds"
+                }
             }
         },
         {
@@ -178,13 +218,23 @@
             "use_seed": true,
             "properties": {
                 "task-code-prop": "ANA-201",
-                "task-title-prop": { "en": "Design chart color palette" },
-                "task-description-prop": { "en": "Create accessible color palette for dashboard charts with dark mode support" },
+                "task-title-prop": {
+                    "en": "Design chart color palette"
+                },
+                "task-description-prop": {
+                    "en": "Create accessible color palette for dashboard charts with dark mode support"
+                },
                 "task-status-prop": "Backlog",
                 "task-priority-prop": "LOW",
                 "task-category-prop": "FEATURE",
-                "task-story-points-prop": { "value": 3, "unit": "points" },
-                "task-created-at-prop": { "value": 1740100000, "unit": "seconds" }
+                "task-story-points-prop": {
+                    "value": 3,
+                    "unit": "points"
+                },
+                "task-created-at-prop": {
+                    "value": 1740100000,
+                    "unit": "seconds"
+                }
             }
         },
         {
@@ -194,16 +244,25 @@
             "use_seed": true,
             "properties": {
                 "task-code-prop": "MOB-301",
-                "task-title-prop": { "en": "Spike: evaluate offline sync libraries" },
-                "task-description-prop": { "en": "Research and compare offline data sync solutions for mobile" },
+                "task-title-prop": {
+                    "en": "Spike: evaluate offline sync libraries"
+                },
+                "task-description-prop": {
+                    "en": "Research and compare offline data sync solutions for mobile"
+                },
                 "task-status-prop": "Backlog",
                 "task-priority-prop": "MEDIUM",
                 "task-category-prop": "SPIKE",
-                "task-story-points-prop": { "value": 2, "unit": "points" },
-                "task-created-at-prop": { "value": 1740200000, "unit": "seconds" }
+                "task-story-points-prop": {
+                    "value": 2,
+                    "unit": "points"
+                },
+                "task-created-at-prop": {
+                    "value": 1740200000,
+                    "unit": "seconds"
+                }
             }
         },
-
         {
             "_comment2": "--- Todo tasks (3) ---",
             "id": "task-004",
@@ -212,14 +271,23 @@
             "use_seed": true,
             "properties": {
                 "task-code-prop": "PLAT-102",
-                "task-title-prop": { "en": "Fix pagination offset bug in list API" },
-                "task-description-prop": { "en": "When offset exceeds total count, API returns 500 instead of empty page" },
+                "task-title-prop": {
+                    "en": "Fix pagination offset bug in list API"
+                },
+                "task-description-prop": {
+                    "en": "When offset exceeds total count, API returns 500 instead of empty page"
+                },
                 "task-status-prop": "Todo",
                 "task-priority-prop": "HIGH",
                 "task-category-prop": "BUG",
-                "task-story-points-prop": { "value": 2, "unit": "points" },
-                "task-created-at-prop": { "value": 1739800000, "unit": "seconds" },
-                "task-reference-activity-prop": ["project-platform-core"]
+                "task-story-points-prop": {
+                    "value": 2,
+                    "unit": "points"
+                },
+                "task-created-at-prop": {
+                    "value": 1739800000,
+                    "unit": "seconds"
+                }
             }
         },
         {
@@ -229,13 +297,23 @@
             "use_seed": true,
             "properties": {
                 "task-code-prop": "ANA-202",
-                "task-title-prop": { "en": "Add export to CSV button" },
-                "task-description-prop": { "en": "Allow users to export dashboard data as CSV files" },
+                "task-title-prop": {
+                    "en": "Add export to CSV button"
+                },
+                "task-description-prop": {
+                    "en": "Allow users to export dashboard data as CSV files"
+                },
                 "task-status-prop": "Todo",
                 "task-priority-prop": "MEDIUM",
                 "task-category-prop": "FEATURE",
-                "task-story-points-prop": { "value": 3, "unit": "points" },
-                "task-created-at-prop": { "value": 1739900000, "unit": "seconds" }
+                "task-story-points-prop": {
+                    "value": 3,
+                    "unit": "points"
+                },
+                "task-created-at-prop": {
+                    "value": 1739900000,
+                    "unit": "seconds"
+                }
             }
         },
         {
@@ -245,16 +323,25 @@
             "use_seed": true,
             "properties": {
                 "task-code-prop": "PLAT-103",
-                "task-title-prop": { "en": "Update Rust dependencies to latest" },
-                "task-description-prop": { "en": "Run cargo update and fix any breaking changes" },
+                "task-title-prop": {
+                    "en": "Update Rust dependencies to latest"
+                },
+                "task-description-prop": {
+                    "en": "Run cargo update and fix any breaking changes"
+                },
                 "task-status-prop": "Todo",
                 "task-priority-prop": "LOW",
                 "task-category-prop": "CHORE",
-                "task-story-points-prop": { "value": 1, "unit": "points" },
-                "task-created-at-prop": { "value": 1740050000, "unit": "seconds" }
+                "task-story-points-prop": {
+                    "value": 1,
+                    "unit": "points"
+                },
+                "task-created-at-prop": {
+                    "value": 1740050000,
+                    "unit": "seconds"
+                }
             }
         },
-
         {
             "_comment2": "--- In Progress tasks (3) ---",
             "id": "task-007",
@@ -263,15 +350,27 @@
             "use_seed": true,
             "properties": {
                 "task-code-prop": "PLAT-104",
-                "task-title-prop": { "en": "Implement tenant isolation middleware" },
-                "task-description-prop": { "en": "Ensure all API routes validate tenant context from JWT" },
+                "task-title-prop": {
+                    "en": "Implement tenant isolation middleware"
+                },
+                "task-description-prop": {
+                    "en": "Ensure all API routes validate tenant context from JWT"
+                },
                 "task-status-prop": "InProgress",
                 "task-priority-prop": "CRITICAL",
                 "task-category-prop": "FEATURE",
-                "task-story-points-prop": { "value": 8, "unit": "points" },
-                "task-due-date-prop": { "value": 1741000000, "unit": "seconds" },
-                "task-created-at-prop": { "value": 1739500000, "unit": "seconds" },
-                "task-reference-activity-prop": ["member-alice-chen"]
+                "task-story-points-prop": {
+                    "value": 8,
+                    "unit": "points"
+                },
+                "task-due-date-prop": {
+                    "value": 1741000000,
+                    "unit": "seconds"
+                },
+                "task-created-at-prop": {
+                    "value": 1739500000,
+                    "unit": "seconds"
+                }
             }
         },
         {
@@ -281,13 +380,23 @@
             "use_seed": true,
             "properties": {
                 "task-code-prop": "MOB-302",
-                "task-title-prop": { "en": "Build push notification service" },
-                "task-description-prop": { "en": "Integrate Firebase Cloud Messaging for real-time push notifications" },
+                "task-title-prop": {
+                    "en": "Build push notification service"
+                },
+                "task-description-prop": {
+                    "en": "Integrate Firebase Cloud Messaging for real-time push notifications"
+                },
                 "task-status-prop": "InProgress",
                 "task-priority-prop": "HIGH",
                 "task-category-prop": "FEATURE",
-                "task-story-points-prop": { "value": 5, "unit": "points" },
-                "task-created-at-prop": { "value": 1739600000, "unit": "seconds" }
+                "task-story-points-prop": {
+                    "value": 5,
+                    "unit": "points"
+                },
+                "task-created-at-prop": {
+                    "value": 1739600000,
+                    "unit": "seconds"
+                }
             }
         },
         {
@@ -297,16 +406,25 @@
             "use_seed": true,
             "properties": {
                 "task-code-prop": "ANA-203",
-                "task-title-prop": { "en": "Write API documentation for analytics endpoints" },
-                "task-description-prop": { "en": "Document all analytics REST endpoints with OpenAPI spec" },
+                "task-title-prop": {
+                    "en": "Write API documentation for analytics endpoints"
+                },
+                "task-description-prop": {
+                    "en": "Document all analytics REST endpoints with OpenAPI spec"
+                },
                 "task-status-prop": "InProgress",
                 "task-priority-prop": "MEDIUM",
                 "task-category-prop": "DOCUMENTATION",
-                "task-story-points-prop": { "value": 3, "unit": "points" },
-                "task-created-at-prop": { "value": 1739700000, "unit": "seconds" }
+                "task-story-points-prop": {
+                    "value": 3,
+                    "unit": "points"
+                },
+                "task-created-at-prop": {
+                    "value": 1739700000,
+                    "unit": "seconds"
+                }
             }
         },
-
         {
             "_comment2": "--- Done tasks (3) ---",
             "id": "task-010",
@@ -315,13 +433,23 @@
             "use_seed": true,
             "properties": {
                 "task-code-prop": "PLAT-100",
-                "task-title-prop": { "en": "Set up CI/CD pipeline" },
-                "task-description-prop": { "en": "Configure GitHub Actions for build, test, and deploy" },
+                "task-title-prop": {
+                    "en": "Set up CI/CD pipeline"
+                },
+                "task-description-prop": {
+                    "en": "Configure GitHub Actions for build, test, and deploy"
+                },
                 "task-status-prop": "Done",
                 "task-priority-prop": "HIGH",
                 "task-category-prop": "CHORE",
-                "task-story-points-prop": { "value": 5, "unit": "points" },
-                "task-created-at-prop": { "value": 1739000000, "unit": "seconds" }
+                "task-story-points-prop": {
+                    "value": 5,
+                    "unit": "points"
+                },
+                "task-created-at-prop": {
+                    "value": 1739000000,
+                    "unit": "seconds"
+                }
             }
         },
         {
@@ -331,13 +459,23 @@
             "use_seed": true,
             "properties": {
                 "task-code-prop": "MOB-300",
-                "task-title-prop": { "en": "Fix login screen crash on Android 12" },
-                "task-description-prop": { "en": "App crashes when biometric prompt is cancelled on Android 12+" },
+                "task-title-prop": {
+                    "en": "Fix login screen crash on Android 12"
+                },
+                "task-description-prop": {
+                    "en": "App crashes when biometric prompt is cancelled on Android 12+"
+                },
                 "task-status-prop": "Done",
                 "task-priority-prop": "CRITICAL",
                 "task-category-prop": "BUG",
-                "task-story-points-prop": { "value": 3, "unit": "points" },
-                "task-created-at-prop": { "value": 1739100000, "unit": "seconds" }
+                "task-story-points-prop": {
+                    "value": 3,
+                    "unit": "points"
+                },
+                "task-created-at-prop": {
+                    "value": 1739100000,
+                    "unit": "seconds"
+                }
             }
         },
         {
@@ -347,17 +485,26 @@
             "use_seed": true,
             "properties": {
                 "task-code-prop": "ANA-200",
-                "task-title-prop": { "en": "Create analytics summary universal schema" },
-                "task-description-prop": { "en": "Define universals and properties for aggregated analytics output" },
+                "task-title-prop": {
+                    "en": "Create analytics summary universal schema"
+                },
+                "task-description-prop": {
+                    "en": "Define universals and properties for aggregated analytics output"
+                },
                 "task-status-prop": "Done",
                 "task-priority-prop": "HIGH",
                 "task-category-prop": "FEATURE",
-                "task-story-points-prop": { "value": 5, "unit": "points" },
-                "task-created-at-prop": { "value": 1739200000, "unit": "seconds" }
+                "task-story-points-prop": {
+                    "value": 5,
+                    "unit": "points"
+                },
+                "task-created-at-prop": {
+                    "value": 1739200000,
+                    "unit": "seconds"
+                }
             }
         }
     ],
-
     "relator_instances": [
         {
             "_comment": "=== TASK → PROJECT ASSIGNMENTS (12 tasks → 3 projects) ===",
@@ -365,149 +512,211 @@
             "relator_id": "task-belongs-to-project-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-001", "project": "project-platform" }
+            "participants": {
+                "task": "task-001",
+                "project": "project-platform"
+            }
         },
         {
             "id": "rel-task-002-proj",
             "relator_id": "task-belongs-to-project-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-002", "project": "project-analytics" }
+            "participants": {
+                "task": "task-002",
+                "project": "project-analytics"
+            }
         },
         {
             "id": "rel-task-003-proj",
             "relator_id": "task-belongs-to-project-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-003", "project": "project-mobile" }
+            "participants": {
+                "task": "task-003",
+                "project": "project-mobile"
+            }
         },
         {
             "id": "rel-task-004-proj",
             "relator_id": "task-belongs-to-project-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-004", "project": "project-platform" }
+            "participants": {
+                "task": "task-004",
+                "project": "project-platform"
+            }
         },
         {
             "id": "rel-task-005-proj",
             "relator_id": "task-belongs-to-project-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-005", "project": "project-analytics" }
+            "participants": {
+                "task": "task-005",
+                "project": "project-analytics"
+            }
         },
         {
             "id": "rel-task-006-proj",
             "relator_id": "task-belongs-to-project-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-006", "project": "project-platform" }
+            "participants": {
+                "task": "task-006",
+                "project": "project-platform"
+            }
         },
         {
             "id": "rel-task-007-proj",
             "relator_id": "task-belongs-to-project-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-007", "project": "project-platform" }
+            "participants": {
+                "task": "task-007",
+                "project": "project-platform"
+            }
         },
         {
             "id": "rel-task-008-proj",
             "relator_id": "task-belongs-to-project-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-008", "project": "project-mobile" }
+            "participants": {
+                "task": "task-008",
+                "project": "project-mobile"
+            }
         },
         {
             "id": "rel-task-009-proj",
             "relator_id": "task-belongs-to-project-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-009", "project": "project-analytics" }
+            "participants": {
+                "task": "task-009",
+                "project": "project-analytics"
+            }
         },
         {
             "id": "rel-task-010-proj",
             "relator_id": "task-belongs-to-project-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-010", "project": "project-platform" }
+            "participants": {
+                "task": "task-010",
+                "project": "project-platform"
+            }
         },
         {
             "id": "rel-task-011-proj",
             "relator_id": "task-belongs-to-project-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-011", "project": "project-mobile" }
+            "participants": {
+                "task": "task-011",
+                "project": "project-mobile"
+            }
         },
         {
             "id": "rel-task-012-proj",
             "relator_id": "task-belongs-to-project-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-012", "project": "project-analytics" }
+            "participants": {
+                "task": "task-012",
+                "project": "project-analytics"
+            }
         },
-
         {
             "_comment": "=== TASK → TEAM MEMBER ASSIGNMENTS (9 tasks have assignees) ===",
             "id": "rel-task-004-assignee",
             "relator_id": "task-assigned-to-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-004", "assignee": "member-bob" }
+            "participants": {
+                "task": "task-004",
+                "assignee": "member-bob"
+            }
         },
         {
             "id": "rel-task-005-assignee",
             "relator_id": "task-assigned-to-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-005", "assignee": "member-carol" }
+            "participants": {
+                "task": "task-005",
+                "assignee": "member-carol"
+            }
         },
         {
             "id": "rel-task-006-assignee",
             "relator_id": "task-assigned-to-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-006", "assignee": "member-dave" }
+            "participants": {
+                "task": "task-006",
+                "assignee": "member-dave"
+            }
         },
         {
             "id": "rel-task-007-assignee",
             "relator_id": "task-assigned-to-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-007", "assignee": "member-alice" }
+            "participants": {
+                "task": "task-007",
+                "assignee": "member-alice"
+            }
         },
         {
             "id": "rel-task-008-assignee",
             "relator_id": "task-assigned-to-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-008", "assignee": "member-bob" }
+            "participants": {
+                "task": "task-008",
+                "assignee": "member-bob"
+            }
         },
         {
             "id": "rel-task-009-assignee",
             "relator_id": "task-assigned-to-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-009", "assignee": "member-carol" }
+            "participants": {
+                "task": "task-009",
+                "assignee": "member-carol"
+            }
         },
         {
             "id": "rel-task-010-assignee",
             "relator_id": "task-assigned-to-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-010", "assignee": "member-alice" }
+            "participants": {
+                "task": "task-010",
+                "assignee": "member-alice"
+            }
         },
         {
             "id": "rel-task-011-assignee",
             "relator_id": "task-assigned-to-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-011", "assignee": "member-dave" }
+            "participants": {
+                "task": "task-011",
+                "assignee": "member-dave"
+            }
         },
         {
             "id": "rel-task-012-assignee",
             "relator_id": "task-assigned-to-rel",
             "tenant_id": "model1-testing-tenant",
             "use_seed": true,
-            "participants": { "task": "task-012", "assignee": "member-eve" }
+            "participants": {
+                "task": "task-012",
+                "assignee": "member-eve"
+            }
         }
     ]
 }
