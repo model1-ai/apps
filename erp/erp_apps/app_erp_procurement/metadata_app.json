@@ -1,22 +1,32 @@
 {
     "_comment": "=== ERP PROCUREMENT REQUISITION APP (Layer 2) ===",
     "_description": "Full procurement lifecycle: requisitions with lines, 3-stage approval process (Tier 2), goods receipts with lines, payments. Budget integration via entry-based ledger from app_erp_budget. Procurement spend artifact for analytics.",
-    "_dependencies": ["app_erp_base (Layer 0)", "app_erp_party (Layer 0)", "app_erp_fiscal_calendar (Layer 0)", "app_erp_resource (Layer 0)", "app_erp_org (Layer 0)", "app_erp_budget (Layer 1)", "app_erp_chart_of_accounts (Layer 1)"],
+    "_dependencies": [
+        "app_erp_base (Layer 0)",
+        "app_erp_party (Layer 0)",
+        "app_erp_fiscal_calendar (Layer 0)",
+        "app_erp_resource (Layer 0)",
+        "app_erp_org (Layer 0)",
+        "app_erp_budget (Layer 1)",
+        "app_erp_chart_of_accounts (Layer 1)"
+    ],
     "_organizations_note": "Organizations and tenants defined in app_erp_base. Load app_erp_base first.",
     "_tenants_note": "Tenants defined in app_erp_base. Load app_erp_base first.",
-
     "universals": [
         {
             "_comment": "=== ENUMERATION: Requisition Status ===",
             "id": "procurement-req-status",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Requisition Status" },
-            "description": { "en": "Lifecycle states for a procurement requisition" },
+            "label": {
+                "en": "Requisition Status"
+            },
+            "description": {
+                "en": "Lifecycle states for a procurement requisition"
+            },
             "label_schema": {
                 "separator": "",
-                "max_length": 25,
-                "fallback_language": "en"
+                "max_length": 25
             },
             "use_seed": true
         },
@@ -25,12 +35,15 @@
             "id": "procurement-req-priority",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Requisition Priority" },
-            "description": { "en": "Priority levels for procurement requisitions" },
+            "label": {
+                "en": "Requisition Priority"
+            },
+            "description": {
+                "en": "Priority levels for procurement requisitions"
+            },
             "label_schema": {
                 "separator": "",
-                "max_length": 10,
-                "fallback_language": "en"
+                "max_length": 10
             },
             "use_seed": true
         },
@@ -39,12 +52,15 @@
             "id": "procurement-receipt-status",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Receipt Status" },
-            "description": { "en": "Lifecycle states for a goods receipt" },
+            "label": {
+                "en": "Receipt Status"
+            },
+            "description": {
+                "en": "Lifecycle states for a goods receipt"
+            },
             "label_schema": {
                 "separator": "",
-                "max_length": 20,
-                "fallback_language": "en"
+                "max_length": 20
             },
             "use_seed": true
         },
@@ -53,27 +69,32 @@
             "id": "procurement-payment-status",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Payment Status" },
-            "description": { "en": "Lifecycle states for a procurement payment" },
+            "label": {
+                "en": "Payment Status"
+            },
+            "description": {
+                "en": "Lifecycle states for a procurement payment"
+            },
             "label_schema": {
                 "separator": "",
-                "max_length": 20,
-                "fallback_language": "en"
+                "max_length": 20
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== ENTITY: Procurement Requisition ===",
             "id": "procurement-requisition",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Procurement Requisition" },
-            "description": { "en": "A request to procure goods or services. Contains one or more requisition lines, each targeting a budget line." },
+            "label": {
+                "en": "Procurement Requisition"
+            },
+            "description": {
+                "en": "A request to procure goods or services. Contains one or more requisition lines, each targeting a budget line."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -82,12 +103,15 @@
             "id": "procurement-req-line",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Requisition Line" },
-            "description": { "en": "A line item on a procurement requisition representing a specific resource request with quantity and price" },
+            "label": {
+                "en": "Requisition Line"
+            },
+            "description": {
+                "en": "A line item on a procurement requisition representing a specific resource request with quantity and price"
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -96,12 +120,15 @@
             "id": "procurement-goods-receipt",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Goods Receipt" },
-            "description": { "en": "A record of goods or services received against a procurement requisition" },
+            "label": {
+                "en": "Goods Receipt"
+            },
+            "description": {
+                "en": "A record of goods or services received against a procurement requisition"
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -110,12 +137,15 @@
             "id": "procurement-receipt-line",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Receipt Line" },
-            "description": { "en": "A line item on a goods receipt representing actual quantity received against a requisition line" },
+            "label": {
+                "en": "Receipt Line"
+            },
+            "description": {
+                "en": "A line item on a goods receipt representing actual quantity received against a requisition line"
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -124,12 +154,15 @@
             "id": "procurement-payment",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Payment" },
-            "description": { "en": "A payment record for a completed procurement" },
+            "label": {
+                "en": "Payment"
+            },
+            "description": {
+                "en": "A payment record for a completed procurement"
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -138,87 +171,130 @@
             "id": "procurement-spend-summary",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Procurement Spend Summary" },
-            "description": { "en": "Artifact target universal for procurement spend aggregation by fiscal period, department, and entry type" },
+            "label": {
+                "en": "Procurement Spend Summary"
+            },
+            "description": {
+                "en": "Artifact target universal for procurement spend aggregation by fiscal period, department, and entry type"
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 60,
-                "fallback_language": "en"
+                "max_length": 60
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== FUNCTIONAL ROLES ===",
             "id": "proc-fr-requester",
             "temporal_nature": "Endurant",
             "meta_category": "FunctionalRole",
-            "label": { "en": "Requester" },
-            "description": { "en": "Creates and submits procurement requisitions" },
+            "label": {
+                "en": "Requester"
+            },
+            "description": {
+                "en": "Creates and submits procurement requisitions"
+            },
             "use_seed": true
         },
         {
             "id": "proc-fr-dept-manager",
             "temporal_nature": "Endurant",
             "meta_category": "FunctionalRole",
-            "label": { "en": "Department Manager" },
-            "description": { "en": "Reviews department need, validates priority and specifications" },
+            "label": {
+                "en": "Department Manager"
+            },
+            "description": {
+                "en": "Reviews department need, validates priority and specifications"
+            },
             "use_seed": true
         },
         {
             "id": "proc-fr-finance-controller",
             "temporal_nature": "Endurant",
             "meta_category": "FunctionalRole",
-            "label": { "en": "Finance Controller" },
-            "description": { "en": "Validates budget availability and GL coding" },
+            "label": {
+                "en": "Finance Controller"
+            },
+            "description": {
+                "en": "Validates budget availability and GL coding"
+            },
             "use_seed": true
         },
         {
             "id": "proc-fr-cfo",
             "temporal_nature": "Endurant",
             "meta_category": "FunctionalRole",
-            "label": { "en": "CFO" },
-            "description": { "en": "Final approval for requisitions above threshold. Strategic alignment review." },
+            "label": {
+                "en": "CFO"
+            },
+            "description": {
+                "en": "Final approval for requisitions above threshold. Strategic alignment review."
+            },
             "use_seed": true
         },
-
         {
             "_comment": "=== PROCESS: Procurement Approval (Tier 2 — 3 stages) ===",
             "id": "procurement-approval",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Procurement Approval" },
-            "description": { "en": "Tier 2 approval process for procurement requisitions. 3 stages: Department Review, Finance Review, Executive Approval (conditional on amount threshold). Each stage has role-based obligations." },
+            "label": {
+                "en": "Procurement Approval"
+            },
+            "description": {
+                "en": "Tier 2 approval process for procurement requisitions. 3 stages: Department Review, Finance Review, Executive Approval (conditional on amount threshold). Each stage has role-based obligations."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-process" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "procurement-dept-review-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "procurement-finance-review-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "procurement-exec-approval-stage" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "procurement-requisition" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-process"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "procurement-dept-review-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "procurement-finance-review-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "procurement-exec-approval-stage"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "procurement-requisition"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== STAGE 1: Department Review ===",
             "id": "procurement-dept-review-stage",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Department Review" },
-            "description": { "en": "Department manager reviews need, priority, and specifications" },
+            "label": {
+                "en": "Department Review"
+            },
+            "description": {
+                "en": "Department manager reviews need, priority, and specifications"
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "procurement-dept-review-obligation" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "procurement-dept-review-obligation"
+                }
             ],
             "use_seed": true
         },
@@ -227,16 +303,25 @@
             "id": "procurement-finance-review-stage",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Finance Review" },
-            "description": { "en": "Finance controller validates budget availability and GL coding" },
+            "label": {
+                "en": "Finance Review"
+            },
+            "description": {
+                "en": "Finance controller validates budget availability and GL coding"
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "procurement-finance-review-obligation" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "procurement-finance-review-obligation"
+                }
             ],
             "use_seed": true
         },
@@ -245,35 +330,52 @@
             "id": "procurement-exec-approval-stage",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Executive Approval" },
-            "description": { "en": "CFO final approval. Conditional: only activates when requisition total exceeds threshold (e.g. $10,000)." },
+            "label": {
+                "en": "Executive Approval"
+            },
+            "description": {
+                "en": "CFO final approval. Conditional: only activates when requisition total exceeds threshold (e.g. $10,000)."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "procurement-exec-approval-obligation" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "procurement-exec-approval-obligation"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== OBLIGATIONS ===",
             "id": "procurement-dept-review-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Department Review Obligation" },
-            "description": { "en": "Obligation for department manager to review and decide on requisition" },
+            "label": {
+                "en": "Department Review Obligation"
+            },
+            "description": {
+                "en": "Obligation for department manager to review and decide on requisition"
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "proc-fr-dept-manager" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-obligation"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "proc-fr-dept-manager"
+                }
             ],
             "use_seed": true
         },
@@ -281,16 +383,25 @@
             "id": "procurement-finance-review-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Finance Review Obligation" },
-            "description": { "en": "Obligation for finance controller to validate budget and GL coding" },
+            "label": {
+                "en": "Finance Review Obligation"
+            },
+            "description": {
+                "en": "Obligation for finance controller to validate budget and GL coding"
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "proc-fr-finance-controller" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-obligation"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "proc-fr-finance-controller"
+                }
             ],
             "use_seed": true
         },
@@ -298,33 +409,54 @@
             "id": "procurement-exec-approval-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Executive Approval Obligation" },
-            "description": { "en": "Obligation for CFO to give final approval on high-value requisitions" },
+            "label": {
+                "en": "Executive Approval Obligation"
+            },
+            "description": {
+                "en": "Obligation for CFO to give final approval on high-value requisitions"
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "proc-fr-cfo" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-obligation"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "proc-fr-cfo"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== RELATORS: Requisition composition ===",
             "id": "procurement-req-has-line-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Requisition Has Line" },
-            "description": { "en": "Composition: requisition contains one or more requisition lines" },
+            "label": {
+                "en": "Requisition Has Line"
+            },
+            "description": {
+                "en": "Composition: requisition contains one or more requisition lines"
+            },
             "roles": [
-                { "name": "composite", "universal_id": "procurement-requisition" },
-                { "name": "component", "universal_id": "procurement-req-line" }
+                {
+                    "name": "composite",
+                    "universal_id": "procurement-requisition"
+                },
+                {
+                    "name": "component",
+                    "universal_id": "procurement-req-line"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -333,14 +465,27 @@
             "id": "procurement-req-vendor-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Requisition Vendor" },
-            "description": { "en": "Links requisition to a vendor (erp-party from party app)" },
+            "label": {
+                "en": "Requisition Vendor"
+            },
+            "description": {
+                "en": "Links requisition to a vendor (erp-party from party app)"
+            },
             "roles": [
-                { "name": "requisition", "universal_id": "procurement-requisition" },
-                { "name": "vendor", "universal_id": "erp-party" }
+                {
+                    "name": "requisition",
+                    "universal_id": "procurement-requisition"
+                },
+                {
+                    "name": "vendor",
+                    "universal_id": "erp-party"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
             ],
             "use_seed": true
         },
@@ -349,14 +494,27 @@
             "id": "procurement-req-period-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Requisition Period" },
-            "description": { "en": "Links requisition to a fiscal period" },
+            "label": {
+                "en": "Requisition Period"
+            },
+            "description": {
+                "en": "Links requisition to a fiscal period"
+            },
             "roles": [
-                { "name": "requisition", "universal_id": "procurement-requisition" },
-                { "name": "period", "universal_id": "erp-fiscal-period" }
+                {
+                    "name": "requisition",
+                    "universal_id": "procurement-requisition"
+                },
+                {
+                    "name": "period",
+                    "universal_id": "erp-fiscal-period"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
             ],
             "use_seed": true
         },
@@ -365,14 +523,27 @@
             "id": "procurement-line-budgetline-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Line Budget Allocation" },
-            "description": { "en": "Links a requisition line to the budget line it draws from" },
+            "label": {
+                "en": "Line Budget Allocation"
+            },
+            "description": {
+                "en": "Links a requisition line to the budget line it draws from"
+            },
             "roles": [
-                { "name": "line", "universal_id": "procurement-req-line" },
-                { "name": "budget_line", "universal_id": "erp-budget-line" }
+                {
+                    "name": "line",
+                    "universal_id": "procurement-req-line"
+                },
+                {
+                    "name": "budget_line",
+                    "universal_id": "erp-budget-line"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
             ],
             "use_seed": true
         },
@@ -381,14 +552,27 @@
             "id": "procurement-line-resource-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Line Resource" },
-            "description": { "en": "Links a requisition line to the resource being procured" },
+            "label": {
+                "en": "Line Resource"
+            },
+            "description": {
+                "en": "Links a requisition line to the resource being procured"
+            },
             "roles": [
-                { "name": "line", "universal_id": "procurement-req-line" },
-                { "name": "resource", "universal_id": "erp-resource" }
+                {
+                    "name": "line",
+                    "universal_id": "procurement-req-line"
+                },
+                {
+                    "name": "resource",
+                    "universal_id": "erp-resource"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
             ],
             "use_seed": true
         },
@@ -397,14 +581,27 @@
             "id": "procurement-receipt-req-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Receipt for Requisition" },
-            "description": { "en": "Links a goods receipt to the requisition it fulfills" },
+            "label": {
+                "en": "Receipt for Requisition"
+            },
+            "description": {
+                "en": "Links a goods receipt to the requisition it fulfills"
+            },
             "roles": [
-                { "name": "receipt", "universal_id": "procurement-goods-receipt" },
-                { "name": "requisition", "universal_id": "procurement-requisition" }
+                {
+                    "name": "receipt",
+                    "universal_id": "procurement-goods-receipt"
+                },
+                {
+                    "name": "requisition",
+                    "universal_id": "procurement-requisition"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
             ],
             "use_seed": true
         },
@@ -413,14 +610,27 @@
             "id": "procurement-receipt-has-line-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Receipt Has Line" },
-            "description": { "en": "Composition: goods receipt contains one or more receipt lines" },
+            "label": {
+                "en": "Receipt Has Line"
+            },
+            "description": {
+                "en": "Composition: goods receipt contains one or more receipt lines"
+            },
             "roles": [
-                { "name": "composite", "universal_id": "procurement-goods-receipt" },
-                { "name": "component", "universal_id": "procurement-receipt-line" }
+                {
+                    "name": "composite",
+                    "universal_id": "procurement-goods-receipt"
+                },
+                {
+                    "name": "component",
+                    "universal_id": "procurement-receipt-line"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -429,14 +639,27 @@
             "id": "procurement-receipt-line-req-line-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Receipt Line for Req Line" },
-            "description": { "en": "Maps a receipt line to the requisition line it fulfills" },
+            "label": {
+                "en": "Receipt Line for Req Line"
+            },
+            "description": {
+                "en": "Maps a receipt line to the requisition line it fulfills"
+            },
             "roles": [
-                { "name": "receipt_line", "universal_id": "procurement-receipt-line" },
-                { "name": "req_line", "universal_id": "procurement-req-line" }
+                {
+                    "name": "receipt_line",
+                    "universal_id": "procurement-receipt-line"
+                },
+                {
+                    "name": "req_line",
+                    "universal_id": "procurement-req-line"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
             ],
             "use_seed": true
         },
@@ -445,30 +668,53 @@
             "id": "procurement-payment-req-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Payment for Requisition" },
-            "description": { "en": "Links a payment to the requisition it settles" },
+            "label": {
+                "en": "Payment for Requisition"
+            },
+            "description": {
+                "en": "Links a payment to the requisition it settles"
+            },
             "roles": [
-                { "name": "payment", "universal_id": "procurement-payment" },
-                { "name": "requisition", "universal_id": "procurement-requisition" }
+                {
+                    "name": "payment",
+                    "universal_id": "procurement-payment"
+                },
+                {
+                    "name": "requisition",
+                    "universal_id": "procurement-requisition"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== PROCESS COMPOSITION RELATORS ===",
             "id": "procurement-approval-has-dept-review",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Approval Has Dept Review" },
+            "label": {
+                "en": "Approval Has Dept Review"
+            },
             "roles": [
-                { "name": "process", "universal_id": "procurement-approval" },
-                { "name": "stage", "universal_id": "procurement-dept-review-stage" }
+                {
+                    "name": "process",
+                    "universal_id": "procurement-approval"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "procurement-dept-review-stage"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -476,13 +722,24 @@
             "id": "procurement-approval-has-finance-review",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Approval Has Finance Review" },
+            "label": {
+                "en": "Approval Has Finance Review"
+            },
             "roles": [
-                { "name": "process", "universal_id": "procurement-approval" },
-                { "name": "stage", "universal_id": "procurement-finance-review-stage" }
+                {
+                    "name": "process",
+                    "universal_id": "procurement-approval"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "procurement-finance-review-stage"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -490,13 +747,24 @@
             "id": "procurement-approval-has-exec-approval",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Approval Has Exec Approval" },
+            "label": {
+                "en": "Approval Has Exec Approval"
+            },
             "roles": [
-                { "name": "process", "universal_id": "procurement-approval" },
-                { "name": "stage", "universal_id": "procurement-exec-approval-stage" }
+                {
+                    "name": "process",
+                    "universal_id": "procurement-approval"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "procurement-exec-approval-stage"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -504,13 +772,24 @@
             "id": "procurement-dept-review-has-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Dept Review Has Obligation" },
+            "label": {
+                "en": "Dept Review Has Obligation"
+            },
             "roles": [
-                { "name": "stage", "universal_id": "procurement-dept-review-stage" },
-                { "name": "obligation", "universal_id": "procurement-dept-review-obligation" }
+                {
+                    "name": "stage",
+                    "universal_id": "procurement-dept-review-stage"
+                },
+                {
+                    "name": "obligation",
+                    "universal_id": "procurement-dept-review-obligation"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -518,13 +797,24 @@
             "id": "procurement-finance-review-has-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Finance Review Has Obligation" },
+            "label": {
+                "en": "Finance Review Has Obligation"
+            },
             "roles": [
-                { "name": "stage", "universal_id": "procurement-finance-review-stage" },
-                { "name": "obligation", "universal_id": "procurement-finance-review-obligation" }
+                {
+                    "name": "stage",
+                    "universal_id": "procurement-finance-review-stage"
+                },
+                {
+                    "name": "obligation",
+                    "universal_id": "procurement-finance-review-obligation"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -532,123 +822,236 @@
             "id": "procurement-exec-approval-has-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Exec Approval Has Obligation" },
+            "label": {
+                "en": "Exec Approval Has Obligation"
+            },
             "roles": [
-                { "name": "stage", "universal_id": "procurement-exec-approval-stage" },
-                { "name": "obligation", "universal_id": "procurement-exec-approval-obligation" }
+                {
+                    "name": "stage",
+                    "universal_id": "procurement-exec-approval-stage"
+                },
+                {
+                    "name": "obligation",
+                    "universal_id": "procurement-exec-approval-obligation"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         }
     ],
-
     "property_definitions": [
         {
             "_comment": "=== Enum Properties ===",
             "id": "procurement-req-status-name-prop",
             "universal_id": "procurement-req-status",
-            "label": { "en": "Status Name" },
+            "label": {
+                "en": "Status Name"
+            },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1 },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
             "use_seed": true
         },
         {
             "id": "procurement-req-priority-name-prop",
             "universal_id": "procurement-req-priority",
-            "label": { "en": "Priority Name" },
+            "label": {
+                "en": "Priority Name"
+            },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1 },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
             "use_seed": true
         },
         {
             "id": "procurement-receipt-status-name-prop",
             "universal_id": "procurement-receipt-status",
-            "label": { "en": "Status Name" },
+            "label": {
+                "en": "Status Name"
+            },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1 },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
             "use_seed": true
         },
         {
             "id": "procurement-payment-status-name-prop",
             "universal_id": "procurement-payment-status",
-            "label": { "en": "Status Name" },
+            "label": {
+                "en": "Status Name"
+            },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1 },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
             "use_seed": true
         },
-
         {
             "_comment": "=== Requisition Properties ===",
             "id": "procurement-req-code-prop",
             "universal_id": "procurement-requisition",
-            "label": { "en": "Requisition Code" },
+            "label": {
+                "en": "Requisition Code"
+            },
             "property_schema": {
-                "predicates": ["code", "identifier"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1, "prefix": "PR-" },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "PR-"
+            },
             "use_seed": true
         },
         {
             "id": "procurement-req-description-prop",
             "universal_id": "procurement-requisition",
-            "label": { "en": "Description" },
+            "label": {
+                "en": "Description"
+            },
             "property_schema": {
-                "predicates": ["description"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "description"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 2 },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
             "use_seed": true
         },
         {
             "id": "procurement-req-status-prop",
             "universal_id": "procurement-requisition",
-            "label": { "en": "Status" },
-            "description": { "en": "Current lifecycle status of the requisition" },
+            "label": {
+                "en": "Status"
+            },
+            "description": {
+                "en": "Current lifecycle status of the requisition"
+            },
             "property_schema": {
-                "predicates": ["status"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": "procurement-req-status" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "procurement-req-status"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -656,13 +1059,25 @@
         {
             "id": "procurement-req-priority-prop",
             "universal_id": "procurement-requisition",
-            "label": { "en": "Priority" },
+            "label": {
+                "en": "Priority"
+            },
             "property_schema": {
-                "predicates": ["priority"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "priority"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": "procurement-req-priority" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "procurement-req-priority"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -670,13 +1085,25 @@
         {
             "id": "procurement-req-justification-prop",
             "universal_id": "procurement-requisition",
-            "label": { "en": "Justification" },
+            "label": {
+                "en": "Justification"
+            },
             "property_schema": {
-                "predicates": ["justification", "reason"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "justification",
+                    "reason"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -684,14 +1111,29 @@
         {
             "id": "procurement-req-total-prop",
             "universal_id": "procurement-requisition",
-            "label": { "en": "Total Amount" },
-            "description": { "en": "Computed: sum of all line totals" },
+            "label": {
+                "en": "Total Amount"
+            },
+            "description": {
+                "en": "Computed: sum of all line totals"
+            },
             "property_schema": {
-                "predicates": ["total", "amount"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "total",
+                    "amount"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-currency" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -699,14 +1141,28 @@
         {
             "id": "procurement-req-all-lines-budget-sufficient-prop",
             "universal_id": "procurement-requisition",
-            "label": { "en": "All Lines Budget Sufficient" },
-            "description": { "en": "Computed advisory: true only if all budget-line groups have sufficient balance. Not authoritative at approval time." },
+            "label": {
+                "en": "All Lines Budget Sufficient"
+            },
+            "description": {
+                "en": "Computed advisory: true only if all budget-line groups have sufficient balance. Not authoritative at approval time."
+            },
             "property_schema": {
-                "predicates": ["budget", "sufficient"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "budget",
+                    "sufficient"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Boolean" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -714,14 +1170,28 @@
         {
             "id": "procurement-req-needs-exec-approval-prop",
             "universal_id": "procurement-requisition",
-            "label": { "en": "Needs Executive Approval" },
-            "description": { "en": "Computed: true when total exceeds $10,000 threshold" },
+            "label": {
+                "en": "Needs Executive Approval"
+            },
+            "description": {
+                "en": "Computed: true when total exceeds $10,000 threshold"
+            },
             "property_schema": {
-                "predicates": ["executive", "approval"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "executive",
+                    "approval"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Boolean" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -729,13 +1199,26 @@
         {
             "id": "procurement-req-submit-date-prop",
             "universal_id": "procurement-requisition",
-            "label": { "en": "Submit Date" },
+            "label": {
+                "en": "Submit Date"
+            },
             "property_schema": {
-                "predicates": ["date", "submitted"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "date",
+                    "submitted"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -743,59 +1226,114 @@
         {
             "id": "procurement-req-approval-date-prop",
             "universal_id": "procurement-requisition",
-            "label": { "en": "Approval Date" },
+            "label": {
+                "en": "Approval Date"
+            },
             "property_schema": {
-                "predicates": ["date", "approved"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "date",
+                    "approved"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Requisition Line Properties ===",
             "id": "procurement-line-seq-prop",
             "universal_id": "procurement-req-line",
-            "label": { "en": "Line Number" },
+            "label": {
+                "en": "Line Number"
+            },
             "property_schema": {
-                "predicates": ["sequence", "number"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "sequence",
+                    "number"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1, "prefix": "L" },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "L"
+            },
             "use_seed": true
         },
         {
             "id": "procurement-line-description-prop",
             "universal_id": "procurement-req-line",
-            "label": { "en": "Item Description" },
+            "label": {
+                "en": "Item Description"
+            },
             "property_schema": {
-                "predicates": ["description"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "description"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 2 },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
             "use_seed": true
         },
         {
             "id": "procurement-line-qty-prop",
             "universal_id": "procurement-req-line",
-            "label": { "en": "Quantity" },
+            "label": {
+                "en": "Quantity"
+            },
             "property_schema": {
-                "predicates": ["quantity"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "quantity"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-quantity" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -803,13 +1341,26 @@
         {
             "id": "procurement-line-unit-price-prop",
             "universal_id": "procurement-req-line",
-            "label": { "en": "Unit Price" },
+            "label": {
+                "en": "Unit Price"
+            },
             "property_schema": {
-                "predicates": ["price", "unit"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "price",
+                    "unit"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-currency" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -817,14 +1368,29 @@
         {
             "id": "procurement-line-total-prop",
             "universal_id": "procurement-req-line",
-            "label": { "en": "Line Total" },
-            "description": { "en": "Computed: quantity * unit_price" },
+            "label": {
+                "en": "Line Total"
+            },
+            "description": {
+                "en": "Computed: quantity * unit_price"
+            },
             "property_schema": {
-                "predicates": ["total", "line"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "total",
+                    "line"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-currency" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -832,13 +1398,26 @@
         {
             "id": "procurement-line-delivery-date-prop",
             "universal_id": "procurement-req-line",
-            "label": { "en": "Requested Delivery Date" },
+            "label": {
+                "en": "Requested Delivery Date"
+            },
             "property_schema": {
-                "predicates": ["date", "delivery"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "date",
+                    "delivery"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -846,45 +1425,87 @@
         {
             "id": "procurement-line-budget-sufficient-prop",
             "universal_id": "procurement-req-line",
-            "label": { "en": "Budget Sufficient" },
-            "description": { "en": "Computed advisory: grouped demand (sum of all sibling lines targeting same budget line) <= available balance. Same value for lines sharing a budget line." },
+            "label": {
+                "en": "Budget Sufficient"
+            },
+            "description": {
+                "en": "Computed advisory: grouped demand (sum of all sibling lines targeting same budget line) <= available balance. Same value for lines sharing a budget line."
+            },
             "property_schema": {
-                "predicates": ["budget", "sufficient"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "budget",
+                    "sufficient"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Boolean" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Goods Receipt Properties ===",
             "id": "procurement-receipt-code-prop",
             "universal_id": "procurement-goods-receipt",
-            "label": { "en": "Receipt Code" },
+            "label": {
+                "en": "Receipt Code"
+            },
             "property_schema": {
-                "predicates": ["code", "identifier"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1, "prefix": "GR-" },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "GR-"
+            },
             "use_seed": true
         },
         {
             "id": "procurement-receipt-date-prop",
             "universal_id": "procurement-goods-receipt",
-            "label": { "en": "Receipt Date" },
+            "label": {
+                "en": "Receipt Date"
+            },
             "property_schema": {
-                "predicates": ["date", "received"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "date",
+                    "received"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -892,13 +1513,25 @@
         {
             "id": "procurement-receipt-note-prop",
             "universal_id": "procurement-goods-receipt",
-            "label": { "en": "Vendor Note" },
+            "label": {
+                "en": "Vendor Note"
+            },
             "property_schema": {
-                "predicates": ["note", "vendor"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "note",
+                    "vendor"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -906,44 +1539,85 @@
         {
             "id": "procurement-receipt-status-prop",
             "universal_id": "procurement-goods-receipt",
-            "label": { "en": "Status" },
+            "label": {
+                "en": "Status"
+            },
             "property_schema": {
-                "predicates": ["status"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": "procurement-receipt-status" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "procurement-receipt-status"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Receipt Line Properties ===",
             "id": "procurement-receipt-line-seq-prop",
             "universal_id": "procurement-receipt-line",
-            "label": { "en": "Line Number" },
+            "label": {
+                "en": "Line Number"
+            },
             "property_schema": {
-                "predicates": ["sequence", "number"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "sequence",
+                    "number"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1, "prefix": "RL" },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "RL"
+            },
             "use_seed": true
         },
         {
             "id": "procurement-receipt-line-qty-prop",
             "universal_id": "procurement-receipt-line",
-            "label": { "en": "Quantity Received" },
+            "label": {
+                "en": "Quantity Received"
+            },
             "property_schema": {
-                "predicates": ["quantity", "received"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "quantity",
+                    "received"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-quantity" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -951,13 +1625,26 @@
         {
             "id": "procurement-receipt-line-unit-price-prop",
             "universal_id": "procurement-receipt-line",
-            "label": { "en": "Actual Unit Price" },
+            "label": {
+                "en": "Actual Unit Price"
+            },
             "property_schema": {
-                "predicates": ["price", "actual"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "price",
+                    "actual"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-currency" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -965,45 +1652,88 @@
         {
             "id": "procurement-receipt-line-total-prop",
             "universal_id": "procurement-receipt-line",
-            "label": { "en": "Receipt Line Total" },
-            "description": { "en": "Computed: quantity_received * actual_unit_price" },
+            "label": {
+                "en": "Receipt Line Total"
+            },
+            "description": {
+                "en": "Computed: quantity_received * actual_unit_price"
+            },
             "property_schema": {
-                "predicates": ["total", "line"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "total",
+                    "line"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-currency" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Payment Properties ===",
             "id": "procurement-payment-code-prop",
             "universal_id": "procurement-payment",
-            "label": { "en": "Payment Code" },
+            "label": {
+                "en": "Payment Code"
+            },
             "property_schema": {
-                "predicates": ["code", "identifier"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1, "prefix": "PAY-" },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "PAY-"
+            },
             "use_seed": true
         },
         {
             "id": "procurement-payment-amount-prop",
             "universal_id": "procurement-payment",
-            "label": { "en": "Payment Amount" },
+            "label": {
+                "en": "Payment Amount"
+            },
             "property_schema": {
-                "predicates": ["amount", "payment"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "amount",
+                    "payment"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-currency" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1011,13 +1741,26 @@
         {
             "id": "procurement-payment-date-prop",
             "universal_id": "procurement-payment",
-            "label": { "en": "Payment Date" },
+            "label": {
+                "en": "Payment Date"
+            },
             "property_schema": {
-                "predicates": ["date", "payment"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "date",
+                    "payment"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1025,62 +1768,124 @@
         {
             "id": "procurement-payment-status-prop",
             "universal_id": "procurement-payment",
-            "label": { "en": "Status" },
+            "label": {
+                "en": "Status"
+            },
             "property_schema": {
-                "predicates": ["status"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": "procurement-payment-status" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "procurement-payment-status"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Artifact Summary Properties ===",
             "id": "procurement-spend-status-prop",
             "universal_id": "procurement-spend-summary",
-            "label": { "en": "Requisition Status" },
-            "description": { "en": "Dimension: requisition status derived from parent via relator path" },
+            "label": {
+                "en": "Requisition Status"
+            },
+            "description": {
+                "en": "Dimension: requisition status derived from parent via relator path"
+            },
             "property_schema": {
-                "predicates": ["status", "dimension"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "status",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": "procurement-req-status" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "procurement-req-status"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1 },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
             "use_seed": true
         },
         {
             "id": "procurement-spend-priority-prop",
             "universal_id": "procurement-spend-summary",
-            "label": { "en": "Requisition Priority" },
-            "description": { "en": "Dimension: requisition priority derived from parent via relator path" },
+            "label": {
+                "en": "Requisition Priority"
+            },
+            "description": {
+                "en": "Dimension: requisition priority derived from parent via relator path"
+            },
             "property_schema": {
-                "predicates": ["priority", "dimension"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "priority",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": "procurement-req-priority" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "procurement-req-priority"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 2 },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
             "use_seed": true
         },
         {
             "id": "procurement-spend-total-value-prop",
             "universal_id": "procurement-spend-summary",
-            "label": { "en": "Total Line Value" },
-            "description": { "en": "Measure: Sum of line totals (qty × unit_price)" },
+            "label": {
+                "en": "Total Line Value"
+            },
+            "description": {
+                "en": "Measure: Sum of line totals (qty × unit_price)"
+            },
             "property_schema": {
-                "predicates": ["amount", "measure"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "amount",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-currency" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1088,31 +1893,59 @@
         {
             "id": "procurement-spend-line-count-prop",
             "universal_id": "procurement-spend-summary",
-            "label": { "en": "Line Count" },
-            "description": { "en": "Measure: Count of requisition lines" },
+            "label": {
+                "en": "Line Count"
+            },
+            "description": {
+                "en": "Measure: Count of requisition lines"
+            },
             "property_schema": {
-                "predicates": ["count", "measure"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "count",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         }
     ],
-
     "event_definitions": [
         {
             "id": "procurement-req-submitted-event",
             "app_id": "erp-procurement-app",
             "scope": "tenant",
-            "label": { "en": "Requisition Submitted" },
-            "description": { "en": "Emitted when a requisition is submitted for approval" },
+            "label": {
+                "en": "Requisition Submitted"
+            },
+            "description": {
+                "en": "Emitted when a requisition is submitted for approval"
+            },
             "payload_schema": [
-                { "name": "requisition_id", "field_type": "uuid" },
-                { "name": "total_amount", "field_type": "measurement", "measurement_frame": "Currency" },
-                { "name": "requester", "field_type": "string" }
+                {
+                    "name": "requisition_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "total_amount",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                },
+                {
+                    "name": "requester",
+                    "field_type": "string"
+                }
             ],
             "use_seed": true
         },
@@ -1120,11 +1953,22 @@
             "id": "procurement-req-approved-event",
             "app_id": "erp-procurement-app",
             "scope": "tenant",
-            "label": { "en": "Requisition Approved" },
-            "description": { "en": "Emitted when a requisition passes all approval stages and budget is committed" },
+            "label": {
+                "en": "Requisition Approved"
+            },
+            "description": {
+                "en": "Emitted when a requisition passes all approval stages and budget is committed"
+            },
             "payload_schema": [
-                { "name": "requisition_id", "field_type": "uuid" },
-                { "name": "total_amount", "field_type": "measurement", "measurement_frame": "Currency" }
+                {
+                    "name": "requisition_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "total_amount",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                }
             ],
             "use_seed": true
         },
@@ -1132,12 +1976,25 @@
             "id": "procurement-req-rejected-event",
             "app_id": "erp-procurement-app",
             "scope": "tenant",
-            "label": { "en": "Requisition Rejected" },
-            "description": { "en": "Emitted when a requisition is rejected at any approval stage" },
+            "label": {
+                "en": "Requisition Rejected"
+            },
+            "description": {
+                "en": "Emitted when a requisition is rejected at any approval stage"
+            },
             "payload_schema": [
-                { "name": "requisition_id", "field_type": "uuid" },
-                { "name": "stage", "field_type": "string" },
-                { "name": "reason", "field_type": "string" }
+                {
+                    "name": "requisition_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "stage",
+                    "field_type": "string"
+                },
+                {
+                    "name": "reason",
+                    "field_type": "string"
+                }
             ],
             "use_seed": true
         },
@@ -1145,12 +2002,26 @@
             "id": "procurement-goods-received-event",
             "app_id": "erp-procurement-app",
             "scope": "tenant",
-            "label": { "en": "Goods Received" },
-            "description": { "en": "Emitted when a goods receipt is created for a requisition" },
+            "label": {
+                "en": "Goods Received"
+            },
+            "description": {
+                "en": "Emitted when a goods receipt is created for a requisition"
+            },
             "payload_schema": [
-                { "name": "requisition_id", "field_type": "uuid" },
-                { "name": "receipt_id", "field_type": "uuid" },
-                { "name": "total_received", "field_type": "measurement", "measurement_frame": "Currency" }
+                {
+                    "name": "requisition_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "receipt_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "total_received",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                }
             ],
             "use_seed": true
         },
@@ -1158,12 +2029,26 @@
             "id": "procurement-payment-completed-event",
             "app_id": "erp-procurement-app",
             "scope": "tenant",
-            "label": { "en": "Payment Completed" },
-            "description": { "en": "Emitted when payment is completed for a procurement" },
+            "label": {
+                "en": "Payment Completed"
+            },
+            "description": {
+                "en": "Emitted when payment is completed for a procurement"
+            },
             "payload_schema": [
-                { "name": "requisition_id", "field_type": "uuid" },
-                { "name": "payment_id", "field_type": "uuid" },
-                { "name": "amount", "field_type": "measurement", "measurement_frame": "Currency" }
+                {
+                    "name": "requisition_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "payment_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "amount",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                }
             ],
             "use_seed": true
         },
@@ -1171,11 +2056,22 @@
             "id": "procurement-budget-warning-event",
             "app_id": "erp-procurement-app",
             "scope": "tenant",
-            "label": { "en": "Procurement Budget Warning" },
-            "description": { "en": "Emitted when procurement spend reaches warning threshold on budget position" },
+            "label": {
+                "en": "Procurement Budget Warning"
+            },
+            "description": {
+                "en": "Emitted when procurement spend reaches warning threshold on budget position"
+            },
             "payload_schema": [
-                { "name": "artifact_instance_id", "field_type": "uuid" },
-                { "name": "measure_value", "field_type": "measurement", "measurement_frame": "Currency" }
+                {
+                    "name": "artifact_instance_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "measure_value",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                }
             ],
             "use_seed": true
         },
@@ -1183,31 +2079,51 @@
             "id": "procurement-budget-exceeded-event",
             "app_id": "erp-procurement-app",
             "scope": "tenant",
-            "label": { "en": "Procurement Budget Exceeded" },
-            "description": { "en": "Emitted when procurement spend exceeds budget allocation" },
+            "label": {
+                "en": "Procurement Budget Exceeded"
+            },
+            "description": {
+                "en": "Emitted when procurement spend exceeds budget allocation"
+            },
             "payload_schema": [
-                { "name": "artifact_instance_id", "field_type": "uuid" },
-                { "name": "measure_value", "field_type": "measurement", "measurement_frame": "Currency" }
+                {
+                    "name": "artifact_instance_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "measure_value",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                }
             ],
             "use_seed": true
         }
     ],
-
     "apps": [
         {
             "id": "erp-procurement-app",
             "tenant_id": "model1-testing-tenant",
-            "label": { "en": "ERP Procurement" },
-            "description": { "en": "Procurement requisition lifecycle: multi-line requisitions, 3-stage approval process (Tier 2), goods receipts, payments. Budget integration via entry-based ledger from app_erp_budget." },
+            "label": {
+                "en": "ERP Procurement"
+            },
+            "description": {
+                "en": "Procurement requisition lifecycle: multi-line requisitions, 3-stage approval process (Tier 2), goods receipts, payments. Budget integration via entry-based ledger from app_erp_budget."
+            },
             "use_seed": true,
             "modules": [
                 {
                     "id": "procurement-core-module",
                     "use_seed": true,
-                    "label": { "en": "Procurement Core" },
-                    "description": { "en": "Core procurement operations: requisitions, lines, receipts, payments. Publishes lifecycle events." },
+                    "label": {
+                        "en": "Procurement Core"
+                    },
+                    "description": {
+                        "en": "Core procurement operations: requisitions, lines, receipts, payments. Publishes lifecycle events."
+                    },
                     "context": {
-                        "subscribed_events": ["procurement-req-submitted-event"],
+                        "subscribed_events": [
+                            "procurement-req-submitted-event"
+                        ],
                         "publishable_events": [
                             "procurement-req-approved-event",
                             "procurement-req-rejected-event",
@@ -1219,8 +2135,12 @@
                 {
                     "id": "procurement-analytics-module",
                     "use_seed": true,
-                    "label": { "en": "Procurement Analytics" },
-                    "description": { "en": "Procurement spend analytics and budget threshold monitoring" },
+                    "label": {
+                        "en": "Procurement Analytics"
+                    },
+                    "description": {
+                        "en": "Procurement spend analytics and budget threshold monitoring"
+                    },
                     "context": {
                         "subscribed_events": [
                             "procurement-req-approved-event",
@@ -1235,24 +2155,43 @@
             ]
         }
     ],
-
     "computations": [
         {
             "_comment": "=== COMPUTATION 1: Line Total = quantity * unit_price ===",
             "id": "calc-procurement-line-total",
             "code": "calc_procurement_line_total",
             "app_id": "erp-procurement-app",
-            "label": { "en": "Line Total Calculation" },
-            "description": { "en": "Computes line_total = quantity * unit_price for each requisition line" },
+            "label": {
+                "en": "Line Total Calculation"
+            },
+            "description": {
+                "en": "Computes line_total = quantity * unit_price for each requisition line"
+            },
             "inputs": [
-                { "source": "property", "variable_name": "quantity", "property_id": "procurement-line-qty-prop" },
-                { "source": "property", "variable_name": "unit_price", "property_id": "procurement-line-unit-price-prop" }
+                {
+                    "source": "property",
+                    "variable_name": "quantity",
+                    "property_id": "procurement-line-qty-prop"
+                },
+                {
+                    "source": "property",
+                    "variable_name": "unit_price",
+                    "property_id": "procurement-line-unit-price-prop"
+                }
             ],
             "formula": "let qty = quantity.value; let price = unit_price.value; qty * price",
-            "output": { "target_property_id": "procurement-line-total-prop" },
+            "output": {
+                "target_property_id": "procurement-line-total-prop"
+            },
             "trigger_conditions": [
-                { "type": "PropertyChange", "property_id": "procurement-line-qty-prop" },
-                { "type": "PropertyChange", "property_id": "procurement-line-unit-price-prop" }
+                {
+                    "type": "PropertyChange",
+                    "property_id": "procurement-line-qty-prop"
+                },
+                {
+                    "type": "PropertyChange",
+                    "property_id": "procurement-line-unit-price-prop"
+                }
             ],
             "priority": "Normal",
             "use_seed": true
@@ -1262,8 +2201,12 @@
             "id": "calc-procurement-req-total",
             "code": "calc_procurement_req_total",
             "app_id": "erp-procurement-app",
-            "label": { "en": "Requisition Total" },
-            "description": { "en": "Aggregates line totals from all lines via composition relator" },
+            "label": {
+                "en": "Requisition Total"
+            },
+            "description": {
+                "en": "Aggregates line totals from all lines via composition relator"
+            },
             "inputs": [
                 {
                     "source": "role_aggregate",
@@ -1275,7 +2218,9 @@
                 }
             ],
             "formula": "lines_total.value",
-            "output": { "target_property_id": "procurement-req-total-prop" },
+            "output": {
+                "target_property_id": "procurement-req-total-prop"
+            },
             "trigger_conditions": [],
             "priority": "Normal",
             "use_seed": true
@@ -1285,15 +2230,28 @@
             "id": "calc-procurement-needs-exec-approval",
             "code": "calc_procurement_needs_exec",
             "app_id": "erp-procurement-app",
-            "label": { "en": "Executive Approval Check" },
-            "description": { "en": "Sets flag when requisition total exceeds $10,000 threshold for stage 3 activation" },
+            "label": {
+                "en": "Executive Approval Check"
+            },
+            "description": {
+                "en": "Sets flag when requisition total exceeds $10,000 threshold for stage 3 activation"
+            },
             "inputs": [
-                { "source": "property", "variable_name": "req_total", "property_id": "procurement-req-total-prop" }
+                {
+                    "source": "property",
+                    "variable_name": "req_total",
+                    "property_id": "procurement-req-total-prop"
+                }
             ],
             "formula": "if req_total.value > 10000.0 { 1.0 } else { 0.0 }",
-            "output": { "target_property_id": "procurement-req-needs-exec-approval-prop" },
+            "output": {
+                "target_property_id": "procurement-req-needs-exec-approval-prop"
+            },
             "trigger_conditions": [
-                { "type": "PropertyChange", "property_id": "procurement-req-total-prop" }
+                {
+                    "type": "PropertyChange",
+                    "property_id": "procurement-req-total-prop"
+                }
             ],
             "priority": "Normal",
             "use_seed": true
@@ -1303,31 +2261,54 @@
             "id": "calc-procurement-receipt-line-total",
             "code": "calc_procurement_receipt_line_total",
             "app_id": "erp-procurement-app",
-            "label": { "en": "Receipt Line Total" },
-            "description": { "en": "Computes receipt line total = quantity_received * actual_unit_price" },
+            "label": {
+                "en": "Receipt Line Total"
+            },
+            "description": {
+                "en": "Computes receipt line total = quantity_received * actual_unit_price"
+            },
             "inputs": [
-                { "source": "property", "variable_name": "qty_received", "property_id": "procurement-receipt-line-qty-prop" },
-                { "source": "property", "variable_name": "actual_price", "property_id": "procurement-receipt-line-unit-price-prop" }
+                {
+                    "source": "property",
+                    "variable_name": "qty_received",
+                    "property_id": "procurement-receipt-line-qty-prop"
+                },
+                {
+                    "source": "property",
+                    "variable_name": "actual_price",
+                    "property_id": "procurement-receipt-line-unit-price-prop"
+                }
             ],
             "formula": "let qty = qty_received.value; let price = actual_price.value; qty * price",
-            "output": { "target_property_id": "procurement-receipt-line-total-prop" },
+            "output": {
+                "target_property_id": "procurement-receipt-line-total-prop"
+            },
             "trigger_conditions": [
-                { "type": "PropertyChange", "property_id": "procurement-receipt-line-qty-prop" },
-                { "type": "PropertyChange", "property_id": "procurement-receipt-line-unit-price-prop" }
+                {
+                    "type": "PropertyChange",
+                    "property_id": "procurement-receipt-line-qty-prop"
+                },
+                {
+                    "type": "PropertyChange",
+                    "property_id": "procurement-receipt-line-unit-price-prop"
+                }
             ],
             "priority": "Normal",
             "use_seed": true
         }
     ],
-
     "artifact_definitions": [
         {
             "_comment": "=== Procurement Spend by Status and Priority ===",
             "_note": "Sources from procurement-req-line. Aggregates line totals by parent requisition status and priority via RelatorPath through procurement-req-has-line-rel.",
             "id": "procurement-spend-artifact",
             "name": "Procurement Spend by Status and Priority",
-            "description": { "en": "Aggregates procurement requisition lines by requisition status and priority. Provides total line value and line count for the procurement dashboard." },
-            "source": { "universal_id": "procurement-req-line" },
+            "description": {
+                "en": "Aggregates procurement requisition lines by requisition status and priority. Provides total line value and line count for the procurement dashboard."
+            },
+            "source": {
+                "universal_id": "procurement-req-line"
+            },
             "artifact_universal_id": "procurement-spend-summary",
             "app_id": "erp-procurement-app",
             "dimensions": [
@@ -1337,7 +2318,10 @@
                     "source": {
                         "type": "RelatorPath",
                         "path": [
-                            { "relator_universal_id": "procurement-req-has-line-rel", "role_name": "composite" }
+                            {
+                                "relator_universal_id": "procurement-req-has-line-rel",
+                                "role_name": "composite"
+                            }
                         ],
                         "property_id": "procurement-req-status-prop"
                     },
@@ -1350,7 +2334,10 @@
                     "source": {
                         "type": "RelatorPath",
                         "path": [
-                            { "relator_universal_id": "procurement-req-has-line-rel", "role_name": "composite" }
+                            {
+                                "relator_universal_id": "procurement-req-has-line-rel",
+                                "role_name": "composite"
+                            }
                         ],
                         "property_id": "procurement-req-priority-prop"
                     },
@@ -1376,11 +2363,12 @@
                 }
             ],
             "thresholds": [],
-            "materialization": { "strategy": "Eager" },
+            "materialization": {
+                "strategy": "Eager"
+            },
             "use_seed": true
         }
     ],
-
     "users": [
         {
             "id": "erp-procurement-demo",
@@ -1389,17 +2377,22 @@
             "display_name": "Procurement Demo (Full Access)",
             "password": "TestPass123!_",
             "is_active": true,
-            "roles": ["AppAdmin"],
+            "roles": [
+                "AppAdmin"
+            ],
             "use_seed": true
         }
     ],
-
     "foundation_role_assignments": [
         {
             "id": "fra-erp-admin-admin-procurement",
             "user_id": "erp-admin",
             "role": "AppAdmin",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-procurement-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-procurement-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -1407,7 +2400,11 @@
             "id": "fra-erp-admin-dev-procurement",
             "user_id": "erp-admin",
             "role": "AppDeveloper",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-procurement-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-procurement-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -1415,7 +2412,11 @@
             "id": "fra-erp-developer-dev-procurement",
             "user_id": "erp-developer",
             "role": "AppDeveloper",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-procurement-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-procurement-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -1423,7 +2424,11 @@
             "id": "fra-erp-user-user-procurement",
             "user_id": "erp-user",
             "role": "AppUser",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-procurement-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-procurement-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -1432,12 +2437,15 @@
             "id": "fra-procurement-demo-admin-procurement",
             "user_id": "erp-procurement-demo",
             "role": "AppAdmin",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-procurement-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-procurement-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         }
     ],
-
     "functional_role_assignments": [
         {
             "_comment": "Demo user can create requisitions (requester)",

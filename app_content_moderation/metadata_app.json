@@ -1,314 +1,437 @@
 {
-  "_comment": "Content Moderation — Tier 1 process example (stages, no obligations)",
-  "_description": "A staged worklist process for content moderation. Specializes base-process with 3 stages (Initial Review, Detailed Analysis, Final Decision) composed via composition-relator. Demonstrates Tier 1 (Worklist) capability where composition auto-instantiation creates stages automatically.",
-
-  "organizations": [
-    {
-      "id": "model1-testing-org",
-      "label": { "en": "Model1 Testing Org" },
-      "use_seed": true
-    }
-  ],
-
-  "tenants": [
-    {
-      "id": "model1-testing-tenant",
-      "organization_id": "model1-testing-org",
-      "label": { "en": "Model1 Testing Tenant" },
-      "use_seed": true
-    }
-  ],
-
-  "users": [
-    {
-      "id": "moderation-admin",
-      "tenant_id": "model1-testing-tenant",
-      "email": "mod-admin@test.model1.ai",
-      "display_name": "Moderation Admin",
-      "password": "TestPass123!_",
-      "is_active": true,
-      "use_seed": true,
-      "roles": ["TenantAdmin"]
-    }
-  ],
-
-  "apps": [
-    {
-      "id": "content-moderation-app",
-      "tenant_id": "model1-testing-tenant",
-      "label": { "en": "Content Moderation" },
-      "description": { "en": "Content moderation workflow — Tier 1 (Worklist) with 3 sequential stages, no obligations" },
-      "use_seed": true
-    }
-  ],
-
-  "universals": [
-    {
-      "_comment": "=== CONTENT ITEM (subject entity) ===",
-      "id": "content-item",
-      "app_id": "content-moderation-app",
-      "temporal_nature": "Endurant",
-      "meta_category": "Kind",
-      "label": { "en": "Content Item" },
-      "description": { "en": "A piece of user-generated content that requires moderation review" },
-      "label_schema": {
-        "separator": " - ",
-        "max_length": 50,
-        "fallback_language": "en"
-      },
-      "use_seed": true
-    },
-
-    {
-      "_comment": "=== MODERATION PROCESS (specializes base-process) ===",
-      "id": "content-moderation",
-      "app_id": "content-moderation-app",
-      "temporal_nature": "Perdurant",
-      "meta_category": "Kind",
-      "label": { "en": "Content Moderation" },
-      "description": { "en": "A Tier 1 (Worklist) process for moderating content. Has 3 sequential stages composed in. No obligations — stages are worked from a kanban/worklist view." },
-      "label_schema": {
-        "separator": " - ",
-        "max_length": 50,
-        "fallback_language": "en"
-      },
-      "taxonomy": [
+    "_comment": "Content Moderation — Tier 1 process example (stages, no obligations)",
+    "_description": "A staged worklist process for content moderation. Specializes base-process with 3 stages (Initial Review, Detailed Analysis, Final Decision) composed via composition-relator. Demonstrates Tier 1 (Worklist) capability where composition auto-instantiation creates stages automatically.",
+    "organizations": [
         {
-          "relator_universal_id": "generalization-relator",
-          "target_universal_id": "base-process"
+            "id": "model1-testing-org",
+            "label": {
+                "en": "Model1 Testing Org"
+            },
+            "use_seed": true
         }
-      ],
-      "use_seed": true
-    },
-
-    {
-      "_comment": "=== STAGE UNIVERSALS (specialize base-stage) ===",
-      "id": "moderation-initial-review",
-      "app_id": "content-moderation-app",
-      "temporal_nature": "Perdurant",
-      "meta_category": "Kind",
-      "label": { "en": "Initial Review" },
-      "description": { "en": "First pass automated + human screening of content" },
-      "label_schema": {
-        "separator": " - ",
-        "max_length": 40,
-        "fallback_language": "en"
-      },
-      "taxonomy": [
+    ],
+    "tenants": [
         {
-          "relator_universal_id": "generalization-relator",
-          "target_universal_id": "base-stage"
+            "id": "model1-testing-tenant",
+            "organization_id": "model1-testing-org",
+            "label": {
+                "en": "Model1 Testing Tenant"
+            },
+            "use_seed": true
         }
-      ],
-      "use_seed": true
-    },
-    {
-      "id": "moderation-detailed-analysis",
-      "app_id": "content-moderation-app",
-      "temporal_nature": "Perdurant",
-      "meta_category": "Kind",
-      "label": { "en": "Detailed Analysis" },
-      "description": { "en": "In-depth review of flagged content for policy violations" },
-      "label_schema": {
-        "separator": " - ",
-        "max_length": 40,
-        "fallback_language": "en"
-      },
-      "taxonomy": [
+    ],
+    "users": [
         {
-          "relator_universal_id": "generalization-relator",
-          "target_universal_id": "base-stage"
+            "id": "moderation-admin",
+            "tenant_id": "model1-testing-tenant",
+            "email": "mod-admin@test.model1.ai",
+            "display_name": "Moderation Admin",
+            "password": "TestPass123!_",
+            "is_active": true,
+            "use_seed": true,
+            "roles": [
+                "TenantAdmin"
+            ]
         }
-      ],
-      "use_seed": true
-    },
-    {
-      "id": "moderation-final-decision",
-      "app_id": "content-moderation-app",
-      "temporal_nature": "Perdurant",
-      "meta_category": "Kind",
-      "label": { "en": "Final Decision" },
-      "description": { "en": "Final publish/reject/escalate decision on content" },
-      "label_schema": {
-        "separator": " - ",
-        "max_length": 40,
-        "fallback_language": "en"
-      },
-      "taxonomy": [
+    ],
+    "apps": [
         {
-          "relator_universal_id": "generalization-relator",
-          "target_universal_id": "base-stage"
+            "id": "content-moderation-app",
+            "tenant_id": "model1-testing-tenant",
+            "label": {
+                "en": "Content Moderation"
+            },
+            "description": {
+                "en": "Content moderation workflow — Tier 1 (Worklist) with 3 sequential stages, no obligations"
+            },
+            "use_seed": true
         }
-      ],
-      "use_seed": true
-    },
-
-    {
-      "_comment": "=== COMPOSITION RELATORS (process → stages) ===",
-      "id": "moderation-has-initial-review",
-      "app_id": "content-moderation-app",
-      "temporal_nature": "Perdurant",
-      "meta_category": "Relator",
-      "label": { "en": "Moderation Has Initial Review" },
-      "roles": [
-        { "name": "process", "universal_id": "content-moderation" },
-        { "name": "stage", "universal_id": "moderation-initial-review" }
-      ],
-      "taxonomy": [
+    ],
+    "universals": [
         {
-          "relator_universal_id": "generalization-relator",
-          "target_universal_id": "composition-relator"
-        }
-      ],
-      "use_seed": true
-    },
-    {
-      "id": "moderation-has-detailed-analysis",
-      "app_id": "content-moderation-app",
-      "temporal_nature": "Perdurant",
-      "meta_category": "Relator",
-      "label": { "en": "Moderation Has Detailed Analysis" },
-      "roles": [
-        { "name": "process", "universal_id": "content-moderation" },
-        { "name": "stage", "universal_id": "moderation-detailed-analysis" }
-      ],
-      "taxonomy": [
+            "_comment": "=== CONTENT ITEM (subject entity) ===",
+            "id": "content-item",
+            "app_id": "content-moderation-app",
+            "temporal_nature": "Endurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Content Item"
+            },
+            "description": {
+                "en": "A piece of user-generated content that requires moderation review"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50
+            },
+            "use_seed": true
+        },
         {
-          "relator_universal_id": "generalization-relator",
-          "target_universal_id": "composition-relator"
-        }
-      ],
-      "use_seed": true
-    },
-    {
-      "id": "moderation-has-final-decision",
-      "app_id": "content-moderation-app",
-      "temporal_nature": "Perdurant",
-      "meta_category": "Relator",
-      "label": { "en": "Moderation Has Final Decision" },
-      "roles": [
-        { "name": "process", "universal_id": "content-moderation" },
-        { "name": "stage", "universal_id": "moderation-final-decision" }
-      ],
-      "taxonomy": [
+            "_comment": "=== MODERATION PROCESS (specializes base-process) ===",
+            "id": "content-moderation",
+            "app_id": "content-moderation-app",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Content Moderation"
+            },
+            "description": {
+                "en": "A Tier 1 (Worklist) process for moderating content. Has 3 sequential stages composed in. No obligations — stages are worked from a kanban/worklist view."
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 50
+            },
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-process"
+                }
+            ],
+            "use_seed": true
+        },
         {
-          "relator_universal_id": "generalization-relator",
-          "target_universal_id": "composition-relator"
+            "_comment": "=== STAGE UNIVERSALS (specialize base-stage) ===",
+            "id": "moderation-initial-review",
+            "app_id": "content-moderation-app",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Initial Review"
+            },
+            "description": {
+                "en": "First pass automated + human screening of content"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "moderation-detailed-analysis",
+            "app_id": "content-moderation-app",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Detailed Analysis"
+            },
+            "description": {
+                "en": "In-depth review of flagged content for policy violations"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "moderation-final-decision",
+            "app_id": "content-moderation-app",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Kind",
+            "label": {
+                "en": "Final Decision"
+            },
+            "description": {
+                "en": "Final publish/reject/escalate decision on content"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "_comment": "=== COMPOSITION RELATORS (process → stages) ===",
+            "id": "moderation-has-initial-review",
+            "app_id": "content-moderation-app",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Moderation Has Initial Review"
+            },
+            "roles": [
+                {
+                    "name": "process",
+                    "universal_id": "content-moderation"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "moderation-initial-review"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "moderation-has-detailed-analysis",
+            "app_id": "content-moderation-app",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Moderation Has Detailed Analysis"
+            },
+            "roles": [
+                {
+                    "name": "process",
+                    "universal_id": "content-moderation"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "moderation-detailed-analysis"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
+            ],
+            "use_seed": true
+        },
+        {
+            "id": "moderation-has-final-decision",
+            "app_id": "content-moderation-app",
+            "temporal_nature": "Perdurant",
+            "meta_category": "Relator",
+            "label": {
+                "en": "Moderation Has Final Decision"
+            },
+            "roles": [
+                {
+                    "name": "process",
+                    "universal_id": "content-moderation"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "moderation-final-decision"
+                }
+            ],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
+            ],
+            "use_seed": true
         }
-      ],
-      "use_seed": true
-    }
-  ],
-
-  "property_definitions": [
-    {
-      "_comment": "=== CONTENT ITEM PROPERTIES ===",
-      "id": "content-title-prop",
-      "universal_id": "content-item",
-      "label": { "en": "Title" },
-      "property_schema": {
-        "predicates": ["title", "name"],
-        "relator": { "relator_type": "Attribution" },
-        "constraints": {
-          "property_value_type": { "type": "Textual" },
-          "cardinality": { "min": 1, "max": 1 }
+    ],
+    "property_definitions": [
+        {
+            "_comment": "=== CONTENT ITEM PROPERTIES ===",
+            "id": "content-title-prop",
+            "universal_id": "content-item",
+            "label": {
+                "en": "Title"
+            },
+            "property_schema": {
+                "predicates": [
+                    "title",
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
+            "use_seed": true
+        },
+        {
+            "id": "content-type-prop",
+            "universal_id": "content-item",
+            "label": {
+                "en": "Content Type"
+            },
+            "property_schema": {
+                "predicates": [
+                    "type",
+                    "category"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
+            "use_seed": true
+        },
+        {
+            "id": "content-status-prop",
+            "universal_id": "content-item",
+            "label": {
+                "en": "Status"
+            },
+            "property_schema": {
+                "predicates": [
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "content-author-prop",
+            "universal_id": "content-item",
+            "label": {
+                "en": "Author"
+            },
+            "property_schema": {
+                "predicates": [
+                    "author",
+                    "creator"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "content-risk-score-prop",
+            "universal_id": "content-item",
+            "label": {
+                "en": "Risk Score"
+            },
+            "property_schema": {
+                "predicates": [
+                    "risk",
+                    "score"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-score"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "_comment": "=== MODERATION PROCESS CUSTOM PROPERTIES ===",
+            "id": "moderation-content-ref-prop",
+            "universal_id": "content-moderation",
+            "label": {
+                "en": "Content Reference"
+            },
+            "property_schema": {
+                "predicates": [
+                    "content",
+                    "reference"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "InstanceRefs",
+                        "min_refs": 0
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
+        },
+        {
+            "id": "moderation-priority-prop",
+            "universal_id": "content-moderation",
+            "label": {
+                "en": "Priority"
+            },
+            "property_schema": {
+                "predicates": [
+                    "priority"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
+                "constraints": {
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
+                }
+            },
+            "use_seed": true
         }
-      },
-      "label_options": {
-        "participates": true,
-        "sequence": 1
-      },
-      "use_seed": true
-    },
-    {
-      "id": "content-type-prop",
-      "universal_id": "content-item",
-      "label": { "en": "Content Type" },
-      "property_schema": {
-        "predicates": ["type", "category"],
-        "relator": { "relator_type": "Attribution" },
-        "constraints": {
-          "property_value_type": { "type": "Categorical" },
-          "cardinality": { "min": 1, "max": 1 }
-        }
-      },
-      "label_options": {
-        "participates": true,
-        "sequence": 2
-      },
-      "use_seed": true
-    },
-    {
-      "id": "content-status-prop",
-      "universal_id": "content-item",
-      "label": { "en": "Status" },
-      "property_schema": {
-        "predicates": ["status"],
-        "relator": { "relator_type": "Attribution" },
-        "constraints": {
-          "property_value_type": { "type": "Categorical" },
-          "cardinality": { "min": 1, "max": 1 }
-        }
-      },
-      "use_seed": true
-    },
-    {
-      "id": "content-author-prop",
-      "universal_id": "content-item",
-      "label": { "en": "Author" },
-      "property_schema": {
-        "predicates": ["author", "creator"],
-        "relator": { "relator_type": "Attribution" },
-        "constraints": {
-          "property_value_type": { "type": "Textual" },
-          "cardinality": { "min": 0, "max": 1 }
-        }
-      },
-      "use_seed": true
-    },
-    {
-      "id": "content-risk-score-prop",
-      "universal_id": "content-item",
-      "label": { "en": "Risk Score" },
-      "property_schema": {
-        "predicates": ["risk", "score"],
-        "relator": { "relator_type": "Attribution" },
-        "constraints": {
-          "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-score" },
-          "cardinality": { "min": 0, "max": 1 }
-        }
-      },
-      "use_seed": true
-    },
-
-    {
-      "_comment": "=== MODERATION PROCESS CUSTOM PROPERTIES ===",
-      "id": "moderation-content-ref-prop",
-      "universal_id": "content-moderation",
-      "label": { "en": "Content Reference" },
-      "property_schema": {
-        "predicates": ["content", "reference"],
-        "relator": { "relator_type": "Attribution" },
-        "constraints": {
-          "property_value_type": { "type": "InstanceRefs", "min_refs": 0 },
-          "cardinality": { "min": 1, "max": 1 }
-        }
-      },
-      "use_seed": true
-    },
-    {
-      "id": "moderation-priority-prop",
-      "universal_id": "content-moderation",
-      "label": { "en": "Priority" },
-      "property_schema": {
-        "predicates": ["priority"],
-        "relator": { "relator_type": "Attribution" },
-        "constraints": {
-          "property_value_type": { "type": "Categorical" },
-          "cardinality": { "min": 0, "max": 1 }
-        }
-      },
-      "use_seed": true
-    }
-  ]
+    ]
 }

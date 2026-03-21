@@ -34,8 +34,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -52,8 +51,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -70,8 +68,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -88,8 +85,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -106,8 +102,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -124,8 +119,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -142,8 +136,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -160,8 +153,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -178,8 +170,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -196,8 +187,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -214,8 +204,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -232,8 +221,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -250,8 +238,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -268,8 +255,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -286,8 +272,7 @@
             },
             "label_schema": {
                 "separator": " ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -340,41 +325,73 @@
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== INVOICE APPROVAL PROCESS (specializes base-process) ===",
             "id": "acct-invoice-approval",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Invoice Approval" },
-            "description": { "en": "4-stage invoice approval process: Initial Review (AP Clerk), Manager Review (Dept Manager), Director Review (Finance Director), CFO Review (CFO)" },
+            "label": {
+                "en": "Invoice Approval"
+            },
+            "description": {
+                "en": "4-stage invoice approval process: Initial Review (AP Clerk), Manager Review (Dept Manager), Director Review (Finance Director), CFO Review (CFO)"
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-process" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-initial-review-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-manager-review-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-director-review-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-cfo-review-stage" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "acct-invoice" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-process"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "acct-initial-review-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "acct-manager-review-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "acct-director-review-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "acct-cfo-review-stage"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "acct-invoice"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== STAGE UNIVERSALS (specialize base-stage) ===",
             "id": "acct-initial-review-stage",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Initial Review" },
-            "description": { "en": "AP Clerk performs initial review and three-way match verification" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "Initial Review"
+            },
+            "description": {
+                "en": "AP Clerk performs initial review and three-way match verification"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-initial-review-obligation" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "acct-initial-review-obligation"
+                }
             ],
             "use_seed": true
         },
@@ -382,12 +399,25 @@
             "id": "acct-manager-review-stage",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Manager Review" },
-            "description": { "en": "Department Manager reviews invoices exceeding $5,000" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "Manager Review"
+            },
+            "description": {
+                "en": "Department Manager reviews invoices exceeding $5,000"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-manager-review-obligation" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "acct-manager-review-obligation"
+                }
             ],
             "use_seed": true
         },
@@ -395,12 +425,25 @@
             "id": "acct-director-review-stage",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Director Review" },
-            "description": { "en": "Finance Director reviews invoices exceeding $25,000" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "Director Review"
+            },
+            "description": {
+                "en": "Finance Director reviews invoices exceeding $25,000"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-director-review-obligation" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "acct-director-review-obligation"
+                }
             ],
             "use_seed": true
         },
@@ -408,27 +451,52 @@
             "id": "acct-cfo-review-stage",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "CFO Review" },
-            "description": { "en": "CFO performs final review for invoices exceeding $100,000" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "CFO Review"
+            },
+            "description": {
+                "en": "CFO performs final review for invoices exceeding $100,000"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "acct-cfo-review-obligation" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "acct-cfo-review-obligation"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== OBLIGATION UNIVERSALS (specialize base-obligation) ===",
             "id": "acct-initial-review-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Initial Review Obligation" },
-            "description": { "en": "Obligation for the AP Clerk to review invoice data and verify three-way match" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "Initial Review Obligation"
+            },
+            "description": {
+                "en": "Obligation for the AP Clerk to review invoice data and verify three-way match"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "acct-fr-ap-clerk" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-obligation"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "acct-fr-ap-clerk"
+                }
             ],
             "use_seed": true
         },
@@ -436,12 +504,25 @@
             "id": "acct-manager-review-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Manager Review Obligation" },
-            "description": { "en": "Obligation for the Department Manager to approve budget allocation" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "Manager Review Obligation"
+            },
+            "description": {
+                "en": "Obligation for the Department Manager to approve budget allocation"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "acct-fr-department-manager" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-obligation"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "acct-fr-department-manager"
+                }
             ],
             "use_seed": true
         },
@@ -449,12 +530,25 @@
             "id": "acct-director-review-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Director Review Obligation" },
-            "description": { "en": "Obligation for the Finance Director to verify vendor history and budget impact" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "Director Review Obligation"
+            },
+            "description": {
+                "en": "Obligation for the Finance Director to verify vendor history and budget impact"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "acct-fr-finance-director" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-obligation"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "acct-fr-finance-director"
+                }
             ],
             "use_seed": true
         },
@@ -462,28 +556,51 @@
             "id": "acct-cfo-review-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "CFO Review Obligation" },
-            "description": { "en": "Obligation for the CFO to perform final approval with full authority" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "CFO Review Obligation"
+            },
+            "description": {
+                "en": "Obligation for the CFO to perform final approval with full authority"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "acct-fr-cfo" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-obligation"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "acct-fr-cfo"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== COMPOSITION RELATORS (process -> stages) ===",
             "id": "acct-approval-has-initial-review",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Approval Has Initial Review" },
+            "label": {
+                "en": "Approval Has Initial Review"
+            },
             "roles": [
-                { "name": "process", "universal_id": "acct-invoice-approval" },
-                { "name": "stage", "universal_id": "acct-initial-review-stage" }
+                {
+                    "name": "process",
+                    "universal_id": "acct-invoice-approval"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "acct-initial-review-stage"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -491,13 +608,24 @@
             "id": "acct-approval-has-manager-review",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Approval Has Manager Review" },
+            "label": {
+                "en": "Approval Has Manager Review"
+            },
             "roles": [
-                { "name": "process", "universal_id": "acct-invoice-approval" },
-                { "name": "stage", "universal_id": "acct-manager-review-stage" }
+                {
+                    "name": "process",
+                    "universal_id": "acct-invoice-approval"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "acct-manager-review-stage"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -505,13 +633,24 @@
             "id": "acct-approval-has-director-review",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Approval Has Director Review" },
+            "label": {
+                "en": "Approval Has Director Review"
+            },
             "roles": [
-                { "name": "process", "universal_id": "acct-invoice-approval" },
-                { "name": "stage", "universal_id": "acct-director-review-stage" }
+                {
+                    "name": "process",
+                    "universal_id": "acct-invoice-approval"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "acct-director-review-stage"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -519,29 +658,50 @@
             "id": "acct-approval-has-cfo-review",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Approval Has CFO Review" },
+            "label": {
+                "en": "Approval Has CFO Review"
+            },
             "roles": [
-                { "name": "process", "universal_id": "acct-invoice-approval" },
-                { "name": "stage", "universal_id": "acct-cfo-review-stage" }
+                {
+                    "name": "process",
+                    "universal_id": "acct-invoice-approval"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "acct-cfo-review-stage"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== COMPOSITION RELATORS (stages -> obligations) ===",
             "id": "acct-initial-review-has-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Initial Review Has Obligation" },
+            "label": {
+                "en": "Initial Review Has Obligation"
+            },
             "roles": [
-                { "name": "stage", "universal_id": "acct-initial-review-stage" },
-                { "name": "obligation", "universal_id": "acct-initial-review-obligation" }
+                {
+                    "name": "stage",
+                    "universal_id": "acct-initial-review-stage"
+                },
+                {
+                    "name": "obligation",
+                    "universal_id": "acct-initial-review-obligation"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -549,13 +709,24 @@
             "id": "acct-manager-review-has-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Manager Review Has Obligation" },
+            "label": {
+                "en": "Manager Review Has Obligation"
+            },
             "roles": [
-                { "name": "stage", "universal_id": "acct-manager-review-stage" },
-                { "name": "obligation", "universal_id": "acct-manager-review-obligation" }
+                {
+                    "name": "stage",
+                    "universal_id": "acct-manager-review-stage"
+                },
+                {
+                    "name": "obligation",
+                    "universal_id": "acct-manager-review-obligation"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -563,13 +734,24 @@
             "id": "acct-director-review-has-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Director Review Has Obligation" },
+            "label": {
+                "en": "Director Review Has Obligation"
+            },
             "roles": [
-                { "name": "stage", "universal_id": "acct-director-review-stage" },
-                { "name": "obligation", "universal_id": "acct-director-review-obligation" }
+                {
+                    "name": "stage",
+                    "universal_id": "acct-director-review-stage"
+                },
+                {
+                    "name": "obligation",
+                    "universal_id": "acct-director-review-obligation"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -577,17 +759,27 @@
             "id": "acct-cfo-review-has-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "CFO Review Has Obligation" },
+            "label": {
+                "en": "CFO Review Has Obligation"
+            },
             "roles": [
-                { "name": "stage", "universal_id": "acct-cfo-review-stage" },
-                { "name": "obligation", "universal_id": "acct-cfo-review-obligation" }
+                {
+                    "name": "stage",
+                    "universal_id": "acct-cfo-review-stage"
+                },
+                {
+                    "name": "obligation",
+                    "universal_id": "acct-cfo-review-obligation"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== RELATOR: Invoice Vendor ===",
             "id": "acct-inv-vendor-rel",
@@ -2544,13 +2736,25 @@
             "_comment": "--- Invoice Approval Process Properties (base-process-subject-ref-prop inherited from base-process) ---",
             "id": "acct-approval-urgency-prop",
             "universal_id": "acct-invoice-approval",
-            "label": { "en": "Urgency" },
+            "label": {
+                "en": "Urgency"
+            },
             "property_schema": {
-                "predicates": ["urgency", "priority"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "urgency",
+                    "priority"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -3468,7 +3672,9 @@
             "password": "TestPass123!_",
             "is_active": true,
             "roles": [
-                "AppAdmin", "AppDeveloper", "AppUser"
+                "AppAdmin",
+                "AppDeveloper",
+                "AppUser"
             ],
             "use_seed": true
         },

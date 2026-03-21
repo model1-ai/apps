@@ -34,8 +34,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -52,8 +51,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -70,8 +68,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -88,8 +85,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -106,8 +102,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -124,8 +119,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -142,8 +136,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -160,8 +153,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -178,8 +170,7 @@
             },
             "label_schema": {
                 "separator": " ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -196,8 +187,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -214,8 +204,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -232,8 +221,7 @@
             },
             "label_schema": {
                 "separator": ", ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -250,8 +238,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -268,8 +255,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -286,8 +272,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -304,8 +289,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -322,8 +306,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -340,8 +323,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -358,8 +340,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -376,8 +357,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -394,8 +374,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -776,7 +755,6 @@
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== ENUMERATION UNIVERSAL: Requisition Priority ===",
             "id": "hr-req-priority-type",
@@ -790,8 +768,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 20,
-                "fallback_language": "en"
+                "max_length": 20
             },
             "use_seed": true
         },
@@ -808,8 +785,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 20,
-                "fallback_language": "en"
+                "max_length": 20
             },
             "use_seed": true
         },
@@ -826,12 +802,10 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 60,
-                "fallback_language": "en"
+                "max_length": 60
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== FUNCTIONAL ROLE: Department Manager ===",
             "id": "hr-role-dept-manager",
@@ -871,40 +845,69 @@
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== HIRING REQUISITION APPROVAL PROCESS (specializes base-process) ===",
             "id": "hr-hiring-requisition-approval",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Hiring Requisition Approval" },
-            "description": { "en": "3-stage hiring requisition approval process: HR Validation (HR Admin), Management Approval (Dept Manager), Recruitment (Recruiter)" },
+            "label": {
+                "en": "Hiring Requisition Approval"
+            },
+            "description": {
+                "en": "3-stage hiring requisition approval process: HR Validation (HR Admin), Management Approval (Dept Manager), Recruitment (Recruiter)"
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-process" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "hr-validation-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "hr-mgmt-approval-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "hr-recruitment-stage" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "hr-requisition" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-process"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "hr-validation-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "hr-mgmt-approval-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "hr-recruitment-stage"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "hr-requisition"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== STAGE UNIVERSALS (specialize base-stage) ===",
             "id": "hr-validation-stage",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "HR Validation" },
-            "description": { "en": "HR Administrator validates requisition for compliance, headcount, and policy alignment" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "HR Validation"
+            },
+            "description": {
+                "en": "HR Administrator validates requisition for compliance, headcount, and policy alignment"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "hr-validation-obligation" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "hr-validation-obligation"
+                }
             ],
             "use_seed": true
         },
@@ -912,12 +915,25 @@
             "id": "hr-mgmt-approval-stage",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Management Approval" },
-            "description": { "en": "Department Manager reviews and approves budget allocation for hiring" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "Management Approval"
+            },
+            "description": {
+                "en": "Department Manager reviews and approves budget allocation for hiring"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "hr-mgmt-approval-obligation" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "hr-mgmt-approval-obligation"
+                }
             ],
             "use_seed": true
         },
@@ -925,27 +941,52 @@
             "id": "hr-recruitment-stage",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Recruitment" },
-            "description": { "en": "Recruiter sources candidates, conducts screening, and fills approved positions" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "Recruitment"
+            },
+            "description": {
+                "en": "Recruiter sources candidates, conducts screening, and fills approved positions"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "hr-recruitment-obligation" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "hr-recruitment-obligation"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== OBLIGATION UNIVERSALS (specialize base-obligation) ===",
             "id": "hr-validation-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "HR Validation Obligation" },
-            "description": { "en": "Obligation for the HR Administrator to validate requisition compliance" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "HR Validation Obligation"
+            },
+            "description": {
+                "en": "Obligation for the HR Administrator to validate requisition compliance"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "hr-role-hr-admin" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-obligation"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "hr-role-hr-admin"
+                }
             ],
             "use_seed": true
         },
@@ -953,12 +994,25 @@
             "id": "hr-mgmt-approval-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Management Approval Obligation" },
-            "description": { "en": "Obligation for the Department Manager to approve budget allocation" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "Management Approval Obligation"
+            },
+            "description": {
+                "en": "Obligation for the Department Manager to approve budget allocation"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "hr-role-dept-manager" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-obligation"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "hr-role-dept-manager"
+                }
             ],
             "use_seed": true
         },
@@ -966,28 +1020,51 @@
             "id": "hr-recruitment-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Recruitment Obligation" },
-            "description": { "en": "Obligation for the Recruiter to source and fill approved positions" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "Recruitment Obligation"
+            },
+            "description": {
+                "en": "Obligation for the Recruiter to source and fill approved positions"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "hr-role-recruiter" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-obligation"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "hr-role-recruiter"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== COMPOSITION RELATORS (process -> stages) ===",
             "id": "hr-approval-has-validation",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Approval Has HR Validation" },
+            "label": {
+                "en": "Approval Has HR Validation"
+            },
             "roles": [
-                { "name": "process", "universal_id": "hr-hiring-requisition-approval" },
-                { "name": "stage", "universal_id": "hr-validation-stage" }
+                {
+                    "name": "process",
+                    "universal_id": "hr-hiring-requisition-approval"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "hr-validation-stage"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -995,13 +1072,24 @@
             "id": "hr-approval-has-mgmt-approval",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Approval Has Management Approval" },
+            "label": {
+                "en": "Approval Has Management Approval"
+            },
             "roles": [
-                { "name": "process", "universal_id": "hr-hiring-requisition-approval" },
-                { "name": "stage", "universal_id": "hr-mgmt-approval-stage" }
+                {
+                    "name": "process",
+                    "universal_id": "hr-hiring-requisition-approval"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "hr-mgmt-approval-stage"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -1009,29 +1097,50 @@
             "id": "hr-approval-has-recruitment",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Approval Has Recruitment" },
+            "label": {
+                "en": "Approval Has Recruitment"
+            },
             "roles": [
-                { "name": "process", "universal_id": "hr-hiring-requisition-approval" },
-                { "name": "stage", "universal_id": "hr-recruitment-stage" }
+                {
+                    "name": "process",
+                    "universal_id": "hr-hiring-requisition-approval"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "hr-recruitment-stage"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== COMPOSITION RELATORS (stages -> obligations) ===",
             "id": "hr-validation-has-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "HR Validation Has Obligation" },
+            "label": {
+                "en": "HR Validation Has Obligation"
+            },
             "roles": [
-                { "name": "stage", "universal_id": "hr-validation-stage" },
-                { "name": "obligation", "universal_id": "hr-validation-obligation" }
+                {
+                    "name": "stage",
+                    "universal_id": "hr-validation-stage"
+                },
+                {
+                    "name": "obligation",
+                    "universal_id": "hr-validation-obligation"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -1039,13 +1148,24 @@
             "id": "hr-mgmt-approval-has-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Management Approval Has Obligation" },
+            "label": {
+                "en": "Management Approval Has Obligation"
+            },
             "roles": [
-                { "name": "stage", "universal_id": "hr-mgmt-approval-stage" },
-                { "name": "obligation", "universal_id": "hr-mgmt-approval-obligation" }
+                {
+                    "name": "stage",
+                    "universal_id": "hr-mgmt-approval-stage"
+                },
+                {
+                    "name": "obligation",
+                    "universal_id": "hr-mgmt-approval-obligation"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -1053,17 +1173,27 @@
             "id": "hr-recruitment-has-obligation",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Recruitment Has Obligation" },
+            "label": {
+                "en": "Recruitment Has Obligation"
+            },
             "roles": [
-                { "name": "stage", "universal_id": "hr-recruitment-stage" },
-                { "name": "obligation", "universal_id": "hr-recruitment-obligation" }
+                {
+                    "name": "stage",
+                    "universal_id": "hr-recruitment-stage"
+                },
+                {
+                    "name": "obligation",
+                    "universal_id": "hr-recruitment-obligation"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== RELATOR: Requisition Department ===",
             "id": "hr-req-dept-rel",
@@ -3329,7 +3459,6 @@
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Requisition Priority Enum Name ===",
             "id": "hr-req-priority-name-prop",
@@ -3396,7 +3525,6 @@
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Requisition: Code ===",
             "id": "hr-req-code",

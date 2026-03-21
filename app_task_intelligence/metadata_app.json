@@ -4,7 +4,9 @@
     "organizations": [
         {
             "id": "model1-testing-org",
-            "label": { "en": "Model1 Testing Org" },
+            "label": {
+                "en": "Model1 Testing Org"
+            },
             "use_seed": true
         }
     ],
@@ -12,7 +14,9 @@
         {
             "id": "model1-testing-tenant",
             "organization_id": "model1-testing-org",
-            "label": { "en": "Model1 Testing Tenant" },
+            "label": {
+                "en": "Model1 Testing Tenant"
+            },
             "use_seed": true
         }
     ],
@@ -22,9 +26,16 @@
             "id": "task-priority-type",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Task Priority" },
-            "description": { "en": "Priority classification for tasks: Critical, High, Medium, Low" },
-            "label_schema": { "separator": "", "max_length": 20, "fallback_language": "en" },
+            "label": {
+                "en": "Task Priority"
+            },
+            "description": {
+                "en": "Priority classification for tasks: Critical, High, Medium, Low"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20
+            },
             "use_seed": true
         },
         {
@@ -32,57 +43,96 @@
             "id": "task-category-type",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Task Category" },
-            "description": { "en": "Category of task: Feature, Bug, Chore, Spike, Documentation" },
-            "label_schema": { "separator": "", "max_length": 20, "fallback_language": "en" },
+            "label": {
+                "en": "Task Category"
+            },
+            "description": {
+                "en": "Category of task: Feature, Bug, Chore, Spike, Documentation"
+            },
+            "label_schema": {
+                "separator": "",
+                "max_length": 20
+            },
             "use_seed": true
         },
-
         {
             "_comment": "=== SUBJECT UNIVERSAL: Task ===",
             "id": "task-item",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Task" },
-            "description": { "en": "A work item to be tracked through a Kanban worklist. The subject entity governed by the HW process framework." },
-            "label_schema": { "separator": " - ", "max_length": 60, "fallback_language": "en" },
+            "label": {
+                "en": "Task"
+            },
+            "description": {
+                "en": "A work item to be tracked through a Kanban worklist. The subject entity governed by the HW process framework."
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 60
+            },
             "use_seed": true
         },
-
         {
             "_comment": "=== ENTITY: Team Member (assignee) ===",
             "id": "task-team-member",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Team Member" },
-            "description": { "en": "A person who can be assigned tasks" },
-            "label_schema": { "separator": " ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "Team Member"
+            },
+            "description": {
+                "en": "A person who can be assigned tasks"
+            },
+            "label_schema": {
+                "separator": " ",
+                "max_length": 40
+            },
             "use_seed": true
         },
-
         {
             "_comment": "=== ENTITY: Project ===",
             "id": "task-project",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Project" },
-            "description": { "en": "A project that groups related tasks" },
-            "label_schema": { "separator": " - ", "max_length": 40, "fallback_language": "en" },
+            "label": {
+                "en": "Project"
+            },
+            "description": {
+                "en": "A project that groups related tasks"
+            },
+            "label_schema": {
+                "separator": " - ",
+                "max_length": 40
+            },
             "use_seed": true
         },
-
         {
             "_comment": "=== RELATOR: Task assigned to Team Member ===",
             "id": "task-assigned-to-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Task Assigned To" },
-            "description": { "en": "Links a task to the team member responsible for it" },
+            "label": {
+                "en": "Task Assigned To"
+            },
+            "description": {
+                "en": "Links a task to the team member responsible for it"
+            },
             "roles": [
-                { "name": "task", "universal_id": "task-item" },
-                { "name": "assignee", "universal_id": "task-team-member" }
+                {
+                    "name": "task",
+                    "universal_id": "task-item"
+                },
+                {
+                    "name": "assignee",
+                    "universal_id": "task-team-member"
+                }
             ],
-            "taxonomy": [{ "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
+            ],
             "use_seed": true
         },
         {
@@ -90,24 +140,45 @@
             "id": "task-belongs-to-project-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Task Belongs To Project" },
-            "description": { "en": "Links a task to the project it belongs to" },
+            "label": {
+                "en": "Task Belongs To Project"
+            },
+            "description": {
+                "en": "Links a task to the project it belongs to"
+            },
             "roles": [
-                { "name": "task", "universal_id": "task-item" },
-                { "name": "project", "universal_id": "task-project" }
+                {
+                    "name": "task",
+                    "universal_id": "task-item"
+                },
+                {
+                    "name": "project",
+                    "universal_id": "task-project"
+                }
             ],
-            "taxonomy": [{ "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }],
+            "taxonomy": [
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
+            ],
             "use_seed": true
         },
-
         {
             "_comment": "=== INTELLIGENCE: Task Analytics Summary ===",
             "id": "task-analytics-summary",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Task Analytics Summary" },
-            "description": { "en": "Aggregated task metrics for intelligence dashboards" },
-            "label_schema": { "separator": " | ", "max_length": 60, "fallback_language": "en" },
+            "label": {
+                "en": "Task Analytics Summary"
+            },
+            "description": {
+                "en": "Aggregated task metrics for intelligence dashboards"
+            },
+            "label_schema": {
+                "separator": " | ",
+                "max_length": 60
+            },
             "use_seed": true
         }
     ],
@@ -116,78 +187,161 @@
             "_comment": "=== ENUMERATION PROPERTIES ===",
             "id": "task-priority-name-prop",
             "universal_id": "task-priority-type",
-            "label": { "en": "Name" },
+            "label": {
+                "en": "Name"
+            },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1 },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
             "use_seed": true
         },
         {
             "id": "task-category-name-prop",
             "universal_id": "task-category-type",
-            "label": { "en": "Name" },
+            "label": {
+                "en": "Name"
+            },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1 },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
             "use_seed": true
         },
-
         {
             "_comment": "=== TASK PROPERTIES ===",
             "id": "task-code-prop",
             "universal_id": "task-item",
-            "label": { "en": "Task Code" },
-            "description": { "en": "Short identifier for the task (e.g., TASK-001)" },
+            "label": {
+                "en": "Task Code"
+            },
+            "description": {
+                "en": "Short identifier for the task (e.g., TASK-001)"
+            },
             "property_schema": {
-                "predicates": ["code", "identifier"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1, "prefix": "#" },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "#"
+            },
             "use_seed": true
         },
         {
             "id": "task-title-prop",
             "universal_id": "task-item",
-            "label": { "en": "Title" },
-            "description": { "en": "Human-readable title of the task" },
+            "label": {
+                "en": "Title"
+            },
+            "description": {
+                "en": "Human-readable title of the task"
+            },
             "property_schema": {
-                "predicates": ["name", "title"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "title"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 2 },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
             "use_seed": true
         },
         {
             "id": "task-description-prop",
             "universal_id": "task-item",
-            "label": { "en": "Description" },
-            "description": { "en": "Detailed description of what needs to be done" },
+            "label": {
+                "en": "Description"
+            },
+            "description": {
+                "en": "Detailed description of what needs to be done"
+            },
             "property_schema": {
-                "predicates": ["description"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "description"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -195,30 +349,63 @@
         {
             "id": "task-status-prop",
             "universal_id": "task-item",
-            "label": { "en": "Status" },
-            "description": { "en": "Current task status, synchronized by the HW process engine" },
+            "label": {
+                "en": "Status"
+            },
+            "description": {
+                "en": "Current task status, synchronized by the HW process engine"
+            },
             "property_schema": {
-                "predicates": ["status"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 3 },
+            "label_options": {
+                "participates": true,
+                "sequence": 3
+            },
             "use_seed": true
         },
         {
             "id": "task-priority-prop",
             "universal_id": "task-item",
-            "label": { "en": "Priority" },
-            "description": { "en": "Task priority level" },
+            "label": {
+                "en": "Priority"
+            },
+            "description": {
+                "en": "Task priority level"
+            },
             "property_schema": {
-                "predicates": ["priority"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "priority"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": "task-priority-type", "ordered": true },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "task-priority-type",
+                        "ordered": true
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -226,14 +413,30 @@
         {
             "id": "task-category-prop",
             "universal_id": "task-item",
-            "label": { "en": "Category" },
-            "description": { "en": "Type of work: Feature, Bug, Chore, Spike, or Documentation" },
+            "label": {
+                "en": "Category"
+            },
+            "description": {
+                "en": "Type of work: Feature, Bug, Chore, Spike, or Documentation"
+            },
             "property_schema": {
-                "predicates": ["category", "type"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "category",
+                    "type"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": "task-category-type", "ordered": false },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "task-category-type",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -241,14 +444,30 @@
         {
             "id": "task-story-points-prop",
             "universal_id": "task-item",
-            "label": { "en": "Story Points" },
-            "description": { "en": "Effort estimation in story points" },
+            "label": {
+                "en": "Story Points"
+            },
+            "description": {
+                "en": "Effort estimation in story points"
+            },
             "property_schema": {
-                "predicates": ["estimate", "points"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "estimate",
+                    "points"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer", "min": 0 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer",
+                        "min": 0
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -256,14 +475,29 @@
         {
             "id": "task-due-date-prop",
             "universal_id": "task-item",
-            "label": { "en": "Due Date" },
-            "description": { "en": "Deadline for the task" },
+            "label": {
+                "en": "Due Date"
+            },
+            "description": {
+                "en": "Deadline for the task"
+            },
             "property_schema": {
-                "predicates": ["due_date", "deadline"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "due_date",
+                    "deadline"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -271,14 +505,28 @@
         {
             "id": "task-created-at-prop",
             "universal_id": "task-item",
-            "label": { "en": "Created At" },
-            "description": { "en": "When the task was created" },
+            "label": {
+                "en": "Created At"
+            },
+            "description": {
+                "en": "When the task was created"
+            },
             "property_schema": {
-                "predicates": ["created_at"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "created_at"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -286,124 +534,241 @@
         {
             "id": "task-reference-activity-prop",
             "universal_id": "task-item",
-            "label": { "en": "Reference Activity" },
-            "description": { "en": "Link to a related entity (any type) for context" },
+            "label": {
+                "en": "Reference Activity"
+            },
+            "description": {
+                "en": "Link to a related entity (any type) for context"
+            },
             "property_schema": {
-                "predicates": ["reference", "activity"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "reference",
+                    "activity"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "InstanceRefs", "min_refs": 0 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "InstanceRefs",
+                        "min_refs": 0
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== TEAM MEMBER PROPERTIES ===",
             "id": "task-member-name-prop",
             "universal_id": "task-team-member",
-            "label": { "en": "Name" },
+            "label": {
+                "en": "Name"
+            },
             "property_schema": {
-                "predicates": ["name"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1 },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
             "use_seed": true
         },
         {
             "id": "task-member-role-prop",
             "universal_id": "task-team-member",
-            "label": { "en": "Role" },
+            "label": {
+                "en": "Role"
+            },
             "property_schema": {
-                "predicates": ["role"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "role"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 2 },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
             "use_seed": true
         },
-
         {
             "_comment": "=== PROJECT PROPERTIES ===",
             "id": "task-project-code-prop",
             "universal_id": "task-project",
-            "label": { "en": "Code" },
+            "label": {
+                "en": "Code"
+            },
             "property_schema": {
-                "predicates": ["code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1 },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
             "use_seed": true
         },
         {
             "id": "task-project-name-prop",
             "universal_id": "task-project",
-            "label": { "en": "Name" },
+            "label": {
+                "en": "Name"
+            },
             "property_schema": {
-                "predicates": ["name"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 2 },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
             "use_seed": true
         },
-
         {
             "_comment": "=== ANALYTICS SUMMARY PROPERTIES ===",
             "id": "task-summary-project-prop",
             "universal_id": "task-analytics-summary",
-            "label": { "en": "Project" },
+            "label": {
+                "en": "Project"
+            },
             "property_schema": {
-                "predicates": ["project"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "project"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 1 },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
             "use_seed": true
         },
         {
             "id": "task-summary-category-prop",
             "universal_id": "task-analytics-summary",
-            "label": { "en": "Category" },
+            "label": {
+                "en": "Category"
+            },
             "property_schema": {
-                "predicates": ["category"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "category"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": null, "ordered": false },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": null,
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 2 },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
             "use_seed": true
         },
         {
             "id": "task-summary-count-prop",
             "universal_id": "task-analytics-summary",
-            "label": { "en": "Task Count" },
+            "label": {
+                "en": "Task Count"
+            },
             "property_schema": {
-                "predicates": ["count"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "count"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer", "min": 0 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer",
+                        "min": 0
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -411,13 +776,26 @@
         {
             "id": "task-summary-total-points-prop",
             "universal_id": "task-analytics-summary",
-            "label": { "en": "Total Story Points" },
+            "label": {
+                "en": "Total Story Points"
+            },
             "property_schema": {
-                "predicates": ["total_points"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "total_points"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-integer", "min": 0 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-integer",
+                        "min": 0
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -428,24 +806,36 @@
             "id": "task-event-created",
             "app_id": "task-intelligence-app",
             "scope": "tenant",
-            "label": { "en": "Task Created" },
-            "description": { "en": "Emitted when a new task is created" },
+            "label": {
+                "en": "Task Created"
+            },
+            "description": {
+                "en": "Emitted when a new task is created"
+            },
             "use_seed": true
         },
         {
             "id": "task-event-stage-changed",
             "app_id": "task-intelligence-app",
             "scope": "tenant",
-            "label": { "en": "Task Stage Changed" },
-            "description": { "en": "Emitted when a task moves to a different Kanban stage" },
+            "label": {
+                "en": "Task Stage Changed"
+            },
+            "description": {
+                "en": "Emitted when a task moves to a different Kanban stage"
+            },
             "use_seed": true
         },
         {
             "id": "task-event-completed",
             "app_id": "task-intelligence-app",
             "scope": "tenant",
-            "label": { "en": "Task Completed" },
-            "description": { "en": "Emitted when a task reaches the Done stage" },
+            "label": {
+                "en": "Task Completed"
+            },
+            "description": {
+                "en": "Emitted when a task reaches the Done stage"
+            },
             "use_seed": true
         }
     ],
@@ -454,8 +844,12 @@
             "_comment": "=== ARTIFACT: Task Throughput by Project and Category ===",
             "id": "task-throughput-by-project-category",
             "name": "Task Throughput by Project and Category",
-            "description": { "en": "Task count and story point totals aggregated by project and work category" },
-            "source": { "universal_id": "task-item" },
+            "description": {
+                "en": "Task count and story point totals aggregated by project and work category"
+            },
+            "source": {
+                "universal_id": "task-item"
+            },
             "artifact_universal_id": "task-analytics-summary",
             "app_id": "task-intelligence-app",
             "dimensions": [
@@ -504,7 +898,9 @@
                 }
             ],
             "thresholds": [],
-            "materialization": { "strategy": "Eager" },
+            "materialization": {
+                "strategy": "Eager"
+            },
             "use_seed": true
         }
     ],
@@ -512,15 +908,23 @@
         {
             "id": "task-intelligence-app",
             "tenant_id": "model1-testing-tenant",
-            "label": { "en": "Task Intelligence Application" },
-            "description": { "en": "Task management application using Human Worklist process framework with Kanban-style tracking and intelligence analytics" },
+            "label": {
+                "en": "Task Intelligence Application"
+            },
+            "description": {
+                "en": "Task management application using Human Worklist process framework with Kanban-style tracking and intelligence analytics"
+            },
             "use_seed": true,
             "modules": [
                 {
                     "id": "task-core-module",
                     "use_seed": true,
-                    "label": { "en": "Task Core Module" },
-                    "description": { "en": "Core task management: tasks, team members, projects, and assignments" },
+                    "label": {
+                        "en": "Task Core Module"
+                    },
+                    "description": {
+                        "en": "Core task management: tasks, team members, projects, and assignments"
+                    },
                     "context": {
                         "subscribed_events": [],
                         "publishable_events": [
@@ -532,8 +936,12 @@
                 {
                     "id": "task-workflow-module",
                     "use_seed": true,
-                    "label": { "en": "Task Workflow Module" },
-                    "description": { "en": "Kanban worklist process management and stage transitions" },
+                    "label": {
+                        "en": "Task Workflow Module"
+                    },
+                    "description": {
+                        "en": "Kanban worklist process management and stage transitions"
+                    },
                     "context": {
                         "subscribed_events": [
                             "task-event-created"
@@ -547,8 +955,12 @@
                 {
                     "id": "task-analytics-module",
                     "use_seed": true,
-                    "label": { "en": "Task Analytics Module" },
-                    "description": { "en": "Intelligence artifacts and task throughput analytics" },
+                    "label": {
+                        "en": "Task Analytics Module"
+                    },
+                    "description": {
+                        "en": "Intelligence artifacts and task throughput analytics"
+                    },
                     "context": {
                         "subscribed_events": [
                             "task-event-stage-changed",
@@ -568,7 +980,9 @@
             "display_name": "Task Admin",
             "password": "TestPass123!_",
             "is_active": true,
-            "roles": ["AppAdmin"],
+            "roles": [
+                "AppAdmin"
+            ],
             "use_seed": true
         },
         {
@@ -578,7 +992,10 @@
             "display_name": "Task Developer",
             "password": "TestPass123!_",
             "is_active": true,
-            "roles": ["AppDeveloper","AppUser"],
+            "roles": [
+                "AppDeveloper",
+                "AppUser"
+            ],
             "use_seed": true
         }
     ],
@@ -587,7 +1004,11 @@
             "id": "task-admin-fra",
             "user_id": "task-admin-user",
             "role": "AppAdmin",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "task-intelligence-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "task-intelligence-app"
+            },
             "assigned_by": "task-admin-user",
             "use_seed": true
         },
@@ -595,7 +1016,11 @@
             "id": "task-dev-fra-developer",
             "user_id": "task-developer-user",
             "role": "AppDeveloper",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "task-intelligence-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "task-intelligence-app"
+            },
             "assigned_by": "task-admin-user",
             "use_seed": true
         },
@@ -603,7 +1028,11 @@
             "id": "task-dev-fra-user",
             "user_id": "task-developer-user",
             "role": "AppUser",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "task-intelligence-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "task-intelligence-app"
+            },
             "assigned_by": "task-admin-user",
             "use_seed": true
         }

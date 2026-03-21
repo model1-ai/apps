@@ -173,8 +173,7 @@
             "generalizes": null,
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true,
             "_notes": [
@@ -200,8 +199,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 20,
-                "fallback_language": "en"
+                "max_length": 20
             },
             "use_seed": true,
             "_notes": [

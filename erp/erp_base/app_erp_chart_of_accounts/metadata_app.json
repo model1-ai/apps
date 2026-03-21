@@ -1,22 +1,23 @@
 {
     "_comment": "=== ERP CHART OF ACCOUNTS (Layer 0) ===",
     "_description": "Financial classification backbone: GL accounts, account groups, types, subtypes, recursive hierarchy, and account structure artifact.",
-
     "_organizations_note": "Organizations defined in app_erp_base. Load app_erp_base first.",
     "_tenants_note": "Tenants defined in app_erp_base. Load app_erp_base first.",
-
     "universals": [
         {
             "_comment": "=== ENUMERATION UNIVERSAL: Account Type ===",
             "id": "erp-account-type",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Account Type" },
-            "description": { "en": "The five fundamental accounting classifications: Asset, Liability, Equity, Revenue, Expense. Determines financial statement placement and normal balance direction." },
+            "label": {
+                "en": "Account Type"
+            },
+            "description": {
+                "en": "The five fundamental accounting classifications: Asset, Liability, Equity, Revenue, Expense. Determines financial statement placement and normal balance direction."
+            },
             "label_schema": {
                 "separator": "",
-                "max_length": 20,
-                "fallback_language": "en"
+                "max_length": 20
             },
             "use_seed": true
         },
@@ -25,12 +26,15 @@
             "id": "erp-account-subtype",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Account Subtype" },
-            "description": { "en": "Finer classification within the five types: Current Asset, Fixed Asset, Intangible Asset, Current Liability, Long-term Liability, Retained Earnings, Share Capital, COGS, OpEx, Depreciation, Amortization, Interest Income, Other Income, Tax Expense, Interest Expense." },
+            "label": {
+                "en": "Account Subtype"
+            },
+            "description": {
+                "en": "Finer classification within the five types: Current Asset, Fixed Asset, Intangible Asset, Current Liability, Long-term Liability, Retained Earnings, Share Capital, COGS, OpEx, Depreciation, Amortization, Interest Income, Other Income, Tax Expense, Interest Expense."
+            },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
@@ -39,12 +43,15 @@
             "id": "erp-gl-account",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "GL Account" },
-            "description": { "en": "Individual general ledger account. The atomic unit of financial classification. Every posting targets exactly one GL account." },
+            "label": {
+                "en": "GL Account"
+            },
+            "description": {
+                "en": "Individual general ledger account. The atomic unit of financial classification. Every posting targets exactly one GL account."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -53,12 +60,15 @@
             "id": "erp-account-group",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Account Group" },
-            "description": { "en": "Logical grouping of accounts for reporting (e.g., Current Assets, Operating Expenses). Provides the structure for financial statements." },
+            "label": {
+                "en": "Account Group"
+            },
+            "description": {
+                "en": "Logical grouping of accounts for reporting (e.g., Current Assets, Operating Expenses). Provides the structure for financial statements."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -67,12 +77,15 @@
             "id": "erp-account-structure-summary",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Account Structure Summary" },
-            "description": { "en": "Materialized aggregate for the account structure artifact. Stores per-type/subtype account counts." },
+            "label": {
+                "en": "Account Structure Summary"
+            },
+            "description": {
+                "en": "Materialized aggregate for the account structure artifact. Stores per-type/subtype account counts."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -81,11 +94,21 @@
             "id": "erp-account-group-has-account-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Account Group Has Account" },
-            "description": { "en": "Group contains accounts. Aggregation because accounts survive group reorganization." },
+            "label": {
+                "en": "Account Group Has Account"
+            },
+            "description": {
+                "en": "Group contains accounts. Aggregation because accounts survive group reorganization."
+            },
             "roles": [
-                { "name": "aggregate", "universal_id": "erp-account-group" },
-                { "name": "part", "universal_id": "erp-gl-account" }
+                {
+                    "name": "aggregate",
+                    "universal_id": "erp-account-group"
+                },
+                {
+                    "name": "part",
+                    "universal_id": "erp-gl-account"
+                }
             ],
             "taxonomy": [
                 {
@@ -100,11 +123,21 @@
             "id": "erp-account-type-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Account Type Classification" },
-            "description": { "en": "Classifies an account as Asset, Liability, Equity, Revenue, or Expense. Every account has exactly one type." },
+            "label": {
+                "en": "Account Type Classification"
+            },
+            "description": {
+                "en": "Classifies an account as Asset, Liability, Equity, Revenue, or Expense. Every account has exactly one type."
+            },
             "roles": [
-                { "name": "account", "universal_id": "erp-gl-account" },
-                { "name": "type", "universal_id": "erp-account-type" }
+                {
+                    "name": "account",
+                    "universal_id": "erp-gl-account"
+                },
+                {
+                    "name": "type",
+                    "universal_id": "erp-account-type"
+                }
             ],
             "taxonomy": [
                 {
@@ -119,11 +152,21 @@
             "id": "erp-account-subtype-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Account Subtype Classification" },
-            "description": { "en": "Further classifies an account within its type (e.g., an Asset account might be Current Asset or Fixed Asset)." },
+            "label": {
+                "en": "Account Subtype Classification"
+            },
+            "description": {
+                "en": "Further classifies an account within its type (e.g., an Asset account might be Current Asset or Fixed Asset)."
+            },
             "roles": [
-                { "name": "account", "universal_id": "erp-gl-account" },
-                { "name": "subtype", "universal_id": "erp-account-subtype" }
+                {
+                    "name": "account",
+                    "universal_id": "erp-gl-account"
+                },
+                {
+                    "name": "subtype",
+                    "universal_id": "erp-account-subtype"
+                }
             ],
             "taxonomy": [
                 {
@@ -138,11 +181,21 @@
             "id": "erp-account-parent-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Account Parent" },
-            "description": { "en": "Recursive account hierarchy for consolidation. Parent accounts aggregate child account balances for summary reporting." },
+            "label": {
+                "en": "Account Parent"
+            },
+            "description": {
+                "en": "Recursive account hierarchy for consolidation. Parent accounts aggregate child account balances for summary reporting."
+            },
             "roles": [
-                { "name": "aggregate", "universal_id": "erp-gl-account" },
-                { "name": "part", "universal_id": "erp-gl-account" }
+                {
+                    "name": "aggregate",
+                    "universal_id": "erp-gl-account"
+                },
+                {
+                    "name": "part",
+                    "universal_id": "erp-gl-account"
+                }
             ],
             "taxonomy": [
                 {
@@ -153,22 +206,31 @@
             "use_seed": true
         }
     ],
-
     "property_definitions": [
         {
             "_comment": "=== Account Type Properties ===",
             "id": "erp-account-type-name-prop",
             "universal_id": "erp-account-type",
-            "label": { "en": "Type Name" },
+            "label": {
+                "en": "Type Name"
+            },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -181,16 +243,26 @@
             "_comment": "=== Account Subtype Properties ===",
             "id": "erp-account-subtype-name-prop",
             "universal_id": "erp-account-subtype",
-            "label": { "en": "Subtype Name" },
+            "label": {
+                "en": "Subtype Name"
+            },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -203,17 +275,29 @@
             "_comment": "=== GL Account Properties ===",
             "id": "erp-gl-account-code-prop",
             "universal_id": "erp-gl-account",
-            "label": { "en": "Account Code" },
-            "description": { "en": "Unique numeric code identifying the GL account (e.g., 1000, 1110, 2100)" },
+            "label": {
+                "en": "Account Code"
+            },
+            "description": {
+                "en": "Unique numeric code identifying the GL account (e.g., 1000, 1110, 2100)"
+            },
             "property_schema": {
-                "predicates": ["identifier", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "identifier",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -226,14 +310,28 @@
         {
             "id": "erp-gl-account-name-prop",
             "universal_id": "erp-gl-account",
-            "label": { "en": "Account Name" },
-            "description": { "en": "Human-readable name of the GL account" },
+            "label": {
+                "en": "Account Name"
+            },
+            "description": {
+                "en": "Human-readable name of the GL account"
+            },
             "property_schema": {
-                "predicates": ["name", "label"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "label"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -245,14 +343,27 @@
         {
             "id": "erp-gl-account-description-prop",
             "universal_id": "erp-gl-account",
-            "label": { "en": "Description" },
-            "description": { "en": "Detailed description of the account purpose" },
+            "label": {
+                "en": "Description"
+            },
+            "description": {
+                "en": "Detailed description of the account purpose"
+            },
             "property_schema": {
-                "predicates": ["description"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "description"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -260,14 +371,28 @@
         {
             "id": "erp-gl-account-is-active-prop",
             "universal_id": "erp-gl-account",
-            "label": { "en": "Is Active" },
-            "description": { "en": "Whether the account is currently active and available for posting" },
+            "label": {
+                "en": "Is Active"
+            },
+            "description": {
+                "en": "Whether the account is currently active and available for posting"
+            },
             "property_schema": {
-                "predicates": ["status", "active"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "status",
+                    "active"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Boolean" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -275,17 +400,29 @@
         {
             "id": "erp-gl-account-normal-balance-prop",
             "universal_id": "erp-gl-account",
-            "label": { "en": "Normal Balance" },
-            "description": { "en": "Debit or Credit. The expected balance direction for this account. Stored explicitly to support contra accounts." },
+            "label": {
+                "en": "Normal Balance"
+            },
+            "description": {
+                "en": "Debit or Credit. The expected balance direction for this account. Stored explicitly to support contra accounts."
+            },
             "property_schema": {
-                "predicates": ["classification", "balance"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "classification",
+                    "balance"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -293,14 +430,28 @@
         {
             "id": "erp-gl-account-is-summary-prop",
             "universal_id": "erp-gl-account",
-            "label": { "en": "Is Summary" },
-            "description": { "en": "A summary (parent/header) account exists solely to aggregate child balances. Summary accounts must not receive direct postings." },
+            "label": {
+                "en": "Is Summary"
+            },
+            "description": {
+                "en": "A summary (parent/header) account exists solely to aggregate child balances. Summary accounts must not receive direct postings."
+            },
             "property_schema": {
-                "predicates": ["classification", "summary"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "classification",
+                    "summary"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Boolean" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -308,14 +459,28 @@
         {
             "id": "erp-gl-account-is-control-prop",
             "universal_id": "erp-gl-account",
-            "label": { "en": "Is Control Account" },
-            "description": { "en": "Whether this account aggregates a subsidiary ledger (AR, AP). Control account balance must equal sum of subsidiary entries." },
+            "label": {
+                "en": "Is Control Account"
+            },
+            "description": {
+                "en": "Whether this account aggregates a subsidiary ledger (AR, AP). Control account balance must equal sum of subsidiary entries."
+            },
             "property_schema": {
-                "predicates": ["classification", "control"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "classification",
+                    "control"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Boolean" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -323,14 +488,28 @@
         {
             "id": "erp-gl-account-is-reconcilable-prop",
             "universal_id": "erp-gl-account",
-            "label": { "en": "Is Reconcilable" },
-            "description": { "en": "Whether the account requires periodic reconciliation (bank accounts, intercompany accounts)." },
+            "label": {
+                "en": "Is Reconcilable"
+            },
+            "description": {
+                "en": "Whether the account requires periodic reconciliation (bank accounts, intercompany accounts)."
+            },
             "property_schema": {
-                "predicates": ["classification", "reconciliation"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "classification",
+                    "reconciliation"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Boolean" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -339,17 +518,29 @@
             "_comment": "=== Account Group Properties ===",
             "id": "erp-account-group-code-prop",
             "universal_id": "erp-account-group",
-            "label": { "en": "Group Code" },
-            "description": { "en": "Short code identifying the account group (e.g., CA, FA, CL)" },
+            "label": {
+                "en": "Group Code"
+            },
+            "description": {
+                "en": "Short code identifying the account group (e.g., CA, FA, CL)"
+            },
             "property_schema": {
-                "predicates": ["identifier", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "identifier",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -361,14 +552,28 @@
         {
             "id": "erp-account-group-name-prop",
             "universal_id": "erp-account-group",
-            "label": { "en": "Group Name" },
-            "description": { "en": "Descriptive name of the account group" },
+            "label": {
+                "en": "Group Name"
+            },
+            "description": {
+                "en": "Descriptive name of the account group"
+            },
             "property_schema": {
-                "predicates": ["name", "label"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "label"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -380,17 +585,29 @@
         {
             "id": "erp-account-group-sequence-prop",
             "universal_id": "erp-account-group",
-            "label": { "en": "Display Sequence" },
-            "description": { "en": "Controls the display order of groups within financial statements" },
+            "label": {
+                "en": "Display Sequence"
+            },
+            "description": {
+                "en": "Controls the display order of groups within financial statements"
+            },
             "property_schema": {
-                "predicates": ["sequence", "order"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "sequence",
+                    "order"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-integer"
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -399,17 +616,29 @@
             "_comment": "=== Account Structure Summary Properties (artifact output) ===",
             "id": "erp-summary-account-type-prop",
             "universal_id": "erp-account-structure-summary",
-            "label": { "en": "Account Type" },
-            "description": { "en": "Account type dimension for structure aggregation" },
+            "label": {
+                "en": "Account Type"
+            },
+            "description": {
+                "en": "Account type dimension for structure aggregation"
+            },
             "property_schema": {
-                "predicates": ["dimension", "type"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "dimension",
+                    "type"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -421,17 +650,29 @@
         {
             "id": "erp-summary-account-subtype-prop",
             "universal_id": "erp-account-structure-summary",
-            "label": { "en": "Account Subtype" },
-            "description": { "en": "Account subtype dimension for structure aggregation" },
+            "label": {
+                "en": "Account Subtype"
+            },
+            "description": {
+                "en": "Account subtype dimension for structure aggregation"
+            },
             "property_schema": {
-                "predicates": ["dimension", "subtype"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "dimension",
+                    "subtype"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -443,17 +684,29 @@
         {
             "id": "erp-summary-total-accounts-prop",
             "universal_id": "erp-account-structure-summary",
-            "label": { "en": "Total Accounts" },
-            "description": { "en": "Count of GL accounts per type/subtype combination" },
+            "label": {
+                "en": "Total Accounts"
+            },
+            "description": {
+                "en": "Count of GL accounts per type/subtype combination"
+            },
             "property_schema": {
-                "predicates": ["measure", "count"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "measure",
+                    "count"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-integer"
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -461,17 +714,30 @@
         {
             "id": "erp-summary-active-accounts-prop",
             "universal_id": "erp-account-structure-summary",
-            "label": { "en": "Active Accounts" },
-            "description": { "en": "Count of active GL accounts (where is-active = true)" },
+            "label": {
+                "en": "Active Accounts"
+            },
+            "description": {
+                "en": "Count of active GL accounts (where is-active = true)"
+            },
             "property_schema": {
-                "predicates": ["measure", "count", "active"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "measure",
+                    "count",
+                    "active"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-integer"
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -479,64 +745,101 @@
         {
             "id": "erp-summary-threshold-state-prop",
             "universal_id": "erp-account-structure-summary",
-            "label": { "en": "Threshold State" },
-            "description": { "en": "Tracks whether the high-account-count threshold has been crossed for this summary row" },
+            "label": {
+                "en": "Threshold State"
+            },
+            "description": {
+                "en": "Tracks whether the high-account-count threshold has been crossed for this summary row"
+            },
             "property_schema": {
-                "predicates": ["threshold", "state"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "threshold",
+                    "state"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "ordered": false },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "ordered": false
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         }
     ],
-
     "event_definitions": [
         {
             "id": "erp-account-structure-threshold-event",
             "app_id": "erp-chart-of-accounts-app",
             "scope": "tenant",
-            "label": { "en": "Account Structure Threshold Crossed" },
-            "description": { "en": "Event emitted when the number of accounts in a type/subtype combination exceeds the configured threshold" },
+            "label": {
+                "en": "Account Structure Threshold Crossed"
+            },
+            "description": {
+                "en": "Event emitted when the number of accounts in a type/subtype combination exceeds the configured threshold"
+            },
             "payload_schema": [
-                { "name": "artifact_instance_id", "field_type": "uuid" },
-                { "name": "measure_value", "field_type": "measurement", "measurement_frame": "Integer" }
+                {
+                    "name": "artifact_instance_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "measure_value",
+                    "field_type": "measurement",
+                    "measurement_frame": "Integer"
+                }
             ],
             "use_seed": true
         }
     ],
-
     "apps": [
         {
             "id": "erp-chart-of-accounts-app",
             "tenant_id": "model1-testing-tenant",
-            "label": { "en": "ERP Chart of Accounts" },
-            "description": { "en": "Financial classification backbone: GL accounts, account groups, types/subtypes, recursive hierarchy, and account structure analytics." },
+            "label": {
+                "en": "ERP Chart of Accounts"
+            },
+            "description": {
+                "en": "Financial classification backbone: GL accounts, account groups, types/subtypes, recursive hierarchy, and account structure analytics."
+            },
             "use_seed": true,
             "modules": [
                 {
                     "id": "erp-coa-core-module",
                     "use_seed": true,
-                    "label": { "en": "Chart of Accounts Core" },
-                    "description": { "en": "Core CoA operations: CRUD on GL accounts, account groups, types, and subtypes. Publishes structure-change events." },
+                    "label": {
+                        "en": "Chart of Accounts Core"
+                    },
+                    "description": {
+                        "en": "Core CoA operations: CRUD on GL accounts, account groups, types, and subtypes. Publishes structure-change events."
+                    },
                     "context": {
                         "subscribed_events": [],
-                        "publishable_events": ["erp-account-structure-threshold-event"]
+                        "publishable_events": [
+                            "erp-account-structure-threshold-event"
+                        ]
                     }
                 }
             ]
         }
     ],
-
     "artifact_definitions": [
         {
             "_comment": "=== ARTIFACT: Account Structure Summary ===",
             "id": "erp-account-structure-artifact",
             "name": "Account Structure Summary",
-            "description": { "en": "Aggregates GL accounts by type and subtype. Identifies gaps (no accounts for a subtype) and over-proliferation (too many accounts in one category)." },
-            "source": { "universal_id": "erp-gl-account" },
+            "description": {
+                "en": "Aggregates GL accounts by type and subtype. Identifies gaps (no accounts for a subtype) and over-proliferation (too many accounts in one category)."
+            },
+            "source": {
+                "universal_id": "erp-gl-account"
+            },
             "artifact_universal_id": "erp-account-structure-summary",
             "app_id": "erp-chart-of-accounts-app",
             "dimensions": [
@@ -546,7 +849,10 @@
                     "source": {
                         "type": "RelatorPath",
                         "path": [
-                            { "relator_universal_id": "erp-account-type-rel", "role_name": "type" }
+                            {
+                                "relator_universal_id": "erp-account-type-rel",
+                                "role_name": "type"
+                            }
                         ],
                         "property_id": "erp-account-type-name-prop"
                     },
@@ -559,7 +865,10 @@
                     "source": {
                         "type": "RelatorPath",
                         "path": [
-                            { "relator_universal_id": "erp-account-subtype-rel", "role_name": "subtype" }
+                            {
+                                "relator_universal_id": "erp-account-subtype-rel",
+                                "role_name": "subtype"
+                            }
                         ],
                         "property_id": "erp-account-subtype-name-prop"
                     },
@@ -589,24 +898,32 @@
                     "id": "erp-threshold-high-account-count",
                     "code": "high_account_count",
                     "measure_id": "erp-measure-total-accounts",
-                    "condition": { "operator": "GreaterThan", "value": 20.0 },
+                    "condition": {
+                        "operator": "GreaterThan",
+                        "value": 20.0
+                    },
                     "event_type_id": "erp-account-structure-threshold-event",
                     "state_property_id": "erp-summary-threshold-state-prop",
                     "reset_on": "OnDimensionChange",
                     "use_seed": true
                 }
             ],
-            "materialization": { "strategy": "Eager" },
+            "materialization": {
+                "strategy": "Eager"
+            },
             "use_seed": true
         }
     ],
-
     "foundation_role_assignments": [
         {
             "id": "fra-erp-admin-admin-coa",
             "user_id": "erp-admin",
             "role": "AppAdmin",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-chart-of-accounts-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-chart-of-accounts-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -614,7 +931,11 @@
             "id": "fra-erp-admin-dev-coa",
             "user_id": "erp-admin",
             "role": "AppDeveloper",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-chart-of-accounts-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-chart-of-accounts-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -622,7 +943,11 @@
             "id": "fra-erp-developer-dev-coa",
             "user_id": "erp-developer",
             "role": "AppDeveloper",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-chart-of-accounts-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-chart-of-accounts-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -630,7 +955,11 @@
             "id": "fra-erp-user-user-coa",
             "user_id": "erp-user",
             "role": "AppUser",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-chart-of-accounts-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-chart-of-accounts-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         }

@@ -18,8 +18,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 20,
-                "fallback_language": "en"
+                "max_length": 20
             },
             "use_seed": true
         },
@@ -36,8 +35,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 20,
-                "fallback_language": "en"
+                "max_length": 20
             },
             "use_seed": true
         },
@@ -54,8 +52,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -72,8 +69,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -90,8 +86,7 @@
             },
             "label_schema": {
                 "separator": "",
-                "max_length": 20,
-                "fallback_language": "en"
+                "max_length": 20
             },
             "use_seed": true
         },
@@ -108,8 +103,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -126,8 +120,7 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -144,12 +137,10 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== FUNCTIONAL ROLE: Department Manager ===",
             "id": "erp-fr-budget-dept-manager",
@@ -189,7 +180,6 @@
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== BUDGET APPROVAL PROCESS (specializes base-process) ===",
             "id": "erp-budget-approval",
@@ -203,19 +193,32 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-process" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-budget-dept-review-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-budget-finance-review-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-budget-exec-approval-stage" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "erp-budget" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-process"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "erp-budget-dept-review-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "erp-budget-finance-review-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "erp-budget-exec-approval-stage"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "erp-budget"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== STAGE 1: Department Review (specializes base-stage) ===",
             "id": "erp-budget-dept-review-stage",
@@ -229,12 +232,17 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-budget-dept-review-obligation" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "erp-budget-dept-review-obligation"
+                }
             ],
             "use_seed": true
         },
@@ -251,12 +259,17 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-budget-finance-review-obligation" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "erp-budget-finance-review-obligation"
+                }
             ],
             "use_seed": true
         },
@@ -273,16 +286,20 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-stage" },
-                { "relator_universal_id": "composition-relator", "target_universal_id": "erp-budget-exec-approval-obligation" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-stage"
+                },
+                {
+                    "relator_universal_id": "composition-relator",
+                    "target_universal_id": "erp-budget-exec-approval-obligation"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== OBLIGATION: Department Review Obligation (specializes base-obligation) ===",
             "id": "erp-budget-dept-review-obligation",
@@ -296,12 +313,17 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "erp-fr-budget-dept-manager" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-obligation"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "erp-fr-budget-dept-manager"
+                }
             ],
             "use_seed": true
         },
@@ -318,12 +340,17 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "erp-fr-budget-finance-director" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-obligation"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "erp-fr-budget-finance-director"
+                }
             ],
             "use_seed": true
         },
@@ -340,16 +367,20 @@
             },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "base-obligation" },
-                { "relator_universal_id": "association-relator", "target_universal_id": "erp-fr-budget-cfo" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "base-obligation"
+                },
+                {
+                    "relator_universal_id": "association-relator",
+                    "target_universal_id": "erp-fr-budget-cfo"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== RELATOR: Budget Has Line (composition) ===",
             "id": "erp-budget-has-line-rel",
@@ -362,11 +393,20 @@
                 "en": "Budget contains budget lines. Composition: lines do not exist independently of their budget."
             },
             "roles": [
-                { "name": "composite", "universal_id": "erp-budget" },
-                { "name": "component", "universal_id": "erp-budget-line" }
+                {
+                    "name": "composite",
+                    "universal_id": "erp-budget"
+                },
+                {
+                    "name": "component",
+                    "universal_id": "erp-budget-line"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -382,11 +422,20 @@
                 "en": "Budget is classified by type (Operating, Capital, Project, Department)"
             },
             "roles": [
-                { "name": "budget", "universal_id": "erp-budget" },
-                { "name": "type", "universal_id": "erp-budget-type" }
+                {
+                    "name": "budget",
+                    "universal_id": "erp-budget"
+                },
+                {
+                    "name": "type",
+                    "universal_id": "erp-budget-type"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "attribution-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
             ],
             "use_seed": true
         },
@@ -402,11 +451,20 @@
                 "en": "Budget can have multiple versions. Aggregation: versions survive budget restructuring as historical records."
             },
             "roles": [
-                { "name": "budget", "universal_id": "erp-budget" },
-                { "name": "version", "universal_id": "erp-budget-version" }
+                {
+                    "name": "budget",
+                    "universal_id": "erp-budget"
+                },
+                {
+                    "name": "version",
+                    "universal_id": "erp-budget-version"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "aggregation-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "aggregation-relator"
+                }
             ],
             "use_seed": true
         },
@@ -422,11 +480,20 @@
                 "en": "Version contains immutable version-lines (snapshots). Composition: version-lines exist only as part of their version."
             },
             "roles": [
-                { "name": "composite", "universal_id": "erp-budget-version" },
-                { "name": "component", "universal_id": "erp-budget-version-line" }
+                {
+                    "name": "composite",
+                    "universal_id": "erp-budget-version"
+                },
+                {
+                    "name": "component",
+                    "universal_id": "erp-budget-version-line"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -442,11 +509,20 @@
                 "en": "Transfer draws funds from this budget line (source of funds)"
             },
             "roles": [
-                { "name": "transfer", "universal_id": "erp-budget-transfer" },
-                { "name": "source_line", "universal_id": "erp-budget-line" }
+                {
+                    "name": "transfer",
+                    "universal_id": "erp-budget-transfer"
+                },
+                {
+                    "name": "source_line",
+                    "universal_id": "erp-budget-line"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
             ],
             "use_seed": true
         },
@@ -462,15 +538,23 @@
                 "en": "Transfer deposits funds to this budget line (destination of funds)"
             },
             "roles": [
-                { "name": "transfer", "universal_id": "erp-budget-transfer" },
-                { "name": "target_line", "universal_id": "erp-budget-line" }
+                {
+                    "name": "transfer",
+                    "universal_id": "erp-budget-transfer"
+                },
+                {
+                    "name": "target_line",
+                    "universal_id": "erp-budget-line"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
             ],
             "use_seed": true
         },
-
         {
             "_comment": "=== COMPOSITION RELATOR: Process -> Dept Review Stage ===",
             "id": "erp-budget-approval-has-dept-review",
@@ -480,11 +564,20 @@
                 "en": "Approval Has Dept Review"
             },
             "roles": [
-                { "name": "process", "universal_id": "erp-budget-approval" },
-                { "name": "stage", "universal_id": "erp-budget-dept-review-stage" }
+                {
+                    "name": "process",
+                    "universal_id": "erp-budget-approval"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "erp-budget-dept-review-stage"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -497,11 +590,20 @@
                 "en": "Approval Has Finance Review"
             },
             "roles": [
-                { "name": "process", "universal_id": "erp-budget-approval" },
-                { "name": "stage", "universal_id": "erp-budget-finance-review-stage" }
+                {
+                    "name": "process",
+                    "universal_id": "erp-budget-approval"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "erp-budget-finance-review-stage"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -514,11 +616,20 @@
                 "en": "Approval Has Exec Approval"
             },
             "roles": [
-                { "name": "process", "universal_id": "erp-budget-approval" },
-                { "name": "stage", "universal_id": "erp-budget-exec-approval-stage" }
+                {
+                    "name": "process",
+                    "universal_id": "erp-budget-approval"
+                },
+                {
+                    "name": "stage",
+                    "universal_id": "erp-budget-exec-approval-stage"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -531,11 +642,20 @@
                 "en": "Dept Review Has Obligation"
             },
             "roles": [
-                { "name": "stage", "universal_id": "erp-budget-dept-review-stage" },
-                { "name": "obligation", "universal_id": "erp-budget-dept-review-obligation" }
+                {
+                    "name": "stage",
+                    "universal_id": "erp-budget-dept-review-stage"
+                },
+                {
+                    "name": "obligation",
+                    "universal_id": "erp-budget-dept-review-obligation"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -548,11 +668,20 @@
                 "en": "Finance Review Has Obligation"
             },
             "roles": [
-                { "name": "stage", "universal_id": "erp-budget-finance-review-stage" },
-                { "name": "obligation", "universal_id": "erp-budget-finance-review-obligation" }
+                {
+                    "name": "stage",
+                    "universal_id": "erp-budget-finance-review-stage"
+                },
+                {
+                    "name": "obligation",
+                    "universal_id": "erp-budget-finance-review-obligation"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         },
@@ -565,11 +694,20 @@
                 "en": "Exec Approval Has Obligation"
             },
             "roles": [
-                { "name": "stage", "universal_id": "erp-budget-exec-approval-stage" },
-                { "name": "obligation", "universal_id": "erp-budget-exec-approval-obligation" }
+                {
+                    "name": "stage",
+                    "universal_id": "erp-budget-exec-approval-stage"
+                },
+                {
+                    "name": "obligation",
+                    "universal_id": "erp-budget-exec-approval-obligation"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "composition-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "composition-relator"
+                }
             ],
             "use_seed": true
         }
@@ -583,14 +721,22 @@
                 "en": "Status Name"
             },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -607,14 +753,22 @@
                 "en": "Type Name"
             },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -623,7 +777,6 @@
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Budget: Name ===",
             "id": "erp-budget-name-prop",
@@ -635,11 +788,20 @@
                 "en": "Human-readable budget name (e.g., Engineering Q3 2026 Operating Budget)"
             },
             "property_schema": {
-                "predicates": ["name"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -659,14 +821,22 @@
                 "en": "Aggregate of all budget line allocations. Computed via erp-budget-total-calc."
             },
             "property_schema": {
-                "predicates": ["total", "amount"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "total",
+                    "amount"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -682,14 +852,22 @@
                 "en": "Date when budget status transitioned to Approved. Null until approval."
             },
             "property_schema": {
-                "predicates": ["date", "approved"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "date",
+                    "approved"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-timestamp"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -705,15 +883,22 @@
                 "en": "Current lifecycle state of the budget"
             },
             "property_schema": {
-                "predicates": ["status"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "reference_universal_id": "erp-budget-status",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -733,16 +918,25 @@
                 "en": "Free-text notes, justification, or commentary"
             },
             "property_schema": {
-                "predicates": ["notes", "comment"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "notes",
+                    "comment"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Budget Line: Description ===",
             "id": "erp-budgetline-description-prop",
@@ -754,11 +948,21 @@
                 "en": "Human-readable description of the budget line (e.g., Cloud Infrastructure)"
             },
             "property_schema": {
-                "predicates": ["description", "name"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "description",
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -778,14 +982,22 @@
                 "en": "Planned allocation amount. Input property."
             },
             "property_schema": {
-                "predicates": ["allocated", "amount"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "allocated",
+                    "amount"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -801,14 +1013,22 @@
                 "en": "Amount committed via POs and contracts. Input property (updated from Layer 2)."
             },
             "property_schema": {
-                "predicates": ["committed", "amount"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "committed",
+                    "amount"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -824,14 +1044,22 @@
                 "en": "Actual expenditure. Input property (updated from Layer 2)."
             },
             "property_schema": {
-                "predicates": ["spent", "amount"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "spent",
+                    "amount"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -847,14 +1075,22 @@
                 "en": "Computed: allocated - committed - spent. Output of erp-budgetline-remaining-calc."
             },
             "property_schema": {
-                "predicates": ["remaining", "amount"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "remaining",
+                    "amount"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -870,14 +1106,22 @@
                 "en": "Computed: allocated - spent. Output of erp-budgetline-variance-calc."
             },
             "property_schema": {
-                "predicates": ["variance", "amount"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "variance",
+                    "amount"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -893,19 +1137,26 @@
                 "en": "Computed: (spent / allocated) * 100. Output of erp-budgetline-utilization-calc."
             },
             "property_schema": {
-                "predicates": ["utilization", "percentage"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "utilization",
+                    "percentage"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-ratio"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Budget Version: Version Code ===",
             "id": "erp-version-code-prop",
@@ -917,14 +1168,22 @@
                 "en": "Version identifier: V1, V2, ORIGINAL, REVISED, FINAL"
             },
             "property_schema": {
-                "predicates": ["code", "identifier"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -944,14 +1203,22 @@
                 "en": "Date this version was created or finalized"
             },
             "property_schema": {
-                "predicates": ["date", "version"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "date",
+                    "version"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-timestamp"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -967,16 +1234,25 @@
                 "en": "Whether this is the current active version. Only one version per budget should be active."
             },
             "property_schema": {
-                "predicates": ["active", "status"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "active",
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Boolean" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Version Line: Description ===",
             "id": "erp-versionline-description-prop",
@@ -988,11 +1264,21 @@
                 "en": "Copied from the source budget line description at snapshot time"
             },
             "property_schema": {
-                "predicates": ["description", "name"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "description",
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -1012,14 +1298,22 @@
                 "en": "Allocated amount at the time the version was created. Immutable."
             },
             "property_schema": {
-                "predicates": ["allocated", "amount"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "allocated",
+                    "amount"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1035,14 +1329,22 @@
                 "en": "Committed amount at snapshot time. Immutable."
             },
             "property_schema": {
-                "predicates": ["committed", "amount"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "committed",
+                    "amount"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1058,14 +1360,22 @@
                 "en": "Spent amount at snapshot time. Immutable."
             },
             "property_schema": {
-                "predicates": ["spent", "amount"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "spent",
+                    "amount"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1081,19 +1391,26 @@
                 "en": "Seed ID or label of the GL account. Denormalized from the source line relator to preserve the snapshot."
             },
             "property_schema": {
-                "predicates": ["account", "reference"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "account",
+                    "reference"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Transfer: Amount ===",
             "id": "erp-transfer-amount-prop",
@@ -1105,14 +1422,22 @@
                 "en": "Amount being reallocated between budget lines"
             },
             "property_schema": {
-                "predicates": ["amount", "transfer"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "amount",
+                    "transfer"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -1133,14 +1458,22 @@
                 "en": "When the transfer was executed or requested"
             },
             "property_schema": {
-                "predicates": ["date", "transfer"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "date",
+                    "transfer"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-timestamp"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1156,11 +1489,21 @@
                 "en": "Justification for the reallocation"
             },
             "property_schema": {
-                "predicates": ["reason", "justification"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "reason",
+                    "justification"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -1180,19 +1523,25 @@
                 "en": "Categorical values: Pending, Approved, Rejected"
             },
             "property_schema": {
-                "predicates": ["status"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Artifact Summary: Department Dimension ===",
             "id": "erp-bu-artifact-dept-prop",
@@ -1201,14 +1550,22 @@
                 "en": "Department"
             },
             "property_schema": {
-                "predicates": ["department", "dimension"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "department",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -1225,14 +1582,22 @@
                 "en": "Account Type"
             },
             "property_schema": {
-                "predicates": ["account_type", "dimension"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "account_type",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1245,14 +1610,22 @@
                 "en": "Fiscal Period"
             },
             "property_schema": {
-                "predicates": ["period", "dimension"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "period",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1265,14 +1638,23 @@
                 "en": "Total Allocated"
             },
             "property_schema": {
-                "predicates": ["allocated", "total", "measure"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "allocated",
+                    "total",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1285,14 +1667,23 @@
                 "en": "Total Spent"
             },
             "property_schema": {
-                "predicates": ["spent", "total", "measure"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "spent",
+                    "total",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1305,14 +1696,23 @@
                 "en": "Total Remaining"
             },
             "property_schema": {
-                "predicates": ["remaining", "total", "measure"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "remaining",
+                    "total",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1325,14 +1725,23 @@
                 "en": "Avg Utilization %"
             },
             "property_schema": {
-                "predicates": ["utilization", "average", "measure"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "utilization",
+                    "average",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-ratio"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1345,14 +1754,23 @@
                 "en": "Total Variance"
             },
             "property_schema": {
-                "predicates": ["variance", "total", "measure"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "variance",
+                    "total",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1365,15 +1783,26 @@
                 "en": "Alert State"
             },
             "property_schema": {
-                "predicates": ["threshold", "state"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "threshold",
+                    "state"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false,
-                        "allowed_values": ["not_crossed", "crossed"]
+                        "allowed_values": [
+                            "not_crossed",
+                            "crossed"
+                        ]
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1391,11 +1820,28 @@
                 "en": "Emitted when a budget completes the approval process and status transitions to Approved"
             },
             "payload_schema": [
-                { "name": "budget_id", "field_type": "uuid" },
-                { "name": "budget_name", "field_type": "string" },
-                { "name": "total_amount", "field_type": "measurement", "measurement_frame": "Currency" },
-                { "name": "approved_by", "field_type": "uuid" },
-                { "name": "approved_date", "field_type": "measurement", "measurement_frame": "Timestamp" }
+                {
+                    "name": "budget_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "budget_name",
+                    "field_type": "string"
+                },
+                {
+                    "name": "total_amount",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                },
+                {
+                    "name": "approved_by",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "approved_date",
+                    "field_type": "measurement",
+                    "measurement_frame": "Timestamp"
+                }
             ],
             "use_seed": true
         },
@@ -1410,8 +1856,15 @@
                 "en": "Emitted when a budget line utilization exceeds the configured threshold (90%)"
             },
             "payload_schema": [
-                { "name": "artifact_instance_id", "field_type": "uuid" },
-                { "name": "measure_value", "field_type": "measurement", "measurement_frame": "Ratio" }
+                {
+                    "name": "artifact_instance_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "measure_value",
+                    "field_type": "measurement",
+                    "measurement_frame": "Ratio"
+                }
             ],
             "use_seed": true
         },
@@ -1426,11 +1879,27 @@
                 "en": "Emitted when a budget transfer between lines is approved and executed"
             },
             "payload_schema": [
-                { "name": "transfer_id", "field_type": "uuid" },
-                { "name": "source_line_id", "field_type": "uuid" },
-                { "name": "target_line_id", "field_type": "uuid" },
-                { "name": "amount", "field_type": "measurement", "measurement_frame": "Currency" },
-                { "name": "reason", "field_type": "string" }
+                {
+                    "name": "transfer_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "source_line_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "target_line_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "amount",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                },
+                {
+                    "name": "reason",
+                    "field_type": "string"
+                }
             ],
             "use_seed": true
         }
@@ -1448,18 +1917,39 @@
                 "en": "Computes remaining = allocated - committed - spent for each budget line"
             },
             "inputs": [
-                { "source": "property", "variable_name": "allocated", "property_id": "erp-budgetline-allocated-prop" },
-                { "source": "property", "variable_name": "committed", "property_id": "erp-budgetline-committed-prop" },
-                { "source": "property", "variable_name": "spent", "property_id": "erp-budgetline-spent-prop" }
+                {
+                    "source": "property",
+                    "variable_name": "allocated",
+                    "property_id": "erp-budgetline-allocated-prop"
+                },
+                {
+                    "source": "property",
+                    "variable_name": "committed",
+                    "property_id": "erp-budgetline-committed-prop"
+                },
+                {
+                    "source": "property",
+                    "variable_name": "spent",
+                    "property_id": "erp-budgetline-spent-prop"
+                }
             ],
             "formula": "let a = allocated.value; let c = committed.value; let s = spent.value; a - c - s",
             "output": {
                 "target_property_id": "erp-budgetline-remaining-prop"
             },
             "trigger_conditions": [
-                { "type": "PropertyChange", "property_id": "erp-budgetline-allocated-prop" },
-                { "type": "PropertyChange", "property_id": "erp-budgetline-committed-prop" },
-                { "type": "PropertyChange", "property_id": "erp-budgetline-spent-prop" }
+                {
+                    "type": "PropertyChange",
+                    "property_id": "erp-budgetline-allocated-prop"
+                },
+                {
+                    "type": "PropertyChange",
+                    "property_id": "erp-budgetline-committed-prop"
+                },
+                {
+                    "type": "PropertyChange",
+                    "property_id": "erp-budgetline-spent-prop"
+                }
             ],
             "priority": "Normal",
             "use_seed": true
@@ -1476,16 +1966,30 @@
                 "en": "Computes variance = allocated - spent for each budget line"
             },
             "inputs": [
-                { "source": "property", "variable_name": "allocated", "property_id": "erp-budgetline-allocated-prop" },
-                { "source": "property", "variable_name": "spent", "property_id": "erp-budgetline-spent-prop" }
+                {
+                    "source": "property",
+                    "variable_name": "allocated",
+                    "property_id": "erp-budgetline-allocated-prop"
+                },
+                {
+                    "source": "property",
+                    "variable_name": "spent",
+                    "property_id": "erp-budgetline-spent-prop"
+                }
             ],
             "formula": "let a = allocated.value; let s = spent.value; a - s",
             "output": {
                 "target_property_id": "erp-budgetline-variance-prop"
             },
             "trigger_conditions": [
-                { "type": "PropertyChange", "property_id": "erp-budgetline-allocated-prop" },
-                { "type": "PropertyChange", "property_id": "erp-budgetline-spent-prop" }
+                {
+                    "type": "PropertyChange",
+                    "property_id": "erp-budgetline-allocated-prop"
+                },
+                {
+                    "type": "PropertyChange",
+                    "property_id": "erp-budgetline-spent-prop"
+                }
             ],
             "priority": "Normal",
             "use_seed": true
@@ -1502,16 +2006,30 @@
                 "en": "Computes utilization percentage = (spent / allocated) * 100, returns 0 if allocated is zero"
             },
             "inputs": [
-                { "source": "property", "variable_name": "allocated", "property_id": "erp-budgetline-allocated-prop" },
-                { "source": "property", "variable_name": "spent", "property_id": "erp-budgetline-spent-prop" }
+                {
+                    "source": "property",
+                    "variable_name": "allocated",
+                    "property_id": "erp-budgetline-allocated-prop"
+                },
+                {
+                    "source": "property",
+                    "variable_name": "spent",
+                    "property_id": "erp-budgetline-spent-prop"
+                }
             ],
             "formula": "let a = allocated.value; let s = spent.value; if a > 0.0 { (s / a) * 100.0 } else { 0.0 }",
             "output": {
                 "target_property_id": "erp-budgetline-utilization-prop"
             },
             "trigger_conditions": [
-                { "type": "PropertyChange", "property_id": "erp-budgetline-allocated-prop" },
-                { "type": "PropertyChange", "property_id": "erp-budgetline-spent-prop" }
+                {
+                    "type": "PropertyChange",
+                    "property_id": "erp-budgetline-allocated-prop"
+                },
+                {
+                    "type": "PropertyChange",
+                    "property_id": "erp-budgetline-spent-prop"
+                }
             ],
             "priority": "Normal",
             "use_seed": true
@@ -1542,9 +2060,20 @@
                 "target_property_id": "erp-budget-total-amount-prop"
             },
             "trigger_conditions": [
-                { "type": "PropertyChange", "property_id": "erp-budgetline-allocated-prop" },
-                { "type": "RelatorLifecycle", "relator_universal_id": "erp-budget-has-line-rel", "lifecycle": "Created" },
-                { "type": "RelatorLifecycle", "relator_universal_id": "erp-budget-has-line-rel", "lifecycle": "Deleted" }
+                {
+                    "type": "PropertyChange",
+                    "property_id": "erp-budgetline-allocated-prop"
+                },
+                {
+                    "type": "RelatorLifecycle",
+                    "relator_universal_id": "erp-budget-has-line-rel",
+                    "lifecycle": "Created"
+                },
+                {
+                    "type": "RelatorLifecycle",
+                    "relator_universal_id": "erp-budget-has-line-rel",
+                    "lifecycle": "Deleted"
+                }
             ],
             "priority": "Normal",
             "use_seed": true
@@ -1759,7 +2288,11 @@
             "id": "fra-erp-admin-admin-budget",
             "user_id": "erp-admin",
             "role": "AppAdmin",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-budget-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-budget-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -1767,7 +2300,11 @@
             "id": "fra-erp-admin-dev-budget",
             "user_id": "erp-admin",
             "role": "AppDeveloper",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-budget-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-budget-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -1775,7 +2312,11 @@
             "id": "fra-erp-developer-dev-budget",
             "user_id": "erp-developer",
             "role": "AppDeveloper",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-budget-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-budget-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -1783,7 +2324,11 @@
             "id": "fra-erp-user-user-budget",
             "user_id": "erp-user",
             "role": "AppUser",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-budget-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-budget-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         }

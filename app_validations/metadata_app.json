@@ -1,36 +1,40 @@
 {
     "_comment": "=== APP VALIDATIONS: Comprehensive Validation Feature Showcase ===",
     "_description": "Demonstrates ALL validation features: uniqueness constraints (single/composite), cross-field rules (LessThan, DateBefore, AtLeastOnePresent, ExactlyOnePresent, Implies), conditional-required (PropertyEquals, PropertyPresent), InstanceRefs with target type validation, referential actions (Restrict/SetNull/NoAction), immutability, pattern validation, measurement bounds, and reactive computations.",
-
     "organizations": [
         {
             "id": "model1-testing-org",
-            "label": { "en": "Model1 Testing Org" },
+            "label": {
+                "en": "Model1 Testing Org"
+            },
             "use_seed": true
         }
     ],
-
     "tenants": [
         {
             "id": "model1-testing-tenant",
             "organization_id": "model1-testing-org",
-            "label": { "en": "Model1 Testing Tenant" },
+            "label": {
+                "en": "Model1 Testing Tenant"
+            },
             "use_seed": true
         }
     ],
-
     "universals": [
         {
             "_comment": "=== ENUMERATION: Contract Status ===",
             "id": "val-contract-status",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Contract Status" },
-            "description": { "en": "Enumeration of contract lifecycle statuses: DRAFT, ACTIVE, APPROVED, TERMINATED" },
+            "label": {
+                "en": "Contract Status"
+            },
+            "description": {
+                "en": "Enumeration of contract lifecycle statuses: DRAFT, ACTIVE, APPROVED, TERMINATED"
+            },
             "label_schema": {
                 "separator": "",
-                "max_length": 20,
-                "fallback_language": "en"
+                "max_length": 20
             },
             "use_seed": true
         },
@@ -39,12 +43,15 @@
             "id": "val-payment-method",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Payment Method" },
-            "description": { "en": "Enumeration of payment methods: WIRE, CHECK, CARD" },
+            "label": {
+                "en": "Payment Method"
+            },
+            "description": {
+                "en": "Enumeration of payment methods: WIRE, CHECK, CARD"
+            },
             "label_schema": {
                 "separator": "",
-                "max_length": 20,
-                "fallback_language": "en"
+                "max_length": 20
             },
             "use_seed": true
         },
@@ -53,18 +60,25 @@
             "id": "val-vendor",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Vendor" },
-            "description": { "en": "A vendor providing goods or services. Has unique vendor code." },
+            "label": {
+                "en": "Vendor"
+            },
+            "description": {
+                "en": "A vendor providing goods or services. Has unique vendor code."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "unique_constraints": [
                 {
                     "id": "val-vendor-code-unique",
-                    "label": { "en": "Vendor code must be unique" },
-                    "property_ids": ["val-vendor-code-prop"],
+                    "label": {
+                        "en": "Vendor code must be unique"
+                    },
+                    "property_ids": [
+                        "val-vendor-code-prop"
+                    ],
                     "scope": "Tenant",
                     "null_policy": "IgnoreMissing",
                     "use_seed": true
@@ -79,19 +93,26 @@
             "id": "val-contract",
             "temporal_nature": "Perdurant",
             "meta_category": "Kind",
-            "label": { "en": "Contract" },
-            "description": { "en": "A service contract with comprehensive validation: unique number, date ordering, conditional fields, cross-field rules, InstanceRefs, immutability." },
+            "label": {
+                "en": "Contract"
+            },
+            "description": {
+                "en": "A service contract with comprehensive validation: unique number, date ordering, conditional fields, cross-field rules, InstanceRefs, immutability."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "unique_constraints": [
                 {
                     "_comment": "Single-field uniqueness on contract number",
                     "id": "val-contract-number-unique",
-                    "label": { "en": "Contract number must be unique" },
-                    "property_ids": ["val-contract-number-prop"],
+                    "label": {
+                        "en": "Contract number must be unique"
+                    },
+                    "property_ids": [
+                        "val-contract-number-prop"
+                    ],
                     "scope": "Tenant",
                     "null_policy": "IgnoreMissing",
                     "use_seed": true
@@ -99,8 +120,13 @@
                 {
                     "_comment": "Composite uniqueness: vendor + year must be unique",
                     "id": "val-contract-vendor-year-unique",
-                    "label": { "en": "One contract per vendor per year" },
-                    "property_ids": ["val-contract-vendor-ref-prop", "val-contract-year-prop"],
+                    "label": {
+                        "en": "One contract per vendor per year"
+                    },
+                    "property_ids": [
+                        "val-contract-vendor-ref-prop",
+                        "val-contract-year-prop"
+                    ],
                     "scope": "Tenant",
                     "null_policy": "IgnoreMissing",
                     "use_seed": true
@@ -110,7 +136,9 @@
                 {
                     "_comment": "Start date must be before end date",
                     "id": "val-start-before-end",
-                    "label": { "en": "Start date must be before end date" },
+                    "label": {
+                        "en": "Start date must be before end date"
+                    },
                     "rule_type": {
                         "type": "DateBefore",
                         "earlier_property_id": "val-contract-start-prop",
@@ -122,7 +150,9 @@
                 {
                     "_comment": "Min value must be less than max value",
                     "id": "val-min-less-than-max",
-                    "label": { "en": "Minimum value must be less than maximum value" },
+                    "label": {
+                        "en": "Minimum value must be less than maximum value"
+                    },
                     "rule_type": {
                         "type": "LessThan",
                         "left_property_id": "val-contract-min-value-prop",
@@ -134,10 +164,15 @@
                 {
                     "_comment": "At least phone or email must be provided",
                     "id": "val-contact-required",
-                    "label": { "en": "Contact phone or email required" },
+                    "label": {
+                        "en": "Contact phone or email required"
+                    },
                     "rule_type": {
                         "type": "AtLeastOnePresent",
-                        "property_ids": ["val-contract-phone-prop", "val-contract-email-prop"]
+                        "property_ids": [
+                            "val-contract-phone-prop",
+                            "val-contract-email-prop"
+                        ]
                     },
                     "severity": "Error",
                     "use_seed": true
@@ -145,10 +180,16 @@
                 {
                     "_comment": "Exactly one payment method (wire XOR check XOR card)",
                     "id": "val-one-payment-method",
-                    "label": { "en": "Exactly one payment method" },
+                    "label": {
+                        "en": "Exactly one payment method"
+                    },
                     "rule_type": {
                         "type": "ExactlyOnePresent",
-                        "property_ids": ["val-contract-wire-prop", "val-contract-check-prop", "val-contract-card-prop"]
+                        "property_ids": [
+                            "val-contract-wire-prop",
+                            "val-contract-check-prop",
+                            "val-contract-card-prop"
+                        ]
                     },
                     "severity": "Error",
                     "use_seed": true
@@ -156,7 +197,9 @@
                 {
                     "_comment": "If SLA tier is set, SLA terms must also be set",
                     "id": "val-sla-implies-terms",
-                    "label": { "en": "SLA tier implies SLA terms" },
+                    "label": {
+                        "en": "SLA tier implies SLA terms"
+                    },
                     "rule_type": {
                         "type": "Implies",
                         "if_property_id": "val-contract-sla-tier-prop",
@@ -170,31 +213,41 @@
                 {
                     "_comment": "Approval date required when status = APPROVED",
                     "id": "val-approval-date-required",
-                    "label": { "en": "Approval date required when approved" },
+                    "label": {
+                        "en": "Approval date required when approved"
+                    },
                     "target_property_id": "val-contract-approval-date-prop",
                     "condition": {
                         "type": "PropertyEquals",
                         "property_id": "val-contract-status-prop",
-                        "value": { "Categorical": "APPROVED" }
+                        "value": {
+                            "Categorical": "APPROVED"
+                        }
                     },
                     "use_seed": true
                 },
                 {
                     "_comment": "Termination reason required when status = TERMINATED",
                     "id": "val-termination-reason-required",
-                    "label": { "en": "Termination reason required when terminated" },
+                    "label": {
+                        "en": "Termination reason required when terminated"
+                    },
                     "target_property_id": "val-contract-termination-reason-prop",
                     "condition": {
                         "type": "PropertyEquals",
                         "property_id": "val-contract-status-prop",
-                        "value": { "Categorical": "TERMINATED" }
+                        "value": {
+                            "Categorical": "TERMINATED"
+                        }
                     },
                     "use_seed": true
                 },
                 {
                     "_comment": "Manager name required when department is set",
                     "id": "val-manager-when-dept",
-                    "label": { "en": "Manager required when department is set" },
+                    "label": {
+                        "en": "Manager required when department is set"
+                    },
                     "target_property_id": "val-contract-manager-prop",
                     "condition": {
                         "type": "PropertyPresent",
@@ -210,12 +263,15 @@
             "id": "val-contract-item",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Contract Line Item" },
-            "description": { "en": "A line item on a contract with quantity and unit price. Line total is computed reactively." },
+            "label": {
+                "en": "Contract Line Item"
+            },
+            "description": {
+                "en": "A line item on a contract with quantity and unit price. Line total is computed reactively."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -224,12 +280,33 @@
             "id": "val-contract-vendor-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Contract Vendor" },
-            "description": { "en": "Links a contract to its vendor. Binary relator with exact cardinality: one contract, one vendor." },
-            "arity": { "min": 2, "max": 2 },
+            "label": {
+                "en": "Contract Vendor"
+            },
+            "description": {
+                "en": "Links a contract to its vendor. Binary relator with exact cardinality: one contract, one vendor."
+            },
+            "arity": {
+                "min": 2,
+                "max": 2
+            },
             "roles": [
-                { "name": "contract", "universal_id": "val-contract", "cardinality": { "min": 1, "max": 1 } },
-                { "name": "vendor", "universal_id": "val-vendor", "cardinality": { "min": 1, "max": 1 } }
+                {
+                    "name": "contract",
+                    "universal_id": "val-contract",
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                },
+                {
+                    "name": "vendor",
+                    "universal_id": "val-vendor",
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                }
             ],
             "taxonomy": [
                 {
@@ -244,12 +321,32 @@
             "id": "val-contract-item-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Contract Item" },
-            "description": { "en": "Links a contract to its line items. One contract, one or more items." },
-            "arity": { "min": 2, "max": 2 },
+            "label": {
+                "en": "Contract Item"
+            },
+            "description": {
+                "en": "Links a contract to its line items. One contract, one or more items."
+            },
+            "arity": {
+                "min": 2,
+                "max": 2
+            },
             "roles": [
-                { "name": "contract", "universal_id": "val-contract", "cardinality": { "min": 1, "max": 1 } },
-                { "name": "item", "universal_id": "val-contract-item", "cardinality": { "min": 1 } }
+                {
+                    "name": "contract",
+                    "universal_id": "val-contract",
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
+                },
+                {
+                    "name": "item",
+                    "universal_id": "val-contract-item",
+                    "cardinality": {
+                        "min": 1
+                    }
+                }
             ],
             "taxonomy": [
                 {
@@ -260,103 +357,209 @@
             "use_seed": true
         }
     ],
-
     "property_definitions": [
         {
             "_comment": "=== ENUM PROPERTIES: Contract Status ===",
             "id": "val-status-name-prop",
             "universal_id": "val-contract-status",
-            "label": { "en": "Status Name" },
+            "label": {
+                "en": "Status Name"
+            },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 1, "max": 1 },
-                    "validation_rules": ["Required"]
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    },
+                    "validation_rules": [
+                        "Required"
+                    ]
                 }
             },
-            "label_options": { "participates": true, "sequence": 1 },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
             "use_seed": true
         },
         {
             "_comment": "=== ENUM PROPERTIES: Payment Method ===",
             "id": "val-method-name-prop",
             "universal_id": "val-payment-method",
-            "label": { "en": "Method Name" },
+            "label": {
+                "en": "Method Name"
+            },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 1, "max": 1 },
-                    "validation_rules": ["Required"]
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    },
+                    "validation_rules": [
+                        "Required"
+                    ]
                 }
             },
-            "label_options": { "participates": true, "sequence": 1 },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
             "use_seed": true
         },
         {
             "_comment": "=== VENDOR PROPERTIES ===",
             "id": "val-vendor-code-prop",
             "universal_id": "val-vendor",
-            "label": { "en": "Vendor Code" },
+            "label": {
+                "en": "Vendor Code"
+            },
             "property_schema": {
-                "predicates": ["code", "identifier"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual", "min_length": 3, "max_length": 10, "pattern": "^[A-Z0-9]{3,10}$" },
-                    "cardinality": { "min": 1, "max": 1 },
-                    "validation_rules": ["Required", "Immutable"]
+                    "property_value_type": {
+                        "type": "Textual",
+                        "min_length": 3,
+                        "max_length": 10,
+                        "pattern": "^[A-Z0-9]{3,10}$"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    },
+                    "validation_rules": [
+                        "Required",
+                        "Immutable"
+                    ]
                 }
             },
-            "label_options": { "participates": true, "sequence": 1, "prefix": "#" },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "#"
+            },
             "use_seed": true
         },
         {
             "id": "val-vendor-name-prop",
             "universal_id": "val-vendor",
-            "label": { "en": "Vendor Name" },
+            "label": {
+                "en": "Vendor Name"
+            },
             "property_schema": {
-                "predicates": ["name"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual", "min_length": 1, "max_length": 100 },
-                    "cardinality": { "min": 1, "max": 1 },
-                    "validation_rules": ["Required"]
+                    "property_value_type": {
+                        "type": "Textual",
+                        "min_length": 1,
+                        "max_length": 100
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    },
+                    "validation_rules": [
+                        "Required"
+                    ]
                 }
             },
-            "label_options": { "participates": true, "sequence": 2 },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
             "use_seed": true
         },
-
         {
             "_comment": "=== CONTRACT PROPERTIES ===",
             "id": "val-contract-number-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Contract Number" },
+            "label": {
+                "en": "Contract Number"
+            },
             "property_schema": {
-                "predicates": ["identifier", "number"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "identifier",
+                    "number"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual", "min_length": 5, "max_length": 20, "pattern": "^CTR-[0-9]{4}-[0-9]{4,6}$" },
-                    "cardinality": { "min": 1, "max": 1 },
-                    "validation_rules": ["Required", "Immutable"]
+                    "property_value_type": {
+                        "type": "Textual",
+                        "min_length": 5,
+                        "max_length": 20,
+                        "pattern": "^CTR-[0-9]{4}-[0-9]{4,6}$"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    },
+                    "validation_rules": [
+                        "Required",
+                        "Immutable"
+                    ]
                 }
             },
-            "label_options": { "participates": true, "sequence": 1, "prefix": "#" },
+            "label_options": {
+                "participates": true,
+                "sequence": 1,
+                "prefix": "#"
+            },
             "use_seed": true
         },
         {
             "id": "val-contract-year-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Contract Year" },
+            "label": {
+                "en": "Contract Year"
+            },
             "property_schema": {
-                "predicates": ["year", "period"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "year",
+                    "period"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -364,30 +567,62 @@
         {
             "id": "val-contract-status-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Status" },
+            "label": {
+                "en": "Status"
+            },
             "property_schema": {
-                "predicates": ["status", "state"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "status",
+                    "state"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical", "reference_universal_id": "val-contract-status" },
-                    "cardinality": { "min": 1, "max": 1 },
-                    "validation_rules": ["Required"]
+                    "property_value_type": {
+                        "type": "Categorical",
+                        "reference_universal_id": "val-contract-status"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    },
+                    "validation_rules": [
+                        "Required"
+                    ]
                 }
             },
-            "label_options": { "participates": true, "sequence": 2 },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
             "use_seed": true
         },
         {
             "id": "val-contract-start-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Start Date" },
-            "description": { "en": "Contract start date. Must not be more than 1 year in the past." },
+            "label": {
+                "en": "Start Date"
+            },
+            "description": {
+                "en": "Contract start date. Must not be more than 1 year in the past."
+            },
             "property_schema": {
-                "predicates": ["start", "date"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "start",
+                    "date"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Date" },
-                    "cardinality": { "min": 0, "max": 1 },
+                    "property_value_type": {
+                        "type": "Date"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    },
                     "date_constraints": {
                         "relative_min": "today-1y"
                     }
@@ -398,14 +633,28 @@
         {
             "id": "val-contract-end-prop",
             "universal_id": "val-contract",
-            "label": { "en": "End Date" },
-            "description": { "en": "Contract end date. Must not be more than 5 years in the future." },
+            "label": {
+                "en": "End Date"
+            },
+            "description": {
+                "en": "Contract end date. Must not be more than 5 years in the future."
+            },
             "property_schema": {
-                "predicates": ["end", "date"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "end",
+                    "date"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Date" },
-                    "cardinality": { "min": 0, "max": 1 },
+                    "property_value_type": {
+                        "type": "Date"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    },
                     "date_constraints": {
                         "relative_max": "today+5y"
                     }
@@ -416,13 +665,27 @@
         {
             "id": "val-contract-min-value-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Minimum Value" },
+            "label": {
+                "en": "Minimum Value"
+            },
             "property_schema": {
-                "predicates": ["minimum", "value"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "minimum",
+                    "value"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-currency", "min": 0.0 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency",
+                        "min": 0.0
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -430,13 +693,27 @@
         {
             "id": "val-contract-max-value-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Maximum Value" },
+            "label": {
+                "en": "Maximum Value"
+            },
             "property_schema": {
-                "predicates": ["maximum", "value"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "maximum",
+                    "value"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-currency", "min": 0.0 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency",
+                        "min": 0.0
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -444,13 +721,27 @@
         {
             "id": "val-contract-phone-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Contact Phone" },
+            "label": {
+                "en": "Contact Phone"
+            },
             "property_schema": {
-                "predicates": ["phone", "contact"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "phone",
+                    "contact"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual", "min_length": 7, "max_length": 20 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual",
+                        "min_length": 7,
+                        "max_length": 20
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -458,13 +749,27 @@
         {
             "id": "val-contract-email-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Contact Email" },
+            "label": {
+                "en": "Contact Email"
+            },
             "property_schema": {
-                "predicates": ["email", "contact"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "email",
+                    "contact"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual", "min_length": 5, "max_length": 100 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual",
+                        "min_length": 5,
+                        "max_length": 100
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -472,13 +777,26 @@
         {
             "id": "val-contract-wire-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Wire Transfer Details" },
+            "label": {
+                "en": "Wire Transfer Details"
+            },
             "property_schema": {
-                "predicates": ["payment", "wire"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "payment",
+                    "wire"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual", "max_length": 200 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual",
+                        "max_length": 200
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -486,13 +804,26 @@
         {
             "id": "val-contract-check-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Check Payment Details" },
+            "label": {
+                "en": "Check Payment Details"
+            },
             "property_schema": {
-                "predicates": ["payment", "check"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "payment",
+                    "check"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual", "max_length": 200 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual",
+                        "max_length": 200
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -500,13 +831,26 @@
         {
             "id": "val-contract-card-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Card Payment Details" },
+            "label": {
+                "en": "Card Payment Details"
+            },
             "property_schema": {
-                "predicates": ["payment", "card"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "payment",
+                    "card"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual", "max_length": 200 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual",
+                        "max_length": 200
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -514,13 +858,25 @@
         {
             "id": "val-contract-sla-tier-prop",
             "universal_id": "val-contract",
-            "label": { "en": "SLA Tier" },
+            "label": {
+                "en": "SLA Tier"
+            },
             "property_schema": {
-                "predicates": ["sla", "tier"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "sla",
+                    "tier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -528,13 +884,26 @@
         {
             "id": "val-contract-sla-terms-prop",
             "universal_id": "val-contract",
-            "label": { "en": "SLA Terms" },
+            "label": {
+                "en": "SLA Terms"
+            },
             "property_schema": {
-                "predicates": ["sla", "terms"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "sla",
+                    "terms"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual", "max_length": 500 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual",
+                        "max_length": 500
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -542,13 +911,25 @@
         {
             "id": "val-contract-approval-date-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Approval Date" },
+            "label": {
+                "en": "Approval Date"
+            },
             "property_schema": {
-                "predicates": ["approval", "date"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "approval",
+                    "date"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Date" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Date"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -556,13 +937,26 @@
         {
             "id": "val-contract-termination-reason-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Termination Reason" },
+            "label": {
+                "en": "Termination Reason"
+            },
             "property_schema": {
-                "predicates": ["termination", "reason"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "termination",
+                    "reason"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual", "max_length": 500 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual",
+                        "max_length": 500
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -570,13 +964,25 @@
         {
             "id": "val-contract-department-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Department" },
+            "label": {
+                "en": "Department"
+            },
             "property_schema": {
-                "predicates": ["department", "org"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "department",
+                    "org"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -584,13 +990,26 @@
         {
             "id": "val-contract-manager-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Manager" },
+            "label": {
+                "en": "Manager"
+            },
             "property_schema": {
-                "predicates": ["manager", "person"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "manager",
+                    "person"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual", "max_length": 100 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual",
+                        "max_length": 100
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -599,10 +1018,17 @@
             "_comment": "InstanceRefs: vendor reference with Restrict referential action",
             "id": "val-contract-vendor-ref-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Vendor Reference" },
+            "label": {
+                "en": "Vendor Reference"
+            },
             "property_schema": {
-                "predicates": ["reference", "vendor"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "reference",
+                    "vendor"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "InstanceRefs",
@@ -611,7 +1037,10 @@
                         "max_refs": 1,
                         "on_target_delete": "Restrict"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -619,47 +1048,95 @@
         {
             "id": "val-contract-total-prop",
             "universal_id": "val-contract",
-            "label": { "en": "Total Value" },
-            "description": { "en": "Computed: sum of all line item totals" },
+            "label": {
+                "en": "Total Value"
+            },
+            "description": {
+                "en": "Computed: sum of all line item totals"
+            },
             "property_schema": {
-                "predicates": ["total", "value"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "total",
+                    "value"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-currency", "min": 0.0 },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency",
+                        "min": 0.0
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== CONTRACT LINE ITEM PROPERTIES ===",
             "id": "val-item-description-prop",
             "universal_id": "val-contract-item",
-            "label": { "en": "Description" },
+            "label": {
+                "en": "Description"
+            },
             "property_schema": {
-                "predicates": ["description"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "description"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual", "min_length": 1, "max_length": 200 },
-                    "cardinality": { "min": 1, "max": 1 },
-                    "validation_rules": ["Required"]
+                    "property_value_type": {
+                        "type": "Textual",
+                        "min_length": 1,
+                        "max_length": 200
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    },
+                    "validation_rules": [
+                        "Required"
+                    ]
                 }
             },
-            "label_options": { "participates": true, "sequence": 1 },
+            "label_options": {
+                "participates": true,
+                "sequence": 1
+            },
             "use_seed": true
         },
         {
             "id": "val-item-quantity-prop",
             "universal_id": "val-contract-item",
-            "label": { "en": "Quantity" },
+            "label": {
+                "en": "Quantity"
+            },
             "property_schema": {
-                "predicates": ["quantity"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "quantity"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-quantity", "min": 0.01 },
-                    "cardinality": { "min": 1, "max": 1 },
-                    "validation_rules": ["Required"]
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-quantity",
+                        "min": 0.01
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    },
+                    "validation_rules": [
+                        "Required"
+                    ]
                 }
             },
             "use_seed": true
@@ -667,14 +1144,30 @@
         {
             "id": "val-item-unit-price-prop",
             "universal_id": "val-contract-item",
-            "label": { "en": "Unit Price" },
+            "label": {
+                "en": "Unit Price"
+            },
             "property_schema": {
-                "predicates": ["price", "unit"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "price",
+                    "unit"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-currency", "min": 0.0 },
-                    "cardinality": { "min": 1, "max": 1 },
-                    "validation_rules": ["Required"]
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency",
+                        "min": 0.0
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    },
+                    "validation_rules": [
+                        "Required"
+                    ]
                 }
             },
             "use_seed": true
@@ -682,60 +1175,106 @@
         {
             "id": "val-item-line-total-prop",
             "universal_id": "val-contract-item",
-            "label": { "en": "Line Total" },
-            "description": { "en": "Computed: quantity * unit_price" },
+            "label": {
+                "en": "Line Total"
+            },
+            "description": {
+                "en": "Computed: quantity * unit_price"
+            },
             "property_schema": {
-                "predicates": ["total", "computed"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "total",
+                    "computed"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-currency" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-currency"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
-            "label_options": { "participates": true, "sequence": 2 },
+            "label_options": {
+                "participates": true,
+                "sequence": 2
+            },
             "use_seed": true
         }
     ],
-
     "apps": [
         {
             "id": "val-validations-app",
             "tenant_id": "model1-testing-tenant",
-            "label": { "en": "Validations Showcase Application" },
-            "description": { "en": "Demonstrates all validation features: uniqueness, cross-field rules, conditional-required, referential integrity, and reactive computations" },
+            "label": {
+                "en": "Validations Showcase Application"
+            },
+            "description": {
+                "en": "Demonstrates all validation features: uniqueness, cross-field rules, conditional-required, referential integrity, and reactive computations"
+            },
             "use_seed": true,
             "modules": [
                 {
                     "id": "val-contracts-module",
                     "use_seed": true,
-                    "label": { "en": "Contracts Module" },
-                    "description": { "en": "Contract management with comprehensive validation" },
+                    "label": {
+                        "en": "Contracts Module"
+                    },
+                    "description": {
+                        "en": "Contract management with comprehensive validation"
+                    },
                     "context": {
                         "subscribed_events": [],
-                        "publishable_events": ["val-contract-total-computed"]
+                        "publishable_events": [
+                            "val-contract-total-computed"
+                        ]
                     }
                 }
             ]
         }
     ],
-
     "computations": [
         {
             "_comment": "=== COMPUTATION: Line Total = quantity * unit_price ===",
             "id": "val-item-line-total-calc",
             "code": "val_item_line_total",
             "app_id": "val-validations-app",
-            "label": { "en": "Line Total Calculation" },
-            "description": { "en": "Computes line_total = quantity * unit_price for each contract line item" },
+            "label": {
+                "en": "Line Total Calculation"
+            },
+            "description": {
+                "en": "Computes line_total = quantity * unit_price for each contract line item"
+            },
             "inputs": [
-                { "source": "property", "variable_name": "quantity", "property_id": "val-item-quantity-prop" },
-                { "source": "property", "variable_name": "unit_price", "property_id": "val-item-unit-price-prop" }
+                {
+                    "source": "property",
+                    "variable_name": "quantity",
+                    "property_id": "val-item-quantity-prop"
+                },
+                {
+                    "source": "property",
+                    "variable_name": "unit_price",
+                    "property_id": "val-item-unit-price-prop"
+                }
             ],
             "formula": "let qty = quantity.value; let price = unit_price.value; qty * price",
-            "output": { "target_property_id": "val-item-line-total-prop" },
+            "output": {
+                "target_property_id": "val-item-line-total-prop"
+            },
             "trigger_conditions": [
-                { "type": "PropertyChange", "property_id": "val-item-quantity-prop" },
-                { "type": "PropertyChange", "property_id": "val-item-unit-price-prop" }
+                {
+                    "type": "PropertyChange",
+                    "property_id": "val-item-quantity-prop"
+                },
+                {
+                    "type": "PropertyChange",
+                    "property_id": "val-item-unit-price-prop"
+                }
             ],
             "priority": "Normal",
             "use_seed": true
@@ -745,8 +1284,12 @@
             "id": "val-contract-total-calc",
             "code": "val_contract_total",
             "app_id": "val-validations-app",
-            "label": { "en": "Contract Total Calculation" },
-            "description": { "en": "Aggregates line_total from all items linked via val-contract-item-rel" },
+            "label": {
+                "en": "Contract Total Calculation"
+            },
+            "description": {
+                "en": "Aggregates line_total from all items linked via val-contract-item-rel"
+            },
             "inputs": [
                 {
                     "source": "role_aggregate",
@@ -758,30 +1301,43 @@
                 }
             ],
             "formula": "items_total",
-            "output": { "target_property_id": "val-contract-total-prop" },
+            "output": {
+                "target_property_id": "val-contract-total-prop"
+            },
             "trigger_conditions": [
-                { "type": "PropertyChange", "property_id": "val-item-line-total-prop" }
+                {
+                    "type": "PropertyChange",
+                    "property_id": "val-item-line-total-prop"
+                }
             ],
             "priority": "Normal",
             "use_seed": true
         }
     ],
-
     "event_definitions": [
         {
             "id": "val-contract-total-computed",
             "app_id": "val-validations-app",
             "scope": "tenant",
-            "label": { "en": "Contract Total Computed" },
-            "description": { "en": "Fired when a contract total is computed from its line items" },
+            "label": {
+                "en": "Contract Total Computed"
+            },
+            "description": {
+                "en": "Fired when a contract total is computed from its line items"
+            },
             "payload_schema": [
-                { "name": "contract_id", "field_type": "uuid" },
-                { "name": "total_amount", "field_type": "measurement" }
+                {
+                    "name": "contract_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "total_amount",
+                    "field_type": "measurement"
+                }
             ],
             "use_seed": true
         }
     ],
-
     "users": [
         {
             "id": "val-admin-user",
@@ -790,7 +1346,9 @@
             "display_name": "Validation Admin",
             "password": "TestPass123!_",
             "is_active": true,
-            "roles": ["AppAdmin"],
+            "roles": [
+                "AppAdmin"
+            ],
             "use_seed": true
         }
     ]

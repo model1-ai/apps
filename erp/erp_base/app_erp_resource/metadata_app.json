@@ -1,7 +1,6 @@
 {
     "_comment": "=== ERP RESOURCE CATALOG (Layer 0) ===",
     "_description": "Foundational resource catalog generalizing the traditional item master to encompass physical goods, services, financial instruments, information assets, and capacity. Independently deployable without cross-domain dependencies.",
-
     "_organizations_note": "Organizations defined in app_erp_base. Load app_erp_base first.",
     "_tenants_note": "Tenants defined in app_erp_base. Load app_erp_base first.",
     "_users_note": "Users defined in app_erp_base. Load app_erp_base first.",
@@ -9,36 +8,48 @@
         {
             "id": "erp-resource-catalog-app",
             "tenant_id": "model1-testing-tenant",
-            "label": { "en": "ERP Resource Catalog" },
-            "description": { "en": "Foundational resource catalog generalizing the traditional item master to encompass physical goods, services, financial instruments, information assets, and capacity resources." },
+            "label": {
+                "en": "ERP Resource Catalog"
+            },
+            "description": {
+                "en": "Foundational resource catalog generalizing the traditional item master to encompass physical goods, services, financial instruments, information assets, and capacity resources."
+            },
             "use_seed": true,
             "modules": [
                 {
                     "id": "erp-resource-catalog-module",
                     "use_seed": true,
-                    "label": { "en": "Resource Catalog Module" },
-                    "description": { "en": "Core resource catalog operations: CRUD on resources, categories, and classification. Publishes capacity utilization events." },
+                    "label": {
+                        "en": "Resource Catalog Module"
+                    },
+                    "description": {
+                        "en": "Core resource catalog operations: CRUD on resources, categories, and classification. Publishes capacity utilization events."
+                    },
                     "context": {
                         "subscribed_events": [],
-                        "publishable_events": ["erp-capacity-utilization-high-event"]
+                        "publishable_events": [
+                            "erp-capacity-utilization-high-event"
+                        ]
                     }
                 }
             ]
         }
     ],
-
     "universals": [
         {
             "_comment": "=== ENUMERATION: Resource Status ===",
             "id": "erp-resource-status",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Resource Status" },
-            "description": { "en": "Enumeration of resource lifecycle statuses: Active, Discontinued, Pending, Blocked" },
+            "label": {
+                "en": "Resource Status"
+            },
+            "description": {
+                "en": "Enumeration of resource lifecycle statuses: Active, Discontinued, Pending, Blocked"
+            },
             "label_schema": {
                 "separator": "",
-                "max_length": 20,
-                "fallback_language": "en"
+                "max_length": 20
             },
             "use_seed": true
         },
@@ -47,46 +58,56 @@
             "id": "erp-depreciation-method",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Depreciation Method" },
-            "description": { "en": "Enumeration of depreciation calculation methods: StraightLine, DecliningBalance, UnitsOfProduction" },
+            "label": {
+                "en": "Depreciation Method"
+            },
+            "description": {
+                "en": "Enumeration of depreciation calculation methods: StraightLine, DecliningBalance, UnitsOfProduction"
+            },
             "label_schema": {
                 "separator": "",
-                "max_length": 30,
-                "fallback_language": "en"
+                "max_length": 30
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== BASE UNIVERSAL: Resource (abstract) ===",
             "id": "erp-resource",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Resource" },
-            "description": { "en": "Abstract base for anything the enterprise owns, uses, consumes, produces, assigns, or accounts for. Never instantiated directly." },
+            "label": {
+                "en": "Resource"
+            },
+            "description": {
+                "en": "Abstract base for anything the enterprise owns, uses, consumes, produces, assigns, or accounts for. Never instantiated directly."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== INTERMEDIATE: Tangible Resource (abstract) ===",
             "id": "erp-tangible-resource",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Tangible Resource" },
-            "description": { "en": "Physical things with weight, volume, and tracking needs. Intermediate abstract universal." },
+            "label": {
+                "en": "Tangible Resource"
+            },
+            "description": {
+                "en": "Physical things with weight, volume, and tracking needs. Intermediate abstract universal."
+            },
             "generalizes": "erp-resource",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-resource" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-resource"
+                }
             ],
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -95,16 +116,22 @@
             "id": "erp-physical-item",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Physical Item" },
-            "description": { "en": "Tradeable inventory goods -- products for sale or purchase. The traditional item master record." },
+            "label": {
+                "en": "Physical Item"
+            },
+            "description": {
+                "en": "Tradeable inventory goods -- products for sale or purchase. The traditional item master record."
+            },
             "generalizes": "erp-tangible-resource",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-tangible-resource" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-tangible-resource"
+                }
             ],
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -113,16 +140,22 @@
             "id": "erp-fixed-asset",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Fixed Asset" },
-            "description": { "en": "Long-lived equipment, property, infrastructure. Subject to depreciation and capitalization." },
+            "label": {
+                "en": "Fixed Asset"
+            },
+            "description": {
+                "en": "Long-lived equipment, property, infrastructure. Subject to depreciation and capitalization."
+            },
             "generalizes": "erp-tangible-resource",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-tangible-resource" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-tangible-resource"
+                }
             ],
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -131,35 +164,46 @@
             "id": "erp-raw-material",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Raw Material" },
-            "description": { "en": "Manufacturing inputs and BOM components. Consumed in production, not sold directly." },
+            "label": {
+                "en": "Raw Material"
+            },
+            "description": {
+                "en": "Manufacturing inputs and BOM components. Consumed in production, not sold directly."
+            },
             "generalizes": "erp-tangible-resource",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-tangible-resource" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-tangible-resource"
+                }
             ],
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== INTERMEDIATE: Intangible Resource (abstract) ===",
             "id": "erp-intangible-resource",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Intangible Resource" },
-            "description": { "en": "Non-physical resources with optional expiry and renewal. Intermediate abstract universal." },
+            "label": {
+                "en": "Intangible Resource"
+            },
+            "description": {
+                "en": "Non-physical resources with optional expiry and renewal. Intermediate abstract universal."
+            },
             "generalizes": "erp-resource",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-resource" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-resource"
+                }
             ],
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -168,16 +212,22 @@
             "id": "erp-service-item",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Service Item" },
-            "description": { "en": "Labor, consulting, SaaS subscriptions. Billed by unit (hourly, daily, fixed)." },
+            "label": {
+                "en": "Service Item"
+            },
+            "description": {
+                "en": "Labor, consulting, SaaS subscriptions. Billed by unit (hourly, daily, fixed)."
+            },
             "generalizes": "erp-intangible-resource",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-intangible-resource" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-intangible-resource"
+                }
             ],
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -186,16 +236,22 @@
             "id": "erp-information-resource",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Information Resource" },
-            "description": { "en": "Documents, datasets, intellectual property. May have access controls and version history." },
+            "label": {
+                "en": "Information Resource"
+            },
+            "description": {
+                "en": "Documents, datasets, intellectual property. May have access controls and version history."
+            },
             "generalizes": "erp-intangible-resource",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-intangible-resource" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-intangible-resource"
+                }
             ],
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -204,16 +260,22 @@
             "id": "erp-financial-instrument",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Financial Instrument" },
-            "description": { "en": "Tradable or held-to-maturity instruments: bonds, securities, derivatives, notes. Excludes receivables and payables." },
+            "label": {
+                "en": "Financial Instrument"
+            },
+            "description": {
+                "en": "Tradable or held-to-maturity instruments: bonds, securities, derivatives, notes. Excludes receivables and payables."
+            },
             "generalizes": "erp-intangible-resource",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-intangible-resource" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-intangible-resource"
+                }
             ],
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -222,35 +284,46 @@
             "id": "erp-license",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "License" },
-            "description": { "en": "Software licenses, patent rights, franchise agreements. Governed by seat counts and terms." },
+            "label": {
+                "en": "License"
+            },
+            "description": {
+                "en": "Software licenses, patent rights, franchise agreements. Governed by seat counts and terms."
+            },
             "generalizes": "erp-intangible-resource",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-intangible-resource" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-intangible-resource"
+                }
             ],
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== INTERMEDIATE: Capacity Resource (abstract) ===",
             "id": "erp-capacity-resource",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Capacity Resource" },
-            "description": { "en": "Available capacity that can be allocated and consumed. Intermediate abstract universal." },
+            "label": {
+                "en": "Capacity Resource"
+            },
+            "description": {
+                "en": "Available capacity that can be allocated and consumed. Intermediate abstract universal."
+            },
             "generalizes": "erp-resource",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-resource" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-resource"
+                }
             ],
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -259,16 +332,22 @@
             "id": "erp-labor-capacity",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Labor Capacity" },
-            "description": { "en": "Person-hours or FTE allocation. The how-much-people-time-is-available measure." },
+            "label": {
+                "en": "Labor Capacity"
+            },
+            "description": {
+                "en": "Person-hours or FTE allocation. The how-much-people-time-is-available measure."
+            },
             "generalizes": "erp-capacity-resource",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-capacity-resource" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-capacity-resource"
+                }
             ],
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -277,16 +356,22 @@
             "id": "erp-machine-capacity",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Machine Capacity" },
-            "description": { "en": "Machine-hours or production slots. Constrains manufacturing throughput." },
+            "label": {
+                "en": "Machine Capacity"
+            },
+            "description": {
+                "en": "Machine-hours or production slots. Constrains manufacturing throughput."
+            },
             "generalizes": "erp-capacity-resource",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-capacity-resource" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-capacity-resource"
+                }
             ],
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
@@ -295,63 +380,85 @@
             "id": "erp-storage-capacity",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Storage Capacity" },
-            "description": { "en": "Warehouse space, cloud storage quotas. Constrains inventory and data volume." },
+            "label": {
+                "en": "Storage Capacity"
+            },
+            "description": {
+                "en": "Warehouse space, cloud storage quotas. Constrains inventory and data volume."
+            },
             "generalizes": "erp-capacity-resource",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-capacity-resource" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-capacity-resource"
+                }
             ],
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Resource Category (classification hierarchy) ===",
             "id": "erp-resource-category",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Resource Category" },
-            "description": { "en": "Classification category for resources. Supports recursive hierarchy via aggregation relator." },
+            "label": {
+                "en": "Resource Category"
+            },
+            "description": {
+                "en": "Classification category for resources. Supports recursive hierarchy via aggregation relator."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Artifact output universal: Resource Inventory Summary ===",
             "id": "erp-resource-inventory-summary",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Resource Inventory Summary" },
-            "description": { "en": "Aggregated resource inventory data by catalog category." },
+            "label": {
+                "en": "Resource Inventory Summary"
+            },
+            "description": {
+                "en": "Aggregated resource inventory data by catalog category."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 50,
-                "fallback_language": "en"
+                "max_length": 50
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== RELATOR: Resource -> Category (attribution) ===",
             "id": "erp-resource-category-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Resource Category Classification" },
-            "description": { "en": "Classifies a resource into a catalog category. A resource may belong to one primary category." },
+            "label": {
+                "en": "Resource Category Classification"
+            },
+            "description": {
+                "en": "Classifies a resource into a catalog category. A resource may belong to one primary category."
+            },
             "roles": [
-                { "name": "resource", "universal_id": "erp-resource" },
-                { "name": "category", "universal_id": "erp-resource-category" }
+                {
+                    "name": "resource",
+                    "universal_id": "erp-resource"
+                },
+                {
+                    "name": "category",
+                    "universal_id": "erp-resource-category"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "attribution-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
             ],
             "use_seed": true
         },
@@ -360,34 +467,56 @@
             "id": "erp-category-parent-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Category Hierarchy" },
-            "description": { "en": "Recursive category hierarchy. Aggregation because child categories survive parent reorganization." },
+            "label": {
+                "en": "Category Hierarchy"
+            },
+            "description": {
+                "en": "Recursive category hierarchy. Aggregation because child categories survive parent reorganization."
+            },
             "roles": [
-                { "name": "parent", "universal_id": "erp-resource-category" },
-                { "name": "child", "universal_id": "erp-resource-category" }
+                {
+                    "name": "parent",
+                    "universal_id": "erp-resource-category"
+                },
+                {
+                    "name": "child",
+                    "universal_id": "erp-resource-category"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "aggregation-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "aggregation-relator"
+                }
             ],
             "use_seed": true
         }
     ],
-
     "property_definitions": [
         {
             "_comment": "=== Resource Status Enum Name Property ===",
             "id": "erp-resource-status-name-prop",
             "universal_id": "erp-resource-status",
-            "label": { "en": "Status Name" },
+            "label": {
+                "en": "Status Name"
+            },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -400,16 +529,26 @@
             "_comment": "=== Depreciation Method Enum Name Property ===",
             "id": "erp-depreciation-method-name-prop",
             "universal_id": "erp-depreciation-method",
-            "label": { "en": "Method Name" },
+            "label": {
+                "en": "Method Name"
+            },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -418,22 +557,33 @@
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-resource base properties (inherited by all specializations) ===",
             "id": "erp-resource-code-prop",
             "universal_id": "erp-resource",
-            "label": { "en": "Resource Code" },
-            "description": { "en": "Unique catalog code (e.g., RES-00142)" },
+            "label": {
+                "en": "Resource Code"
+            },
+            "description": {
+                "en": "Unique catalog code (e.g., RES-00142)"
+            },
             "property_schema": {
-                "predicates": ["code", "identifier"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -445,16 +595,27 @@
         {
             "id": "erp-resource-name-prop",
             "universal_id": "erp-resource",
-            "label": { "en": "Resource Name" },
-            "description": { "en": "Human-readable name, multilingual" },
+            "label": {
+                "en": "Resource Name"
+            },
+            "description": {
+                "en": "Human-readable name, multilingual"
+            },
             "property_schema": {
-                "predicates": ["name"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Textual"
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -466,16 +627,27 @@
         {
             "id": "erp-resource-description-prop",
             "universal_id": "erp-resource",
-            "label": { "en": "Description" },
-            "description": { "en": "Extended description for catalog display" },
+            "label": {
+                "en": "Description"
+            },
+            "description": {
+                "en": "Extended description for catalog display"
+            },
             "property_schema": {
-                "predicates": ["description"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "description"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Textual"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -483,18 +655,29 @@
         {
             "id": "erp-resource-status-prop",
             "universal_id": "erp-resource",
-            "label": { "en": "Status" },
-            "description": { "en": "Lifecycle status controlling availability" },
+            "label": {
+                "en": "Status"
+            },
+            "description": {
+                "en": "Lifecycle status controlling availability"
+            },
             "property_schema": {
-                "predicates": ["status"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "status"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "reference_universal_id": "erp-resource-status",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -502,37 +685,59 @@
         {
             "id": "erp-resource-unit-of-measure-prop",
             "universal_id": "erp-resource",
-            "label": { "en": "Unit of Measure" },
-            "description": { "en": "Base UOM for this resource (e.g., each, kg, hour, license)" },
+            "label": {
+                "en": "Unit of Measure"
+            },
+            "description": {
+                "en": "Base UOM for this resource (e.g., each, kg, hour, license)"
+            },
             "property_schema": {
-                "predicates": ["unit", "measure"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "unit",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-tangible-resource properties ===",
             "id": "erp-tangible-weight-prop",
             "universal_id": "erp-tangible-resource",
-            "label": { "en": "Weight" },
-            "description": { "en": "Weight per unit. Used for shipping and logistics." },
+            "label": {
+                "en": "Weight"
+            },
+            "description": {
+                "en": "Weight per unit. Used for shipping and logistics."
+            },
             "property_schema": {
-                "predicates": ["weight"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "weight"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-weight"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -540,17 +745,28 @@
         {
             "id": "erp-tangible-volume-prop",
             "universal_id": "erp-tangible-resource",
-            "label": { "en": "Volume" },
-            "description": { "en": "Volume per unit. Used for storage and packing." },
+            "label": {
+                "en": "Volume"
+            },
+            "description": {
+                "en": "Volume per unit. Used for storage and packing."
+            },
             "property_schema": {
-                "predicates": ["volume"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "volume"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-volume"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -558,36 +774,58 @@
         {
             "id": "erp-tangible-is-tracked-prop",
             "universal_id": "erp-tangible-resource",
-            "label": { "en": "Is Tracked" },
-            "description": { "en": "Whether individual units are physically tracked (via serial, lot, or RFID)" },
+            "label": {
+                "en": "Is Tracked"
+            },
+            "description": {
+                "en": "Whether individual units are physically tracked (via serial, lot, or RFID)"
+            },
             "property_schema": {
-                "predicates": ["tracked"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "tracked"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Boolean"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-physical-item properties ===",
             "id": "erp-item-sku-prop",
             "universal_id": "erp-physical-item",
-            "label": { "en": "SKU" },
-            "description": { "en": "Stock-keeping unit code for inventory systems" },
+            "label": {
+                "en": "SKU"
+            },
+            "description": {
+                "en": "Stock-keeping unit code for inventory systems"
+            },
             "property_schema": {
-                "predicates": ["sku", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "sku",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -595,16 +833,27 @@
         {
             "id": "erp-item-is-purchasable-prop",
             "universal_id": "erp-physical-item",
-            "label": { "en": "Is Purchasable" },
-            "description": { "en": "Can this item be purchased from vendors?" },
+            "label": {
+                "en": "Is Purchasable"
+            },
+            "description": {
+                "en": "Can this item be purchased from vendors?"
+            },
             "property_schema": {
-                "predicates": ["purchasable"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "purchasable"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Boolean"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -612,16 +861,27 @@
         {
             "id": "erp-item-is-sellable-prop",
             "universal_id": "erp-physical-item",
-            "label": { "en": "Is Sellable" },
-            "description": { "en": "Can this item be sold to customers?" },
+            "label": {
+                "en": "Is Sellable"
+            },
+            "description": {
+                "en": "Can this item be sold to customers?"
+            },
             "property_schema": {
-                "predicates": ["sellable"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "sellable"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Boolean"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -629,17 +889,29 @@
         {
             "id": "erp-item-standard-cost-prop",
             "universal_id": "erp-physical-item",
-            "label": { "en": "Standard Cost" },
-            "description": { "en": "Standard (expected) cost per unit. Used for variance analysis." },
+            "label": {
+                "en": "Standard Cost"
+            },
+            "description": {
+                "en": "Standard (expected) cost per unit. Used for variance analysis."
+            },
             "property_schema": {
-                "predicates": ["cost", "standard"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "cost",
+                    "standard"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -647,17 +919,29 @@
         {
             "id": "erp-item-list-price-prop",
             "universal_id": "erp-physical-item",
-            "label": { "en": "List Price" },
-            "description": { "en": "Default selling price before discounts" },
+            "label": {
+                "en": "List Price"
+            },
+            "description": {
+                "en": "Default selling price before discounts"
+            },
             "property_schema": {
-                "predicates": ["price", "list"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "price",
+                    "list"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -665,16 +949,27 @@
         {
             "id": "erp-item-is-serialized-prop",
             "universal_id": "erp-physical-item",
-            "label": { "en": "Is Serialized" },
-            "description": { "en": "Whether each unit has a unique serial number" },
+            "label": {
+                "en": "Is Serialized"
+            },
+            "description": {
+                "en": "Whether each unit has a unique serial number"
+            },
             "property_schema": {
-                "predicates": ["serialized"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "serialized"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Boolean"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -682,16 +977,28 @@
         {
             "id": "erp-item-is-lot-tracked-prop",
             "universal_id": "erp-physical-item",
-            "label": { "en": "Is Lot Tracked" },
-            "description": { "en": "Whether units are tracked by production lot/batch" },
+            "label": {
+                "en": "Is Lot Tracked"
+            },
+            "description": {
+                "en": "Whether units are tracked by production lot/batch"
+            },
             "property_schema": {
-                "predicates": ["lot", "tracked"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "lot",
+                    "tracked"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Boolean"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -699,36 +1006,59 @@
         {
             "id": "erp-item-shelf-life-prop",
             "universal_id": "erp-physical-item",
-            "label": { "en": "Shelf Life (days)" },
-            "description": { "en": "Shelf life in days. Zero or absent means no expiry." },
+            "label": {
+                "en": "Shelf Life (days)"
+            },
+            "description": {
+                "en": "Shelf life in days. Zero or absent means no expiry."
+            },
             "property_schema": {
-                "predicates": ["shelf", "life"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "shelf",
+                    "life"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-integer"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-fixed-asset properties ===",
             "id": "erp-asset-acquisition-date-prop",
             "universal_id": "erp-fixed-asset",
-            "label": { "en": "Acquisition Date" },
-            "description": { "en": "Date the asset was acquired or placed in service" },
+            "label": {
+                "en": "Acquisition Date"
+            },
+            "description": {
+                "en": "Date the asset was acquired or placed in service"
+            },
             "property_schema": {
-                "predicates": ["date", "acquisition"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "date",
+                    "acquisition"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Date"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -736,17 +1066,29 @@
         {
             "id": "erp-asset-useful-life-prop",
             "universal_id": "erp-fixed-asset",
-            "label": { "en": "Useful Life" },
-            "description": { "en": "Expected useful life for depreciation calculation (in seconds)" },
+            "label": {
+                "en": "Useful Life"
+            },
+            "description": {
+                "en": "Expected useful life for depreciation calculation (in seconds)"
+            },
             "property_schema": {
-                "predicates": ["useful", "life"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "useful",
+                    "life"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-time-duration"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -754,17 +1096,29 @@
         {
             "id": "erp-asset-salvage-value-prop",
             "universal_id": "erp-fixed-asset",
-            "label": { "en": "Salvage Value" },
-            "description": { "en": "Estimated residual value at end of useful life" },
+            "label": {
+                "en": "Salvage Value"
+            },
+            "description": {
+                "en": "Estimated residual value at end of useful life"
+            },
             "property_schema": {
-                "predicates": ["salvage", "value"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "salvage",
+                    "value"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -772,38 +1126,62 @@
         {
             "id": "erp-asset-depreciation-method-prop",
             "universal_id": "erp-fixed-asset",
-            "label": { "en": "Depreciation Method" },
-            "description": { "en": "Method used to calculate periodic depreciation" },
+            "label": {
+                "en": "Depreciation Method"
+            },
+            "description": {
+                "en": "Method used to calculate periodic depreciation"
+            },
             "property_schema": {
-                "predicates": ["depreciation", "method"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "depreciation",
+                    "method"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "reference_universal_id": "erp-depreciation-method",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-raw-material properties ===",
             "id": "erp-raw-min-order-qty-prop",
             "universal_id": "erp-raw-material",
-            "label": { "en": "Minimum Order Qty" },
-            "description": { "en": "Minimum quantity for vendor purchase orders" },
+            "label": {
+                "en": "Minimum Order Qty"
+            },
+            "description": {
+                "en": "Minimum quantity for vendor purchase orders"
+            },
             "property_schema": {
-                "predicates": ["minimum", "order", "quantity"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "minimum",
+                    "order",
+                    "quantity"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-quantity"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -811,36 +1189,59 @@
         {
             "id": "erp-raw-lead-time-days-prop",
             "universal_id": "erp-raw-material",
-            "label": { "en": "Lead Time (days)" },
-            "description": { "en": "Typical lead time in days from order to receipt" },
+            "label": {
+                "en": "Lead Time (days)"
+            },
+            "description": {
+                "en": "Typical lead time in days from order to receipt"
+            },
             "property_schema": {
-                "predicates": ["lead", "time"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "lead",
+                    "time"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-integer"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-intangible-resource properties ===",
             "id": "erp-intangible-expiry-date-prop",
             "universal_id": "erp-intangible-resource",
-            "label": { "en": "Expiry Date" },
-            "description": { "en": "Date when the resource expires or must be renewed. Absent means perpetual." },
+            "label": {
+                "en": "Expiry Date"
+            },
+            "description": {
+                "en": "Date when the resource expires or must be renewed. Absent means perpetual."
+            },
             "property_schema": {
-                "predicates": ["expiry", "date"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "expiry",
+                    "date"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Date"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -848,36 +1249,59 @@
         {
             "id": "erp-intangible-renewal-terms-prop",
             "universal_id": "erp-intangible-resource",
-            "label": { "en": "Renewal Terms" },
-            "description": { "en": "Description of renewal conditions, terms, and notice periods" },
+            "label": {
+                "en": "Renewal Terms"
+            },
+            "description": {
+                "en": "Description of renewal conditions, terms, and notice periods"
+            },
             "property_schema": {
-                "predicates": ["renewal", "terms"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "renewal",
+                    "terms"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Textual"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-service-item properties ===",
             "id": "erp-service-billing-unit-prop",
             "universal_id": "erp-service-item",
-            "label": { "en": "Billing Unit" },
-            "description": { "en": "Billing granularity: hourly, daily, monthly, fixed" },
+            "label": {
+                "en": "Billing Unit"
+            },
+            "description": {
+                "en": "Billing granularity: hourly, daily, monthly, fixed"
+            },
             "property_schema": {
-                "predicates": ["billing", "unit"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "billing",
+                    "unit"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -885,37 +1309,59 @@
         {
             "id": "erp-service-default-rate-prop",
             "universal_id": "erp-service-item",
-            "label": { "en": "Default Rate" },
-            "description": { "en": "Default rate per billing unit before contract-specific pricing" },
+            "label": {
+                "en": "Default Rate"
+            },
+            "description": {
+                "en": "Default rate per billing unit before contract-specific pricing"
+            },
             "property_schema": {
-                "predicates": ["rate", "default"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "rate",
+                    "default"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-information-resource properties ===",
             "id": "erp-info-format-prop",
             "universal_id": "erp-information-resource",
-            "label": { "en": "Format" },
-            "description": { "en": "Format or media type (e.g., PDF, dataset, patent filing)" },
+            "label": {
+                "en": "Format"
+            },
+            "description": {
+                "en": "Format or media type (e.g., PDF, dataset, patent filing)"
+            },
             "property_schema": {
-                "predicates": ["format"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "format"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -923,37 +1369,60 @@
         {
             "id": "erp-info-classification-prop",
             "universal_id": "erp-information-resource",
-            "label": { "en": "Classification" },
-            "description": { "en": "Sensitivity classification: Public, Internal, Confidential, Restricted" },
+            "label": {
+                "en": "Classification"
+            },
+            "description": {
+                "en": "Sensitivity classification: Public, Internal, Confidential, Restricted"
+            },
             "property_schema": {
-                "predicates": ["classification", "security"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "classification",
+                    "security"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-financial-instrument properties ===",
             "id": "erp-fin-face-value-prop",
             "universal_id": "erp-financial-instrument",
-            "label": { "en": "Face Value" },
-            "description": { "en": "Nominal or face value of the instrument" },
+            "label": {
+                "en": "Face Value"
+            },
+            "description": {
+                "en": "Nominal or face value of the instrument"
+            },
             "property_schema": {
-                "predicates": ["face", "value"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "face",
+                    "value"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -961,16 +1430,28 @@
         {
             "id": "erp-fin-maturity-date-prop",
             "universal_id": "erp-financial-instrument",
-            "label": { "en": "Maturity Date" },
-            "description": { "en": "Date when the instrument matures or is due" },
+            "label": {
+                "en": "Maturity Date"
+            },
+            "description": {
+                "en": "Date when the instrument matures or is due"
+            },
             "property_schema": {
-                "predicates": ["maturity", "date"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "maturity",
+                    "date"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Date"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -978,37 +1459,60 @@
         {
             "id": "erp-fin-instrument-type-prop",
             "universal_id": "erp-financial-instrument",
-            "label": { "en": "Instrument Type" },
-            "description": { "en": "Type: Bond, Note, Equity, Derivative, Fund" },
+            "label": {
+                "en": "Instrument Type"
+            },
+            "description": {
+                "en": "Type: Bond, Note, Equity, Derivative, Fund"
+            },
             "property_schema": {
-                "predicates": ["instrument", "type"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "instrument",
+                    "type"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-license properties ===",
             "id": "erp-license-seat-count-prop",
             "universal_id": "erp-license",
-            "label": { "en": "Seat Count" },
-            "description": { "en": "Number of seats or units authorized. Zero means unlimited." },
+            "label": {
+                "en": "Seat Count"
+            },
+            "description": {
+                "en": "Number of seats or units authorized. Zero means unlimited."
+            },
             "property_schema": {
-                "predicates": ["seat", "count"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "seat",
+                    "count"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-integer"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1016,37 +1520,60 @@
         {
             "id": "erp-license-license-type-prop",
             "universal_id": "erp-license",
-            "label": { "en": "License Type" },
-            "description": { "en": "Type: Perpetual, Subscription, Trial, OEM" },
+            "label": {
+                "en": "License Type"
+            },
+            "description": {
+                "en": "Type: Perpetual, Subscription, Trial, OEM"
+            },
             "property_schema": {
-                "predicates": ["license", "type"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "license",
+                    "type"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-capacity-resource properties ===",
             "id": "erp-capacity-total-prop",
             "universal_id": "erp-capacity-resource",
-            "label": { "en": "Total Capacity" },
-            "description": { "en": "Total available capacity in the resource unit of measure" },
+            "label": {
+                "en": "Total Capacity"
+            },
+            "description": {
+                "en": "Total available capacity in the resource unit of measure"
+            },
             "property_schema": {
-                "predicates": ["capacity", "total"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "capacity",
+                    "total"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-float"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1054,17 +1581,29 @@
         {
             "id": "erp-capacity-available-prop",
             "universal_id": "erp-capacity-resource",
-            "label": { "en": "Available Capacity" },
-            "description": { "en": "Currently unallocated capacity. Updated as allocations are made." },
+            "label": {
+                "en": "Available Capacity"
+            },
+            "description": {
+                "en": "Currently unallocated capacity. Updated as allocations are made."
+            },
             "property_schema": {
-                "predicates": ["capacity", "available"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "capacity",
+                    "available"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-float"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1072,37 +1611,59 @@
         {
             "id": "erp-capacity-utilization-prop",
             "universal_id": "erp-capacity-resource",
-            "label": { "en": "Utilization %" },
-            "description": { "en": "Computed: (total - available) / total * 100. Percentage of capacity in use." },
+            "label": {
+                "en": "Utilization %"
+            },
+            "description": {
+                "en": "Computed: (total - available) / total * 100. Percentage of capacity in use."
+            },
             "property_schema": {
-                "predicates": ["utilization", "percentage"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "utilization",
+                    "percentage"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-ratio"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-labor-capacity properties ===",
             "id": "erp-labor-period-prop",
             "universal_id": "erp-labor-capacity",
-            "label": { "en": "Period" },
-            "description": { "en": "Period granularity: daily, weekly, monthly" },
+            "label": {
+                "en": "Period"
+            },
+            "description": {
+                "en": "Period granularity: daily, weekly, monthly"
+            },
             "property_schema": {
-                "predicates": ["period"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "period"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1110,37 +1671,60 @@
         {
             "id": "erp-labor-fte-equivalent-prop",
             "universal_id": "erp-labor-capacity",
-            "label": { "en": "FTE Equivalent" },
-            "description": { "en": "Full-time equivalent (e.g., 0.5 for half-time allocation)" },
+            "label": {
+                "en": "FTE Equivalent"
+            },
+            "description": {
+                "en": "Full-time equivalent (e.g., 0.5 for half-time allocation)"
+            },
             "property_schema": {
-                "predicates": ["fte", "equivalent"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "fte",
+                    "equivalent"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-float"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-machine-capacity properties ===",
             "id": "erp-machine-hours-per-shift-prop",
             "universal_id": "erp-machine-capacity",
-            "label": { "en": "Hours Per Shift" },
-            "description": { "en": "Available machine-hours per production shift" },
+            "label": {
+                "en": "Hours Per Shift"
+            },
+            "description": {
+                "en": "Available machine-hours per production shift"
+            },
             "property_schema": {
-                "predicates": ["hours", "shift"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "hours",
+                    "shift"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-float"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1148,37 +1732,60 @@
         {
             "id": "erp-machine-shifts-per-day-prop",
             "universal_id": "erp-machine-capacity",
-            "label": { "en": "Shifts Per Day" },
-            "description": { "en": "Number of shifts per day the machine operates" },
+            "label": {
+                "en": "Shifts Per Day"
+            },
+            "description": {
+                "en": "Number of shifts per day the machine operates"
+            },
             "property_schema": {
-                "predicates": ["shifts", "day"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "shifts",
+                    "day"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-integer"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-storage-capacity properties ===",
             "id": "erp-storage-unit-prop",
             "universal_id": "erp-storage-capacity",
-            "label": { "en": "Storage Unit" },
-            "description": { "en": "Storage unit: pallet positions, cubic meters, terabytes" },
+            "label": {
+                "en": "Storage Unit"
+            },
+            "description": {
+                "en": "Storage unit: pallet positions, cubic meters, terabytes"
+            },
             "property_schema": {
-                "predicates": ["storage", "unit"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "storage",
+                    "unit"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1186,36 +1793,59 @@
         {
             "id": "erp-storage-is-climate-controlled-prop",
             "universal_id": "erp-storage-capacity",
-            "label": { "en": "Climate Controlled" },
-            "description": { "en": "Whether the storage requires temperature/humidity control" },
+            "label": {
+                "en": "Climate Controlled"
+            },
+            "description": {
+                "en": "Whether the storage requires temperature/humidity control"
+            },
             "property_schema": {
-                "predicates": ["climate", "controlled"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "climate",
+                    "controlled"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Boolean"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-resource-category properties ===",
             "id": "erp-resource-category-code-prop",
             "universal_id": "erp-resource-category",
-            "label": { "en": "Category Code" },
-            "description": { "en": "Category code (e.g., RAW-ELEC, SVC-CONSULT)" },
+            "label": {
+                "en": "Category Code"
+            },
+            "description": {
+                "en": "Category code (e.g., RAW-ELEC, SVC-CONSULT)"
+            },
             "property_schema": {
-                "predicates": ["code", "identifier"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "code",
+                    "identifier"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -1227,16 +1857,27 @@
         {
             "id": "erp-resource-category-name-prop",
             "universal_id": "erp-resource-category",
-            "label": { "en": "Category Name" },
-            "description": { "en": "Category name, multilingual" },
+            "label": {
+                "en": "Category Name"
+            },
+            "description": {
+                "en": "Category name, multilingual"
+            },
             "property_schema": {
-                "predicates": ["name"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Textual"
                     },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -1248,36 +1889,58 @@
         {
             "id": "erp-resource-category-description-prop",
             "universal_id": "erp-resource-category",
-            "label": { "en": "Category Description" },
-            "description": { "en": "Extended description of the category scope" },
+            "label": {
+                "en": "Category Description"
+            },
+            "description": {
+                "en": "Extended description of the category scope"
+            },
             "property_schema": {
-                "predicates": ["description"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "description"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Textual"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== Artifact output universal properties ===",
             "id": "erp-summary-category-name-prop",
             "universal_id": "erp-resource-inventory-summary",
-            "label": { "en": "Category" },
-            "description": { "en": "Resource category dimension for inventory aggregation" },
+            "label": {
+                "en": "Category"
+            },
+            "description": {
+                "en": "Resource category dimension for inventory aggregation"
+            },
             "property_schema": {
-                "predicates": ["category", "dimension"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "category",
+                    "dimension"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -1289,17 +1952,29 @@
         {
             "id": "erp-summary-resource-count-prop",
             "universal_id": "erp-resource-inventory-summary",
-            "label": { "en": "Resource Count" },
-            "description": { "en": "Count of resource instances per category" },
+            "label": {
+                "en": "Resource Count"
+            },
+            "description": {
+                "en": "Count of resource instances per category"
+            },
             "property_schema": {
-                "predicates": ["count", "measure"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "count",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-quantity"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1307,17 +1982,30 @@
         {
             "id": "erp-summary-total-standard-cost-prop",
             "universal_id": "erp-resource-inventory-summary",
-            "label": { "en": "Total Standard Cost" },
-            "description": { "en": "Sum of standard cost across physical items in the category" },
+            "label": {
+                "en": "Total Standard Cost"
+            },
+            "description": {
+                "en": "Sum of standard cost across physical items in the category"
+            },
             "property_schema": {
-                "predicates": ["cost", "total", "measure"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "cost",
+                    "total",
+                    "measure"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Measurement",
                         "measurement_frame_id": "std-currency"
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -1325,36 +2013,60 @@
         {
             "id": "erp-resource-threshold-state-prop",
             "universal_id": "erp-resource-inventory-summary",
-            "label": { "en": "Threshold State" },
-            "description": { "en": "Tracks whether high-cost threshold has been crossed" },
+            "label": {
+                "en": "Threshold State"
+            },
+            "description": {
+                "en": "Tracks whether high-cost threshold has been crossed"
+            },
             "property_schema": {
-                "predicates": ["threshold", "state"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "threshold",
+                    "state"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
                     "property_value_type": {
                         "type": "Categorical",
-                        "allowed_values": ["not_crossed", "crossed"],
+                        "allowed_values": [
+                            "not_crossed",
+                            "crossed"
+                        ],
                         "ordered": false
                     },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         }
     ],
-
     "event_definitions": [
         {
             "id": "erp-capacity-utilization-high-event",
             "app_id": "erp-resource-catalog-app",
             "scope": "tenant",
-            "label": { "en": "High Capacity Utilization" },
-            "description": { "en": "Event emitted when capacity utilization exceeds threshold (e.g., 90%)" },
+            "label": {
+                "en": "High Capacity Utilization"
+            },
+            "description": {
+                "en": "Event emitted when capacity utilization exceeds threshold (e.g., 90%)"
+            },
             "default_routing_mode": "broadcast",
             "distribution_scope": "local",
             "payload_schema": [
-                { "name": "resource_id", "field_type": "uuid" },
-                { "name": "utilization_percent", "field_type": "float" }
+                {
+                    "name": "resource_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "utilization_percent",
+                    "field_type": "float"
+                }
             ],
             "use_seed": true
         },
@@ -1362,48 +2074,81 @@
             "id": "erp-high-category-cost-event",
             "app_id": "erp-resource-catalog-app",
             "scope": "tenant",
-            "label": { "en": "High Category Cost Threshold" },
-            "description": { "en": "Event emitted when total standard cost in a category exceeds threshold" },
+            "label": {
+                "en": "High Category Cost Threshold"
+            },
+            "description": {
+                "en": "Event emitted when total standard cost in a category exceeds threshold"
+            },
             "default_routing_mode": "broadcast",
             "distribution_scope": "local",
             "payload_schema": [
-                { "name": "artifact_instance_id", "field_type": "uuid" },
-                { "name": "measure_value", "field_type": "measurement", "measurement_frame": "Currency" }
+                {
+                    "name": "artifact_instance_id",
+                    "field_type": "uuid"
+                },
+                {
+                    "name": "measure_value",
+                    "field_type": "measurement",
+                    "measurement_frame": "Currency"
+                }
             ],
             "use_seed": true
         }
     ],
-
     "computations": [
         {
             "_comment": "=== Capacity Utilization = (total - available) / total * 100 ===",
             "id": "erp-capacity-utilization-calc",
             "code": "erp_capacity_utilization",
             "app_id": "erp-resource-catalog-app",
-            "label": { "en": "Capacity Utilization Rate" },
-            "description": { "en": "Computes utilization = (total - available) / total * 100. Fires when available capacity changes." },
+            "label": {
+                "en": "Capacity Utilization Rate"
+            },
+            "description": {
+                "en": "Computes utilization = (total - available) / total * 100. Fires when available capacity changes."
+            },
             "inputs": [
-                { "source": "property", "variable_name": "total", "property_id": "erp-capacity-total-prop" },
-                { "source": "property", "variable_name": "available", "property_id": "erp-capacity-available-prop" }
+                {
+                    "source": "property",
+                    "variable_name": "total",
+                    "property_id": "erp-capacity-total-prop"
+                },
+                {
+                    "source": "property",
+                    "variable_name": "available",
+                    "property_id": "erp-capacity-available-prop"
+                }
             ],
             "formula": "let t = total.value; let a = available.value; if t > 0.0 { (t - a) / t * 100.0 } else { 0.0 }",
-            "output": { "target_property_id": "erp-capacity-utilization-prop" },
+            "output": {
+                "target_property_id": "erp-capacity-utilization-prop"
+            },
             "trigger_conditions": [
-                { "type": "PropertyChange", "property_id": "erp-capacity-available-prop" },
-                { "type": "PropertyChange", "property_id": "erp-capacity-total-prop" }
+                {
+                    "type": "PropertyChange",
+                    "property_id": "erp-capacity-available-prop"
+                },
+                {
+                    "type": "PropertyChange",
+                    "property_id": "erp-capacity-total-prop"
+                }
             ],
             "priority": "Normal",
             "use_seed": true
         }
     ],
-
     "artifact_definitions": [
         {
             "_comment": "=== Resource Inventory by Category ===",
             "id": "erp-resource-by-category-artifact",
             "name": "Resource Inventory by Category",
-            "description": { "en": "Aggregates resources by catalog category, providing counts and total standard cost across all resource types." },
-            "source": { "universal_id": "erp-physical-item" },
+            "description": {
+                "en": "Aggregates resources by catalog category, providing counts and total standard cost across all resource types."
+            },
+            "source": {
+                "universal_id": "erp-physical-item"
+            },
             "artifact_universal_id": "erp-resource-inventory-summary",
             "app_id": "erp-resource-catalog-app",
             "dimensions": [
@@ -1413,7 +2158,10 @@
                     "source": {
                         "type": "RelatorPath",
                         "path": [
-                            { "relator_universal_id": "erp-resource-category-rel", "role_name": "category" }
+                            {
+                                "relator_universal_id": "erp-resource-category-rel",
+                                "role_name": "category"
+                            }
                         ],
                         "property_id": "erp-resource-category-name-prop"
                     },
@@ -1443,24 +2191,32 @@
                     "id": "erp-high-category-cost-threshold",
                     "code": "high_cost",
                     "measure_id": "erp-category-total-cost",
-                    "condition": { "operator": "GreaterThan", "value": 100000.0 },
+                    "condition": {
+                        "operator": "GreaterThan",
+                        "value": 100000.0
+                    },
                     "event_type_id": "erp-high-category-cost-event",
                     "state_property_id": "erp-resource-threshold-state-prop",
                     "reset_on": "OnDimensionChange",
                     "use_seed": true
                 }
             ],
-            "materialization": { "strategy": "Eager" },
+            "materialization": {
+                "strategy": "Eager"
+            },
             "use_seed": true
         }
     ],
-
     "foundation_role_assignments": [
         {
             "id": "fra-erp-admin-admin-resource",
             "user_id": "erp-admin",
             "role": "AppAdmin",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-resource-catalog-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-resource-catalog-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -1468,7 +2224,11 @@
             "id": "fra-erp-admin-dev-resource",
             "user_id": "erp-admin",
             "role": "AppDeveloper",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-resource-catalog-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-resource-catalog-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -1476,7 +2236,11 @@
             "id": "fra-erp-developer-dev-resource",
             "user_id": "erp-developer",
             "role": "AppDeveloper",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-resource-catalog-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-resource-catalog-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -1484,7 +2248,11 @@
             "id": "fra-erp-user-user-resource",
             "user_id": "erp-user",
             "role": "AppUser",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-resource-catalog-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-resource-catalog-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         }

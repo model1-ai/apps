@@ -1,23 +1,29 @@
 {
     "_comment": "=== ERP PARTY MASTER (Layer 0) ===",
     "_description": "Universal 'who' of the enterprise. Deep generalization chains (LivingBeing->Human->Person->NaturalPerson and Party->LegalEntity->Corporation/Partnership/GovernmentBody/NonProfit). Party-role separation: Employee, Vendor, Customer are roles at Layer 1, not specializations here.",
-
     "_organizations_note": "Organizations defined in app_erp_base. Load app_erp_base first.",
     "_tenants_note": "Tenants defined in app_erp_base. Load app_erp_base first.",
-
     "apps": [
         {
             "id": "erp-party-master-app",
             "tenant_id": "model1-testing-tenant",
-            "label": { "en": "ERP Party Master" },
-            "description": { "en": "Foundational party management: natural persons, legal entities, contacts, and addresses. Layer 0 block providing the universal 'who' for all ERP domains." },
+            "label": {
+                "en": "ERP Party Master"
+            },
+            "description": {
+                "en": "Foundational party management: natural persons, legal entities, contacts, and addresses. Layer 0 block providing the universal 'who' for all ERP domains."
+            },
             "use_seed": true,
             "modules": [
                 {
                     "id": "erp-party-core-module",
                     "use_seed": true,
-                    "label": { "en": "Party Core Module" },
-                    "description": { "en": "Core party management: CRUD on parties, contacts, and address linkages." },
+                    "label": {
+                        "en": "Party Core Module"
+                    },
+                    "description": {
+                        "en": "Core party management: CRUD on parties, contacts, and address linkages."
+                    },
                     "context": {
                         "subscribed_events": [],
                         "publishable_events": []
@@ -26,34 +32,38 @@
             ]
         }
     ],
-
     "universals": [
         {
             "_comment": "=== ENUMERATION UNIVERSAL: Contact Method ===",
             "id": "erp-contact-method",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Contact Method" },
-            "description": { "en": "Type of contact channel: Email, Phone, Fax, Mail, Website" },
+            "label": {
+                "en": "Contact Method"
+            },
+            "description": {
+                "en": "Type of contact channel: Email, Phone, Fax, Mail, Website"
+            },
             "label_schema": {
                 "separator": "",
-                "max_length": 20,
-                "fallback_language": "en"
+                "max_length": 20
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== PERSON CHAIN -- Level 1: LivingBeing (biological root) ===",
             "id": "erp-living-being",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Living Being" },
-            "description": { "en": "Biological root. Any living organism with birth/death lifecycle and taxonomic classification." },
+            "label": {
+                "en": "Living Being"
+            },
+            "description": {
+                "en": "Biological root. Any living organism with birth/death lifecycle and taxonomic classification."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 60,
-                "fallback_language": "en"
+                "max_length": 60
             },
             "use_seed": true
         },
@@ -64,14 +74,20 @@
             "meta_category": "Kind",
             "generalizes": "erp-living-being",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-living-being" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-living-being"
+                }
             ],
-            "label": { "en": "Human" },
-            "description": { "en": "Homo sapiens with demographic attributes. Social-biological bridge." },
+            "label": {
+                "en": "Human"
+            },
+            "description": {
+                "en": "Homo sapiens with demographic attributes. Social-biological bridge."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 60,
-                "fallback_language": "en"
+                "max_length": 60
             },
             "use_seed": true
         },
@@ -82,29 +98,37 @@
             "meta_category": "Kind",
             "generalizes": "erp-human",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-human" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-human"
+                }
             ],
-            "label": { "en": "Person" },
-            "description": { "en": "Social agent with identity and contact information. The cross-domain unification point." },
+            "label": {
+                "en": "Person"
+            },
+            "description": {
+                "en": "Social agent with identity and contact information. The cross-domain unification point."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 60,
-                "fallback_language": "en"
+                "max_length": 60
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== PARTY HIERARCHY -- Root: Party (abstract) ===",
             "id": "erp-party",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Party" },
-            "description": { "en": "Abstract root for all parties. Any actor that can enter agreements, hold accounts, or participate in transactions." },
+            "label": {
+                "en": "Party"
+            },
+            "description": {
+                "en": "Abstract root for all parties. Any actor that can enter agreements, hold accounts, or participate in transactions."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
@@ -115,15 +139,24 @@
             "meta_category": "Kind",
             "generalizes": "erp-party",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-party" },
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-person" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-party"
+                },
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-person"
+                }
             ],
-            "label": { "en": "Natural Person" },
-            "description": { "en": "A human being with legal capacity. Bridges the Person chain into the Party hierarchy. Inherits from both erp-party and erp-person (dual ancestry)." },
+            "label": {
+                "en": "Natural Person"
+            },
+            "description": {
+                "en": "A human being with legal capacity. Bridges the Person chain into the Party hierarchy. Inherits from both erp-party and erp-person (dual ancestry)."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 60,
-                "fallback_language": "en"
+                "max_length": 60
             },
             "use_seed": true
         },
@@ -134,14 +167,20 @@
             "meta_category": "Kind",
             "generalizes": "erp-party",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-party" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-party"
+                }
             ],
-            "label": { "en": "Legal Entity" },
-            "description": { "en": "A juridical person: corporation, partnership, government body, or non-profit." },
+            "label": {
+                "en": "Legal Entity"
+            },
+            "description": {
+                "en": "A juridical person: corporation, partnership, government body, or non-profit."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 60,
-                "fallback_language": "en"
+                "max_length": 60
             },
             "use_seed": true
         },
@@ -152,14 +191,20 @@
             "meta_category": "Kind",
             "generalizes": "erp-legal-entity",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-legal-entity" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-legal-entity"
+                }
             ],
-            "label": { "en": "Corporation" },
-            "description": { "en": "Publicly or privately held corporation." },
+            "label": {
+                "en": "Corporation"
+            },
+            "description": {
+                "en": "Publicly or privately held corporation."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 60,
-                "fallback_language": "en"
+                "max_length": 60
             },
             "use_seed": true
         },
@@ -170,14 +215,20 @@
             "meta_category": "Kind",
             "generalizes": "erp-legal-entity",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-legal-entity" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-legal-entity"
+                }
             ],
-            "label": { "en": "Partnership" },
-            "description": { "en": "General partnership, limited partnership, or LLP." },
+            "label": {
+                "en": "Partnership"
+            },
+            "description": {
+                "en": "General partnership, limited partnership, or LLP."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 60,
-                "fallback_language": "en"
+                "max_length": 60
             },
             "use_seed": true
         },
@@ -188,14 +239,20 @@
             "meta_category": "Kind",
             "generalizes": "erp-legal-entity",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-legal-entity" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-legal-entity"
+                }
             ],
-            "label": { "en": "Government Body" },
-            "description": { "en": "Government agency, municipality, or public authority." },
+            "label": {
+                "en": "Government Body"
+            },
+            "description": {
+                "en": "Government agency, municipality, or public authority."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 60,
-                "fallback_language": "en"
+                "max_length": 60
             },
             "use_seed": true
         },
@@ -206,46 +263,66 @@
             "meta_category": "Kind",
             "generalizes": "erp-legal-entity",
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "erp-legal-entity" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "erp-legal-entity"
+                }
             ],
-            "label": { "en": "Non-Profit" },
-            "description": { "en": "Non-governmental organization, charity, or foundation." },
+            "label": {
+                "en": "Non-Profit"
+            },
+            "description": {
+                "en": "Non-governmental organization, charity, or foundation."
+            },
             "label_schema": {
                 "separator": " - ",
-                "max_length": 60,
-                "fallback_language": "en"
+                "max_length": 60
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== SUPPORTING: Contact Info ===",
             "id": "erp-contact-info",
             "temporal_nature": "Endurant",
             "meta_category": "Kind",
-            "label": { "en": "Contact Info" },
-            "description": { "en": "A specific contact channel (email address, phone number, URL, etc.) linked to a party." },
+            "label": {
+                "en": "Contact Info"
+            },
+            "description": {
+                "en": "A specific contact channel (email address, phone number, URL, etc.) linked to a party."
+            },
             "label_schema": {
                 "separator": "",
-                "max_length": 40,
-                "fallback_language": "en"
+                "max_length": 40
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== RELATOR: Party Has Contact (aggregation) ===",
             "id": "erp-party-has-contact-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Party Has Contact" },
-            "description": { "en": "A party has one or more contact channels. Aggregation: contacts require authored content." },
+            "label": {
+                "en": "Party Has Contact"
+            },
+            "description": {
+                "en": "A party has one or more contact channels. Aggregation: contacts require authored content."
+            },
             "roles": [
-                { "name": "aggregate", "universal_id": "erp-party" },
-                { "name": "part", "universal_id": "erp-contact-info" }
+                {
+                    "name": "aggregate",
+                    "universal_id": "erp-party"
+                },
+                {
+                    "name": "part",
+                    "universal_id": "erp-contact-info"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "aggregation-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "aggregation-relator"
+                }
             ],
             "use_seed": true
         },
@@ -254,14 +331,27 @@
             "id": "erp-contact-method-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Contact Method" },
-            "description": { "en": "Classifies a contact channel by method (Email, Phone, Fax, Mail, Website)." },
+            "label": {
+                "en": "Contact Method"
+            },
+            "description": {
+                "en": "Classifies a contact channel by method (Email, Phone, Fax, Mail, Website)."
+            },
             "roles": [
-                { "name": "contact", "universal_id": "erp-contact-info" },
-                { "name": "method", "universal_id": "erp-contact-method" }
+                {
+                    "name": "contact",
+                    "universal_id": "erp-contact-info"
+                },
+                {
+                    "name": "method",
+                    "universal_id": "erp-contact-method"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "attribution-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "attribution-relator"
+                }
             ],
             "use_seed": true
         },
@@ -270,32 +360,58 @@
             "id": "erp-person-social-rel",
             "temporal_nature": "Perdurant",
             "meta_category": "Relator",
-            "label": { "en": "Person Social Relationship" },
-            "description": { "en": "General social relationship between two persons. Inherited by all Person specializations including NaturalPerson." },
+            "label": {
+                "en": "Person Social Relationship"
+            },
+            "description": {
+                "en": "General social relationship between two persons. Inherited by all Person specializations including NaturalPerson."
+            },
             "roles": [
-                { "name": "person_a", "universal_id": "erp-person" },
-                { "name": "person_b", "universal_id": "erp-person" }
+                {
+                    "name": "person_a",
+                    "universal_id": "erp-person"
+                },
+                {
+                    "name": "person_b",
+                    "universal_id": "erp-person"
+                }
             ],
             "taxonomy": [
-                { "relator_universal_id": "generalization-relator", "target_universal_id": "association-relator" }
+                {
+                    "relator_universal_id": "generalization-relator",
+                    "target_universal_id": "association-relator"
+                }
             ],
             "use_seed": true
         }
     ],
-
     "property_definitions": [
         {
             "_comment": "=== erp-contact-method ENUM NAME ===",
             "id": "erp-contact-method-name-prop",
             "universal_id": "erp-contact-method",
-            "label": { "en": "Name" },
-            "description": { "en": "Contact method name (Email, Phone, Fax, Mail, Website)" },
+            "label": {
+                "en": "Name"
+            },
+            "description": {
+                "en": "Contact method name (Email, Phone, Fax, Mail, Website)"
+            },
             "property_schema": {
-                "predicates": ["name", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -304,19 +420,32 @@
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-living-being PROPERTIES ===",
             "id": "erp-lb-kingdom-prop",
             "universal_id": "erp-living-being",
-            "label": { "en": "Kingdom" },
-            "description": { "en": "Biological kingdom: Animalia, Plantae, Fungi, etc." },
+            "label": {
+                "en": "Kingdom"
+            },
+            "description": {
+                "en": "Biological kingdom: Animalia, Plantae, Fungi, etc."
+            },
             "property_schema": {
-                "predicates": ["classification", "kingdom"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "classification",
+                    "kingdom"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -328,14 +457,28 @@
         {
             "id": "erp-lb-species-prop",
             "universal_id": "erp-living-being",
-            "label": { "en": "Species" },
-            "description": { "en": "Species or breed designation" },
+            "label": {
+                "en": "Species"
+            },
+            "description": {
+                "en": "Species or breed designation"
+            },
             "property_schema": {
-                "predicates": ["classification", "species"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "classification",
+                    "species"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -347,14 +490,29 @@
         {
             "id": "erp-lb-birth-date-prop",
             "universal_id": "erp-living-being",
-            "label": { "en": "Birth Date" },
-            "description": { "en": "Date of birth" },
+            "label": {
+                "en": "Birth Date"
+            },
+            "description": {
+                "en": "Date of birth"
+            },
             "property_schema": {
-                "predicates": ["date", "birth"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "date",
+                    "birth"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -362,31 +520,59 @@
         {
             "id": "erp-lb-death-date-prop",
             "universal_id": "erp-living-being",
-            "label": { "en": "Death Date" },
-            "description": { "en": "Date of death, if applicable" },
+            "label": {
+                "en": "Death Date"
+            },
+            "description": {
+                "en": "Date of death, if applicable"
+            },
             "property_schema": {
-                "predicates": ["date", "death"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "date",
+                    "death"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-human PROPERTIES ===",
             "id": "erp-human-full-name-prop",
             "universal_id": "erp-human",
-            "label": { "en": "Full Name" },
-            "description": { "en": "Full legal name" },
+            "label": {
+                "en": "Full Name"
+            },
+            "description": {
+                "en": "Full legal name"
+            },
             "property_schema": {
-                "predicates": ["name", "full_name"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "full_name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -398,14 +584,28 @@
         {
             "id": "erp-human-gender-prop",
             "universal_id": "erp-human",
-            "label": { "en": "Gender" },
-            "description": { "en": "Gender identity" },
+            "label": {
+                "en": "Gender"
+            },
+            "description": {
+                "en": "Gender identity"
+            },
             "property_schema": {
-                "predicates": ["demographic", "gender"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "demographic",
+                    "gender"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -413,31 +613,58 @@
         {
             "id": "erp-human-nationality-prop",
             "universal_id": "erp-human",
-            "label": { "en": "Nationality" },
-            "description": { "en": "Country of citizenship (ISO 3166 alpha-2 code)" },
+            "label": {
+                "en": "Nationality"
+            },
+            "description": {
+                "en": "Country of citizenship (ISO 3166 alpha-2 code)"
+            },
             "property_schema": {
-                "predicates": ["demographic", "nationality"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "demographic",
+                    "nationality"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-person PROPERTIES ===",
             "id": "erp-person-email-prop",
             "universal_id": "erp-person",
-            "label": { "en": "Email" },
-            "description": { "en": "Primary email address" },
+            "label": {
+                "en": "Email"
+            },
+            "description": {
+                "en": "Primary email address"
+            },
             "property_schema": {
-                "predicates": ["contact", "email"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "contact",
+                    "email"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -449,14 +676,28 @@
         {
             "id": "erp-person-phone-prop",
             "universal_id": "erp-person",
-            "label": { "en": "Phone" },
-            "description": { "en": "Primary phone number" },
+            "label": {
+                "en": "Phone"
+            },
+            "description": {
+                "en": "Primary phone number"
+            },
             "property_schema": {
-                "predicates": ["contact", "phone"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "contact",
+                    "phone"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -464,14 +705,28 @@
         {
             "id": "erp-person-government-id-prop",
             "universal_id": "erp-person",
-            "label": { "en": "Government ID" },
-            "description": { "en": "National ID, SSN, passport number, etc." },
+            "label": {
+                "en": "Government ID"
+            },
+            "description": {
+                "en": "National ID, SSN, passport number, etc."
+            },
             "property_schema": {
-                "predicates": ["identifier", "government_id"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "identifier",
+                    "government_id"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -479,31 +734,58 @@
         {
             "id": "erp-person-preferred-language-prop",
             "universal_id": "erp-person",
-            "label": { "en": "Preferred Language" },
-            "description": { "en": "ISO 639-1 language code (en, es, fr, de, etc.)" },
+            "label": {
+                "en": "Preferred Language"
+            },
+            "description": {
+                "en": "ISO 639-1 language code (en, es, fr, de, etc.)"
+            },
             "property_schema": {
-                "predicates": ["preference", "language"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "preference",
+                    "language"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-party PROPERTIES ===",
             "id": "erp-party-code-prop",
             "universal_id": "erp-party",
-            "label": { "en": "Party Code" },
-            "description": { "en": "Unique party identifier code (e.g., P-001, V-2024-003)" },
+            "label": {
+                "en": "Party Code"
+            },
+            "description": {
+                "en": "Unique party identifier code (e.g., P-001, V-2024-003)"
+            },
             "property_schema": {
-                "predicates": ["identifier", "code"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "identifier",
+                    "code"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -515,14 +797,28 @@
         {
             "id": "erp-party-display-name-prop",
             "universal_id": "erp-party",
-            "label": { "en": "Display Name" },
-            "description": { "en": "Human-readable display name. For natural persons, typically derived from full_name. For legal entities, the trading name." },
+            "label": {
+                "en": "Display Name"
+            },
+            "description": {
+                "en": "Human-readable display name. For natural persons, typically derived from full_name. For legal entities, the trading name."
+            },
             "property_schema": {
-                "predicates": ["name", "display_name"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "display_name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -534,14 +830,28 @@
         {
             "id": "erp-party-tax-id-prop",
             "universal_id": "erp-party",
-            "label": { "en": "Tax ID" },
-            "description": { "en": "Tax identification number (TIN, EIN, VAT number)" },
+            "label": {
+                "en": "Tax ID"
+            },
+            "description": {
+                "en": "Tax identification number (TIN, EIN, VAT number)"
+            },
             "property_schema": {
-                "predicates": ["identifier", "tax"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "identifier",
+                    "tax"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -549,14 +859,28 @@
         {
             "id": "erp-party-is-active-prop",
             "universal_id": "erp-party",
-            "label": { "en": "Is Active" },
-            "description": { "en": "Whether this party is currently active in the system" },
+            "label": {
+                "en": "Is Active"
+            },
+            "description": {
+                "en": "Whether this party is currently active in the system"
+            },
             "property_schema": {
-                "predicates": ["status", "active"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "status",
+                    "active"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Boolean" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -564,31 +888,58 @@
         {
             "id": "erp-party-notes-prop",
             "universal_id": "erp-party",
-            "label": { "en": "Notes" },
-            "description": { "en": "Free-form notes about the party" },
+            "label": {
+                "en": "Notes"
+            },
+            "description": {
+                "en": "Free-form notes about the party"
+            },
             "property_schema": {
-                "predicates": ["description", "notes"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "description",
+                    "notes"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-legal-entity PROPERTIES ===",
             "id": "erp-le-legal-name-prop",
             "universal_id": "erp-legal-entity",
-            "label": { "en": "Legal Name" },
-            "description": { "en": "Official registered legal name" },
+            "label": {
+                "en": "Legal Name"
+            },
+            "description": {
+                "en": "Official registered legal name"
+            },
             "property_schema": {
-                "predicates": ["name", "legal_name"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "name",
+                    "legal_name"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Textual" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Textual"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -600,14 +951,28 @@
         {
             "id": "erp-le-registration-number-prop",
             "universal_id": "erp-legal-entity",
-            "label": { "en": "Registration Number" },
-            "description": { "en": "Company registration / incorporation number" },
+            "label": {
+                "en": "Registration Number"
+            },
+            "description": {
+                "en": "Company registration / incorporation number"
+            },
             "property_schema": {
-                "predicates": ["identifier", "registration"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "identifier",
+                    "registration"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -615,14 +980,29 @@
         {
             "id": "erp-le-incorporation-date-prop",
             "universal_id": "erp-legal-entity",
-            "label": { "en": "Incorporation Date" },
-            "description": { "en": "Date of incorporation or registration" },
+            "label": {
+                "en": "Incorporation Date"
+            },
+            "description": {
+                "en": "Date of incorporation or registration"
+            },
             "property_schema": {
-                "predicates": ["date", "incorporation"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "date",
+                    "incorporation"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Measurement", "measurement_frame_id": "std-timestamp" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Measurement",
+                        "measurement_frame_id": "std-timestamp"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -630,31 +1010,58 @@
         {
             "id": "erp-le-jurisdiction-prop",
             "universal_id": "erp-legal-entity",
-            "label": { "en": "Jurisdiction" },
-            "description": { "en": "Jurisdiction of incorporation (country or state code)" },
+            "label": {
+                "en": "Jurisdiction"
+            },
+            "description": {
+                "en": "Jurisdiction of incorporation (country or state code)"
+            },
             "property_schema": {
-                "predicates": ["location", "jurisdiction"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "location",
+                    "jurisdiction"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-corporation PROPERTIES ===",
             "id": "erp-corp-stock-ticker-prop",
             "universal_id": "erp-corporation",
-            "label": { "en": "Stock Ticker" },
-            "description": { "en": "Stock exchange ticker symbol (if publicly traded)" },
+            "label": {
+                "en": "Stock Ticker"
+            },
+            "description": {
+                "en": "Stock exchange ticker symbol (if publicly traded)"
+            },
             "property_schema": {
-                "predicates": ["identifier", "ticker"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "identifier",
+                    "ticker"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 0, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 0,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
@@ -662,31 +1069,58 @@
         {
             "id": "erp-corp-is-public-prop",
             "universal_id": "erp-corporation",
-            "label": { "en": "Is Publicly Traded" },
-            "description": { "en": "Whether the corporation is publicly traded" },
+            "label": {
+                "en": "Is Publicly Traded"
+            },
+            "description": {
+                "en": "Whether the corporation is publicly traded"
+            },
             "property_schema": {
-                "predicates": ["status", "public"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "status",
+                    "public"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Boolean" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         },
-
         {
             "_comment": "=== erp-contact-info PROPERTIES ===",
             "id": "erp-ci-contact-value-prop",
             "universal_id": "erp-contact-info",
-            "label": { "en": "Contact Value" },
-            "description": { "en": "The actual contact value (email address, phone number, URL, etc.)" },
+            "label": {
+                "en": "Contact Value"
+            },
+            "description": {
+                "en": "The actual contact value (email address, phone number, URL, etc.)"
+            },
             "property_schema": {
-                "predicates": ["value", "contact"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "value",
+                    "contact"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Categorical" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Categorical"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "label_options": {
@@ -698,26 +1132,43 @@
         {
             "id": "erp-ci-is-primary-prop",
             "universal_id": "erp-contact-info",
-            "label": { "en": "Is Primary" },
-            "description": { "en": "Whether this is the primary contact of its type for the party" },
+            "label": {
+                "en": "Is Primary"
+            },
+            "description": {
+                "en": "Whether this is the primary contact of its type for the party"
+            },
             "property_schema": {
-                "predicates": ["status", "primary"],
-                "relator": { "relator_type": "Attribution" },
+                "predicates": [
+                    "status",
+                    "primary"
+                ],
+                "relator": {
+                    "relator_type": "Attribution"
+                },
                 "constraints": {
-                    "property_value_type": { "type": "Boolean" },
-                    "cardinality": { "min": 1, "max": 1 }
+                    "property_value_type": {
+                        "type": "Boolean"
+                    },
+                    "cardinality": {
+                        "min": 1,
+                        "max": 1
+                    }
                 }
             },
             "use_seed": true
         }
     ],
-
     "foundation_role_assignments": [
         {
             "id": "fra-erp-admin-admin-party",
             "user_id": "erp-admin",
             "role": "AppAdmin",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-party-master-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-party-master-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -725,7 +1176,11 @@
             "id": "fra-erp-admin-dev-party",
             "user_id": "erp-admin",
             "role": "AppDeveloper",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-party-master-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-party-master-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -733,7 +1188,11 @@
             "id": "fra-erp-developer-dev-party",
             "user_id": "erp-developer",
             "role": "AppDeveloper",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-party-master-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-party-master-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         },
@@ -741,7 +1200,11 @@
             "id": "fra-erp-user-user-party",
             "user_id": "erp-user",
             "role": "AppUser",
-            "scope": { "type": "App", "tenant_id": "model1-testing-tenant", "app_id": "erp-party-master-app" },
+            "scope": {
+                "type": "App",
+                "tenant_id": "model1-testing-tenant",
+                "app_id": "erp-party-master-app"
+            },
             "assigned_by": "erp-admin",
             "use_seed": true
         }
